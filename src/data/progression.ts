@@ -2,7 +2,7 @@ export type SetValue = { weight: number; reps: number }
 type FullSet = SetValue & { warmup: boolean }
 
 export type Suggestion =
-  | { kind: 'increase'; weight: number; fromWeight: number }
+  | { kind: 'increase'; weight: number; fromWeight: number; repsLow: number; repsHigh: number }
   | { kind: 'reps'; weight: number; reps: number }
   | { kind: 'none' }
 
@@ -24,7 +24,14 @@ export function suggestProgression(
   if (lastWorking.length === 0) return { kind: 'none' }
   const ref = Math.max(...lastWorking.map((s) => s.weight))
   if (lastWorking.every((s) => s.reps >= repsMax)) {
-    return { kind: 'increase', weight: round2(ref + step), fromWeight: ref }
+    // New weight: start at the bottom of the range again (owner: 30×10 ×3 in 6–10 → 32,5 × 6–8).
+    return {
+      kind: 'increase',
+      weight: round2(ref + step),
+      fromWeight: ref,
+      repsLow: repsMin,
+      repsHigh: Math.min(repsMax, repsMin + 2),
+    }
   }
   const atRef = lastWorking.filter((s) => s.weight === ref)
   const minReps = Math.min(...atRef.map((s) => s.reps))
@@ -38,7 +45,8 @@ export function formatKg(n: number): string {
 
 export function progressionText(s: Suggestion): string {
   if (s.kind === 'increase') {
-    return `Spróbuj ${formatKg(s.weight)} kg (ostatnio pełny zakres przy ${formatKg(s.fromWeight)} kg)`
+    const reps = s.repsLow === s.repsHigh ? `${s.repsLow}` : `${s.repsLow}–${s.repsHigh}`
+    return `Spróbuj ${formatKg(s.weight)} kg × ${reps} (ostatnio pełny zakres przy ${formatKg(s.fromWeight)} kg)`
   }
   if (s.kind === 'reps') return `Ten sam ciężar ${formatKg(s.weight)} kg, spróbuj ${s.reps} powt.`
   return ''
@@ -62,6 +70,16 @@ export function buildPrefill(
   for (let i = 0; i < warmupCount; i++) out.push(pick(warm, i, true))
   for (let i = 0; i < workingCount; i++) out.push(pick(work, i, false))
   return out
+}
+
+/** RIR as shown to the user: 5 means 5 or more. */
+export function formatRir(rir: number): string {
+  return rir >= 5 ? '5+' : String(rir)
+}
+
+/** "30×10" or "30×10 (RIR 1)". */
+export function formatSetShort(s: SetValue & { rir?: number }): string {
+  return `${formatKg(s.weight)}×${s.reps}${s.rir !== undefined ? ` (RIR ${formatRir(s.rir)})` : ''}`
 }
 
 export function parseWeight(text: string): number | null {

@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { db } from './db';
+import { updateSettings } from './settings';
 import { createPlan, addDay, addItems, updateItem, getLastPlanDayId } from './plans';
 import {
   getActiveWorkout,
@@ -75,6 +76,60 @@ describe('startWorkout', () => {
     const bench = (await getWorkoutSets(w.id)).filter((s) => s.exerciseId === 'bench' && !s.warmup);
     expect(bench.map((s) => [s.weight, s.reps])).toEqual([[35, 10], [35, 10], [35, 10]]);
     expect(await getLastPlanDayId(plan.id)).toBe(day.id);
+  });
+});
+
+describe('rep range and progression prefill', () => {
+  async function dayWithRange(repsMin: number, repsMax: number) {
+    const plan = await createPlan('R');
+    const day = await addDay(plan.id, 'D');
+    await addItems(plan.id, day.id, ['lift']);
+    await updateItem(plan.id, day.id, 0, { sets: 3, warmupSets: 0, repsMin, repsMax });
+    return { plan, day };
+  }
+
+  it('heavy lift 6–8: range comes from the plan item; all at 8 → next prefilled +2,5 kg × 6', async () => {
+    const { plan, day } = await dayWithRange(6, 8);
+    await doWorkout(plan.id, day.id, 100, 8, 1_000_000);
+    const w = await startWorkout({ planId: plan.id, dayId: day.id });
+    expect(w.exercises?.[0]).toMatchObject({ repsMin: 6, repsMax: 8 });
+    const sets = await getWorkoutSets(w.id);
+    expect(sets.map((s) => [s.weight, s.reps])).toEqual([[102.5, 6], [102.5, 6], [102.5, 6]]);
+  });
+
+  it('isolation 10–12: 10 reps is not the top → same weight and reps kept', async () => {
+    const { plan, day } = await dayWithRange(10, 12);
+    await doWorkout(plan.id, day.id, 20, 10, 1_000_000);
+    const w = await startWorkout({ planId: plan.id, dayId: day.id });
+    expect(w.exercises?.[0]).toMatchObject({ repsMin: 10, repsMax: 12 });
+    expect((await getWorkoutSets(w.id)).map((s) => [s.weight, s.reps])).toEqual([[20, 10], [20, 10], [20, 10]]);
+  });
+
+  it('exercise step overrides the settings step', async () => {
+    const { plan, day } = await dayWithRange(6, 8);
+    await db.exercises.put({ id: 'lift', name: 'Lift', primaryMuscles: [], secondaryMuscles: [], equipment: null, category: 'strength', instructions: [], images: [], custom: true, weightStep: 1 });
+    await doWorkout(plan.id, day.id, 40, 8, 1_000_000);
+    const w = await startWorkout({ planId: plan.id, dayId: day.id });
+    expect((await getWorkoutSets(w.id))[0]).toMatchObject({ weight: 41, reps: 6 });
+  });
+
+  it('outside a plan (empty workout) the Ustawienia default range is used', async () => {
+    await updateSettings({ defaultRepsMin: 10, defaultRepsMax: 15 });
+    const w = await startWorkout({});
+    await addExercises(w.id, ['curl']);
+    expect((await db.workouts.get(w.id))?.exercises?.[0]).toMatchObject({ repsMin: 10, repsMax: 15 });
+  });
+
+  it('rir is stored per set and can be cleared', async () => {
+    const w = await startWorkout({});
+    await addExercises(w.id, ['curl']);
+    const [s] = await getWorkoutSets(w.id);
+    await updateSet(s.id, { rir: 1 });
+    expect((await db.sets.get(s.id))?.rir).toBe(1);
+    await updateSet(s.id, { rir: 9 });
+    expect((await db.sets.get(s.id))?.rir).toBe(5);
+    await updateSet(s.id, { rir: null });
+    expect((await db.sets.get(s.id))?.rir).toBeUndefined();
   });
 });
 

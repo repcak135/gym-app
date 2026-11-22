@@ -79,6 +79,8 @@ export interface WorkoutSet {
   reps: number;
   warmup: boolean;
   completedAt?: number;
+  /** Reps in reserve, 0–5 (5 = 5+); optional, advanced option. Unindexed, no schema change. */
+  rir?: number;
 }
 
 export interface ExerciseAlias {
@@ -101,6 +103,8 @@ export interface AppSettings {
   /** End of rest: sound (beats the iPhone silent switch) and vibration (Android). */
   restSound: boolean;
   restVibration: boolean;
+  /** Advanced: show the RIR picker on each set. */
+  showRir: boolean;
   lastBackupAt?: number;
   exerciseDbVersion?: number;
 }

@@ -4,7 +4,7 @@ import { X } from 'lucide-react';
 import { db } from '../../data/db';
 import { saveNote } from '../../data/exercises';
 import { getExerciseHistory } from '../../data/workouts';
-import { epley1RM, formatKg } from '../../data/progression';
+import { epley1RM, formatKg, formatRir } from '../../data/progression';
 import type { Workout, WorkoutSet } from '../../data/types';
 import MiniChart from './MiniChart';
 import { formatDay } from '../../pages/planFormat';
@@ -41,6 +41,7 @@ function History({ history }: { history: { workout: Workout; sets: WorkoutSet[] 
               <span key={s.id} className={s.warmup ? 'muted' : undefined}>
                 {s.warmup ? 'R ' : ''}
                 {formatKg(s.weight)} × {s.reps}
+                {s.rir !== undefined && ` · RIR ${formatRir(s.rir)}`}
               </span>
             ))}
           </p>

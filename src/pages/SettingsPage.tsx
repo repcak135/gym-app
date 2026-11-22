@@ -92,6 +92,18 @@ export default function SettingsPage() {
         />
       </section>
 
+      <section className="settings-group" aria-labelledby="set-adv">
+        <h2 id="set-adv" className="settings-group__title">Zaawansowane</h2>
+        <p className="settings-group__hint">
+          RIR (powtórzenia w zapasie): ile powtórzeń jeszcze dałbyś radę zrobić. Przy każdej serii pojawi się szybki wybór 0–5+. Pole jest opcjonalne.
+        </p>
+        <ToggleRow
+          label="Pokaż RIR (zaawansowane)"
+          checked={settings.showRir}
+          onChange={(v) => void updateSettings({ showRir: v })}
+        />
+      </section>
+
       <section className="settings-group" aria-labelledby="set-weight">
         <h2 id="set-weight" className="settings-group__title">Ciężar</h2>
         <SettingRow label="Krok ciężaru" id="s-step">

@@ -477,3 +477,18 @@
 @media (prefers-reduced-motion: reduce) {
   .rest-end__flash, .rest-end__card, .rest-bar--ending { animation: none; }
 }
+
+.set-row__rir { color: var(--text-muted); font-weight: 600; }
+.set-editor__rir { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.set-editor__rir button {
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.set-editor__rir button[aria-pressed='true'] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }

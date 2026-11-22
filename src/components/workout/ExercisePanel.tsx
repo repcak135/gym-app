@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Check, Minus, Plus } from 'lucide-react';
 import type { Exercise, WorkoutExercise, WorkoutSet } from '../../data/types';
-import { formatKg, parseWeight, progressionText, suggestProgression } from '../../data/progression';
+import { formatKg, formatRir, formatSetShort, parseWeight, progressionText, suggestProgression } from '../../data/progression';
 import { formatReps, formatRest } from '../../data/plans';
 import {
   addSet,
@@ -24,6 +24,7 @@ interface Props {
   lastSets: WorkoutSet[];
   note?: string;
   step: number;
+  showRir: boolean;
   onInfo: (tab: InfoTab) => void;
   onConfirmRemoveSet: (set: WorkoutSet) => void;
 }
@@ -91,6 +92,7 @@ export default function ExercisePanel({
   lastSets,
   note,
   step,
+  showRir,
   onInfo,
   onConfirmRemoveSet,
 }: Props) {
@@ -133,7 +135,7 @@ export default function ExercisePanel({
       {lastWorking.length > 0 && (
         <div className="ex-panel__hint">
           <p className="ex-panel__last">
-            Ostatnio: {lastWorking.map((s) => `${formatKg(s.weight)}×${s.reps}`).join(', ')}
+            Ostatnio: {lastWorking.map(formatSetShort).join(', ')}
           </p>
           {showHint && <p className="ex-panel__suggest">{progressionText(suggestion)}</p>}
           {canApply && suggestion.kind === 'increase' && (
@@ -158,12 +160,13 @@ export default function ExercisePanel({
                 type="button"
                 className={`set-row${done ? ' set-row--done' : ''}${isSel ? ' set-row--selected' : ''}${s.warmup ? ' set-row--warmup' : ''}`}
                 aria-current={isSel ? 'true' : undefined}
-                aria-label={`Seria ${setLabel(sets, s)}: ${formatKg(s.weight)} kg × ${s.reps}${done ? ', zaliczona' : ''}`}
+                aria-label={`Seria ${setLabel(sets, s)}: ${formatKg(s.weight)} kg × ${s.reps}${s.rir !== undefined ? `, RIR ${formatRir(s.rir)}` : ''}${done ? ', zaliczona' : ''}`}
                 onClick={() => setSelectedId(s.id)}
               >
                 <span className="set-row__num">{setLabel(sets, s)}</span>
                 <span className="set-row__val">
                   {formatKg(s.weight)} <small>kg</small> × {s.reps}
+                  {s.rir !== undefined && <small className="set-row__rir"> · RIR {formatRir(s.rir)}</small>}
                 </span>
                 <span className="set-row__check" aria-hidden="true">{done && <Check size={18} strokeWidth={3} />}</span>
               </button>
@@ -228,6 +231,24 @@ export default function ExercisePanel({
               </button>
             </div>
           </div>
+          {showRir && (
+            <div className="set-editor__field">
+              <span className="set-editor__label" id={`rir-${selected.id}`}>RIR (powtórzenia w zapasie, opcjonalnie)</span>
+              <div className="set-editor__rir" role="group" aria-labelledby={`rir-${selected.id}`}>
+                {[0, 1, 2, 3, 4, 5].map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    aria-label={`RIR ${formatRir(n)}`}
+                    aria-pressed={selected.rir === n}
+                    onClick={() => void updateSet(selected.id, { rir: selected.rir === n ? null : n })}
+                  >
+                    {formatRir(n)}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           <label className="set-editor__warmup">
             <input
               type="checkbox"

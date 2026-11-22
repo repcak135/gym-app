@@ -13,6 +13,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   defaultRepsMax: 12,
   restSound: true,
   restVibration: true,
+  showRir: false,
 };
 
 export const WEIGHT_STEP_OPTIONS = [0.5, 1, 1.25, 2.5, 5];

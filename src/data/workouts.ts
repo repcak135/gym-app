@@ -1,6 +1,6 @@
 import { db } from './db';
 import { getSettings } from './settings';
-import { buildPrefill, epley1RM } from './progression';
+import { buildPrefill, epley1RM, suggestProgression } from './progression';
 import type { Workout, WorkoutExercise, WorkoutSet } from './types';
 
 // Every function here is one short Dexie transaction, so closing the app at any
@@ -51,7 +51,14 @@ export async function getLastSets(exerciseId: string, excludeWorkoutId?: string)
 
 async function prefilledSets(workoutId: string, ex: WorkoutExercise, exerciseOrder: number): Promise<WorkoutSet[]> {
   const last = await getLastSets(ex.exerciseId, workoutId);
-  const values = buildPrefill(last, ex.warmupSets, ex.sets, ex.repsMin);
+  let values = buildPrefill(last, ex.warmupSets, ex.sets, ex.repsMin);
+  // Full range last time → start at the new weight from the bottom of the range.
+  const [exercise, settings] = await Promise.all([db.exercises.get(ex.exerciseId), getSettings()]);
+  const step = exercise?.weightStep ?? settings.defaultWeightStep;
+  const hint = suggestProgression(last.filter((s) => !s.warmup), ex.repsMin, ex.repsMax, step);
+  if (hint.kind === 'increase' && hint.fromWeight > 0) {
+    values = values.map((v) => (v.warmup ? v : { ...v, weight: hint.weight, reps: hint.repsLow }));
+  }
   return values.map((v, i) => ({
     id: crypto.randomUUID(),
     workoutId,
@@ -172,8 +179,15 @@ export async function removeExercise(workoutId: string, index: number): Promise<
   });
 }
 
-export async function updateSet(setId: string, patch: Partial<Pick<WorkoutSet, 'weight' | 'reps' | 'warmup'>>): Promise<void> {
+export async function updateSet(
+  setId: string,
+  patch: Partial<Pick<WorkoutSet, 'weight' | 'reps' | 'warmup'>> & { rir?: number | null },
+): Promise<void> {
   const clean: Partial<WorkoutSet> = {};
+  // null clears RIR (Dexie removes a property set to undefined).
+  if (patch.rir === null) clean.rir = undefined;
+  else if (typeof patch.rir === 'number' && Number.isFinite(patch.rir))
+    clean.rir = Math.min(5, Math.max(0, Math.round(patch.rir)));
   if (typeof patch.weight === 'number' && Number.isFinite(patch.weight))
     clean.weight = Math.min(2000, Math.max(0, Math.round(patch.weight * 100) / 100));
   if (typeof patch.reps === 'number' && Number.isFinite(patch.reps))

@@ -111,6 +111,8 @@ export default function WorkoutPage() {
     if (scrollTimer.current) clearTimeout(scrollTimer.current);
     scrollTimer.current = setTimeout(() => {
       const i = Math.round(el.scrollLeft / el.clientWidth);
+      // Never rest between two exercises (CSS snap does not always re-snap).
+      if (Math.abs(el.scrollLeft - i * el.clientWidth) > 2) el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' });
       setIndex(i);
       if (i !== workout.currentIndex) void setCurrentIndex(workout.id, i);
     }, 120);
@@ -238,6 +240,7 @@ export default function WorkoutPage() {
                 lastSets={lastSets[it.exerciseId] ?? []}
                 note={notes[i]?.text}
                 step={ex?.weightStep ?? settings.defaultWeightStep}
+                showRir={settings.showRir}
                 onInfo={(tab) => setSheet({ kind: 'info', tab })}
                 onConfirmRemoveSet={(set) => setSheet({ kind: 'remove-set', set })}
               />

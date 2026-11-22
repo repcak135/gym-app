@@ -102,9 +102,10 @@ test('pusty trening: dodaj ćwiczenie, zakończ, podsumowanie; następny trening
   await page.getByRole('button', { name: 'Gotowe (1)' }).click();
   const bench2 = panel(page, BENCH);
   await expect(bench2.getByText('Ostatnio: 60×12')).toBeVisible();
-  await expect(bench2.getByText('Spróbuj 62,5 kg (ostatnio pełny zakres przy 60 kg)')).toBeVisible();
-  await bench2.getByRole('button', { name: 'Użyj 62,5 kg' }).click();
+  await expect(bench2.getByText('Spróbuj 62,5 kg × 8–10 (ostatnio pełny zakres przy 60 kg)')).toBeVisible();
+  // prefilled with the new weight from the bottom of the range
   await expect(bench2.getByLabel('Ciężar')).toHaveValue('62,5');
+  await expect(bench2.getByLabel('Powtórzenia')).toHaveValue('8');
   await bench2.getByRole('button', { name: 'Historia' }).click();
   await expect(page.getByRole('dialog', { name: BENCH })).toContainText('60 × 12');
   await page.getByRole('dialog', { name: BENCH }).getByRole('button', { name: 'Zamknij' }).click();
@@ -203,4 +204,36 @@ test('ustawienia: dźwięk i wibracja końca przerwy można wyłączyć', async 
   await page.reload();
   await expect(page.getByRole('switch', { name: 'Dźwięk końca przerwy' })).not.toBeChecked();
   await expect(page.getByRole('switch', { name: 'Wibracja' })).not.toBeChecked();
+});
+
+test('RIR: domyślnie ukryte; po włączeniu zapisuje się przy serii i widać je w historii', async ({ page }) => {
+  await emptyWorkoutWithBench(page);
+  await expect(panel(page, BENCH).getByRole('group', { name: /RIR/ })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Opcje treningu' }).click();
+  await page.getByRole('button', { name: 'Anuluj trening' }).click();
+  await page.getByRole('button', { name: 'Usuń trening' }).click();
+  await expect(page.getByRole('button', { name: 'Pusty trening' })).toBeVisible();
+
+  await page.goto('/#/ustawienia');
+  await page.getByRole('switch', { name: 'Pokaż RIR (zaawansowane)' }).click();
+  await expect(page.getByRole('switch', { name: 'Pokaż RIR (zaawansowane)' })).toBeChecked();
+
+  await emptyWorkoutWithBench(page);
+  const bench = panel(page, BENCH);
+  await bench.getByLabel('Ciężar').fill('35');
+  await bench.getByLabel('Powtórzenia', { exact: true }).fill('8');
+  await bench.getByRole('button', { name: 'RIR 1', exact: true }).click();
+  await expect(bench.getByRole('button', { name: 'RIR 1', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await bench.getByRole('button', { name: 'Zalicz serię' }).click();
+  await expect(bench.getByRole('button', { name: 'Seria 1: 35 kg × 8, RIR 1, zaliczona' })).toBeVisible();
+  await page.getByRole('timer', { name: 'Przerwa' }).getByRole('button', { name: 'Pomiń' }).click();
+  await page.getByRole('button', { name: 'Zakończ' }).click();
+  await page.getByRole('button', { name: 'Zakończ trening' }).click();
+  await page.getByRole('link', { name: 'Gotowe' }).click();
+
+  await emptyWorkoutWithBench(page);
+  const bench2 = panel(page, BENCH);
+  await expect(bench2.getByText('Ostatnio: 35×8 (RIR 1)')).toBeVisible();
+  await bench2.getByRole('button', { name: 'Historia' }).click();
+  await expect(page.getByRole('dialog', { name: BENCH })).toContainText('35 × 8 · RIR 1');
 });
