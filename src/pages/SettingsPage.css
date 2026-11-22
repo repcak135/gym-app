@@ -113,3 +113,8 @@
 }
 .settings-toggle input:checked { background: var(--success); }
 .settings-toggle input:checked::after { transform: translateX(20px); }
+
+.settings-link {
+  color: var(--text-muted);
+  text-decoration: none;
+}

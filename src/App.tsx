@@ -9,8 +9,10 @@ import ExercisesPage from './pages/ExercisesPage';
 import ExerciseDetailPage from './pages/ExerciseDetailPage';
 import ExerciseFormPage from './pages/ExerciseFormPage';
 import HistoryPage from './pages/HistoryPage';
+import WorkoutDetailPage from './pages/WorkoutDetailPage';
 import StatsPage from './pages/StatsPage';
 import SettingsPage from './pages/SettingsPage';
+import ImportPage from './pages/ImportPage';
 import WorkoutPage from './pages/WorkoutPage';
 import WorkoutSummaryPage from './pages/WorkoutSummaryPage';
 import { getActiveWorkout } from './data/workouts';
@@ -56,8 +58,10 @@ export default function App() {
           <Route path="/cwiczenia/:id/edytuj" element={<ExerciseFormPage />} />
           <Route path="/cwiczenia/:id" element={<ExerciseDetailPage />} />
           <Route path="/historia" element={<HistoryPage />} />
+          <Route path="/historia/:id" element={<WorkoutDetailPage />} />
           <Route path="/statystyki" element={<StatsPage />} />
           <Route path="/ustawienia" element={<SettingsPage />} />
+          <Route path="/ustawienia/import" element={<ImportPage />} />
           <Route path="/trening" element={<WorkoutPage />} />
           <Route path="/trening/podsumowanie/:id" element={<WorkoutSummaryPage />} />
         </Routes>

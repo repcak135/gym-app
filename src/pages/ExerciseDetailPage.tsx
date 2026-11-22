@@ -18,6 +18,7 @@ import {
   equipmentLabel,
   LEVEL_PL,
 } from '../data/exerciseLabels';
+import RecordsSection from '../components/RecordsSection';
 import './ExerciseDetailPage.css';
 import '../components/Sheet.css';
 
@@ -296,6 +297,8 @@ export default function ExerciseDetailPage() {
           </ul>
         </section>
       )}
+
+      <RecordsSection exerciseId={exercise.id} />
 
       {/* Note */}
       <section className="detail-section" aria-label="Twoja notatka">

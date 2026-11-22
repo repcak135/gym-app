@@ -303,11 +303,14 @@ export async function discardWorkout(workoutId: string): Promise<void> {
   });
 }
 
-export type RecordKind = 'weight' | 'e1rm' | 'volume';
+export type RecordKind = 'weight' | 'e1rm' | 'volume' | 'reps';
 export interface NewRecord {
   exerciseId: string;
   kind: RecordKind;
   value: number;
+  /** For 'reps': more reps than ever at this weight (a weight done before). */
+  weight?: number;
+  reps?: number;
 }
 export interface WorkoutSummary {
   durationSec: number;
@@ -316,7 +319,7 @@ export interface WorkoutSummary {
   records: NewRecord[];
 }
 
-function bests(sets: WorkoutSet[]): Record<RecordKind, number> {
+function bests(sets: WorkoutSet[]): Record<Exclude<RecordKind, 'reps'>, number> {
   const working = sets.filter((s) => !s.warmup && s.completedAt !== undefined);
   return {
     weight: Math.max(0, ...working.filter((s) => s.reps > 0).map((s) => s.weight)),
@@ -346,6 +349,23 @@ export async function summarizeWorkout(workoutId: string): Promise<WorkoutSummar
     for (const kind of ['weight', 'e1rm', 'volume'] as const) {
       if (now[kind] > before[kind]) records.push({ exerciseId, kind, value: Math.round(now[kind] * 10) / 10 });
     }
+    // Most reps at a weight: best new set beating the old best at that same weight.
+    const bestReps = new Map<number, number>();
+    for (const h of earlier) {
+      for (const s of h.sets) {
+        if (s.warmup || s.completedAt === undefined || s.reps <= 0) continue;
+        bestReps.set(s.weight, Math.max(bestReps.get(s.weight) ?? 0, s.reps));
+      }
+    }
+    let repsRecord: { weight: number; reps: number } | null = null;
+    for (const s of working.filter((x) => x.exerciseId === exerciseId)) {
+      const prev = bestReps.get(s.weight);
+      if (prev === undefined || s.reps <= prev) continue;
+      if (!repsRecord || s.weight > repsRecord.weight || (s.weight === repsRecord.weight && s.reps > repsRecord.reps)) {
+        repsRecord = { weight: s.weight, reps: s.reps };
+      }
+    }
+    if (repsRecord) records.push({ exerciseId, kind: 'reps', value: repsRecord.reps, ...repsRecord });
   }
   return {
     durationSec: Math.max(0, Math.round(((w.endedAt ?? Date.now()) - w.startedAt) / 1000)),

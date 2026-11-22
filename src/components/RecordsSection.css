@@ -1,0 +1,38 @@
+.records .detail-section-title { display: flex; align-items: center; gap: var(--space-1); }
+
+.records__tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.records__tile {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  min-width: 0;
+}
+.records__tile span { font-size: 0.72rem; color: var(--text-muted); line-height: 1.2; }
+.records__tile strong { font-size: 1.05rem; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.records__tile small { font-size: 0.72rem; color: var(--text-muted); }
+
+.records__table {
+  width: 100%;
+  margin-top: var(--space-3);
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.95rem;
+}
+.records__table th {
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: var(--space-1) 0;
+}
+.records__table td { padding: var(--space-2) 0; border-top: 1px solid var(--border); }
+.records__table td:last-child, .records__table th:last-child { text-align: right; color: var(--text-muted); }

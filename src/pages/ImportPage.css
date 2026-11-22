@@ -1,0 +1,114 @@
+.imp h1 { margin-top: var(--space-3); }
+
+.imp-notes {
+  margin: var(--space-4) 0 var(--space-5);
+  padding-left: var(--space-5);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  display: grid;
+  gap: var(--space-2);
+}
+
+/* The real <input type="file"> sits inside the label so iOS standalone opens the Files picker. */
+.imp-file {
+  position: relative;
+  gap: var(--space-2);
+  min-height: 56px;
+  font-size: 1.05rem;
+}
+.imp-file input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+.imp-file--busy { opacity: 0.7; }
+
+.imp-error {
+  margin-top: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  background: rgba(242, 95, 92, 0.1);
+}
+
+.imp-summary { margin: var(--space-2) 0 var(--space-3); color: var(--text); }
+.imp-known { margin: 0 0 var(--space-2); font-size: 0.9rem; }
+.imp-hint { margin: 0 0 var(--space-3); font-size: 0.85rem; }
+
+.imp section { margin-top: var(--space-4); }
+
+.imp-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.imp-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  display: grid;
+  gap: var(--space-1);
+}
+
+.imp-row__src {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+.imp-row__src strong { overflow-wrap: anywhere; }
+.imp-row__src span { flex-shrink: 0; font-size: 0.85rem; }
+
+.imp-row__choice { color: var(--success); font-size: 0.95rem; overflow-wrap: anywhere; }
+.imp-row__choice--custom { color: var(--accent); }
+
+.imp-row__actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+.imp-row__actions .plan-btn {
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  font-size: 0.9rem;
+}
+
+.imp-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 44px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+.imp-toggle svg { transition: transform 0.15s; }
+.imp-toggle__open { transform: rotate(180deg); }
+
+/* Stays above the bottom nav while the list scrolls. */
+.imp-footer {
+  position: sticky;
+  bottom: calc(max(var(--space-3), env(safe-area-inset-bottom)) + var(--nav-height) + var(--space-5));
+  margin-top: var(--space-5);
+  padding-top: var(--space-2);
+  z-index: 5;
+}
+.imp-footer .plan-btn { min-height: 56px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45); }
+
+.imp-done { margin: var(--space-3) 0 var(--space-5); font-size: 1.05rem; }
+.imp-again { margin-top: var(--space-3); }
+.imp-row__suggest { font-size: 0.85rem; overflow-wrap: anywhere; }

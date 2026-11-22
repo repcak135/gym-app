@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { useNavigate } from 'react-router';
-import { ArrowLeft } from 'lucide-react';
+import { Link, useNavigate } from 'react-router';
+import { ArrowLeft, ChevronRight } from 'lucide-react';
 
 import { getSettings, updateSettings, WEIGHT_STEP_OPTIONS, BAR_WEIGHT_OPTIONS } from '../data/settings';
 import { REST_OPTIONS, formatRest } from '../data/plans';
@@ -102,6 +102,14 @@ export default function SettingsPage() {
           checked={settings.showRir}
           onChange={(v) => void updateSettings({ showRir: v })}
         />
+      </section>
+
+      <section className="settings-group" aria-labelledby="set-data">
+        <h2 id="set-data" className="settings-group__title">Dane</h2>
+        <Link to="/ustawienia/import" className="settings-row settings-link">
+          <span className="settings-row__label">Importuj historię</span>
+          <ChevronRight size={20} aria-hidden="true" />
+        </Link>
       </section>
 
       <section className="settings-group" aria-labelledby="set-weight">

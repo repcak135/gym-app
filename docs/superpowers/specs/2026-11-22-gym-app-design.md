@@ -148,3 +148,5 @@ Po każdym etapie Claude sprawdza aplikację na ekranie wielkości telefonu i ur
 ## Pozostawione budującemu
 
 Dokładny układ ekranów, kolory, nazwy plików, struktura komponentów, wybór biblioteki wykresów, mapowanie nazw mięśni z bazy na grupy i na sylwetkę, wzór podpowiedzi progresji w szczegółach.
+- **Import CSV (etap 5):** dopasowanie nazw: zapamiętane (`aliases`) → dokładna nazwa → podobna (ważone wspólne słowa; słowa zmieniające ruch, np. incline/seated/preacher, liczą się podwójnie). Podobieństwo ≥ 0,85 = „Dopasowane automatycznie” (zwinięte, do zmiany), 0,75–0,85 = propozycja wybrana na ekranie „Do sprawdzenia”, poniżej 0,75 = domyślnie „własne ćwiczenie”, propozycja tylko pokazana. Własne ćwiczenia z importu nie mają mięśni — właściciel może je uzupełnić w karcie ćwiczenia. Zaimportowane serie mają `completedAt` = czas treningu (liczą się do historii i rekordów).
+- **Rekordy w podsumowaniu:** oprócz najcięższej serii, 1RM i objętości także „więcej powtórzeń” przy ciężarze, który był już wcześniej robiony.

@@ -12,7 +12,13 @@ const RECORD_LABEL: Record<RecordKind, string> = {
   weight: 'najcięższa seria',
   e1rm: 'szac. maks. (1RM)',
   volume: 'objętość',
+  reps: 'więcej powtórzeń',
 };
+
+function recordValue(r: { kind: RecordKind; value: number; weight?: number; reps?: number }): string {
+  if (r.kind === 'reps') return `${formatKg(r.weight ?? 0)} kg × ${r.reps ?? r.value}`;
+  return `${formatKg(r.value)} kg`;
+}
 
 function setsLabel(n: number): string {
   if (n === 1) return 'seria';
@@ -76,7 +82,7 @@ export default function WorkoutSummaryPage() {
                 <Trophy size={20} aria-hidden="true" />
                 <span>
                   <strong>{names[i]}</strong>
-                  <span className="muted"> — {RECORD_LABEL[r.kind]} {formatKg(r.value)} kg</span>
+                  <span className="muted"> — {RECORD_LABEL[r.kind]} {recordValue(r)}</span>
                 </span>
               </li>
             ))}
