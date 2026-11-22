@@ -246,7 +246,8 @@ export default function PlanDayPage() {
 
       {picking && (
         <ExercisePicker
-          onAdd={(id) => addItems(plan.id, day.id, [id])}
+          existingIds={day.items.map((i) => i.exerciseId)}
+          onDone={(ids) => addItems(plan.id, day.id, ids)}
           onClose={() => setPicking(false)}
         />
       )}

@@ -20,8 +20,9 @@ async function addDay(page: Page, name: string) {
 async function pickExercise(page: Page, query: string, name: string) {
   const picker = page.getByRole('dialog', { name: 'Dodaj ćwiczenia' });
   await picker.getByRole('searchbox', { name: 'Szukaj ćwiczenia' }).fill(query);
-  await picker.getByRole('button', { name, exact: true }).click({ timeout: 15_000 });
-  await expect(picker.getByRole('status')).toHaveText(`Dodano: ${name}`);
+  const row = picker.getByRole('button', { name, exact: true });
+  await row.click({ timeout: 15_000 });
+  await expect(row).toHaveAttribute('aria-pressed', 'true');
 }
 
 async function openPicker(page: Page) {
@@ -221,4 +222,57 @@ test('przyciski mają co najmniej 44 px', async ({ page }) => {
     expect(box!.height, `height of ${label}`).toBeGreaterThanOrEqual(44);
     expect(box!.width, `width of ${label}`).toBeGreaterThanOrEqual(44);
   }
+});
+
+test('wybór ćwiczeń: zaznacz/odznacz, Zamknij, bez duplikatów', async ({ page }) => {
+  await planWithDay(page);
+  const picker = page.getByRole('dialog', { name: 'Dodaj ćwiczenia' });
+
+  // X closes without adding anything
+  await openPicker(page);
+  await pickExercise(page, 'squat', 'Barbell Squat');
+  await picker.getByRole('button', { name: 'Zamknij' }).click();
+  await expect(picker).toHaveCount(0);
+  await expect(page.locator('section.item-card')).toHaveCount(0);
+
+  // toggle: tap twice = unselected; Gotowe shows the count
+  await openPicker(page);
+  await pickExercise(page, 'squat', 'Barbell Squat');
+  await pickExercise(page, 'bench press', 'Barbell Bench Press - Medium Grip');
+  await expect(picker.getByRole('button', { name: 'Gotowe (2)' })).toBeVisible();
+  const bench = picker.getByRole('button', { name: 'Barbell Bench Press - Medium Grip', exact: true });
+  await bench.click();
+  await expect(bench).toHaveAttribute('aria-pressed', 'false');
+  await picker.getByRole('button', { name: 'Gotowe (1)' }).click();
+  await expect(picker).toHaveCount(0);
+  await expect(page.locator('section.item-card')).toHaveCount(1);
+
+  // already in the day: shown as added and not selectable
+  await openPicker(page);
+  await picker.getByRole('searchbox', { name: 'Szukaj ćwiczenia' }).fill('squat');
+  const squat = picker.getByRole('button', { name: 'Barbell Squat', exact: true });
+  await expect(squat).toBeDisabled();
+  await expect(squat).toContainText('W dniu');
+  await picker.getByRole('button', { name: 'Gotowe' }).click();
+  await expect(page.locator('section.item-card')).toHaveCount(1);
+});
+
+test('wybór ćwiczeń: przyciski widoczne pod paskiem stanu', async ({ page }) => {
+  // Simulate the iPhone top inset (standalone, translucent status bar).
+  await page.addInitScript(() => {
+    document.addEventListener('DOMContentLoaded', () => {
+      const s = document.createElement('style');
+      s.textContent = '.picker__bar{padding-top:calc(59px + 8px)!important}';
+      document.head.appendChild(s);
+    });
+  });
+  await planWithDay(page);
+  await openPicker(page);
+  const picker = page.getByRole('dialog', { name: 'Dodaj ćwiczenia' });
+  const close = await picker.getByRole('button', { name: 'Zamknij' }).boundingBox();
+  expect(close!.y).toBeGreaterThanOrEqual(59);
+  const done = await picker.getByRole('button', { name: 'Gotowe' }).boundingBox();
+  const vh = page.viewportSize()!.height;
+  expect(done!.y + done!.height).toBeLessThanOrEqual(vh);
+  expect(done!.height).toBeGreaterThanOrEqual(44);
 });

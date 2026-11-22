@@ -10,15 +10,29 @@
 .picker__bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
+  gap: var(--space-2);
+  /* Standalone iOS uses a translucent status bar: keep the bar below it. */
+  padding: calc(env(safe-area-inset-top) + var(--space-2)) var(--space-4) var(--space-2) var(--space-2);
   border-bottom: 1px solid var(--border);
 }
 
+.picker__close {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.picker__close:active { background: var(--surface-2); }
+
 .picker__title { margin: 0; font-size: 1.15rem; }
 
-.picker__done { min-height: 44px; padding: 0 var(--space-5); }
 
 .picker__search { padding: var(--space-3) var(--space-4) var(--space-2); }
 
@@ -55,35 +69,40 @@
   cursor: pointer;
 }
 
-.picker__added {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 28px;
+.picker__row:disabled { cursor: default; opacity: 0.55; }
+
+.picker__row--selected {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.picker__check {
+  display: grid;
+  place-items: center;
+  width: 28px;
   height: 28px;
-  padding: 0 6px;
-  border-radius: 14px;
-  background: var(--success-soft);
-  color: var(--success);
-  font-size: 0.8rem;
-  font-weight: 700;
   flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+}
+
+.picker__check--on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.picker__in-day {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--success);
 }
 
 .picker__empty { color: var(--text-muted); text-align: center; margin-top: var(--space-5); }
 
-.picker__toast {
-  position: absolute;
-  left: 50%;
-  bottom: max(var(--space-5), env(safe-area-inset-bottom));
-  transform: translateX(-50%);
-  max-width: calc(100% - 32px);
-  padding: var(--space-3) var(--space-4);
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text);
-  font-size: 0.9rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-  pointer-events: none;
+.picker__footer {
+  padding: var(--space-3) var(--space-4) calc(env(safe-area-inset-bottom) + var(--space-3));
+  border-top: 1px solid var(--border);
+  background: var(--bg);
 }
