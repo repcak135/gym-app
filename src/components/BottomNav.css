@@ -1,14 +1,18 @@
 .bottom-nav {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  left: var(--space-3);
+  right: var(--space-3);
+  bottom: max(var(--space-3), env(safe-area-inset-bottom));
+  max-width: 520px;
+  margin: 0 auto;
   display: flex;
-  background: rgba(23, 26, 33, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid var(--border);
-  padding-bottom: env(safe-area-inset-bottom);
+  padding: var(--space-1);
+  background: rgba(28, 32, 41, 0.86);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 26px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
   z-index: 100;
 }
 
@@ -20,28 +24,21 @@
   justify-content: center;
   gap: 2px;
   min-height: var(--nav-height);
-  padding: var(--space-2) var(--space-1);
+  border-radius: 22px;
   color: var(--text-muted);
   text-decoration: none;
   font-size: 11px;
   font-weight: 600;
-  transition: color 0.15s ease;
+  transition: color 0.15s ease, background-color 0.15s ease;
 }
 
 .bottom-nav__icon {
   display: grid;
   place-items: center;
-  width: 52px;
-  height: 30px;
-  border-radius: 999px;
-  transition: background-color 0.15s ease;
+  height: 26px;
 }
 
 .bottom-nav__link[aria-current="page"] {
-  color: var(--text);
-}
-
-.bottom-nav__link[aria-current="page"] .bottom-nav__icon {
-  background: var(--accent-soft);
   color: var(--accent);
+  background: var(--accent-soft);
 }

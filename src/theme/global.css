@@ -6,7 +6,18 @@
 
 html {
   color-scheme: dark;
+  background: var(--bg);
   -webkit-tap-highlight-color: transparent;
+  /* iOS 26 standalone bug: the viewport ends short of the screen bottom by the
+     status-bar height when the status bar is translucent. */
+  min-height: calc(100% + env(safe-area-inset-top));
+}
+
+@media (display-mode: standalone) {
+  html,
+  body {
+    min-height: 100vh;
+  }
 }
 
 body {
@@ -24,7 +35,7 @@ main {
   max-width: 640px;
   margin: 0 auto;
   padding: calc(env(safe-area-inset-top) + var(--space-5)) var(--space-4)
-    calc(var(--nav-height) + env(safe-area-inset-bottom) + var(--space-5));
+    calc(var(--nav-height) + env(safe-area-inset-bottom) + var(--space-6) + var(--space-4));
 }
 
 h1 {
