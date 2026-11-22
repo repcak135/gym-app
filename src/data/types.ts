@@ -43,6 +43,16 @@ export interface Plan {
   days: PlanDay[];
 }
 
+/** One exercise of a live/finished workout, with the targets it started with. */
+export interface WorkoutExercise {
+  exerciseId: Id;
+  warmupSets: number;
+  sets: number;
+  repsMin: number;
+  repsMax: number;
+  restSec: number;
+}
+
 export interface Workout {
   id: Id;
   name: string;
@@ -52,6 +62,11 @@ export interface Workout {
   dayId?: Id;
   source: 'app' | 'import';
   importKey?: string;
+  /** Live-workout state (absent on imported workouts). Unindexed, no schema change. */
+  exercises?: WorkoutExercise[];
+  currentIndex?: number;
+  restEndsAt?: number;
+  restTotalSec?: number;
 }
 
 export interface WorkoutSet {
