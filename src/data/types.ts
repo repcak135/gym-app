@@ -77,6 +77,12 @@ export interface AppSettings {
   barWeight: number;
   plates: number[];
   defaultWeightStep: number;
+  /** Defaults for exercises newly added to a plan day (owner's request, stage 3). */
+  defaultRestSec: number;
+  defaultSets: number;
+  defaultWarmupSets: number;
+  defaultRepsMin: number;
+  defaultRepsMax: number;
   lastBackupAt?: number;
   exerciseDbVersion?: number;
 }

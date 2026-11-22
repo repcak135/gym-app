@@ -1,3 +1,4 @@
+import { updateSettings } from './settings';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { db } from './db';
 import { getSettings } from './settings';
@@ -99,17 +100,17 @@ describe('days', () => {
 });
 
 describe('items', () => {
-  it('addItems uses defaults on empty day and copies previous item settings', async () => {
+  it('addItems uses defaults from settings; changing settings keeps existing items', async () => {
     const p = await createPlan('P');
     const d = await addDay(p.id, 'D');
     await addItems(p.id, d.id, ['a']);
     let day = (await getPlan(p.id)).days[0];
     expect(day.items[0]).toEqual({ exerciseId: 'a', ...DEFAULT_ITEM });
-    await updateItem(p.id, d.id, 0, { sets: 5, warmupSets: 2, repsMin: 5, repsMax: 5, restSec: 180 });
-    await addItems(p.id, d.id, ['b', 'c']);
+    await updateSettings({ defaultSets: 4, defaultWarmupSets: 2, defaultRepsMin: 6, defaultRepsMax: 10, defaultRestSec: 180 });
+    await addItems(p.id, d.id, ['b']);
     day = (await getPlan(p.id)).days[0];
-    expect(day.items[1]).toEqual({ exerciseId: 'b', sets: 5, warmupSets: 2, repsMin: 5, repsMax: 5, restSec: 180 });
-    expect(day.items[2].sets).toBe(5);
+    expect(day.items[0]).toEqual({ exerciseId: 'a', ...DEFAULT_ITEM });
+    expect(day.items[1]).toEqual({ exerciseId: 'b', sets: 4, warmupSets: 2, repsMin: 6, repsMax: 10, restSec: 180 });
   });
 
   it('updateItem clamps values', async () => {

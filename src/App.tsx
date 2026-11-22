@@ -10,6 +10,7 @@ import ExerciseDetailPage from './pages/ExerciseDetailPage';
 import ExerciseFormPage from './pages/ExerciseFormPage';
 import HistoryPage from './pages/HistoryPage';
 import StatsPage from './pages/StatsPage';
+import SettingsPage from './pages/SettingsPage';
 
 // Each new screen starts at the top (the page scroll would otherwise carry over).
 function ScrollToTop() {
@@ -36,6 +37,7 @@ export default function App() {
           <Route path="/cwiczenia/:id" element={<ExerciseDetailPage />} />
           <Route path="/historia" element={<HistoryPage />} />
           <Route path="/statystyki" element={<StatsPage />} />
+          <Route path="/ustawienia" element={<SettingsPage />} />
         </Routes>
       </main>
       <BottomNav />

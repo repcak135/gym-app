@@ -276,3 +276,35 @@ test('wybór ćwiczeń: przyciski widoczne pod paskiem stanu', async ({ page }) 
   expect(done!.y + done!.height).toBeLessThanOrEqual(vh);
   expect(done!.height).toBeGreaterThanOrEqual(44);
 });
+
+test('ustawienia: domyślne wartości dla nowych ćwiczeń', async ({ page }) => {
+  await page.goto('/#/');
+  await page.getByRole('link', { name: 'Ustawienia' }).click();
+  await expect(page.getByRole('heading', { level: 1, name: 'Ustawienia' })).toBeVisible();
+  await expect(page.getByLabel('Przerwa')).toHaveValue('120');
+  await expect(page.getByLabel('Krok ciężaru')).toHaveValue('2.5');
+  await expect(page.getByLabel('Waga gryfu')).toHaveValue('20');
+
+  await page.getByLabel('Przerwa').selectOption({ label: '3:00' });
+  await page.getByLabel('Serie', { exact: true }).selectOption('4');
+  await page.getByLabel('Powtórzenia od').selectOption('6');
+  await page.getByLabel('Powtórzenia do').selectOption('10');
+  await page.getByLabel('Krok ciężaru').selectOption({ label: '1,25 kg' });
+  await expect(page.getByLabel('Krok ciężaru')).toHaveValue('1.25');
+  await page.reload();
+  await expect(page.getByLabel('Przerwa')).toHaveValue('180');
+  await expect(page.getByLabel('Krok ciężaru')).toHaveValue('1.25');
+
+  await page.getByRole('button', { name: 'Wróć' }).click();
+  await expect(page.getByRole('heading', { level: 1, name: 'Start' })).toBeVisible();
+
+  await planWithDay(page);
+  await openPicker(page);
+  await pickExercise(page, 'squat', 'Barbell Squat');
+  await page.getByRole('button', { name: 'Gotowe' }).click();
+  const item = page.getByRole('region', { name: 'Barbell Squat' });
+  await expect(item.locator('output[aria-label="Serie"]')).toHaveText('4');
+  await expect(item.getByLabel('Przerwa')).toHaveValue('180');
+  await expect(item.getByLabel('Powtórzenia od')).toHaveValue('6');
+  await expect(item.getByLabel('Powtórzenia do')).toHaveValue('10');
+});

@@ -161,17 +161,17 @@ export async function deleteDay(planId: string, dayId: string): Promise<void> {
 // ---------------------------------------------------------------------------
 
 export async function addItems(planId: string, dayId: string, exerciseIds: string[]): Promise<void> {
+  // New items take the defaults from Ustawienia; existing items keep their own values.
+  const s = await getSettings();
   await mutateDay(planId, dayId, (day) => {
     for (const exerciseId of exerciseIds) {
-      const last = day.items[day.items.length - 1];
-      const base = last ?? DEFAULT_ITEM;
       day.items.push({
         exerciseId,
-        sets: base.sets,
-        warmupSets: base.warmupSets,
-        repsMin: base.repsMin,
-        repsMax: base.repsMax,
-        restSec: base.restSec,
+        sets: s.defaultSets,
+        warmupSets: s.defaultWarmupSets,
+        repsMin: s.defaultRepsMin,
+        repsMax: s.defaultRepsMax,
+        restSec: s.defaultRestSec,
       });
     }
   });

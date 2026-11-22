@@ -6,16 +6,33 @@ export const DEFAULT_SETTINGS: AppSettings = {
   barWeight: 20,
   plates: [25, 20, 15, 10, 5, 2.5, 1.25],
   defaultWeightStep: 2.5,
+  defaultRestSec: 120,
+  defaultSets: 3,
+  defaultWarmupSets: 0,
+  defaultRepsMin: 8,
+  defaultRepsMax: 12,
 };
+
+export const WEIGHT_STEP_OPTIONS = [0.5, 1, 1.25, 2.5, 5];
+export const BAR_WEIGHT_OPTIONS = [7.5, 10, 15, 20, 25];
 
 export async function getSettings(): Promise<AppSettings> {
   const stored = await db.settings.get('app');
-  return stored ?? { ...DEFAULT_SETTINGS };
+  // Settings saved by older versions lack newer fields: fill them with defaults.
+  return { ...DEFAULT_SETTINGS, ...stored, key: 'app' };
 }
 
 export async function updateSettings(patch: Partial<Omit<AppSettings, 'key'>>): Promise<AppSettings> {
-  const current = await getSettings();
-  const updated: AppSettings = { ...current, ...patch, key: 'app' };
-  await db.settings.put(updated);
-  return updated;
+  // One transaction, so quick successive changes cannot overwrite each other.
+  return db.transaction('rw', db.settings, async () => {
+    const current = await getSettings();
+    const updated: AppSettings = { ...current, ...patch, key: 'app' };
+    if (updated.defaultRepsMax < updated.defaultRepsMin) {
+      // Keep the range valid whichever end was changed.
+      if (patch.defaultRepsMin !== undefined) updated.defaultRepsMax = updated.defaultRepsMin;
+      else updated.defaultRepsMin = updated.defaultRepsMax;
+    }
+    await db.settings.put(updated);
+    return updated;
+  });
 }

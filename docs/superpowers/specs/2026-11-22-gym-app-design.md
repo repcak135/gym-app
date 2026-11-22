@@ -58,6 +58,8 @@ Rozważony też fork openGym: wymaga serwera działającego cały czas, jest bar
 - Dzień ma listę ćwiczeń; każde: liczba serii, zakres powtórzeń (np. 10–12), ile serii rozgrzewkowych, czas przerwy (np. 2:00, 3:00), kolejność (przeciąganie).
 - Tworzenie, edycja, kopiowanie i usuwanie planów i dni.
 
+- **Ustawienia** (dodane na prośbę właściciela 2026-11-22, etap 3): ekran „Ustawienia” (zębatka na ekranie Start). Domyślne wartości dla nowo dodanych ćwiczeń w planie: przerwa (2:00), serie (3), serie rozgrzewkowe (0), zakres powtórzeń (8–12); domyślny krok ciężaru (2,5 kg) i waga gryfu (20 kg, do kalkulatora talerzy). Zmiana ustawień nie zmienia ćwiczeń już zapisanych w planach; wartości przy konkretnym ćwiczeniu w planie mają pierwszeństwo.
+
 ### 3. Trening na żywo
 - Start z dnia planu albo pusty trening.
 - Przesuwanie między ćwiczeniami (kropki u góry), licznik czasu całego treningu.

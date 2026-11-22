@@ -1,8 +1,21 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Link } from 'react-router';
+import { Settings } from 'lucide-react';
 import { db } from '../data/db';
 import { formatReps, getLastPlanDayId, nextDay } from '../data/plans';
 import './StartPage.css';
+import './SettingsPage.css';
+
+function StartHeader() {
+  return (
+    <div className="start-header">
+      <h1>Start</h1>
+      <Link to="/ustawienia" className="start-settings" aria-label="Ustawienia">
+        <Settings size={22} aria-hidden="true" />
+      </Link>
+    </div>
+  );
+}
 
 const MAX_SHOWN = 6;
 
@@ -26,13 +39,13 @@ export default function StartPage() {
     return { plan, day, items, names: exercises.map((e) => e?.name ?? 'Nieznane ćwiczenie') };
   });
 
-  if (!data) return <article><h1>Start</h1></article>;
+  if (!data) return <article><StartHeader /></article>;
 
   const { plan } = data;
   if (!plan) {
     return (
       <article>
-        <h1>Start</h1>
+        <StartHeader />
         <section className="start-card">
           <p style={{ margin: 0 }}>Brak aktywnego planu</p>
           <Link to="/plany" className="start-btn inline">Utwórz plan</Link>
@@ -45,7 +58,7 @@ export default function StartPage() {
 
   return (
     <article>
-      <h1>Start</h1>
+      <StartHeader />
       <section className="start-card" aria-label="Następny trening">
         <p className="start-label">Aktywny plan</p>
         <Link to={`/plany/${plan.id}`} className="start-plan-link">{plan.name}</Link>
