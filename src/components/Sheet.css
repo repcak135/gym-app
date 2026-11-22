@@ -124,6 +124,39 @@
   color: #fff;
 }
 
+.confirm-sheet__btn--primary {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.name-sheet__label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.name-sheet__input {
+  min-height: 48px;
+  padding: 0 var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 1rem;
+  outline: none;
+}
+
+.name-sheet__input:focus { border-color: var(--accent); }
+
+.name-sheet__error {
+  color: var(--danger);
+  margin: 0 0 var(--space-3);
+  font-size: 0.9rem;
+}
+
 .confirm-sheet__btn--cancel {
   background: var(--surface);
   color: var(--text);

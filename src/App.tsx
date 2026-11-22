@@ -3,6 +3,8 @@ import { HashRouter, Routes, Route, useLocation } from 'react-router';
 import BottomNav from './components/BottomNav';
 import StartPage from './pages/StartPage';
 import PlansPage from './pages/PlansPage';
+import PlanDetailPage from './pages/PlanDetailPage';
+import PlanDayPage from './pages/PlanDayPage';
 import ExercisesPage from './pages/ExercisesPage';
 import ExerciseDetailPage from './pages/ExerciseDetailPage';
 import ExerciseFormPage from './pages/ExerciseFormPage';
@@ -26,6 +28,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<StartPage />} />
           <Route path="/plany" element={<PlansPage />} />
+          <Route path="/plany/:planId" element={<PlanDetailPage />} />
+          <Route path="/plany/:planId/dni/:dayId" element={<PlanDayPage />} />
           <Route path="/cwiczenia" element={<ExercisesPage />} />
           <Route path="/cwiczenia/nowe" element={<ExerciseFormPage />} />
           <Route path="/cwiczenia/:id/edytuj" element={<ExerciseFormPage />} />
