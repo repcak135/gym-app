@@ -101,6 +101,7 @@ Eksport właściciela (`gym-day.csv`, sprawdzony 2026-11-22): kolumny `Date, Wor
 - Prywatność: prawdziwy plik właściciela nie trafia do repo (repo może być publiczne); testy używają małej, zmyślonej próbki w tym samym formacie.
 
 ### Później (nie v1)
+- **Dopracowanie i animacje** (prośba właściciela 2026-11-22): przesunięcie planu / dnia / ćwiczenia w bok odsłania czerwony przycisk usuwania (z możliwością cofnięcia), płynne przejścia między ekranami i przy zaliczaniu serii. Osobny etap po etapie 7.
 - Waga ciała i pomiary (zakładka „Body” jak w obecnej aplikacji).
 - Serwer / synchronizacja / znajomi (sposób B).
 
