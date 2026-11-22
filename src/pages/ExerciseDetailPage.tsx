@@ -9,6 +9,9 @@ import {
   saveNote,
   deleteCustomExercise,
   imageUrl,
+  loadPolishInstructions,
+  pickInstructions,
+  type InstructionsPl,
 } from '../data/exercises';
 import {
   muscleLabel,
@@ -20,33 +23,78 @@ import '../components/Sheet.css';
 
 const DEBOUNCE_MS = 400;
 
+const FRAME_MS = 1600;
+const FRAME_LABELS = ['Zdjęcie 1', 'Zdjęcie 2'];
+
+// Both photos (two positions of the movement; upstream order is not always start→end) stacked in one 3:2 frame; they alternate
+// like an animation until the user picks one. Both load up front, so both get
+// cached for offline use.
 function PhotoStrip({ images }: { images: string[] }) {
-  const [errored, setErrored] = useState<Set<number>>(new Set());
+  const frames = images.slice(0, 2);
+  const [current, setCurrent] = useState(0);
+  const [playing, setPlaying] = useState(
+    () => frames.length > 1 && !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches,
+  );
+  const [loaded, setLoaded] = useState<boolean[]>(() => frames.map(() => false));
+  const [errored, setErrored] = useState<boolean[]>(() => frames.map(() => false));
+  const allLoaded = loaded.every(Boolean);
 
-  const markError = (i: number) =>
-    setErrored((prev) => new Set(prev).add(i));
+  useEffect(() => {
+    if (!playing || !allLoaded) return;
+    const timer = setInterval(() => setCurrent((c) => (c + 1) % frames.length), FRAME_MS);
+    return () => clearInterval(timer);
+  }, [playing, allLoaded, frames.length]);
 
-  if (images.length === 0) return null;
+  if (frames.length === 0) return null;
+
+  const mark = (setter: typeof setLoaded, i: number) =>
+    setter((prev) => prev.map((v, j) => (j === i ? true : v)));
 
   return (
-    <div className="detail-photos" aria-label="Zdjęcia ćwiczenia">
-      {images.map((img, i) =>
-        errored.has(i) ? (
-          <div key={i} className="detail-photo-placeholder" aria-hidden="true">
-            <Dumbbell size={48} />
-          </div>
-        ) : (
-          <img
-            key={i}
-            className="detail-photo"
-            src={imageUrl(img)}
-            alt=""
-            crossOrigin="anonymous"
-            loading="lazy"
-            decoding="async"
-            onError={() => markError(i)}
-          />
-        ),
+    <div className="detail-photos">
+      <div className={`detail-photo-frame${loaded[current] ? '' : ' detail-photo-frame--loading'}`}>
+        {frames.map((img, i) =>
+          errored[i] ? (
+            <div key={i} className="detail-photo detail-photo--placeholder" data-active={i === current} aria-hidden="true">
+              <Dumbbell size={48} />
+            </div>
+          ) : (
+            <img
+              key={i}
+              className="detail-photo"
+              data-active={i === current}
+              src={imageUrl(img)}
+              alt={i === current ? (FRAME_LABELS[i] ?? `Zdjęcie ${i + 1}`) : ''}
+              crossOrigin="anonymous"
+              decoding="async"
+              onLoad={() => mark(setLoaded, i)}
+              onError={() => { mark(setErrored, i); mark(setLoaded, i); }}
+            />
+          ),
+        )}
+      </div>
+      {frames.length > 1 && (
+        <div className="detail-photo-switch" role="group" aria-label="Zdjęcia ćwiczenia">
+          {frames.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              aria-pressed={!playing && i === current}
+              data-active={i === current}
+              onClick={() => { setPlaying(false); setCurrent(i); }}
+            >
+              {FRAME_LABELS[i] ?? i + 1}
+            </button>
+          ))}
+          <button
+            type="button"
+            aria-pressed={playing}
+            data-active={playing}
+            onClick={() => setPlaying((p) => !p)}
+          >
+            {playing ? 'Pauza' : 'Animuj'}
+          </button>
+        </div>
       )}
     </div>
   );
@@ -112,6 +160,13 @@ export default function ExerciseDetailPage() {
   const [saved, setSaved] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [deleteReason, setDeleteReason] = useState<string | null>(null);
+  const [instructionsPl, setInstructionsPl] = useState<InstructionsPl | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    void loadPolishInstructions().then((pl) => { if (!cancelled) setInstructionsPl(pl); });
+    return () => { cancelled = true; };
+  }, []);
 
   // Latest typed text and pending save, kept in refs so unmount can flush them.
   const latestText = useRef('');
@@ -194,6 +249,7 @@ export default function ExerciseDetailPage() {
   }
 
   const tips = getTips(exercise.id);
+  const instructions = pickInstructions(exercise, instructionsPl);
   const levelPl = exercise.level ? (LEVEL_PL[exercise.level] ?? exercise.level) : null;
 
   return (
@@ -258,11 +314,11 @@ export default function ExerciseDetailPage() {
       </section>
 
       {/* Instructions */}
-      {exercise.instructions.length > 0 && (
+      {instructions.length > 0 && (
         <section className="detail-section" aria-label="Instrukcja">
           <p className="detail-section-title">Instrukcja</p>
           <ol className="detail-instructions">
-            {exercise.instructions.map((step, i) => (
+            {instructions.map((step, i) => (
               <li key={i}>{step}</li>
             ))}
           </ol>

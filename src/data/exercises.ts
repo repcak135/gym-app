@@ -233,3 +233,20 @@ export async function deleteCustomExercise(
 
   return { ok: true };
 }
+
+export type InstructionsPl = Record<string, string[]>;
+
+let instructionsPl: Promise<InstructionsPl> | null = null;
+
+/** Polish translations of the database instructions (own lazy chunk, ~0.7 MB). */
+export function loadPolishInstructions(): Promise<InstructionsPl> {
+  instructionsPl ??= import('./instructions-pl.json').then((m) => m.default as InstructionsPl);
+  return instructionsPl;
+}
+
+/** Polish steps when a complete translation exists, otherwise the English ones; blank steps dropped. */
+export function pickInstructions(exercise: Pick<Exercise, 'id' | 'instructions'>, pl: InstructionsPl | null): string[] {
+  const translated = pl?.[exercise.id];
+  const steps = translated && translated.length === exercise.instructions.length ? translated : exercise.instructions;
+  return steps.filter((step) => step.trim() !== '');
+}

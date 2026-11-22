@@ -11,6 +11,7 @@ import {
   updateCustomExercise,
   deleteCustomExercise,
   type RawExercise,
+  pickInstructions,
 } from './exercises';
 import { getSettings } from './settings';
 import type { Workout, WorkoutSet, Plan } from './types';
@@ -353,5 +354,26 @@ describe('rady po polsku', () => {
       for (const tip of tipsData[key]) expect(tip.trim(), key).not.toBe('');
     }
     expect(getTips('Barbell_Squat').length).toBeGreaterThan(0);
+  });
+});
+
+describe('instrukcje po polsku', () => {
+  it('polska instrukcja zamiast angielskiej, angielska gdy brak lub niepełna', () => {
+    const ex = { id: 'Barbell_Squat', instructions: ['Step one.', 'Step two.'] };
+    expect(pickInstructions(ex, { Barbell_Squat: ['Krok pierwszy.', 'Krok drugi.'] })).toEqual(['Krok pierwszy.', 'Krok drugi.']);
+    expect(pickInstructions(ex, {})).toEqual(ex.instructions);
+    expect(pickInstructions(ex, { Barbell_Squat: ['Tylko jeden krok.'] })).toEqual(ex.instructions);
+    expect(pickInstructions(ex, null)).toEqual(ex.instructions);
+    expect(pickInstructions({ id: 'X', instructions: ['A.', '', 'B.'] }, { X: ['A pl.', '', 'B pl.'] })).toEqual(['A pl.', 'B pl.']);
+  });
+
+  it('tłumaczenie obejmuje całą bazę, z tą samą liczbą kroków', async () => {
+    const pl = (await import('./instructions-pl.json')).default as Record<string, string[]>;
+    const raw = (await import('./exercise-db.json')).default as RawExercise[];
+    const withSteps = raw.filter((e) => e.instructions.length > 0);
+    const missing = withSteps.filter((e) => pl[e.id]?.length !== e.instructions.length).map((e) => e.id);
+    expect(missing).toEqual([]);
+    // A Polish step may be blank only where the upstream English step is blank.
+    for (const e of withSteps) pl[e.id].forEach((step, i) => expect(step.trim() === '', e.id).toBe(e.instructions[i].trim() === ''));
   });
 });

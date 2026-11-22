@@ -75,6 +75,12 @@ test('karta ćwiczenia: zdjęcia, rady, mięśnie', async ({ page }) => {
 
   // "Czworogłowe ud" chip
   await expect(page.getByText('Czworogłowe ud')).toBeVisible();
+
+  // Both photos are switchable; instructions are in Polish
+  await page.getByRole('button', { name: 'Zdjęcie 2' }).click();
+  await expect(page.getByRole('img', { name: 'Zdjęcie 2' })).toBeVisible();
+  await expect(page.getByText(/To twoja pozycja wyjściowa/).first()).toBeVisible();
+  await expect(page.getByText(/This will be your starting position/)).toHaveCount(0);
 });
 
 test('notatka zapisuje się i przetrwa przeładowanie', async ({ page }) => {
