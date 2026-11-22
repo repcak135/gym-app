@@ -1,8 +1,12 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { Settings } from 'lucide-react';
 import { db } from '../data/db';
 import { formatReps, getLastPlanDayId, nextDay } from '../data/plans';
+import { getActiveWorkout, startWorkout } from '../data/workouts';
+import { useNow } from '../hooks/useNow';
+import { formatClock } from '../data/progression';
+import type { Workout } from '../data/types';
 import './StartPage.css';
 import './SettingsPage.css';
 
@@ -19,6 +23,30 @@ function StartHeader() {
 
 const MAX_SHOWN = 6;
 
+function ActiveWorkoutCard({ workout }: { workout: Workout }) {
+  const now = useNow(1000);
+  return (
+    <section className="start-card start-card--live" aria-label="Trwa trening">
+      <p className="start-label">Trwa trening · {formatClock((now - workout.startedAt) / 1000)}</p>
+      <p className="start-day">{workout.name}</p>
+      <Link to="/trening" className="start-btn">Wróć do treningu</Link>
+    </section>
+  );
+}
+
+function EmptyWorkoutButton() {
+  const navigate = useNavigate();
+  return (
+    <button
+      type="button"
+      className="start-btn start-btn--ghost"
+      onClick={() => void startWorkout({}).then(() => navigate('/trening'))}
+    >
+      Pusty trening
+    </button>
+  );
+}
+
 function exercisesLabel(n: number): string {
   if (n === 1) return '1 ćwiczenie';
   const last = n % 10;
@@ -28,7 +56,10 @@ function exercisesLabel(n: number): string {
 }
 
 export default function StartPage() {
+  const navigate = useNavigate();
   const data = useLiveQuery(async () => {
+    const active = await getActiveWorkout();
+    if (active) return { plan: undefined, active };
     const settings = await db.settings.get('app');
     const plan = settings?.activePlanId ? await db.plans.get(settings.activePlanId) : undefined;
     if (!plan) return { plan: undefined };
@@ -41,6 +72,15 @@ export default function StartPage() {
 
   if (!data) return <article><StartHeader /></article>;
 
+  if ('active' in data && data.active) {
+    return (
+      <article>
+        <StartHeader />
+        <ActiveWorkoutCard workout={data.active} />
+      </article>
+    );
+  }
+
   const { plan } = data;
   if (!plan) {
     return (
@@ -50,6 +90,7 @@ export default function StartPage() {
           <p style={{ margin: 0 }}>Brak aktywnego planu</p>
           <Link to="/plany" className="start-btn inline">Utwórz plan</Link>
         </section>
+        <EmptyWorkoutButton />
       </article>
     );
   }
@@ -67,8 +108,15 @@ export default function StartPage() {
             <p className="start-label">Następny dzień</p>
             <p className="start-day">{day.name}</p>
             <p className="start-count">{exercisesLabel(items.length)}</p>
-            <button type="button" className="start-btn" disabled>Rozpocznij trening</button>
-            <p className="start-hint">Trening na żywo pojawi się w następnej wersji.</p>
+            <button
+              type="button"
+              className="start-btn"
+              disabled={items.length === 0}
+              onClick={() => void startWorkout({ planId: plan.id, dayId: day.id }).then(() => navigate('/trening'))}
+            >
+              Rozpocznij trening
+            </button>
+            {items.length === 0 && <p className="start-hint">Ten dzień nie ma jeszcze ćwiczeń.</p>}
             {items.length > 0 && (
               <ul className="start-list">
                 {items.slice(0, MAX_SHOWN).map((it, i) => (
@@ -90,6 +138,7 @@ export default function StartPage() {
           </>
         )}
       </section>
+      <EmptyWorkoutButton />
     </article>
   );
 }

@@ -178,7 +178,7 @@ test('Start pokazuje aktywny plan i następny dzień', async ({ page }) => {
   await expect(section).toContainText('Plan startowy');
   await expect(section).toContainText('Day 1 Upper');
   await expect(section).toContainText('2 ćwiczenia');
-  await expect(section.getByRole('button', { name: 'Rozpocznij trening' })).toBeDisabled();
+  await expect(section.getByRole('button', { name: 'Rozpocznij trening' })).toBeEnabled();
 });
 
 test('kopiuj i usuń plan, aktywny się czyści', async ({ page }) => {

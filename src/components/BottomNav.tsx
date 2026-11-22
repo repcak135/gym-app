@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router';
+import { NavLink, useLocation } from 'react-router';
 import { Home, CalendarDays, Dumbbell, History, ChartLine } from 'lucide-react';
 import './BottomNav.css';
 
@@ -11,6 +11,9 @@ const links = [
 ];
 
 export default function BottomNav() {
+  const { pathname } = useLocation();
+  // The live workout and its summary are full-screen.
+  if (pathname.startsWith('/trening')) return null;
   return (
     <nav className="bottom-nav" aria-label="Główne menu">
       {links.map(({ to, label, Icon, end }) => (

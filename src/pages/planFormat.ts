@@ -14,3 +14,9 @@ export function exercisesLabel(n: number): string {
   if (mod10 >= 2 && mod10 <= 4 && !(mod100 >= 12 && mod100 <= 14)) return `${n} ćwiczenia`;
   return `${n} ćwiczeń`;
 }
+
+/** Timestamp → DD.MM.YYYY (local time). */
+export function formatDay(ts: number): string {
+  const d = new Date(ts);
+  return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
+}

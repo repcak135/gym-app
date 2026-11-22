@@ -17,9 +17,22 @@ interface ExercisePickerProps {
   /** Called with the selected ids in tap order (may be empty). */
   onDone: (exerciseIds: string[]) => void | Promise<void>;
   onClose: () => void;
+  /** Dialog title (default "Dodaj ćwiczenia"). */
+  title?: string;
+  /** Label shown on exercises that are already there (default "W dniu"). */
+  existingLabel?: string;
+  /** Single choice: a tap picks the exercise and closes the picker. */
+  single?: boolean;
 }
 
-export default function ExercisePicker({ existingIds, onDone, onClose }: ExercisePickerProps) {
+export default function ExercisePicker({
+  existingIds,
+  onDone,
+  onClose,
+  title = 'Dodaj ćwiczenia',
+  existingLabel = 'W dniu',
+  single = false,
+}: ExercisePickerProps) {
   const all = useLiveQuery(() => db.exercises.toArray(), []);
   const [query, setQuery] = useState('');
   const [limit, setLimit] = useState(PAGE_SIZE);
@@ -31,8 +44,13 @@ export default function ExercisePicker({ existingIds, onDone, onClose }: Exercis
     [all, query],
   );
 
-  const toggle = (id: string) =>
+  const toggle = (id: string) => {
+    if (single) {
+      void Promise.resolve(onDone([id])).then(onClose);
+      return;
+    }
     setSelected((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
+  };
 
   const done = async () => {
     if (selected.length > 0) await onDone(selected);
@@ -43,7 +61,7 @@ export default function ExercisePicker({ existingIds, onDone, onClose }: Exercis
     <div
       className="picker"
       role="dialog"
-      aria-label="Dodaj ćwiczenia"
+      aria-label={title}
       aria-modal="true"
       onKeyDown={(e) => { if (e.key === 'Escape') onClose(); }}
     >
@@ -51,7 +69,7 @@ export default function ExercisePicker({ existingIds, onDone, onClose }: Exercis
         <button type="button" className="picker__close" aria-label="Zamknij" onClick={onClose}>
           <X size={24} aria-hidden="true" />
         </button>
-        <h2 className="picker__title">Dodaj ćwiczenia</h2>
+        <h2 className="picker__title">{title}</h2>
       </div>
 
       <div className="picker__search">
@@ -79,7 +97,7 @@ export default function ExercisePicker({ existingIds, onDone, onClose }: Exercis
               type="button"
               className={`exercise-row picker__row${isSelected ? ' picker__row--selected' : ''}`}
               aria-label={ex.name}
-              aria-pressed={inDay ? undefined : isSelected}
+              aria-pressed={inDay || single ? undefined : isSelected}
               disabled={inDay}
               onClick={() => toggle(ex.id)}
             >
@@ -92,7 +110,7 @@ export default function ExercisePicker({ existingIds, onDone, onClose }: Exercis
                 <span className="exercise-row__meta">{meta}</span>
               </span>
               {inDay ? (
-                <span className="picker__in-day">W dniu</span>
+                <span className="picker__in-day">{existingLabel}</span>
               ) : (
                 <span className={`picker__check${isSelected ? ' picker__check--on' : ''}`} aria-hidden="true">
                   {isSelected && <Check size={18} strokeWidth={3} />}
@@ -108,11 +126,11 @@ export default function ExercisePicker({ existingIds, onDone, onClose }: Exercis
         )}
       </div>
 
-      <div className="picker__footer">
+      {!single && <div className="picker__footer">
         <button type="button" className="plan-btn plan-btn--primary plan-btn--block" onClick={() => void done()}>
           {selected.length > 0 ? `Gotowe (${selected.length})` : 'Gotowe'}
         </button>
-      </div>
+      </div>}
     </div>
   );
 }
