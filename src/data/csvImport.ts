@@ -186,25 +186,35 @@ export const PRESELECT_MIN = 0.75;
 /** From this score a fuzzy match counts as "dopasowane automatycznie". */
 export const AUTO_MIN = 0.85;
 
+/** Score given to an exercise's `similar` names (pre-selected) and `maybe` names (only proposed). */
+export const SIMILAR_SCORE = 0.8;
+export const MAYBE_SCORE = 0.7;
+
+const key = (s: string) => s.trim().replace(/\s+/g, ' ').toLowerCase();
+
 export function matchExercises(
   names: string[],
-  exercises: Pick<Exercise, 'id' | 'name'>[],
+  exercises: Pick<Exercise, 'id' | 'name' | 'aka' | 'similar' | 'maybe'>[],
   aliases: ExerciseAlias[],
 ): NameMatch[] {
   const ids = new Set(exercises.map((e) => e.id));
-  const aliasMap = new Map(aliases.filter((a) => ids.has(a.exerciseId)).map((a) => [a.sourceName.toLowerCase(), a.exerciseId]));
+  const aliasMap = new Map(aliases.filter((a) => ids.has(a.exerciseId)).map((a) => [key(a.sourceName), a.exerciseId]));
   const byName = new Map<string, string>();
+  const hinted = new Map<string, { id: string; score: number }>();
   for (const e of exercises) {
-    const k = e.name.trim().toLowerCase();
-    if (!byName.has(k)) byName.set(k, e.id);
+    for (const n of [e.name, ...(e.aka ?? [])]) if (!byName.has(key(n))) byName.set(key(n), e.id);
+    for (const [list, score] of [[e.similar, SIMILAR_SCORE], [e.maybe, MAYBE_SCORE]] as const) {
+      for (const n of list ?? []) if (!hinted.has(key(n))) hinted.set(key(n), { id: e.id, score });
+    }
   }
   const tokens = exercises.map((e) => ({ e, t: normalizeName(e.name) }));
   return names.map((sourceName) => {
-    const key = sourceName.trim().toLowerCase();
-    const alias = aliasMap.get(key);
+    const k = key(sourceName);
+    const alias = aliasMap.get(k);
     if (alias) return { sourceName, exerciseId: alias, score: 1, how: 'alias' };
-    const exact = byName.get(key);
+    const exact = byName.get(k);
     if (exact) return { sourceName, exerciseId: exact, score: 1, how: 'exact' };
+    const hint = hinted.get(k);
     const src = normalizeName(sourceName);
     let best: { id: string; score: number; len: number } | null = null;
     for (const { e, t } of tokens) {
@@ -216,6 +226,9 @@ export function matchExercises(
       ) {
         best = { id: e.id, score, len: e.name.length };
       }
+    }
+    if (hint && (!best || best.score < AUTO_MIN)) {
+      return { sourceName, exerciseId: hint.id, score: hint.score, how: 'fuzzy' };
     }
     if (best && best.score >= SUGGEST_MIN) {
       return { sourceName, exerciseId: best.id, score: Math.round(best.score * 100) / 100, how: 'fuzzy' };

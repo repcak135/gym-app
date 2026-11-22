@@ -377,3 +377,70 @@ describe('instrukcje po polsku', () => {
     for (const e of withSteps) pl[e.id].forEach((step, i) => expect(step.trim() === '', e.id).toBe(e.instructions[i].trim() === ''));
   });
 });
+
+describe('dodatkowe ćwiczenia (wersja 2 bazy)', () => {
+  it('istniejący użytkownik z wersją 1 dostaje nowe ćwiczenia; notatki, własne, historia i krok ciężaru zostają', async () => {
+    const { db } = await import('./db');
+    const { updateSettings } = await import('./settings');
+    const { EXTRA_EXERCISES, EXERCISE_DB_VERSION } = await import('./exercises');
+    await db.exercises.put({ ...fromDbForTest('Butterfly'), weightStep: 5 });
+    await db.exercises.put({ id: 'custom-1', name: 'Wiosło Krzywe', primaryMuscles: [], secondaryMuscles: [], equipment: null, category: 'strength', instructions: [], images: [], custom: true });
+    await db.notes.put({ exerciseId: 'Butterfly', text: 'siedzenie 4', updatedAt: 1 });
+    await db.sets.put({ id: 's1', workoutId: 'w1', exerciseId: 'Butterfly', exerciseOrder: 0, setOrder: 0, weight: 40, reps: 10, warmup: false, completedAt: 1 });
+    await updateSettings({ exerciseDbVersion: 1 });
+
+    await seedExercises();
+
+    expect(EXERCISE_DB_VERSION).toBe(2);
+    expect((await db.settings.get('app'))?.exerciseDbVersion).toBe(2);
+    const fly = (await db.exercises.get('Butterfly'))!;
+    expect(fly.weightStep).toBe(5);
+    expect(fly.aka).toContain('Pec Deck');
+    expect(await db.exercises.get('custom-1')).toBeDefined();
+    expect((await db.notes.get('Butterfly'))?.text).toBe('siedzenie 4');
+    expect(await db.sets.count()).toBe(1);
+    const lying = await db.exercises.get('x-lying-chest-press-machine');
+    expect(lying).toMatchObject({ name: 'Lying Chest Press Machine', custom: false, equipment: 'machine', images: [] });
+    expect(await db.exercises.count()).toBe(876 + EXTRA_EXERCISES.length + 1);
+  });
+
+  it('dodatkowe ćwiczenia: unikalne id x-, nazwy nie dublują bazy, mięśnie ze słownika bazy, polskie kroki i rady', async () => {
+    const { EXTRA_EXERCISES } = await import('./exercises');
+    const raw = (await import('./exercise-db.json')).default as { name: string; primaryMuscles: string[]; secondaryMuscles: string[]; equipment: string | null }[];
+    const muscles = new Set(raw.flatMap((e) => [...e.primaryMuscles, ...e.secondaryMuscles]));
+    const equipment = new Set(raw.map((e) => e.equipment));
+    const names = new Set(raw.map((e) => e.name.toLowerCase()));
+    expect(new Set(EXTRA_EXERCISES.map((e) => e.id)).size).toBe(EXTRA_EXERCISES.length);
+    for (const e of EXTRA_EXERCISES) {
+      expect(e.id).toMatch(/^x-[a-z0-9-]+$/);
+      expect(names.has(e.name.toLowerCase()), e.name).toBe(false);
+      expect(e.primaryMuscles.length, e.name).toBeGreaterThan(0);
+      for (const m of [...e.primaryMuscles, ...e.secondaryMuscles]) expect(muscles.has(m), `${e.name}: ${m}`).toBe(true);
+      expect(equipment.has(e.equipment), e.name).toBe(true);
+      expect(e.instructions.length, e.name).toBeGreaterThanOrEqual(3);
+      expect(e.tips.length, e.name).toBeGreaterThanOrEqual(2);
+      expect(getTips(e.id)).toEqual(e.tips);
+    }
+  });
+
+  it('inne nazwy wskazują istniejące ćwiczenia i nie powtarzają się', async () => {
+    const aka = (await import('./exercise-aka.json')).default as Record<string, { aka?: string[]; similar?: string[]; maybe?: string[] }>;
+    const { EXTRA_EXERCISES } = await import('./exercises');
+    const raw = (await import('./exercise-db.json')).default as { name: string }[];
+    const all = new Set([...raw, ...EXTRA_EXERCISES].map((e) => e.name));
+    const seen = new Set<string>();
+    for (const [name, v] of Object.entries(aka)) {
+      expect(all.has(name), name).toBe(true);
+      for (const n of [...(v.aka ?? []), ...(v.similar ?? []), ...(v.maybe ?? [])]) {
+        const k = n.toLowerCase();
+        expect(seen.has(k), n).toBe(false);
+        expect(all.has(n), `${n} is already an exercise name`).toBe(false);
+        seen.add(k);
+      }
+    }
+  });
+});
+
+function fromDbForTest(name: string) {
+  return { id: name, name, primaryMuscles: ['chest'], secondaryMuscles: [], equipment: 'machine', category: 'strength', instructions: [], images: [], custom: false };
+}

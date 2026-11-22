@@ -1,0 +1,386 @@
+{
+ "Wide-Grip Lat Pulldown": {
+  "aka": [
+   "Wide Grip Lat Pull Down",
+   "Lat Pulldown",
+   "Lat Pull Down"
+  ]
+ },
+ "Cable Rope Overhead Triceps Extension": {
+  "aka": [
+   "Overhead Cable Triceps Extension"
+  ]
+ },
+ "Romanian Deadlift": {
+  "aka": [
+   "Barbell Romanian Deadlift",
+   "RDL"
+  ]
+ },
+ "Hack Squat": {
+  "aka": [
+   "Hack Squat Machine"
+  ]
+ },
+ "Incline Dumbbell Press": {
+  "aka": [
+   "Incline Dumbbell Bench Press"
+  ]
+ },
+ "Butterfly": {
+  "aka": [
+   "Butterfly Machine (Pec Deck)",
+   "Pec Deck",
+   "Pec Deck Machine",
+   "Chest Fly Machine",
+   "Machine Fly"
+  ]
+ },
+ "Triceps Pushdown": {
+  "aka": [
+   "Cable Triceps Pushdown",
+   "Tricep Pushdown"
+  ]
+ },
+ "Standing Calf Raises": {
+  "aka": [
+   "Standing Calf Raise Machine"
+  ]
+ },
+ "Hammer Curls": {
+  "aka": [
+   "Dumbbell Hammer Curls",
+   "Dumbbell Hammer Curl"
+  ]
+ },
+ "Machine Preacher Curls": {
+  "aka": [
+   "Preacher Curl Machine"
+  ]
+ },
+ "Cable Rear Delt Fly": {
+  "aka": [
+   "Standing Cable Reverse Fly",
+   "Cable Reverse Fly"
+  ]
+ },
+ "Dip Machine": {
+  "aka": [
+   "Seated Triceps Dip Machine",
+   "Seated Dip Machine",
+   "Triceps Dip Machine"
+  ]
+ },
+ "Barbell Bench Press - Medium Grip": {
+  "aka": [
+   "Barbell Bench Press",
+   "Bench Press"
+  ]
+ },
+ "Bent Over Two-Dumbbell Row": {
+  "aka": [
+   "Bent Over Dumbbell Row"
+  ]
+ },
+ "Standing Biceps Cable Curl": {
+  "aka": [
+   "Cable Bicep Curl",
+   "Cable Curl"
+  ]
+ },
+ "Machine Shoulder (Military) Press": {
+  "aka": [
+   "Seated Shoulder Press Machine",
+   "Shoulder Press Machine"
+  ]
+ },
+ "Reverse Machine Flyes": {
+  "aka": [
+   "Reverse Fly Machine",
+   "Rear Delt Machine",
+   "Reverse Pec Deck"
+  ]
+ },
+ "Barbell Incline Bench Press - Medium Grip": {
+  "aka": [
+   "Incline Barbell Bench Press",
+   "Incline Bench Press"
+  ]
+ },
+ "Incline Dumbbell Curl": {
+  "aka": [
+   "Incline Dumbbell Bicep Curls",
+   "Incline Dumbbell Curls"
+  ]
+ },
+ "EZ-Bar Curl": {
+  "aka": [
+   "EZ Bar Curl"
+  ]
+ },
+ "Side Lateral Raise": {
+  "aka": [
+   "Lateral Dumbbell Raises",
+   "Dumbbell Lateral Raise",
+   "Lateral Raise"
+  ],
+  "maybe": [
+   "Tokarski lateral raises"
+  ]
+ },
+ "Machine Bench Press": {
+  "aka": [
+   "Chest Press Machine",
+   "Seated Chest Press Machine"
+  ]
+ },
+ "V-Bar Pulldown": {
+  "aka": [
+   "V Bar Pulldown"
+  ]
+ },
+ "Preacher Hammer Dumbbell Curl": {
+  "aka": [
+   "Dumbbell Hammer Preacher Curls"
+  ]
+ },
+ "Lying Dumbbell Tricep Extension": {
+  "aka": [
+   "Lying Dumbbell Triceps Extension (Skull Crusher)"
+  ]
+ },
+ "Dumbbell Shrug": {
+  "aka": [
+   "Dumbbell Shrugs"
+  ]
+ },
+ "Straight-Arm Pulldown": {
+  "aka": [
+   "Straight Arm Cable Lat Pulldown"
+  ]
+ },
+ "Cable Wrist Curl": {
+  "aka": [
+   "Palms-Up Cable Wrist Curl"
+  ]
+ },
+ "Standing Dumbbell Upright Row": {
+  "aka": [
+   "Dumbbell Upright Row"
+  ]
+ },
+ "Pullups": {
+  "aka": [
+   "Pull Ups",
+   "Pull-Ups",
+   "Pull Up"
+  ]
+ },
+ "Hyperextensions (Back Extensions)": {
+  "aka": [
+   "Hyperextensions",
+   "Back Extension",
+   "45 Degree Back Extension"
+  ]
+ },
+ "Upright Barbell Row": {
+  "aka": [
+   "Barbell Upright Rows",
+   "Barbell Upright Row"
+  ]
+ },
+ "Standing Military Press": {
+  "aka": [
+   "Standing Barbell Military Press",
+   "Overhead Press"
+  ]
+ },
+ "Standing One-Arm Cable Curl": {
+  "aka": [
+   "One Arm Cable Bicep Curl"
+  ]
+ },
+ "Dumbbell One-Arm Triceps Extension": {
+  "aka": [
+   "Seated One Arm Triceps Extension With Dumbbell"
+  ]
+ },
+ "Chin-Up": {
+  "aka": [
+   "Chin Ups"
+  ]
+ },
+ "Leverage Decline Chest Press": {
+  "aka": [
+   "Decline Chest Press Machine"
+  ]
+ },
+ "Leverage Incline Chest Press": {
+  "aka": [
+   "Incline Chest Press Machine"
+  ]
+ },
+ "Lying T-Bar Row": {
+  "aka": [
+   "Chest Supported T-Bar Row"
+  ]
+ },
+ "Close-Grip Front Lat Pulldown": {
+  "aka": [
+   "Close Grip Lat Pulldown"
+  ]
+ },
+ "Incline Inner Biceps Curl": {
+  "aka": [
+   "Incline Inner Dumbbell Bicep Curls"
+  ]
+ },
+ "Standing Low-Pulley One-Arm Triceps Extension": {
+  "aka": [
+   "One Arm Low Pulley Cable Triceps Extension"
+  ]
+ },
+ "Barbell Deadlift": {
+  "aka": [
+   "Barbell Deadlifts",
+   "Deadlift"
+  ]
+ },
+ "Preacher Curl": {
+  "aka": [
+   "Barbell Preacher Curl"
+  ]
+ },
+ "Smith Machine Overhead Shoulder Press": {
+  "aka": [
+   "Smith Machine Seated Shoulder Press",
+   "Smith Machine Shoulder Press"
+  ]
+ },
+ "Close-Grip Barbell Bench Press": {
+  "aka": [
+   "Close Grip Barbell Bench Press"
+  ]
+ },
+ "Thigh Abductor": {
+  "aka": [
+   "Hip Abduction Machine"
+  ]
+ },
+ "Thigh Adductor": {
+  "aka": [
+   "Hip Adduction Machine"
+  ]
+ },
+ "One-Legged Cable Kickback": {
+  "aka": [
+   "Cable Glute Kickback"
+  ]
+ },
+ "Lying Triceps Press": {
+  "aka": [
+   "Skull Crusher",
+   "EZ Bar Skull Crusher"
+  ]
+ },
+ "Dumbbell Incline Row": {
+  "aka": [
+   "Chest Supported Dumbbell Row"
+  ]
+ },
+ "Calf Press On The Leg Press Machine": {
+  "aka": [
+   "Leg Press Calf Raise"
+  ]
+ },
+ "Lying Leg Curls": {
+  "aka": [
+   "Lying Leg Curl"
+  ]
+ },
+ "Seated Cable Rows": {
+  "aka": [
+   "Seated Cable Row"
+  ]
+ },
+ "External Rotation with Cable": {
+  "aka": [
+   "Cable External Rotation"
+  ],
+  "maybe": [
+   "Rotatory"
+  ]
+ },
+ "One Arm Lat Pulldown": {
+  "aka": [
+   "Single Arm Lat Pulldown"
+  ],
+  "similar": [
+   "Lat pulldown klęcząc jedną ręką"
+  ]
+ },
+ "Bayesian Cable Curl": {
+  "aka": [
+   "Bayesian Curl"
+  ],
+  "similar": [
+   "Bayesian one arm"
+  ]
+ },
+ "Reverse EZ Bar Curl": {
+  "aka": [
+   "Reverse EZ Bar Bicep Curl"
+  ]
+ },
+ "Assisted Pull-Up Machine": {
+  "aka": [
+   "Assisted Pull Ups",
+   "Assisted Pull-Ups",
+   "Assisted Pull Up"
+  ]
+ },
+ "Assisted Chin-Up Machine": {
+  "aka": [
+   "Assisted Chin Ups",
+   "Assisted Chin-Ups"
+  ]
+ },
+ "Hammer Preacher Curl Machine": {
+  "aka": [
+   "Hammer preacher machine"
+  ]
+ },
+ "Dumbbell Deadlift": {
+  "aka": [
+   "Dumbbell Deadlifts"
+  ]
+ },
+ "One Arm Cable Lateral Raise": {
+  "aka": [
+   "Single Arm Cable Lateral Raise",
+   "Cable Lateral Raise"
+  ]
+ },
+ "Lying Chest Press Machine": {},
+ "Seated Row Machine": {
+  "aka": [
+   "Machine Row"
+  ]
+ },
+ "Captain's Chair Knee Raise": {
+  "aka": [
+   "Captains Chair Leg Raise",
+   "Vertical Knee Raise"
+  ]
+ },
+ "Lat Pulldown Machine": {
+  "aka": [
+   "Iso-Lateral Lat Pulldown"
+  ]
+ },
+ "Seated Bent-Over Rear Delt Raise": {
+  "aka": [
+   "Seated Bent Over Rear Delt Raise"
+  ]
+ }
+}

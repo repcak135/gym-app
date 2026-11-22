@@ -88,3 +88,18 @@ describe('matchExercises', () => {
     expect(matchScore('Leg Press', 'Ferrari')).toBe(0);
   });
 });
+
+describe('matching with other names', () => {
+  const list = [
+    { id: 'fly', name: 'Butterfly', aka: ['Butterfly Machine (Pec Deck)'] },
+    { id: 'lat', name: 'One Arm Lat Pulldown', similar: ['Lat pulldown klęcząc jedną ręką'] },
+    { id: 'side', name: 'Side Lateral Raise', maybe: ['Tokarski lateral raises'] },
+    { id: 'mach', name: 'Machine Lateral Raise' },
+  ];
+  it('aka = exact; similar = 0.8 (pre-selected); maybe = 0.7 even when a weak fuzzy match scores higher', () => {
+    const m = matchExercises(['butterfly machine (pec deck)', 'Lat pulldown klęcząc jedną ręką ', 'Tokarski lateral raises'], list, []);
+    expect(m[0]).toMatchObject({ how: 'exact', exerciseId: 'fly' });
+    expect(m[1]).toMatchObject({ how: 'fuzzy', exerciseId: 'lat', score: 0.8 });
+    expect(m[2]).toMatchObject({ how: 'fuzzy', exerciseId: 'side', score: 0.7 });
+  });
+});

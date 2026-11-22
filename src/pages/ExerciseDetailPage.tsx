@@ -19,6 +19,7 @@ import {
   LEVEL_PL,
 } from '../data/exerciseLabels';
 import RecordsSection from '../components/RecordsSection';
+import EquipmentIcon from '../components/EquipmentIcon';
 import './ExerciseDetailPage.css';
 import '../components/Sheet.css';
 
@@ -97,6 +98,15 @@ function PhotoStrip({ images }: { images: string[] }) {
           </button>
         </div>
       )}
+    </div>
+  );
+}
+
+function NoPhoto({ equipment }: { equipment: string | null }) {
+  return (
+    <div className="detail-nophoto">
+      <EquipmentIcon equipment={equipment} size={44} />
+      <span>Brak zdjęcia — opis ruchu niżej</span>
     </div>
   );
 }
@@ -271,6 +281,7 @@ export default function ExerciseDetailPage() {
       {!exercise.custom && exercise.images.length > 0 && (
         <PhotoStrip images={exercise.images} />
       )}
+      {!exercise.custom && exercise.images.length === 0 && <NoPhoto equipment={exercise.equipment} />}
 
       {/* Chips: muscles + equipment + level */}
       <div className="detail-chips">

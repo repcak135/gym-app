@@ -13,22 +13,17 @@ test('import CSV: dopasowanie, import, historia, rekordy, bez duplikatów przy p
   await expect(page.getByRole('status')).toContainText('3 treningi do dodania (12 serii)');
   await expect(page.getByRole('status')).toContainText('Pominięte błędne wiersze: 1');
 
-  // a name without a good suggestion defaults to a new custom exercise
+  // other names of built-in exercises match exactly
+  await expect(page.getByText(/pasuj[ąe] dokładnie do bazy/)).toBeVisible();
+
+  // a name without a good suggestion defaults to a new custom exercise; change it through the picker
   const wioslo = page.getByRole('listitem', { name: 'Wiosło Krzywe' });
   await expect(wioslo).toContainText('Nowe własne ćwiczenie');
-
-  // change a match through the exercise picker
-  const push = page.getByRole('listitem', { name: 'Cable Triceps Pushdown' });
-  await expect(push).toContainText('→ Triceps Pushdown');
-  await push.getByRole('button', { name: 'Zmień' }).click();
+  await wioslo.getByRole('button', { name: 'Zmień' }).click();
   const picker = page.getByRole('dialog', { name: 'Wybierz ćwiczenie' });
-  await picker.getByRole('searchbox', { name: 'Szukaj ćwiczenia' }).fill('rope attachment');
-  await picker.getByRole('button', { name: 'Triceps Pushdown - Rope Attachment', exact: true }).click({ timeout: 15_000 });
-  await expect(push).toContainText('Triceps Pushdown - Rope Attachment');
-
-  // automatic matches are collapsed but visible on demand
-  await page.getByRole('button', { name: /Dopasowane automatycznie/ }).click();
-  await expect(page.getByRole('listitem', { name: 'Wide Grip Lat Pull Down' })).toContainText('Wide-Grip Lat Pulldown');
+  await picker.getByRole('searchbox', { name: 'Szukaj ćwiczenia' }).fill('bent over barbell row');
+  await picker.getByRole('button', { name: 'Bent Over Barbell Row', exact: true }).click({ timeout: 15_000 });
+  await expect(wioslo).toContainText('→ Bent Over Barbell Row');
 
   await page.getByRole('button', { name: 'Importuj 3 treningi' }).click();
   await expect(page.getByRole('status')).toContainText('Zaimportowano 3 treningi (12 serii)');

@@ -13,6 +13,7 @@ import {
 } from '../data/exerciseLabels';
 import ExerciseThumb from '../components/ExerciseThumb';
 import FilterSheet from '../components/FilterSheet';
+import { exercisesLabel } from './planFormat';
 import './ExercisesPage.css';
 
 const PAGE_SIZE = 60;
@@ -172,7 +173,7 @@ export default function ExercisesPage() {
 
       {/* Result list */}
       <section aria-label="Lista ćwiczeń">
-        <p className="exercises-count">{filtered.length} ćwiczeń</p>
+        <p className="exercises-count">{exercisesLabel(filtered.length)}</p>
         <div className="exercise-list">
           {visible.map((ex) => {
             const metaParts = [

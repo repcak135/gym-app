@@ -13,6 +13,12 @@ export interface Exercise {
   custom: boolean;
   weightStep?: number;
   barWeight?: number;
+  /** Other names of the same exercise (old apps, gyms); the import matches them exactly. */
+  aka?: string[];
+  /** Names of a near-identical exercise: proposed and pre-selected on the import matching screen. */
+  similar?: string[];
+  /** Names that might mean this exercise: proposed but not pre-selected. */
+  maybe?: string[];
 }
 
 export interface ExerciseNote {

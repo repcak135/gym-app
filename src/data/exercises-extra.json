@@ -1,0 +1,1413 @@
+[
+ {
+  "id": "x-lying-chest-press-machine",
+  "name": "Lying Chest Press Machine",
+  "force": "push",
+  "level": "beginner",
+  "mechanic": "compound",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "chest"
+  ],
+  "secondaryMuscles": [
+   "triceps",
+   "shoulders"
+  ],
+  "instructions": [
+   "Połóż się na leżance maszyny i ustaw siedzenie lub oparcie tak, by uchwyty były na wysokości środka klatki piersiowej.",
+   "Chwyć uchwyty, ściągnij łopatki i dociśnij je do oparcia; stopy oprzyj stabilnie na podłożu.",
+   "Na wydechu wypchnij uchwyty przed siebie do prawie pełnego wyprostu łokci.",
+   "Powoli wróć do pozycji wyjściowej, aż poczujesz rozciągnięcie w klatce, na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Nie odrywaj pleców i pośladków od oparcia, nawet przy ciężkich seriach.",
+   "Łokcie prowadź lekko poniżej linii barków, nie rozkładaj ich szeroko na boki.",
+   "Nie blokuj łokci agresywnie na górze; zostaw w nich minimalny luz.",
+   "Opuszczaj ciężar 2–3 sekundy i nie pozwól, by stos ciężarków opadał z hukiem.",
+   "Barki trzymaj z dala od uszu, nie wysuwaj ich do przodu."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-seated-row-machine",
+  "name": "Seated Row Machine",
+  "force": "pull",
+  "level": "beginner",
+  "mechanic": "compound",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "middle back"
+  ],
+  "secondaryMuscles": [
+   "lats",
+   "biceps",
+   "shoulders"
+  ],
+  "instructions": [
+   "Usiądź przy maszynie i ustaw wysokość siedzenia tak, by uchwyty były na wysokości dolnej części klatki.",
+   "Oprzyj klatkę piersiową o pad, chwyć uchwyty i wyprostuj ramiona.",
+   "Na wydechu pociągnij uchwyty do tułowia, prowadząc łokcie wzdłuż ciała i ściągając łopatki.",
+   "Zatrzymaj ruch na sekundę, po czym powoli wyprostuj ramiona na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Zaczynaj ruch od ściągnięcia łopatek, a nie od zginania łokci.",
+   "Nie odchylaj tułowia do tyłu i nie bujaj się; klatka cały czas przy padzie.",
+   "Barki trzymaj nisko, nie unoś ich do uszu.",
+   "W dolnej fazie pozwól łopatkom lekko się rozsunąć, by uzyskać pełny zakres ruchu.",
+   "Wybierz ciężar, przy którym czujesz plecy, a nie same ramiona."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-bayesian-cable-curl",
+  "name": "Bayesian Cable Curl",
+  "force": "pull",
+  "level": "intermediate",
+  "mechanic": "isolation",
+  "equipment": "cable",
+  "primaryMuscles": [
+   "biceps"
+  ],
+  "secondaryMuscles": [
+   "forearms"
+  ],
+  "instructions": [
+   "Zamocuj pojedynczy uchwyt na dolnym bloczku wyciągu, chwyć go jedną ręką i stań tyłem do wyciągu, w lekkim wykroku dla stabilności.",
+   "Chwyć uchwyt tak, by ramię znajdowało się za ciałem, a łokieć był lekko odsunięty do tyłu; linka napięta.",
+   "Na wydechu zegnij łokieć, unosząc dłoń do barku, bez przesuwania łokcia do przodu.",
+   "Zatrzymaj ruch na chwilę w szczycie i powoli prostuj ramię, wracając do rozciągnięcia bicepsa na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Łokieć ma pozostać za linią tułowia; to pozycja z wyprostem w barku daje mocne rozciągnięcie bicepsa.",
+   "Nie bujaj tułowiem i nie pomagaj sobie biodrami.",
+   "Opuszczaj uchwyt wolno, 2–3 sekundy, i w dole poczuj rozciągnięcie.",
+   "Zacznij od lekkiego ciężaru; ten wariant bardzo mocno obciąża biceps.",
+   "Nadgarstek trzymaj prosto, bez zginania."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-incline-dumbbell-y-raise",
+  "name": "Incline Dumbbell Y Raise",
+  "force": "pull",
+  "level": "intermediate",
+  "mechanic": "isolation",
+  "equipment": "dumbbell",
+  "primaryMuscles": [
+   "shoulders"
+  ],
+  "secondaryMuscles": [
+   "traps",
+   "middle back"
+  ],
+  "instructions": [
+   "Ustaw ławkę skośną na ok. 30–45° i połóż się na niej klatką piersiową w dół, stopy oprzyj o podłoże.",
+   "Chwyć lekkie hantle i pozwól rękom zwisać pionowo w dół, dłonie skierowane do siebie lub kciuki do góry.",
+   "Na wydechu unieś ramiona w górę i na zewnątrz, tworząc literę Y, aż będą w jednej linii z tułowiem.",
+   "Zatrzymaj ruch na chwilę i powoli opuść hantle do pozycji wyjściowej na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Używaj naprawdę lekkich ciężarów; to ćwiczenie dla dolnych włókien czworobocznych i tylnych aktonów barków.",
+   "Łokcie prawie wyprostowane, ruch inicjuj łopatkami, nie szarpnięciem ramion.",
+   "Nie unoś barków do uszu i nie odrywaj klatki od ławki.",
+   "Kciuki skierowane do góry pomagają utrzymać prawidłowe ustawienie barku.",
+   "Szyję trzymaj w neutralnej pozycji, patrz w dół lub lekko do przodu."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-one-arm-cable-lateral-raise",
+  "name": "One Arm Cable Lateral Raise",
+  "force": "push",
+  "level": "beginner",
+  "mechanic": "isolation",
+  "equipment": "cable",
+  "primaryMuscles": [
+   "shoulders"
+  ],
+  "secondaryMuscles": [
+   "traps"
+  ],
+  "instructions": [
+   "Ustaw dolny bloczek wyciągu na wysokości kostki i stań bokiem do niego, uchwyt chwyć dłonią od strony wyciągu, przed ciałem.",
+   "Stań stabilnie, możesz oprzeć wolną rękę o słupek wyciągu; łokieć lekko zgięty.",
+   "Na wydechu unieś rękę bokiem do wysokości barku, prowadząc łokieć lekko ponad dłonią.",
+   "Zatrzymaj ruch na chwilę i powoli opuść rękę wzdłuż ciała na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Ruch prowadź łokciem, nie nadgarstkiem; dłoń nie powinna być wyżej niż łokieć.",
+   "Nie unoś ramienia powyżej linii barku, bo zaczynają pracować górne czworoboczne.",
+   "Nie bujaj tułowiem; jeśli musisz, zmniejsz ciężar.",
+   "Linka przechodząca przed ciałem daje stałe napięcie także w dolnej fazie ruchu.",
+   "Opuszczaj uchwyt wolno, nie pozwól, by ciężarki uderzały o stos."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-dumbbell-bulgarian-split-squat",
+  "name": "Dumbbell Bulgarian Split Squat",
+  "force": "push",
+  "level": "intermediate",
+  "mechanic": "compound",
+  "equipment": "dumbbell",
+  "primaryMuscles": [
+   "quadriceps"
+  ],
+  "secondaryMuscles": [
+   "glutes",
+   "hamstrings",
+   "adductors"
+  ],
+  "instructions": [
+   "Stań tyłem do ławki w odległości ok. jednego dużego kroku, w obu dłoniach trzymaj hantle wzdłuż ciała.",
+   "Połóż czubek stopy tylnej nogi na ławce, przednią stopę ustaw na tyle daleko, by kolano nie wychodziło znacząco przed palce.",
+   "Na wdechu opuść biodra pionowo w dół, aż udo przedniej nogi będzie równoległe do podłogi.",
+   "Na wydechu wypchnij się przednią piętą do pozycji wyjściowej.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Tułów lekko pochylony do przodu mocniej angażuje pośladki, pionowy bardziej czworogłowe.",
+   "Kolano przedniej nogi prowadź zgodnie z linią palców, nie pozwól mu zapadać się do środka.",
+   "Większość ciężaru ma spoczywać na przedniej nodze; tylna jedynie pomaga w równowadze.",
+   "Zacznij od lżejszych hantli; ćwiczenie jest wymagające pod względem równowagi.",
+   "Wykonaj wszystkie powtórzenia jedną nogą, potem zmień."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-dumbbell-romanian-deadlift",
+  "name": "Dumbbell Romanian Deadlift",
+  "force": "pull",
+  "level": "beginner",
+  "mechanic": "compound",
+  "equipment": "dumbbell",
+  "primaryMuscles": [
+   "hamstrings"
+  ],
+  "secondaryMuscles": [
+   "glutes",
+   "lower back",
+   "forearms"
+  ],
+  "instructions": [
+   "Stań w lekkim rozkroku, stopy na szerokość bioder, w dłoniach trzymaj hantle przed udami.",
+   "Lekko ugnij kolana, ściągnij łopatki i napnij brzuch.",
+   "Na wdechu odepchnij biodra do tyłu i opuszczaj hantle wzdłuż nóg, utrzymując proste plecy.",
+   "Zatrzymaj ruch, gdy poczujesz mocne rozciągnięcie tylnej części ud, zwykle tuż poniżej kolan.",
+   "Na wydechu mocno wypchnij biodra do przodu i wróć do pozycji stojącej.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "To ruch w biodrach, nie przysiad; kolana prawie nie zmieniają kąta.",
+   "Hantle trzymaj blisko nóg, prowadząc je niemal po udach.",
+   "Plecy cały czas proste, nie zaokrąglaj dolnego odcinka.",
+   "Nie schodź niżej niż pozwala Ci zachować proste plecy.",
+   "Na górze zaciśnij pośladki, nie przeprostowuj lędźwi."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-dumbbell-deadlift",
+  "name": "Dumbbell Deadlift",
+  "force": "pull",
+  "level": "beginner",
+  "mechanic": "compound",
+  "equipment": "dumbbell",
+  "primaryMuscles": [
+   "quadriceps"
+  ],
+  "secondaryMuscles": [
+   "glutes",
+   "hamstrings",
+   "lower back",
+   "forearms"
+  ],
+  "instructions": [
+   "Ustaw dwa hantle na podłodze po bokach stóp, stopy na szerokość bioder.",
+   "Cofnij biodra i ugnij kolana, chwyć hantle neutralnym chwytem, plecy proste, klatka uniesiona.",
+   "Na wydechu wyprostuj biodra i kolana jednocześnie, odpychając się stopami od podłogi.",
+   "Stań prosto, ściągnij łopatki, po czym kontrolowanie odłóż hantle na podłogę.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Hantle utrzymuj blisko ciała, po bokach nóg.",
+   "Plecy proste przez cały ruch; nie zaokrąglaj dolnego odcinka.",
+   "Nie szarp ciężaru z podłogi; najpierw napnij całe ciało.",
+   "Na górze nie odchylaj się do tyłu, wystarczy pełny wyprost bioder.",
+   "Patrz przed siebie lub lekko w dół, szyja w przedłużeniu kręgosłupa."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-reverse-ez-bar-curl",
+  "name": "Reverse EZ Bar Curl",
+  "force": "pull",
+  "level": "beginner",
+  "mechanic": "isolation",
+  "equipment": "e-z curl bar",
+  "primaryMuscles": [
+   "forearms"
+  ],
+  "secondaryMuscles": [
+   "biceps"
+  ],
+  "instructions": [
+   "Stań prosto, stopy na szerokość bioder, i chwyć sztangę łamaną nachwytem, dłonie na szerokości barków lub nieco węziej.",
+   "Ramiona opuść wzdłuż ciała, łokcie przy tułowiu.",
+   "Na wydechu zegnij łokcie, unosząc sztangę do wysokości barków.",
+   "Zatrzymaj ruch na chwilę i powoli opuść sztangę do pozycji wyjściowej na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Łokcie trzymaj przy tułowiu i nie przesuwaj ich do przodu.",
+   "Nadgarstki trzymaj prosto, nie zginaj ich do tyłu.",
+   "Nie bujaj tułowiem; ciężar dobierz tak, by ruch był kontrolowany.",
+   "Ćwiczenie mocno angażuje przedramiona i ramienno-promieniowy, więc zacznij od lżejszego ciężaru.",
+   "Opuszczaj sztangę wolno, 2–3 sekundy."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-assisted-pull-up-machine",
+  "name": "Assisted Pull-Up Machine",
+  "force": "pull",
+  "level": "beginner",
+  "mechanic": "compound",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "lats"
+  ],
+  "secondaryMuscles": [
+   "biceps",
+   "middle back",
+   "shoulders"
+  ],
+  "instructions": [
+   "Ustaw ciężar przeciwwagi (im większy ciężar, tym łatwiejsze ćwiczenie) i wejdź na platformę lub klęknij na pad kolanami.",
+   "Chwyć drążki nachwytem szerzej niż barki, ramiona wyprostowane.",
+   "Na wydechu pociągnij klatkę piersiową do drążka, prowadząc łokcie w dół i do boków.",
+   "Zatrzymaj ruch na sekundę, po czym powoli opuść się do pełnego wyprostu ramion na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Zacznij ruch od ściągnięcia łopatek w dół, potem zginaj łokcie.",
+   "Nie wspomagaj się bujaniem ani odbiciem się od pada.",
+   "Opuszczaj się wolno i do pełnego wyprostu, nie skracaj zakresu.",
+   "Stopniowo zmniejszaj ciężar przeciwwagi, aż dojdziesz do podciągnięć bez asysty.",
+   "Barki trzymaj z dala od uszu, klatka lekko wypchnięta do przodu."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-assisted-chin-up-machine",
+  "name": "Assisted Chin-Up Machine",
+  "force": "pull",
+  "level": "beginner",
+  "mechanic": "compound",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "lats"
+  ],
+  "secondaryMuscles": [
+   "biceps",
+   "middle back"
+  ],
+  "instructions": [
+   "Ustaw ciężar przeciwwagi (im większy ciężar, tym łatwiejsze ćwiczenie) i wejdź na platformę lub klęknij na pad kolanami.",
+   "Chwyć drążki podchwytem na szerokość barków, ramiona wyprostowane.",
+   "Na wydechu pociągnij się w górę, aż broda znajdzie się nad drążkami, łokcie prowadź w dół i do przodu.",
+   "Zatrzymaj ruch na chwilę, po czym powoli opuść się do pełnego wyprostu ramion na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Podchwyt mocniej angażuje biceps; nie wspomagaj się szarpaniem.",
+   "Łopatki ściągaj w dół przed zgięciem łokci.",
+   "Opuszczaj się kontrolowanie, 2–3 sekundy.",
+   "Nie wyciągaj szyi do przodu, by sięgnąć drążka; unieś klatkę.",
+   "Stopniowo zmniejszaj asystę, aby przejść na zwykłe podciągnięcia."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-hammer-preacher-curl-machine",
+  "name": "Hammer Preacher Curl Machine",
+  "force": "pull",
+  "level": "beginner",
+  "mechanic": "isolation",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "biceps"
+  ],
+  "secondaryMuscles": [
+   "forearms"
+  ],
+  "instructions": [
+   "Usiądź przy maszynie i ustaw siedzenie tak, by ramiona leżały swobodnie na padzie, a pachy dotykały jego górnej krawędzi.",
+   "Chwyć uchwyty chwytem młotkowym (dłonie zwrócone do siebie).",
+   "Na wydechu zegnij łokcie, unosząc uchwyty w stronę barków.",
+   "Zatrzymaj ruch na chwilę, po czym powoli opuść uchwyty do prawie pełnego wyprostu ramion na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Ramiona cały czas dociśnięte do pada; nie odrywaj łokci.",
+   "Nie prostuj łokci agresywnie na dole, żeby nie przeciążać ścięgna bicepsa.",
+   "Nie pomagaj sobie odchylaniem tułowia.",
+   "Chwyt młotkowy mocniej angażuje mięsień ramienny i przedramiona.",
+   "Tempo opuszczania 2–3 sekundy."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-hip-thrust-machine",
+  "name": "Hip Thrust Machine",
+  "force": "push",
+  "level": "beginner",
+  "mechanic": "compound",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "glutes"
+  ],
+  "secondaryMuscles": [
+   "hamstrings"
+  ],
+  "instructions": [
+   "Usiądź na podłodze lub siedzeniu maszyny, górną część pleców oprzyj o pad, a pas lub pad ustaw na biodrach.",
+   "Stopy ustaw na platformie na szerokość bioder, kolana zgięte pod kątem ok. 90° w górnej pozycji.",
+   "Na wydechu wypchnij biodra w górę, mocno napinając pośladki, aż tułów i uda będą w jednej linii.",
+   "Zatrzymaj ruch na sekundę i powoli opuść biodra na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Broda lekko przyciągnięta do klatki, wzrok przed siebie, nie odchylaj głowy.",
+   "Nie przeprostowuj lędźwi na górze; ruch kończ zaciśnięciem pośladków.",
+   "Kolana trzymaj nad stopami, nie pozwól im zapadać się do środka.",
+   "Nacisk na pięty i środek stopy daje lepszą pracę pośladków.",
+   "Zatrzymanie na górze zwiększa napięcie mięśni."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-glute-kickback-machine",
+  "name": "Glute Kickback Machine",
+  "force": "push",
+  "level": "beginner",
+  "mechanic": "isolation",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "glutes"
+  ],
+  "secondaryMuscles": [
+   "hamstrings"
+  ],
+  "instructions": [
+   "Ustaw maszynę tak, by pad znajdował się za Twoją piętą lub na podeszwie stopy, a klatkę oprzyj o pad.",
+   "Chwyć uchwyty dla stabilności, a nogą roboczą zegnij lekko w kolanie.",
+   "Na wydechu wypchnij nogę do tyłu, napinając pośladek.",
+   "Zatrzymaj ruch na chwilę, po czym powoli wróć do pozycji wyjściowej na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Nie odchylaj się i nie wyginaj lędźwi, ruch ma wychodzić z biodra.",
+   "Biodra trzymaj nieruchomo, nie obracaj miednicy.",
+   "Zatrzymaj ciężar w górze i mocno ściśnij pośladek.",
+   "Wykonaj wszystkie powtórzenia jedną nogą, potem zmień.",
+   "Kontroluj powrót, nie pozwól ciężarkom opaść swobodnie."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-cable-hip-abduction",
+  "name": "Cable Hip Abduction",
+  "force": "push",
+  "level": "beginner",
+  "mechanic": "isolation",
+  "equipment": "cable",
+  "primaryMuscles": [
+   "abductors"
+  ],
+  "secondaryMuscles": [
+   "glutes"
+  ],
+  "instructions": [
+   "Przypnij mankiet do kostki nogi zewnętrznej i ustaw dolny bloczek wyciągu; stań bokiem do wyciągu.",
+   "Chwyć się stabilnego uchwytu lub słupka, plecy proste, tułów wyprostowany.",
+   "Na wydechu odwiedź nogę w bok, utrzymując kolano wyprostowane lub lekko zgięte.",
+   "Zatrzymaj ruch na chwilę, po czym powoli wróć do pozycji wyjściowej na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Nie odchylaj tułowia w bok; ruch ma pochodzić z biodra.",
+   "Palce stopy skieruj do przodu lub lekko w dół, nie na zewnątrz.",
+   "Zakres ruchu ogranicz do wysokości, przy której biodra są stabilne.",
+   "Wolny powrót, 2–3 sekundy, pomaga w pracy mięśni.",
+   "Stopę podporową ustaw stabilnie, kolano lekko zgięte."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-pendulum-squat-machine",
+  "name": "Pendulum Squat Machine",
+  "force": "push",
+  "level": "intermediate",
+  "mechanic": "compound",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "quadriceps"
+  ],
+  "secondaryMuscles": [
+   "glutes",
+   "adductors"
+  ],
+  "instructions": [
+   "Ustaw ciężar i stań na platformie, plecy oprzyj o pad, a barki pod poduszkami.",
+   "Stopy na platformie na szerokość barków lub nieco szerzej, palce lekko na zewnątrz.",
+   "Zwolnij blokadę i na wdechu opuść się w przysiadzie, pozwalając wahadłowemu ramieniu poprowadzić ruch.",
+   "Zejdź tak głęboko, jak pozwala mobilność, bez odrywania pleców od pada.",
+   "Na wydechu wypchnij się stopami do pozycji wyjściowej.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Wahadło prowadzi ruch po łuku, dlatego mocno obciąża czworogłowe; nie spiesz się.",
+   "Kolana prowadź zgodnie z linią palców, nie pozwól im zapadać się do środka.",
+   "Pięty cały czas dociśnięte do platformy.",
+   "Nie blokuj kolan agresywnie na górze.",
+   "Zacznij od lekkiego obciążenia, żeby poznać tor ruchu."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-belt-squat-machine",
+  "name": "Belt Squat Machine",
+  "force": "push",
+  "level": "intermediate",
+  "mechanic": "compound",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "quadriceps"
+  ],
+  "secondaryMuscles": [
+   "glutes",
+   "adductors",
+   "hamstrings"
+  ],
+  "instructions": [
+   "Załóż pas biodrowy i podepnij go do łańcucha maszyny; stań na platformach, stopy na szerokość barków.",
+   "Wyprostuj się, aby obciążenie zawisło na biodrach, plecy proste i klatka uniesiona.",
+   "Na wdechu zegnij kolana i biodra, opuszczając się w przysiadzie.",
+   "Zejdź tak głęboko, jak pozwala mobilność, zachowując prosty tułów.",
+   "Na wydechu wypchnij się stopami do pozycji wyjściowej.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Obciążenie zawieszone na biodrach nie obciąża kręgosłupa, co jest zaletą dla pleców.",
+   "Utrzymuj pionowy tułów; nie pochylaj się do przodu.",
+   "Kolana prowadź zgodnie z linią palców.",
+   "Pięty dociśnięte, ciężar na całej stopie.",
+   "Możesz trzymać się uchwytów dla równowagi, ale nie odciążaj się rękami."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-v-squat-machine",
+  "name": "V-Squat Machine",
+  "force": "push",
+  "level": "beginner",
+  "mechanic": "compound",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "quadriceps"
+  ],
+  "secondaryMuscles": [
+   "glutes",
+   "hamstrings"
+  ],
+  "instructions": [
+   "Stań na platformie maszyny, ramiona pod poduszkami, plecy oparte o pad.",
+   "Stopy ustaw na platformie na szerokość barków, palce lekko na zewnątrz.",
+   "Zwolnij blokadę i na wdechu opuść się powoli w przysiadzie, kierując biodra w dół po skośnym torze.",
+   "Zejdź tak głęboko, jak pozwala mobilność, zachowując plecy przy padzie.",
+   "Na wydechu wypchnij się stopami do pozycji wyjściowej.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Ustawienie stóp niżej i bliżej mocniej angażuje czworogłowe, wyżej i szerzej pośladki.",
+   "Plecy i biodra przez cały czas dociśnięte do pada.",
+   "Kolana w jednej linii z palcami, nie pozwól im zapadać się do środka.",
+   "Nie blokuj kolan na górze.",
+   "Opuszczaj się kontrolowanie, 2–3 sekundy."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-reverse-hack-squat",
+  "name": "Reverse Hack Squat",
+  "force": "push",
+  "level": "intermediate",
+  "mechanic": "compound",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "glutes"
+  ],
+  "secondaryMuscles": [
+   "quadriceps",
+   "hamstrings"
+  ],
+  "instructions": [
+   "Ustaw ciężar i stań na platformie twarzą do pada, klatką piersiową oprzyj o pad.",
+   "Stopy ustaw na platformie na szerokość bioder lub nieco szerzej, trochę wyżej niż w zwykłym hack-przysiadzie.",
+   "Chwyć uchwyty, na wdechu opuść się, zginając kolana i cofając biodra.",
+   "Na wydechu wypchnij się piętami do pozycji wyjściowej, napinając pośladki.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "W tym wariancie praca jest bardziej w biodrach, więc mocniej angażuje pośladki i tylną taśmę.",
+   "Klatka cały czas oparta o pad, tułów stabilny.",
+   "Wypychaj się piętami, nie palcami.",
+   "Kolana prowadź zgodnie z linią palców.",
+   "Ruch kontroluj, bez odbijania się w dolnej pozycji."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-seated-leg-press-machine",
+  "name": "Seated Leg Press Machine",
+  "force": "push",
+  "level": "beginner",
+  "mechanic": "compound",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "quadriceps"
+  ],
+  "secondaryMuscles": [
+   "glutes",
+   "hamstrings"
+  ],
+  "instructions": [
+   "Usiądź na maszynie, oprzyj plecy i miednicę o oparcie, a stopy ustaw na platformie na szerokość barków.",
+   "Zwolnij blokadę i chwyć uchwyty po bokach siedzenia.",
+   "Na wdechu zegnij kolana i powoli opuść platformę, aż kolana będą zgięte pod kątem ok. 90°.",
+   "Na wydechu wypchnij platformę, prostując nogi, ale nie blokuj kolan.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Miednica cały czas przy oparciu, nie pozwól jej podwijać się w dolnej fazie.",
+   "Kolana prowadź zgodnie z linią palców, nie zapadaj ich do środka.",
+   "Nie blokuj kolan na górze; zostaw w nich lekki luz.",
+   "Wyższe ustawienie stóp mocniej angażuje pośladki i tył ud, niższe czworogłowe.",
+   "Nie odciążaj się rękami, trzymaj uchwyty lekko."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-single-leg-press",
+  "name": "Single Leg Press",
+  "force": "push",
+  "level": "intermediate",
+  "mechanic": "compound",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "quadriceps"
+  ],
+  "secondaryMuscles": [
+   "glutes",
+   "hamstrings"
+  ],
+  "instructions": [
+   "Usiądź na suwnicy, oprzyj plecy i miednicę o oparcie, i postaw jedną stopę na środku platformy.",
+   "Drugą nogę ułóż swobodnie z boku, nie opieraj jej o platformę.",
+   "Zwolnij blokadę i na wdechu powoli opuść platformę, zginając kolano do ok. 90°.",
+   "Na wydechu wypchnij platformę, prostując nogę bez blokowania kolana.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Wybierz ciężar mniejszy niż przy wyciskaniu obiema nogami.",
+   "Kolano prowadź zgodnie z linią palców; nie zapadaj go do środka.",
+   "Miednica nie unosi się i nie obraca; plecy przy oparciu.",
+   "Wykonaj wszystkie powtórzenia jedną nogą, potem zmień; porównaj siłę obu nóg.",
+   "Nie blokuj kolana na górze."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-smith-machine-hip-thrust",
+  "name": "Smith Machine Hip Thrust",
+  "force": "push",
+  "level": "intermediate",
+  "mechanic": "compound",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "glutes"
+  ],
+  "secondaryMuscles": [
+   "hamstrings"
+  ],
+  "instructions": [
+   "Usiądź na podłodze przed ławką, oprzyj górną część pleców o ławkę i wsuń sztangę Smitha nad biodra, z pokrowcem lub padem na biodrach.",
+   "Stopy ustaw na szerokość bioder, kolana zgięte pod kątem ok. 90° w górnej pozycji.",
+   "Zwolnij blokadę sztangi i na wydechu wypchnij biodra w górę, napinając pośladki.",
+   "Zatrzymaj ruch na sekundę, po czym powoli opuść biodra na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Pad na biodrach daje komfort; użyj go zawsze przy większych ciężarach.",
+   "Broda lekko przyciągnięta, wzrok przed siebie.",
+   "Nie przeprostowuj lędźwi; kończ ruch zaciśnięciem pośladków.",
+   "Kolana nad stopami, nie pozwól im się zapadać.",
+   "Sprawdź, czy ławka jest stabilna i stopy ustawione tak, by sztanga poruszała się pionowo."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-smith-machine-shrug",
+  "name": "Smith Machine Shrug",
+  "force": "pull",
+  "level": "beginner",
+  "mechanic": "isolation",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "traps"
+  ],
+  "secondaryMuscles": [
+   "forearms"
+  ],
+  "instructions": [
+   "Ustaw sztangę Smitha na wysokości ud i stań przed nią, stopy na szerokość bioder.",
+   "Chwyć sztangę nachwytem nieco szerzej niż barki i zwolnij blokadę.",
+   "Na wydechu unieś barki pionowo w górę, w stronę uszu.",
+   "Zatrzymaj ruch na sekundę, po czym powoli opuść barki na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Ruch jest tylko pionowy; nie obracaj barków do przodu ani do tyłu.",
+   "Ramiona proste, nie zginaj łokci i nie pomagaj sobie ramionami.",
+   "Głowa w neutralnej pozycji, nie wysuwaj szyi do przodu.",
+   "Zatrzymanie na górze zwiększa napięcie czworobocznych.",
+   "Użyj pasów do chwytu, jeśli ciężar przekracza siłę chwytu."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-smith-machine-reverse-lunge",
+  "name": "Smith Machine Reverse Lunge",
+  "force": "push",
+  "level": "intermediate",
+  "mechanic": "compound",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "quadriceps"
+  ],
+  "secondaryMuscles": [
+   "glutes",
+   "hamstrings"
+  ],
+  "instructions": [
+   "Ustaw sztangę Smitha na wysokości barków, podejdź pod nią i oprzyj ją na tylnej części barków, stopy tuż przed linią sztangi.",
+   "Zwolnij blokadę, wyprostuj się i napnij brzuch.",
+   "Na wdechu zrób duży krok w tył jedną nogą i opuść kolano tylnej nogi nad podłogę.",
+   "Na wydechu odepchnij się przednią nogą i wróć do pozycji wyjściowej.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Ciężar ma spoczywać głównie na przedniej nodze, nie odpychaj się mocno tylną.",
+   "Tułów prosty, klatka uniesiona.",
+   "Kolano przedniej nogi nad stopą, nie zapadaj go do środka.",
+   "Krok na tyle długi, by przednia goleń była prawie pionowo.",
+   "Przyda się lekki ciężar na początek; sztanga prowadzi ruch, ale równowaga nadal się liczy."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-smith-machine-romanian-deadlift",
+  "name": "Smith Machine Romanian Deadlift",
+  "force": "pull",
+  "level": "intermediate",
+  "mechanic": "compound",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "hamstrings"
+  ],
+  "secondaryMuscles": [
+   "glutes",
+   "lower back"
+  ],
+  "instructions": [
+   "Ustaw sztangę Smitha na wysokości bioder, stań blisko niej, stopy na szerokość bioder.",
+   "Chwyć sztangę nachwytem na szerokość barków i zwolnij blokadę.",
+   "Lekko ugnij kolana i na wdechu odepchnij biodra do tyłu, opuszczając sztangę wzdłuż nóg.",
+   "Zatrzymaj ruch, gdy poczujesz mocne rozciągnięcie tylnej części ud, plecy cały czas proste.",
+   "Na wydechu mocno wypchnij biodra do przodu i wróć do pozycji stojącej.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Ustaw stopy lekko przed sztangą, aby tor ruchu był prosty i pionowy.",
+   "Ruch w biodrach; kolana prawie nie zmieniają kąta.",
+   "Plecy proste, łopatki ściągnięte.",
+   "Nie zaokrąglaj dolnego odcinka kręgosłupa na dole.",
+   "Kończ ruch zaciśnięciem pośladków, bez przeprostu lędźwi."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-smith-machine-bulgarian-split-squat",
+  "name": "Smith Machine Bulgarian Split Squat",
+  "force": "push",
+  "level": "intermediate",
+  "mechanic": "compound",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "quadriceps"
+  ],
+  "secondaryMuscles": [
+   "glutes",
+   "hamstrings"
+  ],
+  "instructions": [
+   "Ustaw ławkę za sobą i sztangę Smitha na wysokości barków; oprzyj ją na tylnej części barków.",
+   "Połóż czubek stopy tylnej nogi na ławce, przednią stopę ustaw na tyle daleko, by kolano nie wychodziło znacząco przed palce.",
+   "Zwolnij blokadę i na wdechu opuść biodra pionowo w dół, aż udo przedniej nogi będzie równoległe do podłogi.",
+   "Na wydechu wypchnij się przednią piętą do pozycji wyjściowej.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Sztanga Smitha ułatwia równowagę, ale ustaw stopę tak, by tor ruchu był naturalny.",
+   "Ciężar głównie na przedniej nodze; tylna tylko pomaga.",
+   "Tułów prosty, napięty brzuch.",
+   "Kolano nad palcami, nie zapadaj go do środka.",
+   "Wykonaj wszystkie powtórzenia jedną nogą, potem zmień."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-smith-machine-seated-calf-raise",
+  "name": "Smith Machine Seated Calf Raise",
+  "force": "push",
+  "level": "beginner",
+  "mechanic": "isolation",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "calves"
+  ],
+  "secondaryMuscles": [],
+  "instructions": [
+   "Ustaw ławkę pod sztangą Smitha i usiądź na niej, stopy oprzyj przodem na podwyższeniu lub talerzu, kolana zgięte.",
+   "Połóż sztangę (z padem) na udach tuż nad kolanami i zwolnij blokadę.",
+   "Opuść pięty w dół, aby rozciągnąć łydki.",
+   "Na wydechu wypchnij się na palcach tak wysoko, jak się da.",
+   "Zatrzymaj ruch na sekundę i powoli opuść pięty na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Pełny zakres ruchu: głębokie rozciągnięcie na dole i maksymalne wspięcie na górze.",
+   "Nie odbijaj się w dolnej pozycji; ruch kontrolowany.",
+   "Zatrzymaj skurcz na górze na 1–2 sekundy.",
+   "Siedząc, mocniej pracuje płaszczkowaty, dlatego wysokie powtórzenia (12–20) są tu skuteczne.",
+   "Kolana trzymaj w jednej linii ze stopami."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-machine-lateral-raise",
+  "name": "Machine Lateral Raise",
+  "force": "push",
+  "level": "beginner",
+  "mechanic": "isolation",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "shoulders"
+  ],
+  "secondaryMuscles": [
+   "traps"
+  ],
+  "instructions": [
+   "Usiądź przy maszynie i ustaw siedzenie tak, by osie ruchu znajdowały się na wysokości barków.",
+   "Ułóż przedramiona lub łokcie na padach, plecy oprzyj o oparcie.",
+   "Na wydechu unieś ramiona bokiem do wysokości barków.",
+   "Zatrzymaj ruch na chwilę, po czym powoli opuść ramiona na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Ruch prowadź łokciami, nie dłońmi, aby mocniej pracował środkowy akton barków.",
+   "Barki trzymaj nisko, nie unoś ich do uszu.",
+   "Nie podnoś ramion powyżej linii barków.",
+   "Unikaj odchylania tułowia; jeśli musisz, zmniejsz ciężar.",
+   "Tempo opuszczania 2–3 sekundy; przy tym ćwiczeniu dobrze sprawdzają się wysokie powtórzenia."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-cable-y-raise",
+  "name": "Cable Y Raise",
+  "force": "pull",
+  "level": "intermediate",
+  "mechanic": "isolation",
+  "equipment": "cable",
+  "primaryMuscles": [
+   "shoulders"
+  ],
+  "secondaryMuscles": [
+   "traps",
+   "middle back"
+  ],
+  "instructions": [
+   "Ustaw dolne bloczki wyciągu, chwyć w każdą dłoń uchwyt (linki skrzyżowane lub proste) i stań lekko pochylony do przodu.",
+   "Ramiona opuść przed udami, łokcie lekko zgięte.",
+   "Na wydechu unieś ramiona w górę i na zewnątrz, tworząc literę Y.",
+   "Zatrzymaj ruch na chwilę i powoli opuść ręce do pozycji wyjściowej na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Używaj lekkiego ciężaru; ćwiczenie dotyczy małych mięśni stabilizujących łopatki.",
+   "Łopatki ściągaj w dół, nie unoś barków do uszu.",
+   "Kciuki skieruj do góry, ruch ma być płynny.",
+   "Nie bujaj tułowiem ani nie odchylaj się do tyłu.",
+   "Opuszczaj ręce wolno, utrzymując napięcie linki."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-cable-front-raise",
+  "name": "Cable Front Raise",
+  "force": "push",
+  "level": "beginner",
+  "mechanic": "isolation",
+  "equipment": "cable",
+  "primaryMuscles": [
+   "shoulders"
+  ],
+  "secondaryMuscles": [
+   "chest"
+  ],
+  "instructions": [
+   "Ustaw dolny bloczek wyciągu z uchwytem lub liną, stań tyłem do wyciągu i chwyć uchwyt, ramię wzdłuż ciała (lub między nogami).",
+   "Stań stabilnie, napnij brzuch, a łokieć lekko ugnij.",
+   "Na wydechu unieś ramię przed siebie do wysokości barku.",
+   "Zatrzymaj ruch na chwilę i powoli opuść ramię na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Nie przekraczaj wysokości barku, wyżej pracują czworoboczne.",
+   "Nie bujaj tułowiem i nie odchylaj się do tyłu.",
+   "Łokieć lekko zgięty i stały przez cały ruch.",
+   "Linka zapewnia stałe napięcie także na dole, więc nie rozluźniaj ruchu.",
+   "Opuszczaj ciężar wolno, 2–3 sekundy."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-cable-upright-row",
+  "name": "Cable Upright Row",
+  "force": "pull",
+  "level": "beginner",
+  "mechanic": "compound",
+  "equipment": "cable",
+  "primaryMuscles": [
+   "shoulders"
+  ],
+  "secondaryMuscles": [
+   "traps",
+   "biceps"
+  ],
+  "instructions": [
+   "Ustaw dolny bloczek wyciągu z krótką sztangą lub liną i stań blisko wyciągu, stopy na szerokość bioder.",
+   "Chwyć uchwyt nachwytem na szerokość barków lub nieco szerzej, ramiona wyprostowane.",
+   "Na wydechu pociągnij uchwyt pionowo w górę wzdłuż ciała, prowadząc łokcie wyżej niż dłonie.",
+   "Zatrzymaj ruch na wysokości klatki piersiowej, po czym powoli opuść uchwyt na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Nie unoś łokci powyżej linii barków, aby nie przeciążać ścięgien barku.",
+   "Szerszy chwyt jest łagodniejszy dla nadgarstków i barków.",
+   "Nie bujaj tułowiem, napnij brzuch.",
+   "Uchwyt prowadź blisko ciała.",
+   "Użyj lekkiego ciężaru; ćwiczenie łatwo przeciążyć."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-lat-pulldown-machine",
+  "name": "Lat Pulldown Machine",
+  "force": "pull",
+  "level": "beginner",
+  "mechanic": "compound",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "lats"
+  ],
+  "secondaryMuscles": [
+   "biceps",
+   "middle back"
+  ],
+  "instructions": [
+   "Usiądź przy maszynie i ustaw wałki tak, by mocno przytrzymywały uda; stopy płasko na podłodze.",
+   "Chwyć drążek nachwytem szerzej niż barki.",
+   "Odchyl tułów lekko do tyłu i na wydechu pociągnij drążek do górnej części klatki piersiowej, ściągając łopatki.",
+   "Zatrzymaj ruch na chwilę i powoli prostuj ramiona na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Ruch zaczynaj od ściągnięcia łopatek w dół, nie od zginania łokci.",
+   "Łokcie prowadź w dół i do boków, nie do tyłu.",
+   "Nie odchylaj się za bardzo i nie bujaj tułowiem.",
+   "Nie ciągnij drążka za kark.",
+   "Na górze pozwól ramionom wyprostować się całkowicie, by rozciągnąć najszerszy grzbietu."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-machine-pullover",
+  "name": "Machine Pullover",
+  "force": "pull",
+  "level": "intermediate",
+  "mechanic": "isolation",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "lats"
+  ],
+  "secondaryMuscles": [
+   "chest",
+   "triceps"
+  ],
+  "instructions": [
+   "Usiądź przy maszynie i ustaw siedzenie tak, by osie ruchu znajdowały się na wysokości barków.",
+   "Oprzyj łokcie na padach lub chwyć uchwyt, plecy oprzyj o oparcie.",
+   "Na wydechu pociągnij ramiona w dół, w stronę bioder, napinając plecy.",
+   "Zatrzymaj ruch na chwilę i powoli wróć do pozycji wyjściowej na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Ruch prowadź łokciami, nie nadgarstkami.",
+   "Nie odchylaj się i nie pomagaj sobie tułowiem.",
+   "Na górze poczuj rozciągnięcie w najszerszym grzbietu, ale nie przeciągaj barków.",
+   "Opuszczaj ciężar wolno, 2–3 sekundy.",
+   "Użyj lekkiego ciężaru, aby czuć plecy, a nie triceps."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-wide-grip-seated-cable-row",
+  "name": "Wide Grip Seated Cable Row",
+  "force": "pull",
+  "level": "beginner",
+  "mechanic": "compound",
+  "equipment": "cable",
+  "primaryMuscles": [
+   "middle back"
+  ],
+  "secondaryMuscles": [
+   "lats",
+   "shoulders",
+   "biceps"
+  ],
+  "instructions": [
+   "Usiądź przy wyciągu dolnym i stopy oprzyj o podpórki, kolana lekko zgięte.",
+   "Chwyć szeroki drążek nachwytem, ramiona wyprostowane, plecy proste.",
+   "Na wydechu pociągnij drążek do dolnej części klatki, prowadząc łokcie szeroko na boki.",
+   "Ściągnij łopatki, zatrzymaj ruch na sekundę i powoli prostuj ramiona na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Szeroki chwyt mocniej angażuje górną część pleców i tylne aktony barków.",
+   "Tułów pozostaje stabilny, bez bujania.",
+   "Nie unoś barków do uszu.",
+   "Łokcie prowadź na boki, pod kątem ok. 45–70° do tułowia.",
+   "Na dole pozwól łopatkom się rozsunąć dla pełnego zakresu ruchu."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-meadows-row",
+  "name": "Meadows Row",
+  "force": "pull",
+  "level": "intermediate",
+  "mechanic": "compound",
+  "equipment": "barbell",
+  "primaryMuscles": [
+   "lats"
+  ],
+  "secondaryMuscles": [
+   "middle back",
+   "biceps",
+   "forearms"
+  ],
+  "instructions": [
+   "Włóż koniec sztangi w uchwyt landmine lub narożnik, stań bokiem do sztangi w rozkroku (jedna noga z przodu).",
+   "Pochyl tułów, chwyć koniec sztangi nachwytem jedną ręką, drugą rękę oprzyj o udo lub kolano.",
+   "Na wydechu pociągnij sztangę do biodra, prowadząc łokieć do tyłu i w górę.",
+   "Zatrzymaj ruch na chwilę i powoli opuść sztangę na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Plecy proste, tułów prawie równolegle do podłogi lub lekko pod kątem.",
+   "Łokieć ciągnij do biodra, nie do barku.",
+   "Nie skręcaj tułowia i nie szarp ciężaru.",
+   "Na dole pozwól łopatce się rozsunąć, aby pełniej rozciągnąć najszerszy grzbietu.",
+   "Użyj paska lub magnezji przy większych ciężarach, aby nie tracić chwytu."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-single-arm-cable-overhead-triceps-extension",
+  "name": "Single-Arm Cable Overhead Triceps Extension",
+  "force": "push",
+  "level": "beginner",
+  "mechanic": "isolation",
+  "equipment": "cable",
+  "primaryMuscles": [
+   "triceps"
+  ],
+  "secondaryMuscles": [],
+  "instructions": [
+   "Ustaw bloczek wyciągu na dole, chwyć uchwyt jedną ręką i stań tyłem do wyciągu.",
+   "Unieś rękę nad głowę, łokieć blisko głowy, przedramię zgięte za głową.",
+   "Na wydechu wyprostuj łokieć, unosząc uchwyt nad głowę.",
+   "Zatrzymaj ruch na chwilę i powoli zegnij łokieć na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Łokieć trzymaj nieruchomo i blisko głowy.",
+   "Nie wyginaj dolnego odcinka pleców, napnij brzuch.",
+   "Całkowity wyprost łokcia na górze mocno napina triceps.",
+   "Opuszczaj uchwyt wolno, aby poczuć rozciągnięcie głowy długiej.",
+   "Wykonaj wszystkie powtórzenia jedną ręką, potem zmień."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-cable-cross-body-triceps-extension",
+  "name": "Cable Cross-Body Triceps Extension",
+  "force": "push",
+  "level": "intermediate",
+  "mechanic": "isolation",
+  "equipment": "cable",
+  "primaryMuscles": [
+   "triceps"
+  ],
+  "secondaryMuscles": [],
+  "instructions": [
+   "Ustaw bloczek wyciągu na wysokości ramienia, chwyć uchwyt dłonią przeciwną do wyciągu i stań bokiem.",
+   "Łokieć zegnij przed ciałem, a dłoń skieruj w stronę przeciwnego barku.",
+   "Na wydechu wyprostuj ramię, prowadząc dłoń w dół i na zewnątrz ciała.",
+   "Zatrzymaj ruch na chwilę i powoli wróć do pozycji wyjściowej na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Łokieć trzymaj nieruchomo i blisko tułowia.",
+   "Ruch odbywa się tylko w stawie łokciowym, bez bujania tułowiem.",
+   "Wyprost kończ mocnym napięciem tricepsu.",
+   "Opuszczaj uchwyt wolno.",
+   "Wykonaj wszystkie powtórzenia jedną ręką, potem zmień."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-cable-triceps-kickback",
+  "name": "Cable Triceps Kickback",
+  "force": "push",
+  "level": "beginner",
+  "mechanic": "isolation",
+  "equipment": "cable",
+  "primaryMuscles": [
+   "triceps"
+  ],
+  "secondaryMuscles": [],
+  "instructions": [
+   "Ustaw bloczek wyciągu na dole, chwyć uchwyt jedną ręką i pochyl tułów do przodu, drugą ręką oprzyj o ławkę lub wyciąg.",
+   "Przyciągnij łokieć do tułowia tak, by ramię było równoległe do podłogi.",
+   "Na wydechu wyprostuj łokieć, odciągając dłoń do tyłu.",
+   "Zatrzymaj ruch na chwilę i powoli zegnij łokieć na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Ramię nieruchome; ruch tylko w stawie łokciowym.",
+   "Plecy proste, nie zaokrąglaj ich i nie bujaj tułowiem.",
+   "Mocno ściśnij triceps na końcu wyprostu.",
+   "Użyj lekkiego ciężaru; kontrola jest ważniejsza niż ciężar.",
+   "Wykonaj wszystkie powtórzenia jedną ręką, potem zmień."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-cable-woodchopper",
+  "name": "Cable Woodchopper",
+  "force": "pull",
+  "level": "beginner",
+  "mechanic": "compound",
+  "equipment": "cable",
+  "primaryMuscles": [
+   "abdominals"
+  ],
+  "secondaryMuscles": [
+   "shoulders",
+   "glutes"
+  ],
+  "instructions": [
+   "Ustaw bloczek wyciągu wysoko, chwyć uchwyt obiema rękami i stań bokiem do wyciągu, stopy na szerokość barków.",
+   "Ramiona wyprostowane lub lekko zgięte, uchwyt nad barkiem po stronie wyciągu.",
+   "Na wydechu pociągnij uchwyt po skosie w dół, przez ciało, do przeciwległego biodra, obracając tułów.",
+   "Zatrzymaj ruch na chwilę i powoli wróć do pozycji wyjściowej na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Ruch wykonuje tułów (rotacja w klatce), nie ramiona.",
+   "Stopy stabilnie, biodra lekko się obracają razem z tułowiem.",
+   "Napnij brzuch, nie wyginaj dolnego odcinka pleców.",
+   "Ruch kontrolowany, bez szarpania.",
+   "Wykonaj wszystkie powtórzenia na jedną stronę, potem zmień."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-back-extension-machine",
+  "name": "Back Extension Machine",
+  "force": "pull",
+  "level": "beginner",
+  "mechanic": "isolation",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "lower back"
+  ],
+  "secondaryMuscles": [
+   "glutes",
+   "hamstrings"
+  ],
+  "instructions": [
+   "Ustaw pad tak, by opierał się na górnej części ud, nie na brzuchu; stopy oprzyj o platformę.",
+   "Skrzyżuj ręce na klatce piersiowej lub trzymaj je przy głowie.",
+   "Na wdechu pochyl się powoli w dół, zachowując proste plecy.",
+   "Na wydechu unieś tułów do pozycji, w której ciało tworzy linię prostą.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Nie przeprostowuj lędźwi na górze; ruch kończ w linii prostej.",
+   "Ruch w biodrach, a nie w dolnym odcinku pleców.",
+   "Szyja w przedłużeniu kręgosłupa, nie odchylaj głowy.",
+   "Zaciśnij pośladki na górze.",
+   "Dodaj obciążenie dopiero wtedy, gdy ruch jest w pełni kontrolowany."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-torso-rotation-machine",
+  "name": "Torso Rotation Machine",
+  "force": "pull",
+  "level": "beginner",
+  "mechanic": "isolation",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "abdominals"
+  ],
+  "secondaryMuscles": [],
+  "instructions": [
+   "Usiądź przy maszynie i ustaw siedzenie tak, by uda były zablokowane padami, a plecy oparte.",
+   "Chwyć uchwyty lub oprzyj ręce na padach, ustaw tułów w pozycji wyjściowej.",
+   "Na wydechu obróć tułów w jedną stronę, napinając mięśnie brzucha.",
+   "Zatrzymaj ruch na chwilę i powoli wróć do pozycji wyjściowej na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Ruch wykonuj tułowiem, nie rękami ani biodrami.",
+   "Nie przeciążaj kręgosłupa; użyj lekkiego do średniego ciężaru.",
+   "Ruch płynny i kontrolowany, bez szarpania.",
+   "Biodra pozostają nieruchome dzięki padom na udach.",
+   "Wykonaj równą liczbę powtórzeń na każdą stronę."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-captains-chair-knee-raise",
+  "name": "Captain's Chair Knee Raise",
+  "force": "pull",
+  "level": "beginner",
+  "mechanic": "isolation",
+  "equipment": "other",
+  "primaryMuscles": [
+   "abdominals"
+  ],
+  "secondaryMuscles": [],
+  "instructions": [
+   "Stań na stacji i oprzyj przedramiona na padach, plecy dociśnij do oparcia, ręce chwytają uchwyty.",
+   "Pozwól nogom swobodnie zwisać, napnij brzuch.",
+   "Na wydechu unieś kolana w stronę klatki piersiowej, podwijając miednicę.",
+   "Zatrzymaj ruch na chwilę i powoli opuść nogi na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Podwijaj miednicę na górze, to właśnie angażuje brzuch, nie same biodra.",
+   "Nie bujaj się i nie używaj rozpędu.",
+   "Plecy cały czas przy oparciu.",
+   "Opuszczaj nogi wolno, nie pozwól im opaść swobodnie.",
+   "Aby utrudnić ćwiczenie, prostuj nogi lub trzymaj hantel między stopami."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-assisted-dip-machine",
+  "name": "Assisted Dip Machine",
+  "force": "push",
+  "level": "beginner",
+  "mechanic": "compound",
+  "equipment": "machine",
+  "primaryMuscles": [
+   "triceps"
+  ],
+  "secondaryMuscles": [
+   "chest",
+   "shoulders"
+  ],
+  "instructions": [
+   "Ustaw ciężar przeciwwagi (im większy ciężar, tym łatwiejsze ćwiczenie) i uklęknij na padzie lub stań na platformie.",
+   "Chwyć uchwyty, ramiona wyprostowane, tułów lekko pochylony do przodu.",
+   "Na wdechu zegnij łokcie i opuść się, aż ramiona będą równolegle do podłogi.",
+   "Na wydechu wypchnij się w górę do wyprostu ramion.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Łokcie trzymaj blisko ciała, aby mocniej pracował triceps; pochylenie tułowia angażuje klatkę.",
+   "Nie schodź zbyt nisko, jeśli czujesz ból w barkach.",
+   "Barki trzymaj nisko, nie unoś ich do uszu.",
+   "Stopniowo zmniejszaj ciężar przeciwwagi, aby dojść do pompek na poręczach.",
+   "Ruch kontrolowany, bez odbijania się na dole."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-landmine-press",
+  "name": "Landmine Press",
+  "force": "push",
+  "level": "intermediate",
+  "mechanic": "compound",
+  "equipment": "barbell",
+  "primaryMuscles": [
+   "shoulders"
+  ],
+  "secondaryMuscles": [
+   "chest",
+   "triceps"
+  ],
+  "instructions": [
+   "Włóż koniec sztangi w uchwyt landmine lub narożnik i chwyć drugi koniec jedną ręką na wysokości barku.",
+   "Stań w lekkim rozkroku (lub w wykroku), napnij brzuch i pośladki.",
+   "Na wydechu wypchnij sztangę po skosie do przodu i w górę, prostując łokieć.",
+   "Zatrzymaj ruch na chwilę i powoli opuść sztangę do barku na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Tułów stabilny, nie odchylaj się i nie skręcaj.",
+   "Łokieć prowadź lekko do boku, nie rozkładaj go na wysokość barku.",
+   "Pozwól łopatce swobodnie się unosić na górze; to bezpieczne dla barku.",
+   "Wykonaj wszystkie powtórzenia jedną ręką, potem zmień.",
+   "Zacznij od lżejszego ciężaru, aby poczuć tor ruchu."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-dumbbell-hip-thrust",
+  "name": "Dumbbell Hip Thrust",
+  "force": "push",
+  "level": "beginner",
+  "mechanic": "compound",
+  "equipment": "dumbbell",
+  "primaryMuscles": [
+   "glutes"
+  ],
+  "secondaryMuscles": [
+   "hamstrings"
+  ],
+  "instructions": [
+   "Usiądź na podłodze przed ławką, oprzyj górną część pleców o ławkę, hantel połóż na biodrach i przytrzymaj obiema rękami.",
+   "Stopy ustaw na szerokość bioder, kolana zgięte pod kątem ok. 90° w górnej pozycji.",
+   "Na wydechu wypchnij biodra w górę, napinając pośladki.",
+   "Zatrzymaj ruch na sekundę i powoli opuść biodra na wdechu.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Owiń hantel ręcznikiem lub użyj pada, aby nie uciskał kości biodrowych.",
+   "Broda lekko przyciągnięta, wzrok przed siebie.",
+   "Nie przeprostowuj lędźwi; ruch kończ zaciśnięciem pośladków.",
+   "Kolana nad stopami, nie zapadaj ich do środka.",
+   "Ławka stabilna, oparta o ścianę, aby nie przesuwała się."
+  ],
+  "category": "strength",
+  "images": []
+ },
+ {
+  "id": "x-nordic-hamstring-curl",
+  "name": "Nordic Hamstring Curl",
+  "force": "pull",
+  "level": "expert",
+  "mechanic": "isolation",
+  "equipment": "body only",
+  "primaryMuscles": [
+   "hamstrings"
+  ],
+  "secondaryMuscles": [
+   "glutes",
+   "calves"
+  ],
+  "instructions": [
+   "Uklęknij na macie lub miękkiej powierzchni i poproś partnera o przytrzymanie kostek lub zahacz stopy pod stabilną belką.",
+   "Ustaw ciało w jednej linii od kolan do głowy, ręce przy klatce piersiowej.",
+   "Na wdechu pochylaj ciało powoli do przodu, jak najdłużej hamując opadanie mięśniami tylnej części ud.",
+   "Gdy nie możesz już hamować, złap się rękami o podłoże, po czym odepchnij się i wróć do pozycji wyjściowej.",
+   "Powtórz zalecaną liczbę powtórzeń."
+  ],
+  "tips": [
+   "Ciało utrzymuj w linii prostej; nie zginaj się w biodrach.",
+   "Opuszczaj się jak najwolniej; to właśnie faza ekscentryczna jest kluczowa.",
+   "Ćwiczenie jest bardzo wymagające; zacznij od niewielkiego zakresu lub z gumą asekuracyjną.",
+   "Nie ćwicz przy bólu tylnej części ud; wprowadzaj je stopniowo.",
+   "Użyj miękkiej maty, aby chronić kolana."
+  ],
+  "category": "strength",
+  "images": []
+ }
+]

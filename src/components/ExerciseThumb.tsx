@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Dumbbell } from 'lucide-react';
+import EquipmentIcon from './EquipmentIcon';
 import type { Exercise } from '../data/types';
 import { imageUrl } from '../data/exercises';
 
@@ -20,7 +20,7 @@ export default function ExerciseThumb({ exercise, size = 56 }: ExerciseThumbProp
         style={{ width: size, height: size, minWidth: size }}
         aria-hidden="true"
       >
-        <Dumbbell size={size * 0.45} />
+        <EquipmentIcon equipment={exercise.equipment} size={size * 0.45} />
       </span>
     );
   }

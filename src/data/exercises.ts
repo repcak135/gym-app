@@ -2,8 +2,17 @@ import { db } from './db';
 import { getSettings, updateSettings } from './settings';
 import type { Exercise } from './types';
 import tips from './tips-pl.json';
+import extra from './exercises-extra.json';
+import akaData from './exercise-aka.json';
 
-export const EXERCISE_DB_VERSION = 1;
+// 2: built-in extra exercises (machines, cables, Smith) and other names for matching the import.
+export const EXERCISE_DB_VERSION = 2;
+
+type AkaEntry = { aka?: string[]; similar?: string[]; maybe?: string[] };
+const AKA = akaData as Record<string, AkaEntry>;
+
+/** Our own exercises missing from free-exercise-db: Polish instructions and tips, no photos. */
+export const EXTRA_EXERCISES = extra as (RawExercise & { tips: string[] })[];
 
 export const IMAGE_BASE =
   'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/';
@@ -38,11 +47,14 @@ export function fromDb(raw: RawExercise): Exercise {
     instructions: raw.instructions,
     images: raw.images,
     custom: false,
+    ...AKA[raw.name],
   };
 }
 
-const defaultLoad = async (): Promise<RawExercise[]> =>
-  ((await import('./exercise-db.json')) as { default: RawExercise[] }).default;
+const defaultLoad = async (): Promise<RawExercise[]> => [
+  ...((await import('./exercise-db.json')) as { default: RawExercise[] }).default,
+  ...EXTRA_EXERCISES.map(({ tips: _tips, ...raw }) => raw),
+];
 
 export async function seedExercises(
   load: () => Promise<RawExercise[]> = defaultLoad,
@@ -54,7 +66,15 @@ export async function seedExercises(
   }
 
   const raw = await load();
-  const mapped = raw.map(fromDb);
+  // Re-seeding keeps what the user set on a built-in exercise (notes and history live elsewhere).
+  const existing = new Map((await db.exercises.filter((e) => !e.custom).toArray()).map((e) => [e.id, e]));
+  const mapped = raw.map((r) => {
+    const ex = fromDb(r);
+    const old = existing.get(ex.id);
+    if (old?.weightStep !== undefined) ex.weightStep = old.weightStep;
+    if (old?.barWeight !== undefined) ex.barWeight = old.barWeight;
+    return ex;
+  });
   await db.exercises.bulkPut(mapped);
   await updateSettings({ exerciseDbVersion: EXERCISE_DB_VERSION });
 }
@@ -132,7 +152,10 @@ export async function getRecentExerciseIds(limit = 8): Promise<string[]> {
   return result;
 }
 
-const tipsData = tips as Record<string, string[]>;
+const tipsData: Record<string, string[]> = {
+  ...(tips as Record<string, string[]>),
+  ...Object.fromEntries(EXTRA_EXERCISES.map((e) => [e.id, e.tips])),
+};
 
 export function getTips(id: string): string[] {
   return tipsData[id] ?? [];
