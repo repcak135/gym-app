@@ -1,0 +1,234 @@
+/* =========================================================
+   ExerciseDetailPage
+   ========================================================= */
+
+.detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0 var(--space-3) 0 0;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  margin-bottom: var(--space-3);
+  transition: color 0.12s;
+}
+
+.detail-back:hover { color: var(--text); }
+
+.detail-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.detail-title-row h1 {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Photo strip */
+.detail-photos {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 calc(-1 * var(--space-4)) var(--space-5);
+  padding: 0 var(--space-4);
+  scrollbar-width: none;
+}
+
+.detail-photos::-webkit-scrollbar { display: none; }
+
+.detail-photo {
+  flex-shrink: 0;
+  width: min(80vw, 320px);
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: var(--radius);
+  scroll-snap-align: start;
+  background: var(--surface-2);
+}
+
+.detail-photo-placeholder {
+  flex-shrink: 0;
+  width: min(80vw, 320px);
+  aspect-ratio: 4/3;
+  display: grid;
+  place-items: center;
+  background: var(--surface-2);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+}
+
+/* Chips */
+.detail-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.chip--primary {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.chip--secondary {
+  background: var(--surface-2);
+  color: var(--text-muted);
+}
+
+.chip--equip {
+  background: var(--surface-2);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+/* Sections */
+.detail-section {
+  margin-bottom: var(--space-5);
+}
+
+.detail-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 var(--space-3);
+}
+
+/* Tips list */
+.detail-tips {
+  margin: 0;
+  padding-left: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.detail-tips li {
+  color: var(--text);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Instructions */
+.detail-instructions {
+  margin: 0;
+  padding-left: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.detail-instructions li {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+/* Note */
+.detail-note-textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: var(--space-3);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  resize: vertical;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.15s;
+}
+
+.detail-note-textarea:focus {
+  border-color: var(--accent);
+}
+
+.detail-note-saved {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: var(--space-1);
+  min-height: 1.2em;
+}
+
+/* Custom exercise actions */
+.detail-actions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.detail-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.12s;
+}
+
+.detail-btn:hover { opacity: 0.85; }
+
+.detail-btn--edit {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.detail-btn--delete {
+  background: var(--surface-2);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+/* Delete error message */
+.detail-delete-reason {
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  background: rgba(242, 95, 92, 0.12);
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-sm);
+  color: var(--danger);
+  font-size: 0.9rem;
+}
+
+/* Not found */
+.detail-not-found {
+  text-align: center;
+  margin-top: var(--space-6);
+}
+
+.detail-not-found p {
+  color: var(--text-muted);
+  margin-bottom: var(--space-4);
+}

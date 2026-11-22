@@ -78,4 +78,5 @@ export interface AppSettings {
   plates: number[];
   defaultWeightStep: number;
   lastBackupAt?: number;
+  exerciseDbVersion?: number;
 }
