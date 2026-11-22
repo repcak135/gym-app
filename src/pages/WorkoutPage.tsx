@@ -19,9 +19,10 @@ import {
 } from '../data/workouts';
 import type { WorkoutSet } from '../data/types';
 import { useNow } from '../hooks/useNow';
+import { unlockAudio } from '../audio/beep';
 import { useWakeLock } from '../hooks/useWakeLock';
 import ExercisePanel from '../components/workout/ExercisePanel';
-import RestBar from '../components/workout/RestBar';
+import RestBar, { RestEndBanner } from '../components/workout/RestBar';
 import ExerciseInfoSheet, { type InfoTab } from '../components/workout/ExerciseInfoSheet';
 import ExercisePicker from '../components/ExercisePicker';
 import ActionSheet from '../components/ActionSheet';
@@ -132,6 +133,10 @@ export default function WorkoutPage() {
     prevCount.current = items.length;
   }, [items.length, workout]);
 
+  const [banner, setBanner] = useState(false);
+  const onRestEnd = useCallback(() => setBanner(true), []);
+  const hideBanner = useCallback(() => setBanner(false), []);
+
   const [sheet, setSheet] = useState<Sheet | null>(null);
   const close = () => setSheet(null);
 
@@ -174,7 +179,8 @@ export default function WorkoutPage() {
   };
 
   return (
-    <div className="workout">
+    // Any tap unlocks audio (needed after the app was reopened mid-workout).
+    <div className="workout" onPointerDown={unlockAudio}>
       <header className="workout-bar">
         <Link to="/" className="workout-bar__icon" aria-label="Wróć na Start (trening trwa dalej)">
           <ChevronLeft size={26} aria-hidden="true" />
@@ -245,7 +251,15 @@ export default function WorkoutPage() {
         })}
       </div>
 
-      <RestBar workoutId={workout.id} restEndsAt={workout.restEndsAt} restTotalSec={workout.restTotalSec} />
+      <RestBar
+        workoutId={workout.id}
+        restEndsAt={workout.restEndsAt}
+        restTotalSec={workout.restTotalSec}
+        sound={settings.restSound}
+        vibration={settings.restVibration}
+        onEnd={onRestEnd}
+      />
+      {banner && <RestEndBanner onDismiss={hideBanner} />}
 
       {sheet?.kind === 'menu' && (
         <ActionSheet

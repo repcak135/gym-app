@@ -75,6 +75,23 @@ export default function SettingsPage() {
         </div>
       </section>
 
+      <section className="settings-group" aria-labelledby="set-rest">
+        <h2 id="set-rest" className="settings-group__title">Koniec przerwy</h2>
+        <p className="settings-group__hint">
+          Na koniec przerwy zawsze pojawia się duży napis „Koniec przerwy!”. Dźwięk gra też przy wyciszonym iPhonie, gdy aplikacja jest otwarta. Wibracja działa tylko na Androidzie.
+        </p>
+        <ToggleRow
+          label="Dźwięk końca przerwy"
+          checked={settings.restSound}
+          onChange={(v) => void updateSettings({ restSound: v })}
+        />
+        <ToggleRow
+          label="Wibracja"
+          checked={settings.restVibration}
+          onChange={(v) => void updateSettings({ restVibration: v })}
+        />
+      </section>
+
       <section className="settings-group" aria-labelledby="set-weight">
         <h2 id="set-weight" className="settings-group__title">Ciężar</h2>
         <SettingRow label="Krok ciężaru" id="s-step">
@@ -98,5 +115,14 @@ function SettingRow({ label, id, children }: { label: string; id: string; childr
       <label className="settings-row__label" htmlFor={id}>{label}</label>
       {children}
     </div>
+  );
+}
+
+function ToggleRow({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <label className="settings-row settings-toggle">
+      <span className="settings-row__label">{label}</span>
+      <input type="checkbox" role="switch" checked={checked} onChange={(e) => onChange(e.target.checked)} />
+    </label>
   );
 }

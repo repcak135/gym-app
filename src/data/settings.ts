@@ -11,6 +11,8 @@ export const DEFAULT_SETTINGS: AppSettings = {
   defaultWarmupSets: 0,
   defaultRepsMin: 8,
   defaultRepsMax: 12,
+  restSound: true,
+  restVibration: true,
 };
 
 export const WEIGHT_STEP_OPTIONS = [0.5, 1, 1.25, 2.5, 5];

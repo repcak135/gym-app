@@ -141,3 +141,66 @@ test('zamiana i usuwanie ćwiczenia, pusty trening bez serii można usunąć', a
   await expect(page).toHaveURL(/#\/$/);
   await expect(page.getByRole('button', { name: 'Pusty trening' })).toBeVisible();
 });
+
+async function emptyWorkoutWithBench(page: Page) {
+  await page.goto('/#/');
+  await page.getByRole('button', { name: 'Pusty trening' }).click();
+  await page.getByRole('button', { name: 'Dodaj ćwiczenie' }).click();
+  await pickExercise(page, 'Dodaj ćwiczenia', 'barbell bench press', BENCH);
+  await page.getByRole('button', { name: 'Gotowe (1)' }).click();
+  await expect(panel(page, BENCH)).toBeVisible();
+}
+
+test('koniec przerwy: duży napis, znika po dotknięciu i nie wraca po przeładowaniu', async ({ page }) => {
+  await page.clock.install();
+  await emptyWorkoutWithBench(page);
+  await panel(page, BENCH).getByRole('button', { name: 'Zalicz serię' }).click();
+  await expect(page.getByRole('timer', { name: 'Przerwa' })).toBeVisible();
+
+  await page.clock.fastForward('02:01'); // default rest 2:00
+  const banner = page.getByRole('alert');
+  await expect(banner).toContainText('Koniec przerwy!');
+  await expect(page.getByRole('timer', { name: 'Przerwa' })).toHaveCount(0);
+  await banner.click();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+
+  await page.reload();
+  await expect(panel(page, BENCH)).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+});
+
+test('koniec przerwy, gdy aplikacja była w tle: napis po powrocie; Pomiń nie pokazuje napisu', async ({ page }) => {
+  await page.clock.install();
+  await emptyWorkoutWithBench(page);
+  await panel(page, BENCH).getByRole('button', { name: 'Zalicz serię' }).click();
+  await expect(page.getByRole('timer', { name: 'Przerwa' })).toBeVisible();
+
+  // leave the workout screen (like closing the app), let the rest run out, come back
+  await page.getByRole('link', { name: /Wróć na Start/ }).click();
+  await page.clock.fastForward('05:00');
+  await page.getByRole('link', { name: 'Wróć do treningu' }).click();
+  await expect(page.getByRole('alert')).toContainText('Koniec przerwy!');
+  await page.clock.fastForward('00:06'); // dismisses itself
+  await expect(page.getByRole('alert')).toHaveCount(0);
+
+  // skipping the rest on purpose: no banner
+  await panel(page, BENCH).getByRole('button', { name: 'Zalicz serię' }).click();
+  await page.getByRole('timer', { name: 'Przerwa' }).getByRole('button', { name: 'Pomiń' }).click();
+  await page.clock.fastForward('03:00');
+  await expect(page.getByRole('alert')).toHaveCount(0);
+});
+
+test('ustawienia: dźwięk i wibracja końca przerwy można wyłączyć', async ({ page }) => {
+  await page.goto('/#/ustawienia');
+  const sound = page.getByRole('switch', { name: 'Dźwięk końca przerwy' });
+  const vibration = page.getByRole('switch', { name: 'Wibracja' });
+  await expect(sound).toBeChecked();
+  await expect(vibration).toBeChecked();
+  await sound.click();
+  await expect(sound).not.toBeChecked();
+  await vibration.click();
+  await expect(vibration).not.toBeChecked();
+  await page.reload();
+  await expect(page.getByRole('switch', { name: 'Dźwięk końca przerwy' })).not.toBeChecked();
+  await expect(page.getByRole('switch', { name: 'Wibracja' })).not.toBeChecked();
+});

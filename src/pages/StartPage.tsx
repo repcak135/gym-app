@@ -5,6 +5,7 @@ import { db } from '../data/db';
 import { formatReps, getLastPlanDayId, nextDay } from '../data/plans';
 import { getActiveWorkout, startWorkout } from '../data/workouts';
 import { useNow } from '../hooks/useNow';
+import { unlockAudio } from '../audio/beep';
 import { formatClock } from '../data/progression';
 import type { Workout } from '../data/types';
 import './StartPage.css';
@@ -29,7 +30,7 @@ function ActiveWorkoutCard({ workout }: { workout: Workout }) {
     <section className="start-card start-card--live" aria-label="Trwa trening">
       <p className="start-label">Trwa trening · {formatClock((now - workout.startedAt) / 1000)}</p>
       <p className="start-day">{workout.name}</p>
-      <Link to="/trening" className="start-btn">Wróć do treningu</Link>
+      <Link to="/trening" className="start-btn" onClick={unlockAudio}>Wróć do treningu</Link>
     </section>
   );
 }
@@ -40,7 +41,7 @@ function EmptyWorkoutButton() {
     <button
       type="button"
       className="start-btn start-btn--ghost"
-      onClick={() => void startWorkout({}).then(() => navigate('/trening'))}
+      onClick={() => { unlockAudio(); void startWorkout({}).then(() => navigate('/trening')); }}
     >
       Pusty trening
     </button>
@@ -112,7 +113,10 @@ export default function StartPage() {
               type="button"
               className="start-btn"
               disabled={items.length === 0}
-              onClick={() => void startWorkout({ planId: plan.id, dayId: day.id }).then(() => navigate('/trening'))}
+              onClick={() => {
+                unlockAudio();
+                void startWorkout({ planId: plan.id, dayId: day.id }).then(() => navigate('/trening'));
+              }}
             >
               Rozpocznij trening
             </button>

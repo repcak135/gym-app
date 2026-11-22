@@ -98,6 +98,9 @@ export interface AppSettings {
   defaultWarmupSets: number;
   defaultRepsMin: number;
   defaultRepsMax: number;
+  /** End of rest: sound (beats the iPhone silent switch) and vibration (Android). */
+  restSound: boolean;
+  restVibration: boolean;
   lastBackupAt?: number;
   exerciseDbVersion?: number;
 }
