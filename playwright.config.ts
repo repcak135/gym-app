@@ -5,7 +5,7 @@ export default defineConfig({
   projects: [
     {
       name: 'mobile',
-      testMatch: ['shell.spec.ts', 'exercises.spec.ts', 'plans.spec.ts', 'workout.spec.ts', 'history.spec.ts', 'import.spec.ts', 'stats.spec.ts'],
+      testMatch: ['shell.spec.ts', 'exercises.spec.ts', 'plans.spec.ts', 'workout.spec.ts', 'history.spec.ts', 'import.spec.ts', 'stats.spec.ts', 'body.spec.ts'],
       use: {
         ...devices['iPhone 13'],
         browserName: 'chromium',

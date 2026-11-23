@@ -112,3 +112,27 @@ Layout (top → bottom): title; segmented control `role="tablist"` Tydzień / Mi
 - [ ] **Step 3:** `npx vitest run`, `npx tsc -b`, `npx playwright test --project=mobile` all pass.
 - [ ] **Step 4:** Check at phone size in the built-in browser with the owner's real CSV imported (not committed): all four periods, both toggles, arrows, safe areas.
 - [ ] **Step 5:** Commit + push to `main`, confirm the GitHub Actions deploy, check https://repcak135.github.io/gym-app/#/statystyki.
+
+---
+
+## Part B: Ciało — body weight and measurements (owner's request 2026-11-23)
+
+**Goal:** Statystyki gets a top switch "Treningi | Ciało". Ciało: add/edit/delete body entries (date + any subset of weight, 13 circumferences, body fat %), overview of all metrics with latest value and trend, per-metric line chart with the same period switch and changes ("+2,5 cm od startu").
+
+**Constraints:** Dexie `version(2)` adds only `body: 'id, date'` (existing tables untouched, data kept). Entry `{ id, date: 'YYYY-MM-DD', weightKg?, measurements: Partial<Record<MeasureKey, number>>, bodyFatPct? }`; only filled fields are stored; an entry with no values is not saved. Numbers accept comma decimals, positive only. Polish labels: Waga (kg), Tkanka tłuszczowa (%), Szyja, Barki, Klatka, Talia, Biodra, Biceps L, Biceps P, Przedramię L, Przedramię P, Udo L, Udo P, Łydka L, Łydka P (cm).
+
+**Review Focus:** two entries on the same date (both kept, ordered by date then insert order); a metric measured once (no change shown, no chart line, just a dot); metric absent in the period (shows "brak pomiarów w tym okresie" but overall latest stays in the overview); editing an entry and clearing all fields (blocked with a message, delete instead); DB upgrade from version 1 keeps workouts (test opens a v1 DB, upgrades).
+
+### Task 5: Body data layer
+**Files:** Modify `src/data/types.ts`, `src/data/db.ts`; create `src/data/body.ts`, `src/data/body.test.ts`.
+**Produces:**
+- `type MeasureKey = 'neck'|'shoulders'|'chest'|'waist'|'hips'|'bicepsL'|'bicepsR'|'forearmL'|'forearmR'|'thighL'|'thighR'|'calfL'|'calfR'`; `type BodyMetric = 'weight' | 'bodyFat' | MeasureKey`; `interface BodyEntry` (above).
+- `BODY_METRICS: readonly { key: BodyMetric; label: string; unit: 'kg' | 'cm' | '%' }[]` (order: weight, bodyFat, then measurements as listed).
+- `saveBodyEntry(input: { id?: string; date: string; values: Partial<Record<BodyMetric, number>> }): Promise<string>` (throws `Error('Wpisz przynajmniej jedną wartość')` when empty), `deleteBodyEntry(id)`, `listBodyEntries(): Promise<BodyEntry[]>` (date asc).
+- Pure: `entryValues(e): Partial<Record<BodyMetric, number>>`, `metricSeries(entries, metric): { date: string; at: number; value: number }[]`, `metricSummary(entries, metric, range: { start: number; end: number }): { points; latest?: number; changeInPeriod?: number; changeFromStart?: number }` (changeInPeriod = last − first point in range when ≥ 2; changeFromStart = last point in range − very first point overall, when they are different points), `overview(entries): { metric; latest: number; date: string; trend: 'up'|'down'|'flat'|null; changeFromStart?: number }[]` (metrics with data only, trend vs previous point), `formatChange(v: number, unit): string` → `"+2,5 cm"`, `"−1 kg"` (U+2212), `"0 cm"`.
+**Tests:** save keeps only given fields; empty rejects; edit replaces values; delete; series order; summaries per the definitions; formatChange; upgrade from v1 keeps a workout.
+
+### Task 6: Ciało screen
+**Files:** create `src/components/stats/Segmented.tsx` (moved from StatsPage), `src/components/stats/LineChart.tsx`, `src/components/BodyEntrySheet.tsx`, `src/pages/BodyStats.tsx`, `src/pages/BodyStats.css`, `e2e/body.spec.ts`; modify `src/pages/StatsPage.tsx` (top switch, remembered like the period), `playwright.config.ts`.
+**Layout:** "Dodaj pomiar" primary button; overview list (label, latest value + unit, trend arrow, "+X od startu"), tap → metric view: back button, period switch + arrows (reuse `periodRange`), big latest value, "w okresie" and "od startu" changes, line chart (2px line, ≥8px dots, tap a dot shows date + value), list of that metric's entries (tap → edit). Below overview: "Wszystkie wpisy" (date, number of values; tap → edit sheet with "Usuń wpis"). Empty state: short hint + the button.
+**e2e:** add entry (waga 82,5, talia 85) → overview shows "82,5 kg"; add second entry with older date (waga 84) → waga shows "−1,5 kg od startu"; open Waga → chart visible; edit entry and delete it.

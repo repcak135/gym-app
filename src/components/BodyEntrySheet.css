@@ -1,0 +1,46 @@
+.body-sheet {
+  max-height: 86vh;
+}
+
+.body-sheet__hint {
+  margin: var(--space-2) 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.body-sheet__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2) var(--space-3);
+}
+
+.body-sheet__unit {
+  color: var(--text-muted);
+}
+
+.body-sheet__actions {
+  position: sticky;
+  bottom: 0;
+  padding-top: var(--space-3);
+  background: var(--surface-2);
+}
+
+.body-sheet__field {
+  margin-bottom: 0;
+  gap: var(--space-1);
+}
+
+.body-sheet__field .name-sheet__input {
+  min-height: 44px;
+  padding: 0 var(--space-3);
+}
+
+.body-sheet__actions {
+  flex-direction: row;
+  padding-bottom: var(--space-1);
+}
+
+.body-sheet__actions .confirm-sheet__btn {
+  flex: 1;
+  min-height: 48px;
+}

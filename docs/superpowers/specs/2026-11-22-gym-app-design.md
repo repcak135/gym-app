@@ -86,6 +86,7 @@ Rozważony też fork openGym: wymaga serwera działającego cały czas, jest bar
 - Wykres kołowy „serie na mięsień” (grupy: klatka, plecy, barki, nogi, biceps, triceps, brzuch, łydki, pośladki, przedramiona), przełącznik mięśnie główne / pomocnicze.
 - **Sylwetka z mięśniami** (przód i tył): kolor zależy od liczby serii w okresie; dodatkowy tryb „dawno nietrenowane” (pomysł z openGym). Biblioteka: `react-body-highlighter` 2.0.5 (MIT, sprawdzone 2026-11-22; ostatnie wydanie 2021, React ≥16). Jeśli nie zadziała z aktualnym Reactem, kopiujemy jej rysunki SVG do własnego komponentu (MIT pozwala).
 - Treningi w tygodniu (wykres słupkowy).
+- **Ciało — waga i pomiary** (prośba właściciela 2026-11-23, przeniesione z „Później” do etapu 6): u góry Statystyk przełącznik „Treningi | Ciało”. „Dodaj pomiar”: data (domyślnie dziś) i dowolne z pól — waga (kg), w cm: szyja, barki, klatka, talia, biodra, biceps L/P, przedramię L/P, udo L/P, łydka L/P, opcjonalnie % tkanki tłuszczowej; zapisują się tylko wypełnione pola; wpis można poprawić i usunąć. Lista wszystkich wymiarów z ostatnią wartością i strzałką trendu; dotknięcie otwiera wykres liniowy wymiaru w czasie (ten sam przełącznik Tydzień / Miesiąc / Rok / Wszystko), ostatnią wartość, zmianę w okresie i od pierwszego pomiaru („+2,5 cm od startu”). Dane w osobnej tabeli `body` (wersja 2 bazy, istniejące dane bez zmian), w `src/data/`, żeby kopia zapasowa z etapu 7 je obejmowała.
 
 ### 7. Dodatki
 - **Kalkulator talerzy:** ciężar docelowy → jakie talerze na każdą stronę (gryf 20 kg domyślnie, zestaw talerzy do ustawienia).
@@ -102,7 +103,6 @@ Eksport właściciela (`gym-day.csv`, sprawdzony 2026-11-22): kolumny `Date, Wor
 
 ### Później (nie v1)
 - **Dopracowanie i animacje** (prośba właściciela 2026-11-22): przesunięcie planu / dnia / ćwiczenia w bok odsłania czerwony przycisk usuwania (z możliwością cofnięcia), płynne przejścia między ekranami i przy zaliczaniu serii. Osobny etap po etapie 7.
-- Waga ciała i pomiary (zakładka „Body” jak w obecnej aplikacji).
 - Serwer / synchronizacja / znajomi (sposób B).
 
 ## Wygląd

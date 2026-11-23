@@ -1,5 +1,5 @@
 import Dexie, { type Table } from 'dexie';
-import type { Exercise, ExerciseNote, Plan, Workout, WorkoutSet, AppSettings, ExerciseAlias } from './types';
+import type { Exercise, ExerciseNote, Plan, Workout, WorkoutSet, AppSettings, ExerciseAlias, BodyEntry } from './types';
 
 export class GymDatabase extends Dexie {
   exercises!: Table<Exercise, string>;
@@ -9,6 +9,7 @@ export class GymDatabase extends Dexie {
   sets!: Table<WorkoutSet, string>;
   settings!: Table<AppSettings, string>;
   aliases!: Table<ExerciseAlias, string>;
+  body!: Table<BodyEntry, string>;
 
   constructor() {
     super('gym-app');
@@ -21,6 +22,7 @@ export class GymDatabase extends Dexie {
       settings: 'key',
       aliases: 'sourceName',
     });
+    this.version(2).stores({ body: 'id, date' });
   }
 }
 

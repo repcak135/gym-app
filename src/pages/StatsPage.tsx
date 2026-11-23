@@ -15,6 +15,8 @@ import { MUSCLE_GROUPS } from '../data/muscleMap';
 import DonutChart from '../components/stats/DonutChart';
 import WeekBars from '../components/stats/WeekBars';
 import BodyMap from '../components/stats/BodyMap';
+import Segmented from '../components/stats/Segmented';
+import BodyStats from './BodyStats';
 import { setsLabel } from './historyFormat';
 import './StatsPage.css';
 
@@ -27,6 +29,7 @@ const PERIODS: { key: Period; label: string }[] = [
 
 // Coming back to the tab keeps the period you were looking at.
 let lastView: { period: Period; offset: number } = { period: 'month', offset: 0 };
+let lastTab: 'training' | 'body' = 'training';
 
 function formatDuration(sec: number): string {
   const min = Math.round(sec / 60);
@@ -34,35 +37,6 @@ function formatDuration(sec: number): string {
   const h = Math.floor(min / 60);
   const m = min % 60;
   return m === 0 ? `${h} h` : `${h} h ${m} min`;
-}
-
-function Segmented<T extends string>({
-  label,
-  options,
-  value,
-  onChange,
-}: {
-  label: string;
-  options: { key: T; label: string }[];
-  value: T;
-  onChange: (v: T) => void;
-}) {
-  return (
-    <div className="seg" role="tablist" aria-label={label}>
-      {options.map((o) => (
-        <button
-          key={o.key}
-          type="button"
-          role="tab"
-          aria-selected={value === o.key}
-          className={value === o.key ? 'seg__btn seg__btn--on' : 'seg__btn'}
-          onClick={() => onChange(o.key)}
-        >
-          {o.label}
-        </button>
-      ))}
-    </div>
-  );
 }
 
 function Tile({ label, value, sub }: { label: string; value: string; sub?: string }) {
@@ -76,6 +50,28 @@ function Tile({ label, value, sub }: { label: string; value: string; sub?: strin
 }
 
 export default function StatsPage() {
+  const [tab, setTab] = useState(lastTab);
+  useEffect(() => {
+    lastTab = tab;
+  }, [tab]);
+  return (
+    <article className="stats">
+      <h1>Statystyki</h1>
+      <Segmented
+        label="Statystyki"
+        options={[
+          { key: 'training', label: 'Treningi' },
+          { key: 'body', label: 'Ciało' },
+        ]}
+        value={tab}
+        onChange={setTab}
+      />
+      <div className="stats-tab">{tab === 'training' ? <TrainingStats /> : <BodyStats />}</div>
+    </article>
+  );
+}
+
+function TrainingStats() {
   const input = useLiveQuery(() => loadStatsInput(), []);
   const [now] = useState(() => Date.now());
   const [view, setView] = useState(lastView);
@@ -119,8 +115,7 @@ export default function StatsPage() {
   const selSlice = slices.find((s) => s.key === selGroup);
 
   return (
-    <article className="stats">
-      <h1>Statystyki</h1>
+    <>
       <Segmented label="Okres" options={PERIODS} value={view.period} onChange={setPeriod} />
 
       <div className="stats-period">
@@ -264,6 +259,6 @@ export default function StatsPage() {
           )}
         </>
       )}
-    </article>
+    </>
   );
 }

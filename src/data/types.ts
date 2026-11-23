@@ -91,6 +91,21 @@ export interface WorkoutSet {
   rir?: number;
 }
 
+export type MeasureKey =
+  | 'neck' | 'shoulders' | 'chest' | 'waist' | 'hips'
+  | 'bicepsL' | 'bicepsR' | 'forearmL' | 'forearmR'
+  | 'thighL' | 'thighR' | 'calfL' | 'calfR';
+
+export type BodyMetric = 'weight' | 'bodyFat' | MeasureKey;
+
+export interface BodyEntry {
+  id: Id;
+  date: string; // YYYY-MM-DD
+  weightKg?: number;
+  measurements: Partial<Record<MeasureKey, number>>;
+  bodyFatPct?: number;
+}
+
 export interface ExerciseAlias {
   sourceName: string;
   exerciseId: Id;
