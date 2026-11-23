@@ -13,16 +13,21 @@ import {
 } from '../data/exerciseLabels';
 import ExerciseThumb from '../components/ExerciseThumb';
 import FilterSheet from '../components/FilterSheet';
+import Segmented from '../components/stats/Segmented';
 import { exercisesLabel } from './planFormat';
 import './ExercisesPage.css';
 
 const PAGE_SIZE = 60;
+
+type Scope = 'all' | 'moje' | 'uzywane';
 
 export default function ExercisesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('q') ?? '';
   const muscleFilter = searchParams.get('m') ?? '';   // empty string = no filter
   const equipFilter  = searchParams.get('s') ?? '';
+  const scopeParam   = searchParams.get('t');
+  const scope: Scope = scopeParam === 'moje' || scopeParam === 'uzywane' ? scopeParam : 'all';
 
   // Convert empty string to null for the data layer
   const muscleVal  = muscleFilter  || null;
@@ -54,17 +59,31 @@ export default function ExercisesPage() {
     [],
   );
 
-  const isFiltered = !!(query || muscleVal || equipVal);
+  // Exercises the user has used: in any logged set or any plan day
+  const usedIds = useLiveQuery(async () => {
+    const ids = new Set<string>((await db.sets.orderBy('exerciseId').uniqueKeys()) as string[]);
+    for (const plan of await db.plans.toArray())
+      for (const day of plan.days) for (const item of day.items) ids.add(item.exerciseId);
+    return ids;
+  }, []);
+
+  const isFiltered = !!(query || muscleVal || equipVal) || scope !== 'all';
   const isLoaded   = allExercises !== undefined && allExercises.length > 0;
 
   const filtered = useMemo(() => {
     if (!allExercises) return [];
-    return filterExercises(allExercises, {
+    const pool =
+      scope === 'moje'
+        ? allExercises.filter((e) => e.custom)
+        : scope === 'uzywane'
+          ? allExercises.filter((e) => usedIds?.has(e.id))
+          : allExercises;
+    return filterExercises(pool, {
       query:     query     || undefined,
       muscle:    muscleVal ?? undefined,
       equipment: equipVal  ?? undefined,
     });
-  }, [allExercises, query, muscleVal, equipVal]);
+  }, [allExercises, query, muscleVal, equipVal, scope, usedIds]);
 
   const recentExercises = useMemo(() => {
     if (!allExercises || !recentIds || isFiltered) return [];
@@ -97,6 +116,19 @@ export default function ExercisesPage() {
         >
           <Plus size={22} aria-hidden="true" />
         </Link>
+      </div>
+
+      <div className="exercises-scope">
+        <Segmented<Scope>
+          label="Które ćwiczenia"
+          options={[
+            { key: 'all', label: 'Wszystkie' },
+            { key: 'moje', label: 'Moje' },
+            { key: 'uzywane', label: 'Używane' },
+          ]}
+          value={scope}
+          onChange={(v) => setParam('t', v === 'all' ? '' : v)}
+        />
       </div>
 
       {/* Sticky toolbar */}
@@ -175,6 +207,16 @@ export default function ExercisesPage() {
       {/* Result list */}
       <section aria-label="Lista ćwiczeń">
         <p className="exercises-count">{exercisesLabel(filtered.length)}</p>
+        {filtered.length === 0 && scope === 'moje' && !query && !muscleVal && !equipVal && (
+          <p className="exercises-empty">
+            Nie masz jeszcze własnych ćwiczeń. Dodaj je przyciskiem + u góry.
+          </p>
+        )}
+        {filtered.length === 0 && scope === 'uzywane' && !query && !muscleVal && !equipVal && (
+          <p className="exercises-empty">
+            Tu pojawią się ćwiczenia z Twoich planów i treningów.
+          </p>
+        )}
         <div className="exercise-list">
           {visible.map((ex) => {
             const metaParts = [

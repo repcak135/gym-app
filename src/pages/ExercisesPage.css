@@ -287,3 +287,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.exercises-scope {
+  margin: var(--space-2) 0 var(--space-1);
+}
+
+.exercises-empty {
+  color: var(--text-muted);
+  margin: var(--space-3) 0;
+}

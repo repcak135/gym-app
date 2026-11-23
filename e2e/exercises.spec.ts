@@ -165,3 +165,27 @@ test('własne ćwiczenie: utwórz, edytuj, usuń', async ({ page }) => {
   // Result count should be 0 ćwiczeń
   await expect(page.getByText('0 ćwiczeń')).toBeVisible({ timeout: 5_000 });
 });
+
+test('zakładki Moje i Używane pokazują własne i używane ćwiczenia', async ({ page }) => {
+  await page.goto('/#/cwiczenia');
+  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  const tabs = page.getByRole('tablist', { name: 'Które ćwiczenia' });
+
+  await tabs.getByRole('tab', { name: 'Moje' }).click();
+  await expect(page.getByText('Nie masz jeszcze własnych ćwiczeń')).toBeVisible();
+  await tabs.getByRole('tab', { name: 'Używane' }).click();
+  await expect(page.getByText('Tu pojawią się ćwiczenia z Twoich planów')).toBeVisible();
+
+  // create a custom exercise
+  await tabs.getByRole('tab', { name: 'Wszystkie' }).click();
+  await page.getByRole('link', { name: 'Nowe ćwiczenie' }).click();
+  await page.getByLabel('Nazwa').fill('Tokarski lateral raises');
+  await page.getByRole('button', { name: 'Barki', exact: true }).first().click();
+  await page.getByRole('button', { name: 'Zapisz' }).click();
+  await expect(page.getByRole('heading', { level: 1, name: 'Tokarski lateral raises' })).toBeVisible();
+
+  await page.goto('/#/cwiczenia?t=moje');
+  await expect(page.getByText('1 ćwiczenie')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Tokarski lateral raises' })).toBeVisible();
+  await expect(page.getByRole('tab', { name: 'Moje' })).toHaveAttribute('aria-selected', 'true');
+});
