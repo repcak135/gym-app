@@ -5,26 +5,26 @@ const IMAGE_BASE =
 
 // ─── Task 2 tests ────────────────────────────────────────────────────────────
 
-test('lista pokazuje bazę 922 ćwiczenia', async ({ page }) => {
+test('lista pokazuje bazę 5110 ćwiczeń', async ({ page }) => {
   await page.goto('/#/cwiczenia');
   // Seeding can take up to 15 s on first run
-  await expect(page.getByText('922 ćwiczenia')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('5110 ćwiczeń')).toBeVisible({ timeout: 15_000 });
 });
 
 test('wyszukiwanie zawęża listę', async ({ page }) => {
   await page.goto('/#/cwiczenia');
-  await expect(page.getByText('922 ćwiczenia')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('5110 ćwiczeń')).toBeVisible({ timeout: 15_000 });
 
   await page.getByPlaceholder('Szukaj ćwiczenia').fill('barbell squat');
 
   await expect(page.getByRole('link', { name: 'Barbell Squat', exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Dumbbell Bicep Curl', exact: true })).toHaveCount(0);
-  await expect(page.getByText('922 ćwiczenia')).toHaveCount(0);
+  await expect(page.getByText('5110 ćwiczeń')).toHaveCount(0);
 });
 
 test('filtr Mięśnie i Sprzęt', async ({ page }) => {
   await page.goto('/#/cwiczenia');
-  await expect(page.getByText('922 ćwiczenia')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('5110 ćwiczeń')).toBeVisible({ timeout: 15_000 });
 
   await page.getByRole('button', { name: 'Mięśnie' }).click();
   const muscleSheet = page.getByRole('dialog', { name: 'Mięśnie' });
@@ -40,17 +40,28 @@ test('filtr Mięśnie i Sprzęt', async ({ page }) => {
   const metas = page.locator('.exercise-row__meta');
   await expect(metas.first()).toBeVisible();
   for (const text of await metas.allTextContents()) expect(text).toContain('Maszyna');
+  await page.getByPlaceholder('Szukaj ćwiczenia').fill('seated calf raise');
   await expect(page.getByRole('link', { name: 'Seated Calf Raise', exact: true })).toBeVisible();
 
   // "×" clears the muscle filter; the equipment filter stays
   await page.getByRole('button', { name: 'Wyczyść filtr: Mięśnie' }).click();
   await expect(page.getByRole('button', { name: 'Mięśnie' })).toBeVisible();
+  await page.getByPlaceholder('Szukaj ćwiczenia').fill('leg press');
   await expect(page.getByRole('link', { name: 'Leg Press', exact: true })).toBeVisible();
+});
+
+test('szukanie po polsku: polska nazwa pod angielską', async ({ page }) => {
+  await page.goto('/#/cwiczenia');
+  await expect(page.getByText(/\d+ ćwicze/)).toBeVisible({ timeout: 15_000 });
+  await page.getByPlaceholder('Szukaj ćwiczenia').fill('wyciskanie sztangi na lawce plaskiej');
+  const row = page.getByRole('link', { name: 'Barbell Bench Press - Medium Grip', exact: true });
+  await expect(row).toBeVisible();
+  await expect(row).toContainText('Wyciskanie sztangi na ławce płaskiej');
 });
 
 test('wiersz ma co najmniej 44 px', async ({ page }) => {
   await page.goto('/#/cwiczenia');
-  await expect(page.getByText('922 ćwiczenia')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('5110 ćwiczeń')).toBeVisible({ timeout: 15_000 });
 
   const rows = page.locator('.exercise-row');
   const first = rows.first();
@@ -102,7 +113,7 @@ test('notatka zapisuje się i przetrwa przeładowanie', async ({ page }) => {
 
 test('własne ćwiczenie: utwórz, edytuj, usuń', async ({ page }) => {
   await page.goto('/#/cwiczenia');
-  await expect(page.getByText('922 ćwiczenia')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('5110 ćwiczeń')).toBeVisible({ timeout: 15_000 });
 
   // Open form via "+" link
   await page.getByRole('link', { name: 'Nowe ćwiczenie' }).click();
@@ -149,7 +160,7 @@ test('własne ćwiczenie: utwórz, edytuj, usuń', async ({ page }) => {
   await expect(page).toHaveURL(/#\/cwiczenia$/);
 
   // Search confirms it's gone
-  await expect(page.getByText('922 ćwiczenia')).toBeVisible({ timeout: 10_000 });
+  await expect(page.getByText('5110 ćwiczeń')).toBeVisible({ timeout: 10_000 });
   await page.getByPlaceholder('Szukaj ćwiczenia').fill('Wiosło krzywą sztangą');
   // Result count should be 0 ćwiczeń
   await expect(page.getByText('0 ćwiczeń')).toBeVisible({ timeout: 5_000 });

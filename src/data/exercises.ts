@@ -6,7 +6,8 @@ import extra from './exercises-extra.json';
 import akaData from './exercise-aka.json';
 
 // 2: built-in extra exercises (machines, cables, Smith) and other names for matching the import.
-export const EXERCISE_DB_VERSION = 2;
+// 3: openGym catalogue text (AGPL-3.0): ~4200 more exercises, Polish names.
+export const EXERCISE_DB_VERSION = 3;
 
 type AkaEntry = { aka?: string[]; similar?: string[]; maybe?: string[] };
 const AKA = akaData as Record<string, AkaEntry>;
@@ -24,6 +25,7 @@ export function imageUrl(path: string): string {
 export type RawExercise = {
   id: string;
   name: string;
+  namePl?: string;
   force: string | null;
   level: string;
   mechanic: string | null;
@@ -43,18 +45,34 @@ export function fromDb(raw: RawExercise): Exercise {
     secondaryMuscles: raw.secondaryMuscles,
     equipment: raw.equipment ?? null,
     category: raw.category,
-    level: raw.level,
+    level: raw.level || undefined,
     instructions: raw.instructions,
     images: raw.images,
     custom: false,
+    ...(raw.namePl ? { namePl: raw.namePl } : {}),
     ...AKA[raw.name],
   };
 }
 
-const defaultLoad = async (): Promise<RawExercise[]> => [
-  ...((await import('./exercise-db.json')) as { default: RawExercise[] }).default,
-  ...EXTRA_EXERCISES.map(({ tips: _tips, ...raw }) => raw),
-];
+type OgCatalogue = {
+  added: Omit<RawExercise, 'force' | 'level' | 'mechanic'>[];
+  polishNames: Record<string, string>;
+};
+
+/** Built-in exercises: free-exercise-db, our extras, then openGym's (own lazy chunk, loaded only to seed). */
+const defaultLoad = async (): Promise<RawExercise[]> => {
+  const [base, og] = await Promise.all([
+    import('./exercise-db.json').then((m) => (m as { default: RawExercise[] }).default),
+    import('./exercises-og.json').then((m) => (m as unknown as { default: OgCatalogue }).default),
+  ]);
+  const withPl = (r: RawExercise): RawExercise =>
+    og.polishNames[r.id] ? { ...r, namePl: og.polishNames[r.id] } : r;
+  return [
+    ...base.map(withPl),
+    ...EXTRA_EXERCISES.map(({ tips: _tips, ...raw }) => withPl(raw)),
+    ...og.added.map((r): RawExercise => ({ ...r, force: null, level: '', mechanic: null })),
+  ];
+};
 
 export async function seedExercises(
   load: () => Promise<RawExercise[]> = defaultLoad,
@@ -93,7 +111,14 @@ export function filterExercises(
 
   // Normalize a string: replace hyphens/underscores with spaces, lowercase, collapse whitespace
   const normalize = (s: string) =>
-    s.replace(/[-_]/g, ' ').toLowerCase().replace(/\s+/g, ' ').trim();
+    s
+      .normalize('NFD')
+      .replace(/\p{M}/gu, '')
+      .replace(/ł/gi, 'l')
+      .replace(/[-_]/g, ' ')
+      .toLowerCase()
+      .replace(/\s+/g, ' ')
+      .trim();
 
   const tokens =
     query !== undefined && query.trim() !== ''
@@ -103,8 +128,10 @@ export function filterExercises(
   return list
     .filter((ex) => {
       if (tokens.length > 0) {
-        const normalizedName = normalize(ex.name);
-        if (!tokens.every((t) => normalizedName.includes(t))) return false;
+        // English name, Polish name and other names (e.g. "Pec Deck") all count.
+        const haystack = normalize([ex.name, ex.namePl ?? '', ...(ex.aka ?? [])].join(' | '));
+        // Polish endings vary ("maszyna" / "maszynie"): long words match without their last two letters.
+        if (!tokens.every((t) => haystack.includes(t.length > 5 ? t.slice(0, -2) : t))) return false;
       }
       if (muscle != null) {
         if (

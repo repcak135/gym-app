@@ -378,7 +378,7 @@ describe('instrukcje po polsku', () => {
   });
 });
 
-describe('dodatkowe ćwiczenia (wersja 2 bazy)', () => {
+describe('dodatkowe ćwiczenia (wersja 3 bazy)', () => {
   it('istniejący użytkownik z wersją 1 dostaje nowe ćwiczenia; notatki, własne, historia i krok ciężaru zostają', async () => {
     const { db } = await import('./db');
     const { updateSettings } = await import('./settings');
@@ -391,8 +391,8 @@ describe('dodatkowe ćwiczenia (wersja 2 bazy)', () => {
 
     await seedExercises();
 
-    expect(EXERCISE_DB_VERSION).toBe(2);
-    expect((await db.settings.get('app'))?.exerciseDbVersion).toBe(2);
+    expect(EXERCISE_DB_VERSION).toBe(3);
+    expect((await db.settings.get('app'))?.exerciseDbVersion).toBe(3);
     const fly = (await db.exercises.get('Butterfly'))!;
     expect(fly.weightStep).toBe(5);
     expect(fly.aka).toContain('Pec Deck');
@@ -401,7 +401,13 @@ describe('dodatkowe ćwiczenia (wersja 2 bazy)', () => {
     expect(await db.sets.count()).toBe(1);
     const lying = await db.exercises.get('x-lying-chest-press-machine');
     expect(lying).toMatchObject({ name: 'Lying Chest Press Machine', custom: false, equipment: 'machine', images: [] });
-    expect(await db.exercises.count()).toBe(876 + EXTRA_EXERCISES.length + 1);
+    const og = (await import('./exercises-og.json')).default as unknown as { added: unknown[] };
+    expect(await db.exercises.count()).toBe(876 + EXTRA_EXERCISES.length + og.added.length + 1);
+    // openGym: Polish names on existing exercises and new og- exercises
+    expect((await db.exercises.get('Barbell_Bench_Press_-_Medium_Grip'))?.namePl).toBe('Wyciskanie sztangi na ławce płaskiej');
+    const ogEx = await db.exercises.get('og-1041');
+    expect(ogEx).toMatchObject({ custom: false, equipment: 'machine', primaryMuscles: ['chest'], images: [] });
+    expect(ogEx?.namePl).toMatch(/^Wyciskanie/);
   });
 
   it('dodatkowe ćwiczenia: unikalne id x-, nazwy nie dublują bazy, mięśnie ze słownika bazy, polskie kroki i rady', async () => {
@@ -438,6 +444,42 @@ describe('dodatkowe ćwiczenia (wersja 2 bazy)', () => {
         seen.add(k);
       }
     }
+  });
+});
+
+describe('katalog openGym', () => {
+  it('id og-, słownik mięśni i sprzętu jak w bazie, nazwy nie dublują bazy, kroki niepuste', async () => {
+    const og = (await import('./exercises-og.json')).default as unknown as {
+      added: { id: string; name: string; namePl?: string; equipment: string; category: string; primaryMuscles: string[]; secondaryMuscles: string[]; instructions: string[]; images: string[] }[];
+    };
+    const raw = (await import('./exercise-db.json')).default as { name: string; primaryMuscles: string[]; secondaryMuscles: string[]; equipment: string | null; category: string }[];
+    const muscles = new Set(raw.flatMap((e) => [...e.primaryMuscles, ...e.secondaryMuscles]));
+    const equipment = new Set(raw.map((e) => e.equipment));
+    const categories = new Set(raw.map((e) => e.category));
+    const names = new Set(raw.map((e) => e.name.toLowerCase()));
+    expect(og.added.length).toBeGreaterThan(3000);
+    expect(new Set(og.added.map((e) => e.id)).size).toBe(og.added.length);
+    for (const e of og.added) {
+      expect(e.id).toMatch(/^og-\d+$/);
+      expect(names.has(e.name.toLowerCase()), e.name).toBe(false);
+      for (const m of [...e.primaryMuscles, ...e.secondaryMuscles]) expect(muscles.has(m), `${e.name}: ${m}`).toBe(true);
+      expect(equipment.has(e.equipment), e.name).toBe(true);
+      expect(categories.has(e.category), e.name).toBe(true);
+      expect(e.instructions.length, e.name).toBeGreaterThan(0);
+      expect(e.images).toEqual([]);
+    }
+    expect(og.added.filter((e) => e.namePl).length / og.added.length).toBeGreaterThan(0.99);
+  });
+
+  it('szukanie po angielsku i po polsku, bez polskich znaków', () => {
+    const list = [
+      { id: 'a', name: 'Lever Seated Row', namePl: 'Wiosłowanie siedząc na maszynie', primaryMuscles: [], secondaryMuscles: [], equipment: 'machine', category: 'strength', instructions: [], images: [], custom: false },
+      { id: 'b', name: 'Butterfly', aka: ['Pec Deck'], primaryMuscles: [], secondaryMuscles: [], equipment: 'machine', category: 'strength', instructions: [], images: [], custom: false },
+    ];
+    expect(filterExercises(list, { query: 'wioslowanie maszynie' }).map((e) => e.id)).toEqual(['a']);
+    expect(filterExercises(list, { query: 'wiosłowanie maszyna' }).map((e) => e.id)).toEqual(['a']);
+    expect(filterExercises(list, { query: 'seated row' }).map((e) => e.id)).toEqual(['a']);
+    expect(filterExercises(list, { query: 'pec deck' }).map((e) => e.id)).toEqual(['b']);
   });
 });
 

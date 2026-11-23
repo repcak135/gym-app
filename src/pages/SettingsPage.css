@@ -118,3 +118,6 @@
   color: var(--text-muted);
   text-decoration: none;
 }
+
+.settings-about { padding-bottom: var(--space-2); line-height: 1.5; }
+.settings-about a { color: var(--accent); }

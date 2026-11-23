@@ -125,6 +125,17 @@ export default function SettingsPage() {
           </select>
         </SettingRow>
       </section>
+
+      <section className="settings-group" aria-labelledby="set-about">
+        <h2 id="set-about" className="settings-group__title">O aplikacji</h2>
+        <p className="settings-group__hint settings-about">
+          Licencja GNU AGPL v3.0 —{' '}
+          <a href="https://github.com/repcak135/gym-app" target="_blank" rel="noreferrer">kod źródłowy</a>.
+          Ćwiczenia: <a href="https://github.com/yuhonas/free-exercise-db" target="_blank" rel="noreferrer">free-exercise-db</a>{' '}
+          (ze zdjęciami) i opisy z katalogu{' '}
+          <a href="https://github.com/DuarteSantos8/openGym" target="_blank" rel="noreferrer">openGym</a> (AGPL v3.0, bez zdjęć).
+        </p>
+      </section>
     </article>
   );
 }

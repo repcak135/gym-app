@@ -276,3 +276,14 @@
   height: env(safe-area-inset-top);
   background: var(--bg);
 }
+
+.exercise-row__pl {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text);
+  opacity: 0.75;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

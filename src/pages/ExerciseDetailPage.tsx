@@ -276,6 +276,7 @@ export default function ExerciseDetailPage() {
         <h1>{exercise.name}</h1>
         {exercise.custom && <span className="badge-custom">Własne</span>}
       </div>
+      {exercise.namePl && <p className="detail-name-pl">{exercise.namePl}</p>}
 
       {/* Photos (non-custom only) */}
       {!exercise.custom && exercise.images.length > 0 && (

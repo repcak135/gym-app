@@ -107,6 +107,7 @@ export default function ExercisePicker({
                   {ex.name}
                   {ex.custom && <span className="badge-custom">Własne</span>}
                 </span>
+                {ex.namePl && <span className="exercise-row__pl">{ex.namePl}</span>}
                 <span className="exercise-row__meta">{meta}</span>
               </span>
               {inDay ? (

@@ -13,6 +13,8 @@ export interface Exercise {
   custom: boolean;
   weightStep?: number;
   barWeight?: number;
+  /** Polish name (openGym catalogue); shown under the English name and searchable. */
+  namePl?: string;
   /** Other names of the same exercise (old apps, gyms); the import matches them exactly. */
   aka?: string[];
   /** Names of a near-identical exercise: proposed and pre-selected on the import matching screen. */

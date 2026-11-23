@@ -144,7 +144,7 @@ export function normalizeName(name: string): string[] {
   const s = name
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
+    .replace(/\p{M}/gu, '')
     .replace(/ł/g, 'l')
     .replace(/\s*-\s*medium grip\s*$/, '')
     .replace(/\b(pull|push|chin)[\s-]+(downs?|ups?)\b/g, '$1$2')
