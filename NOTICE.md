@@ -16,3 +16,8 @@ Gym is licensed under the GNU Affero General Public License v3.0 (see `LICENSE`)
   (exercise data in `src/data/exercise-db.json`; photos loaded from that repository).
 - Polish tips (`src/data/tips-pl.json`), Polish translations of free-exercise-db instructions (`src/data/instructions-pl.json`)
   and the extra exercises in `src/data/exercises-extra.json` were written for this project.
+
+## Body silhouette
+
+- **react-body-highlighter** — https://github.com/GV79/react-body-highlighter, MIT, © 2020 GV79. The muscle polygons of the body
+  silhouette were copied (not installed as a dependency) into `src/components/stats/bodyPolygons.ts`, with the MIT notice in the file header.

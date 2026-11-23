@@ -1,0 +1,85 @@
+.bodymap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.bodymap__figures {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.bodymap__figure {
+  margin: 0;
+  flex: 0 1 150px;
+  min-width: 0;
+  text-align: center;
+}
+
+.bodymap__svg {
+  display: block;
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.bodymap__caption {
+  margin-top: var(--space-1);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.bodymap__shape {
+  fill: var(--surface-2);
+  stroke: var(--bg);
+  stroke-width: 0.5;
+}
+.bodymap__shape--set0 { fill: var(--accent); fill-opacity: 0.3; }
+.bodymap__shape--set1 { fill: var(--accent); fill-opacity: 0.5; }
+.bodymap__shape--set2 { fill: var(--accent); fill-opacity: 0.75; }
+.bodymap__shape--set3 { fill: var(--accent); fill-opacity: 1; }
+.bodymap__shape--day0 { fill: var(--success); }
+.bodymap__shape--day1 { fill: #f5c542; }
+.bodymap__shape--day2 { fill: #ff7a45; }
+.bodymap__shape--day3 { fill: var(--danger); }
+
+.bodymap__muscle { cursor: pointer; outline: none; }
+.bodymap__muscle:focus-visible .bodymap__shape { stroke: var(--text); stroke-width: 0.8; }
+.bodymap__muscle--selected .bodymap__shape { stroke: var(--text); stroke-width: 1; }
+
+.bodymap__summary {
+  margin: 0;
+  min-height: 1.4em;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.bodymap__legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.bodymap__legend--days { gap: var(--space-2) var(--space-3); }
+.bodymap__legend-item { display: inline-flex; align-items: center; gap: 6px; }
+
+.bodymap__swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: var(--surface-2);
+}
+.bodymap__swatch--set0 { background: var(--accent); opacity: 0.3; }
+.bodymap__swatch--set1 { background: var(--accent); opacity: 0.5; }
+.bodymap__swatch--set2 { background: var(--accent); opacity: 0.75; }
+.bodymap__swatch--set3 { background: var(--accent); }
+.bodymap__swatch--day0 { background: var(--success); }
+.bodymap__swatch--day1 { background: #f5c542; }
+.bodymap__swatch--day2 { background: #ff7a45; }
+.bodymap__swatch--day3 { background: var(--danger); }
