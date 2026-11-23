@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Plus, MoreHorizontal } from 'lucide-react';
+import { Plus, MoreHorizontal, Link2 } from 'lucide-react';
 
 import { db } from '../data/db';
 import { createPlan, renamePlan, copyPlan, deletePlan, setActivePlan } from '../data/plans';
 import type { Plan } from '../data/types';
 import NameSheet from '../components/NameSheet';
+import PasteLinkSheet from '../components/PasteLinkSheet';
 import ConfirmSheet from '../components/ConfirmSheet';
 import { formatDate, daysLabel } from './planFormat';
 import '../components/Sheet.css';
@@ -15,6 +16,7 @@ import './PlansPage.css';
 
 type Modal =
   | { kind: 'new' }
+  | { kind: 'paste' }
   | { kind: 'options'; plan: Plan }
   | { kind: 'rename'; plan: Plan }
   | { kind: 'delete'; plan: Plan }
@@ -75,6 +77,25 @@ export default function PlansPage() {
           </div>
         ))}
       </div>
+
+      <button
+        type="button"
+        className="plan-btn plan-btn--block plans-from-link"
+        onClick={() => setModal({ kind: 'paste' })}
+      >
+        <Link2 size={18} aria-hidden="true" />
+        Dodaj plan z linku
+      </button>
+
+      {modal?.kind === 'paste' && (
+        <PasteLinkSheet
+          onCancel={() => setModal(null)}
+          onOpen={(data) => {
+            setModal(null);
+            navigate(`/plan?d=${data}`);
+          }}
+        />
+      )}
 
       {modal?.kind === 'new' && (
         <NameSheet

@@ -1,0 +1,116 @@
+.pshare__qr {
+  display: flex;
+  justify-content: center;
+  margin: var(--space-4) 0;
+}
+
+.qr {
+  width: min(72vw, 280px);
+  height: min(72vw, 280px);
+  border-radius: 12px;
+  display: block;
+}
+
+.qr--loading { background: var(--surface-2); }
+
+.pshare__toolong {
+  width: 100%;
+  margin: 0;
+  padding: var(--space-4);
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.pshare__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.pshare__actions .plan-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.pshare__status { color: var(--text-muted); margin: var(--space-3) 0 0; }
+
+.pshare__label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.pshare__link {
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--space-3);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.8rem;
+  word-break: break-all;
+  resize: none;
+}
+
+/* Import preview */
+.pimport__day { margin-top: var(--space-4); }
+.pimport__day h2 { font-size: 1.05rem; margin: 0 0 var(--space-2); }
+.pimport__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.pimport__item {
+  padding: var(--space-3);
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.pimport__name { font-weight: 600; overflow-wrap: anywhere; }
+.pimport__meta { display: block; font-size: 0.85rem; color: var(--text-muted); margin-top: 2px; }
+.pimport__badge {
+  display: inline-block;
+  margin-left: var(--space-2);
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  vertical-align: middle;
+}
+.pimport__note {
+  margin: var(--space-4) 0;
+  padding: var(--space-3);
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+.pimport__add {
+  position: sticky;
+  bottom: calc(var(--nav-height) + max(var(--space-3), env(safe-area-inset-bottom)) + var(--space-3));
+  margin-top: var(--space-5);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+}
+.pimport__error { color: var(--danger); }
+
+.paste-sheet__input {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 96px;
+  padding: var(--space-3);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+}

@@ -5,6 +5,9 @@ import { VitePWA } from 'vite-plugin-pwa'
 // https://vite.dev/config/
 export default defineConfig({
   base: process.env.VITE_BASE ?? '/',
+  // Lazy-loaded libraries: pre-bundle them so the dev server does not reload the page
+  // the first time a report or QR code is made.
+  optimizeDeps: { include: ['exceljs', 'qrcode-generator', 'lz-string'] },
   plugins: [
     react(),
     VitePWA({

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, FileSpreadsheet } from 'lucide-react';
+import { Link } from 'react-router';
 
 import {
   computeStats,
@@ -56,7 +57,13 @@ export default function StatsPage() {
   }, [tab]);
   return (
     <article className="stats">
-      <h1>Statystyki</h1>
+      <div className="stats-head">
+        <h1>Statystyki</h1>
+        <Link to="/statystyki/raport" className="stats-report-link">
+          <FileSpreadsheet size={18} aria-hidden="true" />
+          Raport dla trenera
+        </Link>
+      </div>
       <Segmented
         label="Statystyki"
         options={[

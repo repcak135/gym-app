@@ -5,6 +5,9 @@ import StartPage from './pages/StartPage';
 import PlansPage from './pages/PlansPage';
 import PlanDetailPage from './pages/PlanDetailPage';
 import PlanDayPage from './pages/PlanDayPage';
+import PlanSharePage from './pages/PlanSharePage';
+import PlanImportPage from './pages/PlanImportPage';
+import ReportPage from './pages/ReportPage';
 import ExercisesPage from './pages/ExercisesPage';
 import ExerciseDetailPage from './pages/ExerciseDetailPage';
 import ExerciseFormPage from './pages/ExerciseFormPage';
@@ -54,6 +57,8 @@ export default function App() {
           <Route path="/plany" element={<PlansPage />} />
           <Route path="/plany/:planId" element={<PlanDetailPage />} />
           <Route path="/plany/:planId/dni/:dayId" element={<PlanDayPage />} />
+          <Route path="/plany/:planId/wyslij" element={<PlanSharePage />} />
+          <Route path="/plan" element={<PlanImportPage />} />
           <Route path="/cwiczenia" element={<ExercisesPage />} />
           <Route path="/cwiczenia/nowe" element={<ExerciseFormPage />} />
           <Route path="/cwiczenia/:id/edytuj" element={<ExerciseFormPage />} />
@@ -61,6 +66,7 @@ export default function App() {
           <Route path="/historia" element={<HistoryPage />} />
           <Route path="/historia/:id" element={<WorkoutDetailPage />} />
           <Route path="/statystyki" element={<StatsPage />} />
+          <Route path="/statystyki/raport" element={<ReportPage />} />
           <Route path="/ustawienia" element={<SettingsPage />} />
           <Route path="/ustawienia/import" element={<ImportPage />} />
           <Route path="/ustawienia/kopia" element={<BackupPage />} />

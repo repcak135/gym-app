@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { ArrowLeft, Pencil, ChevronUp, ChevronDown, MoreHorizontal } from 'lucide-react';
+import { ArrowLeft, Pencil, ChevronUp, ChevronDown, MoreHorizontal, Send } from 'lucide-react';
 
 import { db } from '../data/db';
 import { renamePlan, setActivePlan, addDay, renameDay, moveDay, deleteDay } from '../data/plans';
@@ -118,6 +118,11 @@ export default function PlanDetailPage() {
       >
         Dodaj dzień
       </button>
+
+      <Link to={`/plany/${plan.id}/wyslij`} className="plan-btn plan-btn--block plan-share-link">
+        <Send size={18} aria-hidden="true" />
+        Wyślij plan
+      </Link>
 
       {modal?.kind === 'renamePlan' && (
         <NameSheet
