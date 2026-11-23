@@ -148,3 +148,8 @@
 .linechart__dot--sel {
   fill: var(--text);
 }
+
+/* Swipe-to-delete inside the card: flat rows on the card colour. */
+.body-list .swipe-row,
+.body-list .swipe-row__action { border-radius: 0; }
+.body-list .swipe-row__content { background: var(--surface); }

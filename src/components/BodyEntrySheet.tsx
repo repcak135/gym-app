@@ -1,6 +1,8 @@
 import { useState } from 'react';
 
-import { BODY_METRICS, deleteBodyEntry, entryValues, saveBodyEntry } from '../data/body';
+import { BODY_METRICS, entryValues, saveBodyEntry } from '../data/body';
+import { removeBodyEntryUndoable } from '../data/undoable';
+import { showUndo } from '../undo';
 import type { BodyEntry, BodyMetric } from '../data/types';
 import ConfirmSheet from './ConfirmSheet';
 import './Sheet.css';
@@ -61,7 +63,8 @@ export default function BodyEntrySheet({ entry, onClose }: { entry?: BodyEntry; 
       <ConfirmSheet
         title="Usunąć ten pomiar?"
         onConfirm={async () => {
-          await deleteBodyEntry(entry.id);
+          const restore = await removeBodyEntryUndoable(entry.id);
+          showUndo('Usunięto pomiar', restore);
           onClose();
         }}
         onCancel={() => setConfirmDelete(false)}

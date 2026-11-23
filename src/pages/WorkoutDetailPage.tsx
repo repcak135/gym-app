@@ -4,7 +4,9 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { ArrowLeft } from 'lucide-react';
 
 import { db } from '../data/db';
-import { getWorkoutDetail, deleteWorkout, workoutDurationSec } from '../data/history';
+import { getWorkoutDetail, workoutDurationSec } from '../data/history';
+import { removeWorkoutUndoable } from '../data/undoable';
+import { showUndo } from '../undo';
 import { getSettings } from '../data/settings';
 import { formatClock, formatKg, formatRir } from '../data/progression';
 import type { WorkoutSet } from '../data/types';
@@ -122,7 +124,10 @@ export default function WorkoutDetailPage() {
           title="Usunąć ten trening?"
           onCancel={() => setConfirmDelete(false)}
           onConfirm={() => {
-            void deleteWorkout(id).then(() => navigate('/historia', { replace: true }));
+            void removeWorkoutUndoable(id).then((restore) => {
+              showUndo('Usunięto trening', restore);
+              navigate('/historia', { replace: true });
+            });
           }}
         />
       )}

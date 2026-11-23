@@ -349,7 +349,7 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 .rest-bar__track { height: 4px; background: var(--border); }
-.rest-bar__fill { height: 100%; background: var(--accent); transform-origin: left; transition: transform 0.25s linear; }
+.rest-bar__fill { height: 100%; background: var(--accent); transform-origin: left; transition: transform 1s linear; } /* ticks every 1 s: glide between them */
 .rest-bar__row { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4); }
 .rest-bar__label { color: var(--text-muted); font-size: 0.85rem; }
 .rest-bar__time { flex: 1; font-size: 1.7rem; font-weight: 800; color: var(--accent); }
@@ -508,3 +508,31 @@
   touch-action: manipulation;
 }
 .set-editor__rir button[aria-pressed='true'] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+
+/* ---- Motion (stage 8) ---- */
+
+/* Ticked set: green sweeps in from the left, the check pops. */
+.set-row { position: relative; overflow: hidden; isolation: isolate; }
+.set-row--just-done { background: var(--surface); }
+.set-row--just-done::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--success-soft);
+  transform-origin: left;
+  animation: set-fill var(--dur) var(--ease-out) both;
+}
+.set-row--just-done .set-row__num { animation: set-num 240ms var(--ease-out); }
+.set-row--just-done .set-row__check svg { animation: check-pop 260ms cubic-bezier(0.3, 1.6, 0.5, 1) both; }
+
+@keyframes set-fill { from { transform: scaleX(0); } }
+@keyframes set-num { 50% { transform: scale(1.18); } }
+@keyframes check-pop {
+  from { transform: scale(0.2); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* Rest bar rises in from the bottom. */
+.rest-bar { animation: rest-in var(--dur) var(--ease-out); }
+@keyframes rest-in { from { transform: translateY(24px); opacity: 0; } }

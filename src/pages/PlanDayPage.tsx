@@ -11,8 +11,10 @@ import {
   addItems,
   updateItem,
   moveItem,
-  removeItem,
 } from '../data/plans';
+import { removeItemUndoable } from '../data/undoable';
+import { showUndo } from '../undo';
+import SwipeRow from '../components/SwipeRow';
 import type { Exercise, PlanItem } from '../data/types';
 import ExerciseThumb from '../components/ExerciseThumb';
 import ExercisePicker from '../components/ExercisePicker';
@@ -99,6 +101,11 @@ interface ItemCardProps {
   exercise: Exercise | undefined;
 }
 
+async function removeItemWithUndo(planId: string, dayId: string, index: number, name: string) {
+  const restore = await removeItemUndoable(planId, dayId, index);
+  showUndo(`Usunięto ćwiczenie „${name}”`, restore);
+}
+
 function ItemCard({ planId, dayId, index, count, item, exercise }: ItemCardProps) {
   const name = exercise?.name ?? 'Nieznane ćwiczenie';
   const patch = (p: Partial<Omit<PlanItem, 'exerciseId'>>) => void updateItem(planId, dayId, index, p);
@@ -163,7 +170,7 @@ function ItemCard({ planId, dayId, index, count, item, exercise }: ItemCardProps
           type="button"
           className="icon-btn icon-btn--danger"
           aria-label={`Usuń: ${name}`}
-          onClick={() => void removeItem(planId, dayId, index)}
+          onClick={() => void removeItemWithUndo(planId, dayId, index, name)}
         >
           <Trash2 size={18} aria-hidden="true" />
         </button>
@@ -212,10 +219,15 @@ export default function PlanDayPage() {
 
       {day.items.length === 0 && <p className="plan-muted">Brak ćwiczeń w tym dniu.</p>}
 
-      <div className="plan-list">
+      <div className="plan-list list-in">
         {day.items.map((item, i) => (
-          <ItemCard
+          <SwipeRow
             key={`${i}-${item.exerciseId}`}
+            label={exercises?.[i]?.name ?? 'Nieznane ćwiczenie'}
+            onDelete={() => removeItemWithUndo(plan.id, day.id, i, exercises?.[i]?.name ?? 'Nieznane ćwiczenie')}
+            index={i}
+          >
+          <ItemCard
             planId={plan.id}
             dayId={day.id}
             index={i}
@@ -223,6 +235,7 @@ export default function PlanDayPage() {
             item={item}
             exercise={exercises?.[i]}
           />
+          </SwipeRow>
         ))}
       </div>
 

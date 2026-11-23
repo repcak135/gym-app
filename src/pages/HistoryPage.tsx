@@ -7,6 +7,9 @@ import { listFinishedWorkouts, workoutDays, type WorkoutListItem } from '../data
 import { formatClock } from '../data/progression';
 import { exercisesLabel, formatDay } from './planFormat';
 import { MONTHS, MONTHS_GENITIVE, WEEKDAYS_SHORT, setsLabel } from './historyFormat';
+import { removeWorkoutUndoable } from '../data/undoable';
+import { showUndo } from '../undo';
+import SwipeRow from '../components/SwipeRow';
 import './HistoryPage.css';
 
 const WEEK_HEADER = ['pn', 'wt', 'śr', 'cz', 'pt', 'so', 'nd'];
@@ -115,9 +118,16 @@ export default function HistoryPage() {
       {items && shown.length === 0 && <p className="history-empty">Brak treningów w tym miesiącu.</p>}
 
       {shown.length > 0 && (
-        <ul className="history-list" aria-label="Treningi">
-          {shown.map(({ workout, sets, exercises, durationSec }) => (
-            <li key={workout.id}>
+        <ul className="history-list list-in" aria-label="Treningi">
+          {shown.map(({ workout, sets, exercises, durationSec }, i) => (
+            <li key={workout.id} style={{ '--i': i } as React.CSSProperties}>
+              <SwipeRow
+                label={`${workout.name}, ${formatDay(workout.startedAt)}`}
+                onDelete={async () => {
+                  const restore = await removeWorkoutUndoable(workout.id);
+                  showUndo(`Usunięto trening „${workout.name}”`, restore);
+                }}
+              >
               <Link to={`/historia/${workout.id}`} className="history-item">
                 <span className="history-item__date">
                   {WEEKDAYS_SHORT[new Date(workout.startedAt).getDay()]}, {formatDay(workout.startedAt)}
@@ -129,6 +139,7 @@ export default function HistoryPage() {
                   {durationSec !== undefined && ` · ${formatClock(durationSec)}`}
                 </span>
               </Link>
+              </SwipeRow>
             </li>
           ))}
         </ul>

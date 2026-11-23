@@ -1,0 +1,69 @@
+/* =========================================================
+   Motion: short, transform/opacity only, off for reduced motion
+   ========================================================= */
+
+:root {
+  --dur-fast: 120ms;
+  --dur: 200ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Screen enter: deeper screens come from the right, going back from the left,
+   tab switches fade up a little. */
+.screen--fwd  { animation: screen-in-fwd var(--dur) var(--ease-out); }
+.screen--back { animation: screen-in-back var(--dur) var(--ease-out); }
+.screen--fade { animation: screen-in-fade var(--dur) var(--ease-out); }
+/* The workout has a fixed rest bar: a transformed parent would move it, so opacity only. */
+.screen--still { animation: screen-in-opacity var(--dur) ease-out; }
+
+@keyframes screen-in-fwd  { from { opacity: 0; transform: translateX(14px); } }
+@keyframes screen-in-back { from { opacity: 0; transform: translateX(-14px); } }
+@keyframes screen-in-fade { from { opacity: 0; transform: translateY(6px); } }
+@keyframes screen-in-opacity { from { opacity: 0; } }
+
+/* List rows slide in on mount, lightly staggered (stagger capped at 8 rows). */
+.list-in > * {
+  animation: item-in var(--dur) var(--ease-out) backwards; /* backwards: no lingering transform after the end */
+  animation-delay: calc(min(var(--i, 0), 8) * 25ms);
+}
+
+@keyframes item-in { from { opacity: 0; transform: translateY(8px); } }
+
+/* Press feedback (the separate `scale` property leaves existing transforms alone). */
+button,
+.plan-btn,
+.plan-card__link,
+.day-row__link,
+.history-item {
+  transition-property: scale, background-color, color, border-color, opacity;
+  transition-duration: var(--dur-fast);
+  transition-timing-function: ease-out;
+}
+
+button:not(:disabled):active,
+.plan-btn:active {
+  scale: 0.97;
+}
+
+.swipe-row--dragging button:active,
+.swipe-row--dragging .plan-btn:active {
+  scale: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  button:not(:disabled):active,
+  .plan-btn:active {
+    scale: none;
+  }
+}

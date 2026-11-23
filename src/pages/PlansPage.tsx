@@ -4,7 +4,10 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { Plus, MoreHorizontal, Link2 } from 'lucide-react';
 
 import { db } from '../data/db';
-import { createPlan, renamePlan, copyPlan, deletePlan, setActivePlan } from '../data/plans';
+import { createPlan, renamePlan, copyPlan, setActivePlan } from '../data/plans';
+import { removePlanUndoable } from '../data/undoable';
+import { showUndo } from '../undo';
+import SwipeRow from '../components/SwipeRow';
 import type { Plan } from '../data/types';
 import NameSheet from '../components/NameSheet';
 import PasteLinkSheet from '../components/PasteLinkSheet';
@@ -29,6 +32,11 @@ export default function PlansPage() {
   const [modal, setModal] = useState<Modal>(null);
 
   const activeId = settings?.activePlanId;
+
+  const removePlan = async (plan: Plan) => {
+    const restore = await removePlanUndoable(plan.id);
+    showUndo(`Usunięto plan „${plan.name}”`, restore);
+  };
   const sorted = plans ? [...plans].sort((a, b) => a.name.localeCompare(b.name, 'pl')) : [];
 
   return (
@@ -54,9 +62,10 @@ export default function PlansPage() {
         </div>
       )}
 
-      <div className="plan-list">
-        {sorted.map((plan) => (
-          <div key={plan.id} className="plan-card">
+      <div className="plan-list list-in">
+        {sorted.map((plan, i) => (
+          <SwipeRow key={plan.id} label={plan.name} onDelete={() => removePlan(plan)} index={i}>
+          <div className="plan-card">
             <Link to={`/plany/${plan.id}`} className="plan-card__link" aria-label={plan.name}>
               <span className="plan-card__name">
                 {plan.name}
@@ -75,6 +84,7 @@ export default function PlansPage() {
               <MoreHorizontal size={22} aria-hidden="true" />
             </button>
           </div>
+          </SwipeRow>
         ))}
       </div>
 
@@ -166,7 +176,7 @@ export default function PlansPage() {
         <ConfirmSheet
           title="Usunąć plan?"
           onCancel={() => setModal(null)}
-          onConfirm={() => { void deletePlan(modal.plan.id); setModal(null); }}
+          onConfirm={() => { void removePlan(modal.plan); setModal(null); }}
         />
       )}
     </article>

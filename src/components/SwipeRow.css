@@ -1,0 +1,67 @@
+.swipe-row {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+
+.swipe-row--collapse {
+  transition: height 180ms var(--ease-out), margin 180ms var(--ease-out);
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Red delete button waiting behind the row, on the right. */
+.swipe-row__action {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: var(--danger);
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.swipe-row__label {
+  width: 88px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.swipe-row__content {
+  position: relative;
+  /* The browser keeps vertical scrolling; horizontal movement comes to us. */
+  touch-action: pan-y;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.swipe-row--dragging .swipe-row__content { will-change: transform; user-select: none; -webkit-user-select: none; }
+
+/* Links and images inside must not start a native drag (it cancels the swipe). */
+.swipe-row__content a,
+.swipe-row__content img { -webkit-user-drag: none; }
+
+/* Rows inside keep their own card background so the red never shows through. */
+.swipe-row:not(.swipe-row--open):not(.swipe-row--dragging):not([data-phase='out']):not([data-phase='gone']) .swipe-row__action {
+  visibility: hidden;
+  /* wait until the row has slid back before hiding the red */
+  transition: visibility 0s linear var(--dur);
+}
+
+/* While the red shows, the whole strip behind the row is red (a full swipe uncovers all of it). */
+.swipe-row--open,
+.swipe-row--dragging,
+.swipe-row[data-phase='out'] {
+  background: var(--danger);
+}

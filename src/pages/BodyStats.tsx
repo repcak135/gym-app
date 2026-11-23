@@ -18,6 +18,9 @@ import LineChart from '../components/stats/LineChart';
 import BodyEntrySheet from '../components/BodyEntrySheet';
 import { MONTHS_GENITIVE } from './historyFormat';
 import './BodyStats.css';
+import { removeBodyEntryUndoable } from '../data/undoable';
+import { showUndo } from '../undo';
+import SwipeRow from '../components/SwipeRow';
 
 const PERIODS: { key: Period; label: string }[] = [
   { key: 'week', label: 'Tydzień' },
@@ -177,12 +180,20 @@ export default function BodyStats() {
           <ul className="body-list" aria-label={`Pomiary: ${meta.label}`}>
             {withMetric.map((e) => (
               <li key={e.id}>
-                <button type="button" className="body-row" onClick={() => setSheet({ entry: e })}>
-                  <span className="body-row__name">{dateLabel(e.date)}</span>
-                  <span className="body-row__val">
-                    {fmt(entryValues(e)[metric]!)} {meta.unit}
-                  </span>
-                </button>
+                <SwipeRow
+                  label={`pomiar z ${dateLabel(e.date)}`}
+                  onDelete={async () => {
+                    const restore = await removeBodyEntryUndoable(e.id);
+                    showUndo(`Usunięto pomiar z ${dateLabel(e.date)}`, restore);
+                  }}
+                >
+                  <button type="button" className="body-row" onClick={() => setSheet({ entry: e })}>
+                    <span className="body-row__name">{dateLabel(e.date)}</span>
+                    <span className="body-row__val">
+                      {fmt(entryValues(e)[metric]!)} {meta.unit}
+                    </span>
+                  </button>
+                </SwipeRow>
               </li>
             ))}
           </ul>

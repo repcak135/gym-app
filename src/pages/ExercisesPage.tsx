@@ -15,6 +15,9 @@ import ExerciseThumb from '../components/ExerciseThumb';
 import FilterSheet from '../components/FilterSheet';
 import Segmented from '../components/stats/Segmented';
 import { exercisesLabel } from './planFormat';
+import { removeCustomExerciseUndoable } from '../data/undoable';
+import { showUndo } from '../undo';
+import SwipeRow from '../components/SwipeRow';
 import './ExercisesPage.css';
 
 const PAGE_SIZE = 60;
@@ -223,7 +226,7 @@ export default function ExercisesPage() {
               ex.primaryMuscles.map(muscleLabel).join(', '),
               equipmentLabel(ex.equipment),
             ].filter(Boolean);
-            return (
+            const row = (
               <Link
                 key={ex.id}
                 to={`/cwiczenia/${encodeURIComponent(ex.id)}`}
@@ -240,6 +243,24 @@ export default function ExercisesPage() {
                   <span className="exercise-row__meta">{metaParts.join(' · ')}</span>
                 </span>
               </Link>
+            );
+            if (scope !== 'moje' || !ex.custom) return row;
+            // Own exercises can be swiped away (unless a plan or the history still uses them).
+            return (
+              <SwipeRow
+                key={ex.id}
+                label={ex.name}
+                onDelete={async () => {
+                  const res = await removeCustomExerciseUndoable(ex.id);
+                  if (!res.ok) {
+                    showUndo(res.reason);
+                    return false;
+                  }
+                  showUndo(`Usunięto ćwiczenie „${ex.name}”`, res.restore);
+                }}
+              >
+                {row}
+              </SwipeRow>
             );
           })}
         </div>

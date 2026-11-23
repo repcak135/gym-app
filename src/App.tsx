@@ -1,6 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { HashRouter, Routes, Route, useLocation, useNavigate } from 'react-router';
 import BottomNav from './components/BottomNav';
+import UndoToast from './components/UndoToast';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { db } from './data/db';
+import { setHapticsEnabled } from './haptics';
 import StartPage from './pages/StartPage';
 import PlansPage from './pages/PlansPage';
 import PlanDetailPage from './pages/PlanDetailPage';
@@ -46,12 +50,45 @@ function ResumeWorkout() {
   return null;
 }
 
+// Short pulses follow Ustawienia > Wibracja.
+function HapticsSetting() {
+  const vibration = useLiveQuery(async () => (await db.settings.get('app'))?.restVibration, []);
+  useEffect(() => {
+    setHapticsEnabled(vibration !== false);
+  }, [vibration]);
+  return null;
+}
+
+const depth = (path: string) => path.split('/').filter(Boolean).length;
+
+/** Keyed on the path so each screen plays a short enter animation; direction from path depth. */
+function Screen({ children }: { children: ReactNode }) {
+  const { pathname } = useLocation();
+  // "Previous path" kept in state and updated during render (React's derived-state pattern).
+  const [seen, setSeen] = useState({ path: pathname, dir: 'fade' });
+  let dir = seen.dir;
+  if (seen.path !== pathname) {
+    const a = depth(seen.path);
+    const b = depth(pathname);
+    dir = b > a ? 'fwd' : b < a ? 'back' : 'fade';
+    setSeen({ path: pathname, dir });
+  }
+  const kind = pathname.startsWith('/trening') ? 'still' : dir;
+  return (
+    <div key={pathname} className={`screen screen--${kind}`}>
+      {children}
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <HashRouter>
       <ScrollToTop />
       <ResumeWorkout />
+      <HapticsSetting />
       <main>
+        <Screen>
         <Routes>
           <Route path="/" element={<StartPage />} />
           <Route path="/plany" element={<PlansPage />} />
@@ -73,7 +110,9 @@ export default function App() {
           <Route path="/trening" element={<WorkoutPage />} />
           <Route path="/trening/podsumowanie/:id" element={<WorkoutSummaryPage />} />
         </Routes>
+        </Screen>
       </main>
+      <UndoToast />
       <BottomNav />
     </HashRouter>
   );

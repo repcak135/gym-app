@@ -4,7 +4,10 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { ArrowLeft, Pencil, ChevronUp, ChevronDown, MoreHorizontal, Send } from 'lucide-react';
 
 import { db } from '../data/db';
-import { renamePlan, setActivePlan, addDay, renameDay, moveDay, deleteDay } from '../data/plans';
+import { renamePlan, setActivePlan, addDay, renameDay, moveDay } from '../data/plans';
+import { removeDayUndoable } from '../data/undoable';
+import { showUndo } from '../undo';
+import SwipeRow from '../components/SwipeRow';
 import type { PlanDay } from '../data/types';
 import NameSheet from '../components/NameSheet';
 import ConfirmSheet from '../components/ConfirmSheet';
@@ -44,6 +47,11 @@ export default function PlanDetailPage() {
 
   const isActive = settings?.activePlanId === plan.id;
 
+  const removeDay = async (day: PlanDay) => {
+    const restore = await removeDayUndoable(plan.id, day.id);
+    showUndo(`Usunięto dzień „${day.name}”`, restore);
+  };
+
   return (
     <article>
       <Link to="/plany" className="plan-back" aria-label="Wróć do planów">
@@ -74,9 +82,10 @@ export default function PlanDetailPage() {
         )}
       </div>
 
-      <div className="plan-list">
+      <div className="plan-list list-in">
         {plan.days.map((day, i) => (
-          <div key={day.id} className="day-row">
+          <SwipeRow key={day.id} label={day.name} onDelete={() => removeDay(day)} index={i}>
+          <div className="day-row">
             <Link to={`/plany/${plan.id}/dni/${day.id}`} className="day-row__link" aria-label={day.name}>
               <span className="day-row__name">{day.name}</span>
               <span className="day-row__meta">{exercisesLabel(day.items.length)}</span>
@@ -108,6 +117,7 @@ export default function PlanDetailPage() {
               <MoreHorizontal size={22} aria-hidden="true" />
             </button>
           </div>
+          </SwipeRow>
         ))}
       </div>
 
@@ -190,7 +200,7 @@ export default function PlanDetailPage() {
         <ConfirmSheet
           title="Usunąć dzień?"
           onCancel={() => setModal(null)}
-          onConfirm={() => { void deleteDay(plan.id, modal.day.id); setModal(null); }}
+          onConfirm={() => { void removeDay(modal.day); setModal(null); }}
         />
       )}
     </article>

@@ -13,6 +13,7 @@ import {
   updateSet,
 } from '../../data/workouts';
 import { unlockAudio } from '../../audio/beep';
+import { haptic } from '../../haptics';
 import type { InfoTab } from './ExerciseInfoSheet';
 
 interface Props {
@@ -99,6 +100,13 @@ export default function ExercisePanel({
 }: Props) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [calcOpen, setCalcOpen] = useState(false);
+  // The set just ticked off plays the green fill + check pop once.
+  const [justDone, setJustDone] = useState<string | null>(null);
+  useEffect(() => {
+    if (!justDone) return;
+    const id = setTimeout(() => setJustDone(null), 500);
+    return () => clearTimeout(id);
+  }, [justDone]);
   const selected =
     sets.find((s) => s.id === selectedId) ?? sets.find((s) => s.completedAt === undefined) ?? sets.at(-1);
 
@@ -112,6 +120,8 @@ export default function ExercisePanel({
   const complete = async (set: WorkoutSet) => {
     unlockAudio();
     await completeSet(set.id);
+    haptic('tick');
+    setJustDone(set.id);
     setSelectedId(null); // move on to the next undone set
   };
 
@@ -160,7 +170,7 @@ export default function ExercisePanel({
             <li key={s.id}>
               <button
                 type="button"
-                className={`set-row${done ? ' set-row--done' : ''}${isSel ? ' set-row--selected' : ''}${s.warmup ? ' set-row--warmup' : ''}`}
+                className={`set-row${done ? ' set-row--done' : ''}${done && s.id === justDone ? ' set-row--just-done' : ''}${isSel ? ' set-row--selected' : ''}${s.warmup ? ' set-row--warmup' : ''}`}
                 aria-current={isSel ? 'true' : undefined}
                 aria-label={`Seria ${setLabel(sets, s)}: ${formatKg(s.weight)} kg × ${s.reps}${s.rir !== undefined ? `, RIR ${formatRir(s.rir)}` : ''}${done ? ', zaliczona' : ''}`}
                 onClick={() => setSelectedId(s.id)}

@@ -7,7 +7,6 @@ import { db } from '../data/db';
 import {
   getTips,
   saveNote,
-  deleteCustomExercise,
   imageUrl,
   loadPolishInstructions,
   pickInstructions,
@@ -20,6 +19,8 @@ import {
 } from '../data/exerciseLabels';
 import RecordsSection from '../components/RecordsSection';
 import EquipmentIcon from '../components/EquipmentIcon';
+import { removeCustomExerciseUndoable } from '../data/undoable';
+import { showUndo } from '../undo';
 import './ExerciseDetailPage.css';
 import '../components/Sheet.css';
 
@@ -229,8 +230,9 @@ export default function ExerciseDetailPage() {
 
   const handleDelete = async () => {
     setShowConfirm(false);
-    const result = await deleteCustomExercise(exerciseId);
+    const result = await removeCustomExerciseUndoable(exerciseId);
     if (result.ok) {
+      showUndo(`Usunięto ćwiczenie „${exercise?.name ?? ''}”`, result.restore);
       navigate('/cwiczenia', { replace: true });
     } else {
       setDeleteReason(result.reason);

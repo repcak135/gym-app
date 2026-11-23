@@ -211,6 +211,8 @@ test('przyciski mają co najmniej 44 px', async ({ page }) => {
 
   const item = page.locator('section.item-card').first();
   await expect(item).toBeVisible();
+  // Measure after the row's enter animation (a mid-animation box can be a fraction off).
+  await page.waitForFunction(() => document.getAnimations().every((a) => a.playState !== 'running'));
   const controls = item.locator('button, select');
   const n = await controls.count();
   expect(n).toBeGreaterThan(0);
