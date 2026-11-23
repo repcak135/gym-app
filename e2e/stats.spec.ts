@@ -19,7 +19,7 @@ test('statystyki: pusty stan, potem dane z importu (kafelki, mięśnie, sylwetka
   await expect(page.getByRole('heading', { name: 'Wszystko' })).toBeVisible();
   await expect(page.getByRole('group', { name: 'Treningi' })).toContainText('3');
   await expect(page.getByRole('group', { name: 'Serie robocze' })).toContainText('12');
-  await expect(page.getByRole('group', { name: 'Łączny czas' })).toContainText('bez 3 z importu');
+  await expect(page.getByRole('group', { name: 'Łączny czas' })).not.toContainText('z importu');
   await expect(page.getByRole('group', { name: 'Średni czas' })).toContainText('—');
 
   const legend = page.getByRole('list', { name: 'Serie na mięsień' });

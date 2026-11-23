@@ -157,7 +157,6 @@ function TrainingStats() {
             <Tile
               label="Łączny czas"
               value={stats.timedWorkouts > 0 ? formatDuration(stats.totalSec) : '—'}
-              sub={stats.untimedWorkouts > 0 ? `bez ${stats.untimedWorkouts} z importu` : undefined}
             />
             <Tile label="Średni czas" value={stats.avgSec !== undefined ? formatDuration(stats.avgSec) : '—'} />
             <Tile label="Serie robocze" value={String(stats.workingSets)} sub="bez rozgrzewek" />
