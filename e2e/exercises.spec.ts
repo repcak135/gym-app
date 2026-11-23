@@ -5,26 +5,26 @@ const IMAGE_BASE =
 
 // ─── Task 2 tests ────────────────────────────────────────────────────────────
 
-test('lista pokazuje bazę 5110 ćwiczeń', async ({ page }) => {
+test('lista pokazuje bazę 4731 ćwiczeń', async ({ page }) => {
   await page.goto('/#/cwiczenia');
   // Seeding can take up to 15 s on first run
-  await expect(page.getByText('5110 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
 });
 
 test('wyszukiwanie zawęża listę', async ({ page }) => {
   await page.goto('/#/cwiczenia');
-  await expect(page.getByText('5110 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
 
   await page.getByPlaceholder('Szukaj ćwiczenia').fill('barbell squat');
 
   await expect(page.getByRole('link', { name: 'Barbell Squat', exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Dumbbell Bicep Curl', exact: true })).toHaveCount(0);
-  await expect(page.getByText('5110 ćwiczeń')).toHaveCount(0);
+  await expect(page.getByText('4731 ćwiczeń')).toHaveCount(0);
 });
 
 test('filtr Mięśnie i Sprzęt', async ({ page }) => {
   await page.goto('/#/cwiczenia');
-  await expect(page.getByText('5110 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
 
   await page.getByRole('button', { name: 'Mięśnie' }).click();
   const muscleSheet = page.getByRole('dialog', { name: 'Mięśnie' });
@@ -61,7 +61,7 @@ test('szukanie po polsku: polska nazwa pod angielską', async ({ page }) => {
 
 test('wiersz ma co najmniej 44 px', async ({ page }) => {
   await page.goto('/#/cwiczenia');
-  await expect(page.getByText('5110 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
 
   const rows = page.locator('.exercise-row');
   const first = rows.first();
@@ -113,7 +113,7 @@ test('notatka zapisuje się i przetrwa przeładowanie', async ({ page }) => {
 
 test('własne ćwiczenie: utwórz, edytuj, usuń', async ({ page }) => {
   await page.goto('/#/cwiczenia');
-  await expect(page.getByText('5110 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
 
   // Open form via "+" link
   await page.getByRole('link', { name: 'Nowe ćwiczenie' }).click();
@@ -160,7 +160,7 @@ test('własne ćwiczenie: utwórz, edytuj, usuń', async ({ page }) => {
   await expect(page).toHaveURL(/#\/cwiczenia$/);
 
   // Search confirms it's gone
-  await expect(page.getByText('5110 ćwiczeń')).toBeVisible({ timeout: 10_000 });
+  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 10_000 });
   await page.getByPlaceholder('Szukaj ćwiczenia').fill('Wiosło krzywą sztangą');
   // Result count should be 0 ćwiczeń
   await expect(page.getByText('0 ćwiczeń')).toBeVisible({ timeout: 5_000 });

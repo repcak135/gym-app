@@ -378,7 +378,7 @@ describe('instrukcje po polsku', () => {
   });
 });
 
-describe('dodatkowe ćwiczenia (wersja 3 bazy)', () => {
+describe('dodatkowe ćwiczenia (wersja 4 bazy)', () => {
   it('istniejący użytkownik z wersją 1 dostaje nowe ćwiczenia; notatki, własne, historia i krok ciężaru zostają', async () => {
     const { db } = await import('./db');
     const { updateSettings } = await import('./settings');
@@ -391,8 +391,8 @@ describe('dodatkowe ćwiczenia (wersja 3 bazy)', () => {
 
     await seedExercises();
 
-    expect(EXERCISE_DB_VERSION).toBe(3);
-    expect((await db.settings.get('app'))?.exerciseDbVersion).toBe(3);
+    expect(EXERCISE_DB_VERSION).toBe(4);
+    expect((await db.settings.get('app'))?.exerciseDbVersion).toBe(4);
     const fly = (await db.exercises.get('Butterfly'))!;
     expect(fly.weightStep).toBe(5);
     expect(fly.aka).toContain('Pec Deck');
@@ -401,13 +401,17 @@ describe('dodatkowe ćwiczenia (wersja 3 bazy)', () => {
     expect(await db.sets.count()).toBe(1);
     const lying = await db.exercises.get('x-lying-chest-press-machine');
     expect(lying).toMatchObject({ name: 'Lying Chest Press Machine', custom: false, equipment: 'machine', images: [] });
-    const og = (await import('./exercises-og.json')).default as unknown as { added: unknown[] };
-    expect(await db.exercises.count()).toBe(876 + EXTRA_EXERCISES.length + og.added.length + 1);
+    const og = (await import('./exercises-og.json')).default as unknown as { added: unknown[]; merged: Record<string, string> };
+    const extrasKept = EXTRA_EXERCISES.filter((e) => !og.merged[e.id]).length;
+    expect(await db.exercises.count()).toBe(876 + extrasKept + og.added.length + 1);
     // openGym: Polish names on existing exercises and new og- exercises
     expect((await db.exercises.get('Barbell_Bench_Press_-_Medium_Grip'))?.namePl).toBe('Wyciskanie sztangi na ławce płaskiej');
-    const ogEx = await db.exercises.get('og-1041');
-    expect(ogEx).toMatchObject({ custom: false, equipment: 'machine', primaryMuscles: ['chest'], images: [] });
-    expect(ogEx?.namePl).toMatch(/^Wyciskanie/);
+    // og-1041 duplicates our Lying Chest Press Machine: merged into it, its names kept for search
+    expect(await db.exercises.get('og-1041')).toBeUndefined();
+    const lyingPress = (await db.exercises.get('x-lying-chest-press-machine'))!;
+    expect(lyingPress.aka).toContain('Lever Lying Chest Press (Plate Loaded)');
+    expect(lyingPress.namePl).toMatch(/^Wyciskanie w leżeniu/);
+    expect(await db.exercises.get('og-0002')).toMatchObject({ custom: false, images: [] });
   });
 
   it('dodatkowe ćwiczenia: unikalne id x-, nazwy nie dublują bazy, mięśnie ze słownika bazy, polskie kroki i rady', async () => {
@@ -444,6 +448,42 @@ describe('dodatkowe ćwiczenia (wersja 3 bazy)', () => {
         seen.add(k);
       }
     }
+  });
+});
+
+describe('duplikaty (wersja 4)', () => {
+  it('użytkownik z wersją 3: serie, plan, trening, notatka i alias z usuniętego duplikatu przechodzą na zachowane ćwiczenie', async () => {
+    const { db } = await import('./db');
+    const { updateSettings } = await import('./settings');
+    const og = (await import('./exercises-og.json')).default as unknown as { merged: Record<string, string> };
+    const [from, to] = Object.entries(og.merged).find(([f, t]) => f.startsWith('og-') && !t.startsWith('og-'))!;
+    await db.exercises.put({ ...fromDbForTest('Dup'), id: from });
+    await db.sets.put({ id: 's1', workoutId: 'w1', exerciseId: from, exerciseOrder: 0, setOrder: 0, weight: 40, reps: 10, warmup: false, completedAt: 1 });
+    await db.workouts.put({ id: 'w1', name: 'T', startedAt: 1, endedAt: 2, source: 'app', exercises: [{ exerciseId: from, warmupSets: 0, sets: 1, repsMin: 8, repsMax: 12, restSec: 90 }] });
+    await db.plans.put({ id: 'p1', name: 'P', startedAt: '2026-11-01', days: [{ id: 'd1', name: 'A', items: [{ exerciseId: from, warmupSets: 0, sets: 3, repsMin: 8, repsMax: 12, restSec: 90 }] }] });
+    await db.notes.put({ exerciseId: from, text: 'ustawienie 3', updatedAt: 1 });
+    await db.aliases.put({ sourceName: 'Stara nazwa', exerciseId: from });
+    await updateSettings({ exerciseDbVersion: 3 });
+
+    await seedExercises();
+
+    expect(await db.exercises.get(from)).toBeUndefined();
+    expect(await db.exercises.get(to)).toBeDefined();
+    expect((await db.sets.get('s1'))?.exerciseId).toBe(to);
+    expect((await db.workouts.get('w1'))?.exercises?.[0].exerciseId).toBe(to);
+    expect((await db.plans.get('p1'))?.days[0].items[0].exerciseId).toBe(to);
+    expect((await db.notes.get(to))?.text).toContain('ustawienie 3');
+    expect(await db.notes.get(from)).toBeUndefined();
+    expect((await db.aliases.get('Stara nazwa'))?.exerciseId).toBe(to);
+  });
+
+  it('nazwy scalonych duplikatów są wyszukiwalne przy zachowanym ćwiczeniu; zdublowane własne x- znika', async () => {
+    const { db } = await import('./db');
+    await seedExercises();
+    expect(await db.exercises.get('x-cable-front-raise')).toBeUndefined();
+    const kept = (await db.exercises.get('Front_Cable_Raise'))!;
+    expect(kept.aka).toContain('Cable Front Raise');
+    expect(filterExercises([kept], { query: 'cable front raise' })).toHaveLength(1);
   });
 });
 

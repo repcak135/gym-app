@@ -1,0 +1,559 @@
+{
+ "_comment": "Near-duplicate decisions reviewed by hand (2026-11-23). Pairs are exercise names. 'same' pairs are merged, 'different' pairs stay separate. scripts/dedupe-exercises.ts lists new undecided pairs as pending.",
+ "same": [
+  [
+   "Elbow to Knee Side Plank Crunch",
+   "Elbow to Knee Side Plank Crunch (Left)"
+  ],
+  [
+   "Side Plank Leg Lift",
+   "Side Plank Leg Lift (Left)"
+  ],
+  [
+   "Side Plank with Raised Leg V. 2",
+   "Side Plank with Raised Leg V. 2 (Left)"
+  ],
+  [
+   "Bent Press",
+   "Kettlebell Bent Press"
+  ],
+  [
+   "Bodyweight Squat",
+   "Squat"
+  ],
+  [
+   "One Leg Squat",
+   "Bodyweight Single Leg Squat"
+  ],
+  [
+   "Single Leg Squat with Support",
+   "Bodyweight Single Leg Squat with Support"
+  ],
+  [
+   "Supported Squat",
+   "Bodyweight Supported Squat"
+  ],
+  [
+   "Concentration Curls",
+   "Dumbbell Concentration Curl"
+  ],
+  [
+   "Cross Body Hammer Curl",
+   "Dumbbell Cross Body Hammer Curl"
+  ],
+  [
+   "Hammer Curls",
+   "Dumbbell Hammer Curl V. 2"
+  ],
+  [
+   "Incline Hammer Curls",
+   "Dumbbell Incline Hammer Curl"
+  ],
+  [
+   "Standing Concentration Curl",
+   "Dumbbell Standing Concentration Curl"
+  ],
+  [
+   "Standing Inner-Biceps Curl",
+   "Dumbbell Standing Inner Biceps Curl"
+  ],
+  [
+   "Zottman Curl",
+   "Dumbbell Zottman Curl"
+  ],
+  [
+   "Zottman Preacher Curl",
+   "Dumbbell Zottman Preacher Curl"
+  ],
+  [
+   "Cuban Press",
+   "Dumbbell Cuban Press"
+  ],
+  [
+   "Dumbbell Lying Rear Lateral Raise",
+   "Lying Rear Lateral Raise"
+  ],
+  [
+   "External Rotation",
+   "Dumbbell External Rotation"
+  ],
+  [
+   "Iron Cross",
+   "Dumbbell Iron Cross"
+  ],
+  [
+   "One-Arm Incline Lateral Raise",
+   "Dumbbell Incline One Arm Lateral Raise"
+  ],
+  [
+   "Reverse Flyes",
+   "Dumbbell Reverse Fly"
+  ],
+  [
+   "Alternating Floor Press",
+   "Kettlebell Alternating Press on Floor"
+  ],
+  [
+   "Alternating Renegade Row",
+   "Kettlebell Alternating Renegade Row"
+  ],
+  [
+   "Standing Barbell Press Behind Neck",
+   "Standing Behind Neck Press"
+  ],
+  [
+   "Standing Bradford Press",
+   "Barbell Standing Bradford Press"
+  ],
+  [
+   "One-Arm Flat Bench Dumbbell Flye",
+   "Dumbbell One Arm Bench Fly"
+  ],
+  [
+   "Band Pull Apart",
+   "Resistance Band Pull Apart"
+  ],
+  [
+   "External Rotation with Band",
+   "Resistance Band External Rotation"
+  ],
+  [
+   "Band Rear Delt Row",
+   "Resistance Band Rear Delt Row"
+  ],
+  [
+   "Resistance Band Bent over Rear Delt Fly",
+   "Band Bent over Rear Delt Fly"
+  ],
+  [
+   "Ball Leg Curl",
+   "Leg Curl (On Stability Ball)"
+  ],
+  [
+   "Band Single Stiff Leg Deadlift with Single Arm Row",
+   "Resistance Band Single Stiff Leg Deadlift with Single Arm Row"
+  ],
+  [
+   "Press Sit-Up",
+   "Barbell Press Sit-up"
+  ],
+  [
+   "Front Raise And Pullover",
+   "Barbell Front Raise and Pullover"
+  ],
+  [
+   "Drag Curl",
+   "Barbell Drag Curl"
+  ],
+  [
+   "Box Squat",
+   "Barbell Box Squat"
+  ],
+  [
+   "Front Squat (Clean Grip)",
+   "Barbell Clean-grip Front Squat"
+  ],
+  [
+   "Heaving Snatch Balance",
+   "Barbell Heaving Snatch Balance"
+  ],
+  [
+   "Jefferson Squats",
+   "Barbell Jefferson Squat"
+  ],
+  [
+   "Jerk Dip Squat",
+   "Barbell Jerk Dip Squat"
+  ],
+  [
+   "Narrow Stance Squats",
+   "Barbell Narrow Stance Squat"
+  ],
+  [
+   "Olympic Squat",
+   "Barbell Olympic Squat"
+  ],
+  [
+   "Overhead Squat",
+   "Barbell Overhead Squat"
+  ],
+  [
+   "Snatch Balance",
+   "Barbell Snatch Balance"
+  ],
+  [
+   "Speed Squats",
+   "Barbell Speed Squat"
+  ],
+  [
+   "Squat with Chains",
+   "Barbell Squat with Chains"
+  ],
+  [
+   "Zercher Squats",
+   "Barbell Zercher Squat"
+  ],
+  [
+   "Weighted Chain Sumo Deadlift",
+   "Barbell Weighted Chains Sumo Deadlift"
+  ],
+  [
+   "Body Tricep Press",
+   "Triceps Press"
+  ],
+  [
+   "One Arm Floor Press",
+   "Barbell One Arm Floor Press"
+  ],
+  [
+   "Pin Presses",
+   "Barbell Pin Presses"
+  ],
+  [
+   "Band Push Up",
+   "Resistance Band Push Up"
+  ],
+  [
+   "Lying Cambered Barbell Row",
+   "Cambered Bar Lying Row"
+  ],
+  [
+   "Reverse Grip Bent-Over Rows",
+   "Barbell Reverse Grip Bent over Row"
+  ],
+  [
+   "Chair Squat",
+   "Lever Chair Squat"
+  ],
+  [
+   "Leg Extensions",
+   "Lever Leg Extension"
+  ],
+  [
+   "Single-Leg Leg Extension",
+   "Lever One Leg Extension"
+  ],
+  [
+   "Frog Hip Thrust",
+   "Bodyweight Frog Hip Thrust"
+  ],
+  [
+   "Straight Leg Kickback (Kneeling)",
+   "Kneeling Straight Leg Kickback V. 2 (Left)"
+  ],
+  [
+   "Single Leg Bridge with Outstretched Leg",
+   "Single Leg Bridge with Outstretched Leg (Left)"
+  ],
+  [
+   "Single Straight Leg Glute Bridge Hold",
+   "Single Straight Leg Glute Bridge Hold (Left)"
+  ],
+  [
+   "Close-Grip Front Lat Pulldown",
+   "Cable Close Grip Front Lat Pulldown"
+  ],
+  [
+   "Full Range-Of-Motion Lat Pulldown",
+   "Cable Lat Pulldown Full Range of Motion"
+  ],
+  [
+   "One Arm Lat Pulldown",
+   "Cable One Arm Lat Pulldown"
+  ],
+  [
+   "Rope Straight-Arm Pulldown",
+   "Cable Straight Arm Pulldown (With Rope)"
+  ],
+  [
+   "Straight-Arm Pulldown",
+   "Cable Straight Arm Pulldown"
+  ],
+  [
+   "Wide-Grip Lat Pulldown",
+   "Cable Wide Grip Lat Pulldown"
+  ],
+  [
+   "Cable Rope Overhead Triceps Extension",
+   "Triceps Overhead Extension with Rope"
+  ],
+  [
+   "Calf Press",
+   "Lever Calf Press"
+  ],
+  [
+   "Seated Calf Raise",
+   "Lever Seated Calf Raise"
+  ],
+  [
+   "Calf Raises - With Bands",
+   "Resistance Band Calf Raise"
+  ],
+  [
+   "Catch and Overhead Throw",
+   "Medicine Ball Catch and Overhead Throw"
+  ],
+  [
+   "Chest Push from 3 point stance",
+   "Medicine Ball Chest Push from 3 Point Stance"
+  ],
+  [
+   "Chest Push (multiple response)",
+   "Medicine Ball Chest Push Multiple Response"
+  ],
+  [
+   "Chest Push (single response)",
+   "Medicine Ball Chest Push Single Response"
+  ],
+  [
+   "Chest Push with Run Release",
+   "Medicine Ball Chest Push with Run Release"
+  ],
+  [
+   "Good Morning",
+   "Barbell Good Morning"
+  ],
+  [
+   "Romanian Deadlift from Deficit",
+   "Barbell Romanian Deadlift from Deficit"
+  ],
+  [
+   "Tate Press",
+   "Dumbbell Tate Press"
+  ],
+  [
+   "Dumbbell Seated Single Arm Overhead Triceps Extension",
+   "Dumbbell Seated Single Arm Overhead Triceps Extension (Left)"
+  ],
+  [
+   "Spider Curl",
+   "Ez Barbell Spider Curl"
+  ],
+  [
+   "Exercise Ball Crunch",
+   "Crunch (On Stability Ball)"
+  ],
+  [
+   "Exercise Ball Pull-In",
+   "Pull-in (On Stability Ball)"
+  ],
+  [
+   "Palms-Down Wrist Curl Over A Bench",
+   "Barbell Palms Down Wrist Curl over a Bench"
+  ],
+  [
+   "Goblet Squat",
+   "Kettlebell Goblet Squat"
+  ],
+  [
+   "Lying Leg Curls",
+   "Lever Lying Leg Curl"
+  ],
+  [
+   "Seated Leg Curl",
+   "Lever Seated Leg Curl"
+  ],
+  [
+   "Standing Leg Curl",
+   "Lever Standing Leg Curl"
+  ],
+  [
+   "Band Lunges",
+   "Resistance Band Lunge"
+  ],
+  [
+   "Band Pull Through",
+   "Resistance Band Pull Through"
+  ],
+  [
+   "Resistance Band Standing Hip Extension",
+   "Band Standing Hip Extension"
+  ],
+  [
+   "Band Deadlift with Single Arm Row",
+   "Resistance Band Deadlift with Single Arm Row"
+  ],
+  [
+   "Band High Knee Lunge with Single Arm Row",
+   "Resistance Band High Knee Lunge with Single Arm Row"
+  ],
+  [
+   "Band Jump Lunge with Single Arm Row",
+   "Resistance Band Jump Lunge with Single Arm Row"
+  ],
+  [
+   "Squats - With Bands",
+   "Resistance Band Squat"
+  ],
+  [
+   "Band Squat with Single Arm Row",
+   "Resistance Band Squat with Single Arm Row"
+  ],
+  [
+   "Band Squat with Horizontal Pallof Hold",
+   "Resistance Band Squat with Horizontal Pallof Hold"
+  ],
+  [
+   "Band Split Squat with Horizontal Pallof Hold",
+   "Resistance Band Split Squat with Horizontal Pallof Hold"
+  ],
+  [
+   "Band Split Jump with Single Arm Row",
+   "Resistance Band Split Jump with Single Arm Row"
+  ],
+  [
+   "Band Split Squat",
+   "Resistance Band Split Squat"
+  ],
+  [
+   "Bodyweight Standing Calf Raise",
+   "Standing Calf Raise"
+  ],
+  [
+   "Lying T-Bar Row",
+   "Lever Lying T Bar Row"
+  ],
+  [
+   "Band Lying Leg Raise",
+   "Resistance Band Lying Leg Raise"
+  ],
+  [
+   "Resistance Band Seated Hip Abduction",
+   "Band Seated Hip Abduction V. 2"
+  ],
+  [
+   "Band Side Step with Horizontal Pallof Hold",
+   "Resistance Band Side Step with Horizontal Pallof Hold"
+  ],
+  [
+   "Pull Through",
+   "Cable Pull Through"
+  ],
+  [
+   "Supine Chest Throw",
+   "Medicine Ball Supine Chest Throw"
+  ],
+  [
+   "Dumbbell One Arm Snatch",
+   "Dumbbell One Arm Snatch (Left)"
+  ],
+  [
+   "Band Hammer Curl",
+   "Resistance Band Hammer Curl"
+  ],
+  [
+   "Band Biceps Curl",
+   "Band Standard Biceps Curl"
+  ],
+  [
+   "Band Bent over Row V. 2",
+   "Resistance Band Bent over Row"
+  ],
+  [
+   "Band Seated Straight Back Row",
+   "Resistance Band Seated Straight Back Row"
+  ],
+  [
+   "Band Skier",
+   "Resistance Band Skier"
+  ],
+  [
+   "Band Horizontal Pallof Press",
+   "Resistance Band Horizontal Pallof Press"
+  ],
+  [
+   "Resistance Band Air Bike",
+   "Band Air Bike"
+  ],
+  [
+   "Band Front Plank with Single Arm Pulldown",
+   "Resistance Band Front Plank with Single Arm Pulldown"
+  ],
+  [
+   "Band Upper Body Lying Air Bike",
+   "Resistance Band Upper Body Lying Air Bike"
+  ],
+  [
+   "Band Reverse Crunch",
+   "Resistance Band Reverse Crunch"
+  ]
+ ],
+ "different": [
+  [
+   "Lying Leg Raise",
+   "Lying Full Leg Raise"
+  ],
+  [
+   "Lever Seated Crunch",
+   "Lever Seated Full Crunch"
+  ],
+  [
+   "Lever Seated Left Side Crunch",
+   "Lever Seated Right Side Crunch"
+  ],
+  [
+   "Bench Full Squat",
+   "Bodyweight Bench Squat"
+  ],
+  [
+   "Barbell Full Squat",
+   "Barbell Squat"
+  ],
+  [
+   "Barbell Full Squat",
+   "Olympic Squat"
+  ],
+  [
+   "Barbell Full Squat",
+   "Barbell Olympic Squat"
+  ],
+  [
+   "Barbell Squat",
+   "Olympic Squat"
+  ],
+  [
+   "Barbell Squat",
+   "Barbell Olympic Squat"
+  ],
+  [
+   "Zercher Squats",
+   "Barbell Full Zercher Squat"
+  ],
+  [
+   "Barbell Zercher Squat",
+   "Barbell Full Zercher Squat"
+  ],
+  [
+   "Smith Machine Squat",
+   "Smith Full Squat"
+  ],
+  [
+   "Sled Hack Squat",
+   "Sled Full Hack Squat"
+  ],
+  [
+   "Lever Full Squat",
+   "Lever Squat (Plate Loaded)"
+  ],
+  [
+   "Squats - With Bands",
+   "Resistance Band Full Squat"
+  ],
+  [
+   "Resistance Band Full Squat",
+   "Resistance Band Squat"
+  ],
+  [
+   "Dumbbell Swing",
+   "Dumbbell Full Swing"
+  ],
+  [
+   "Kettlebell Swing",
+   "Kettlebell Full Swing"
+  ],
+  [
+   "Lever Neck Left Side Flexion (Plate Loaded)",
+   "Lever Neck Right Side Flexion (Plate Loaded)"
+  ]
+ ]
+}

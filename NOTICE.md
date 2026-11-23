@@ -6,7 +6,7 @@ Gym is licensed under the GNU Affero General Public License v3.0 (see `LICENSE`)
 
 - **openGym exercise catalogue (text only)** — https://github.com/DuarteSantos8/openGym, `catalogue/exercises/` and the Polish
   translations in `catalogue/i18n/pl.json`, licensed under the GNU AGPL v3.0. Names, muscles, equipment and instructions were
-  converted by `scripts/build-opengym.ts` into `src/data/exercises-og.json` (muscle and equipment words mapped to
+  converted by `scripts/build-opengym.ts` (then `scripts/dedupe-exercises.ts` merges duplicates, see `docs/exercise-duplicates.md`) into `src/data/exercises-og.json` (muscle and equipment words mapped to
   free-exercise-db's vocabulary, gym-irrelevant categories left out, exercises already in free-exercise-db merged).
   openGym marks part of its catalogue text as originating from ExerciseDB (`"textSource": "exercisedb"`); it is included here
   as distributed by openGym.

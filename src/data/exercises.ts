@@ -7,7 +7,8 @@ import akaData from './exercise-aka.json';
 
 // 2: built-in extra exercises (machines, cables, Smith) and other names for matching the import.
 // 3: openGym catalogue text (AGPL-3.0): ~4200 more exercises, Polish names.
-export const EXERCISE_DB_VERSION = 3;
+// 4: duplicates merged (scripts/dedupe-exercises.ts); user data on removed ids moves to the kept exercise.
+export const EXERCISE_DB_VERSION = 4;
 
 type AkaEntry = { aka?: string[]; similar?: string[]; maybe?: string[] };
 const AKA = akaData as Record<string, AkaEntry>;
@@ -26,6 +27,8 @@ export type RawExercise = {
   id: string;
   name: string;
   namePl?: string;
+  /** Names of duplicates merged into this exercise (search + import matching). */
+  mergedNames?: string[];
   force: string | null;
   level: string;
   mechanic: string | null;
@@ -38,7 +41,7 @@ export type RawExercise = {
 };
 
 export function fromDb(raw: RawExercise): Exercise {
-  return {
+  const ex: Exercise = {
     id: raw.id,
     name: raw.name,
     primaryMuscles: raw.primaryMuscles,
@@ -52,30 +55,69 @@ export function fromDb(raw: RawExercise): Exercise {
     ...(raw.namePl ? { namePl: raw.namePl } : {}),
     ...AKA[raw.name],
   };
+  if (raw.mergedNames?.length) ex.aka = [...new Set([...(ex.aka ?? []), ...raw.mergedNames])];
+  return ex;
 }
 
 type OgCatalogue = {
   added: Omit<RawExercise, 'force' | 'level' | 'mechanic'>[];
   polishNames: Record<string, string>;
+  /** Names of merged duplicates, by the id that was kept: searchable and matched by the import. */
+  aliases: Record<string, string[]>;
+  /** Removed duplicate id → kept id. */
+  merged: Record<string, string>;
 };
+
+const loadOg = () =>
+  import('./exercises-og.json').then((m) => (m as unknown as { default: OgCatalogue }).default);
 
 /** Built-in exercises: free-exercise-db, our extras, then openGym's (own lazy chunk, loaded only to seed). */
 const defaultLoad = async (): Promise<RawExercise[]> => {
   const [base, og] = await Promise.all([
     import('./exercise-db.json').then((m) => (m as { default: RawExercise[] }).default),
-    import('./exercises-og.json').then((m) => (m as unknown as { default: OgCatalogue }).default),
+    loadOg(),
   ]);
   const withPl = (r: RawExercise): RawExercise =>
     og.polishNames[r.id] ? { ...r, namePl: og.polishNames[r.id] } : r;
   return [
     ...base.map(withPl),
-    ...EXTRA_EXERCISES.map(({ tips: _tips, ...raw }) => withPl(raw)),
+    ...EXTRA_EXERCISES.filter((e) => !og.merged[e.id]).map(({ tips: _tips, ...raw }) => withPl(raw)),
     ...og.added.map((r): RawExercise => ({ ...r, force: null, level: '', mechanic: null })),
-  ];
+  ].map((r) => (og.aliases[r.id] ? { ...r, mergedNames: og.aliases[r.id] } : r));
 };
+
+const defaultMerged = async (): Promise<Record<string, string>> => (await loadOg()).merged;
+
+/** Moves everything that points at a removed duplicate to the exercise that was kept. */
+export async function remapExercise(from: string, to: string): Promise<void> {
+  await db.transaction('rw', [db.exercises, db.sets, db.notes, db.plans, db.workouts, db.aliases], async () => {
+    await db.sets.where('exerciseId').equals(from).modify({ exerciseId: to });
+    const note = await db.notes.get(from);
+    if (note) {
+      const kept = await db.notes.get(to);
+      await db.notes.put({ ...note, exerciseId: to, text: kept ? `${kept.text}\n${note.text}` : note.text });
+      await db.notes.delete(from);
+    }
+    await db.aliases.filter((a) => a.exerciseId === from).modify({ exerciseId: to });
+    await db.plans.toCollection().modify((plan) => {
+      for (const day of plan.days) for (const item of day.items) if (item.exerciseId === from) item.exerciseId = to;
+    });
+    await db.workouts.toCollection().modify((w) => {
+      if (!w.exercises?.some((e) => e.exerciseId === from)) return;
+      const hasTo = w.exercises.some((e) => e.exerciseId === to);
+      // A workout keeps one entry per exercise.
+      w.exercises = hasTo
+        ? w.exercises.filter((e) => e.exerciseId !== from)
+        : w.exercises.map((e) => (e.exerciseId === from ? { ...e, exerciseId: to } : e));
+    });
+    const old = await db.exercises.get(from);
+    if (old && !old.custom) await db.exercises.delete(from);
+  });
+}
 
 export async function seedExercises(
   load: () => Promise<RawExercise[]> = defaultLoad,
+  loadMerged: () => Promise<Record<string, string>> = defaultMerged,
 ): Promise<void> {
   const settings = await getSettings();
   if (settings.exerciseDbVersion === EXERCISE_DB_VERSION) {
@@ -94,6 +136,10 @@ export async function seedExercises(
     return ex;
   });
   await db.exercises.bulkPut(mapped);
+  // Duplicates removed since the last version: re-point the user's data, then drop them.
+  for (const [from, to] of Object.entries(await loadMerged())) {
+    if (existing.has(from) && from !== to) await remapExercise(from, to);
+  }
   await updateSettings({ exerciseDbVersion: EXERCISE_DB_VERSION });
 }
 
