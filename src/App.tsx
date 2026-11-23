@@ -13,6 +13,7 @@ import WorkoutDetailPage from './pages/WorkoutDetailPage';
 import StatsPage from './pages/StatsPage';
 import SettingsPage from './pages/SettingsPage';
 import ImportPage from './pages/ImportPage';
+import BackupPage from './pages/BackupPage';
 import WorkoutPage from './pages/WorkoutPage';
 import WorkoutSummaryPage from './pages/WorkoutSummaryPage';
 import { getActiveWorkout } from './data/workouts';
@@ -62,6 +63,7 @@ export default function App() {
           <Route path="/statystyki" element={<StatsPage />} />
           <Route path="/ustawienia" element={<SettingsPage />} />
           <Route path="/ustawienia/import" element={<ImportPage />} />
+          <Route path="/ustawienia/kopia" element={<BackupPage />} />
           <Route path="/trening" element={<WorkoutPage />} />
           <Route path="/trening/podsumowanie/:id" element={<WorkoutSummaryPage />} />
         </Routes>

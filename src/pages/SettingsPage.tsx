@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Link, useNavigate } from 'react-router';
-import { ArrowLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Calculator, ChevronRight, X } from 'lucide-react';
+import PlateCalculatorSheet from '../components/PlateCalculatorSheet';
+import { parseWeight } from '../data/progression';
 
 import { getSettings, updateSettings, WEIGHT_STEP_OPTIONS, BAR_WEIGHT_OPTIONS } from '../data/settings';
 import { REST_OPTIONS, formatRest } from '../data/plans';
@@ -18,6 +21,7 @@ type NumKey = Exclude<{
 export default function SettingsPage() {
   const navigate = useNavigate();
   const settings = useLiveQuery(() => getSettings(), []);
+  const [calcOpen, setCalcOpen] = useState(false);
 
   if (!settings) return <article><h1>Ustawienia</h1></article>;
 
@@ -106,6 +110,10 @@ export default function SettingsPage() {
 
       <section className="settings-group" aria-labelledby="set-data">
         <h2 id="set-data" className="settings-group__title">Dane</h2>
+        <Link to="/ustawienia/kopia" className="settings-row settings-link">
+          <span className="settings-row__label">Kopia zapasowa</span>
+          <ChevronRight size={20} aria-hidden="true" />
+        </Link>
         <Link to="/ustawienia/import" className="settings-row settings-link">
           <span className="settings-row__label">Importuj historię</span>
           <ChevronRight size={20} aria-hidden="true" />
@@ -124,7 +132,15 @@ export default function SettingsPage() {
             {BAR_WEIGHT_OPTIONS.map((n) => <option key={n} value={n}>{kg(n)}</option>)}
           </select>
         </SettingRow>
+        <PlatesRow plates={settings.plates} />
+        <button type="button" className="settings-row settings-link settings-calc" onClick={() => setCalcOpen(true)}>
+          <span className="settings-row__label">
+            <Calculator size={18} aria-hidden="true" /> Kalkulator talerzy
+          </span>
+          <ChevronRight size={20} aria-hidden="true" />
+        </button>
       </section>
+      {calcOpen && <PlateCalculatorSheet onClose={() => setCalcOpen(false)} />}
 
       <section className="settings-group" aria-labelledby="set-about">
         <h2 id="set-about" className="settings-group__title">O aplikacji</h2>
@@ -155,5 +171,49 @@ function ToggleRow({ label, checked, onChange }: { label: string; checked: boole
       <span className="settings-row__label">{label}</span>
       <input type="checkbox" role="switch" checked={checked} onChange={(e) => onChange(e.target.checked)} />
     </label>
+  );
+}
+
+function PlatesRow({ plates }: { plates: number[] }) {
+  const [text, setText] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const sorted = [...plates].sort((a, b) => b - a);
+  const add = () => {
+    const n = parseWeight(text);
+    if (n === null || n <= 0 || n > 100) return setError('Wpisz ciężar talerza, np. 0,5');
+    setError(null);
+    setText('');
+    if (!plates.includes(n)) void updateSettings({ plates: [...plates, n].sort((a, b) => b - a) });
+  };
+  return (
+    <div className="settings-plates">
+      <span className="settings-row__label">Dostępne talerze</span>
+      <ul className="settings-plates__list" aria-label="Dostępne talerze">
+        {sorted.map((p) => (
+          <li key={p}>
+            {kg(p)}
+            <button
+              type="button"
+              aria-label={`Usuń talerz ${kg(p)}`}
+              onClick={() => void updateSettings({ plates: plates.filter((x) => x !== p) })}
+            >
+              <X size={14} aria-hidden="true" />
+            </button>
+          </li>
+        ))}
+        {sorted.length === 0 && <li className="settings-plates__empty">brak — sam gryf</li>}
+      </ul>
+      <form className="settings-plates__add" onSubmit={(e) => { e.preventDefault(); add(); }}>
+        <input
+          inputMode="decimal"
+          aria-label="Nowy talerz (kg)"
+          placeholder="np. 0,5"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+        <button type="submit">Dodaj talerz</button>
+      </form>
+      {error && <p className="settings-plates__error" role="alert">{error}</p>}
+    </div>
   );
 }

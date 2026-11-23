@@ -8,6 +8,7 @@ import { useNow } from '../hooks/useNow';
 import { unlockAudio } from '../audio/beep';
 import { formatClock } from '../data/progression';
 import type { Workout } from '../data/types';
+import BackupReminder from '../components/BackupReminder';
 import './StartPage.css';
 import './SettingsPage.css';
 
@@ -87,6 +88,7 @@ export default function StartPage() {
     return (
       <article>
         <StartHeader />
+        <BackupReminder />
         <section className="start-card">
           <p style={{ margin: 0 }}>Brak aktywnego planu</p>
           <Link to="/plany" className="start-btn inline">Utwórz plan</Link>
@@ -101,6 +103,7 @@ export default function StartPage() {
   return (
     <article>
       <StartHeader />
+      <BackupReminder />
       <section className="start-card" aria-label="Następny trening">
         <p className="start-label">Aktywny plan</p>
         <Link to={`/plany/${plan.id}`} className="start-plan-link">{plan.name}</Link>

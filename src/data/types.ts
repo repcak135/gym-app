@@ -129,5 +129,7 @@ export interface AppSettings {
   /** Advanced: show the RIR picker on each set. */
   showRir: boolean;
   lastBackupAt?: number;
+  /** Backup reminder on Start hidden until this time ("Później"). */
+  backupReminderSnoozedUntil?: number;
   exerciseDbVersion?: number;
 }

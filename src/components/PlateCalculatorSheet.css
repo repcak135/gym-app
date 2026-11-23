@@ -1,0 +1,109 @@
+.plate-calc__hint {
+  margin: calc(-1 * var(--space-2)) 0 var(--space-3);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.plate-calc__result {
+  margin-bottom: var(--space-4);
+}
+
+.plate-calc__heading {
+  margin: 0 0 var(--space-2);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.plate-calc__chips {
+  list-style: none;
+  margin: 0 0 var(--space-3);
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.plate-calc__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.plate-calc__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.plate-calc__chips-text {
+  margin: 0 0 var(--space-3);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.plate-calc__bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  padding: var(--space-2) 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.plate-calc__shaft {
+  flex: 1 1 24px;
+  min-width: 24px;
+  max-width: 80px;
+  height: 8px;
+  background: var(--text-muted);
+  border-radius: 2px;
+}
+
+.plate-calc__side {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.plate-calc__plate {
+  width: 10px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  flex-shrink: 0;
+}
+
+.plate-calc__near {
+  margin-top: var(--space-3);
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.plate-calc__near p { margin: 0 0 var(--space-2); }
+
+.plate-calc__near-label { color: var(--text-muted); font-size: 0.85rem; }
+
+.plate-calc__near-btns {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.plate-calc__near-btns button {
+  flex: 1;
+  min-height: 48px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}

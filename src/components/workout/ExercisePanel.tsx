@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Check, Minus, Plus } from 'lucide-react';
+import { Calculator, Check, Minus, Plus } from 'lucide-react';
+import PlateCalculatorSheet from '../PlateCalculatorSheet';
 import type { Exercise, WorkoutExercise, WorkoutSet } from '../../data/types';
 import { formatKg, formatRir, formatSetShort, parseWeight, progressionText, suggestProgression } from '../../data/progression';
 import { formatReps, formatRest } from '../../data/plans';
@@ -97,6 +98,7 @@ export default function ExercisePanel({
   onConfirmRemoveSet,
 }: Props) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [calcOpen, setCalcOpen] = useState(false);
   const selected =
     sets.find((s) => s.id === selectedId) ?? sets.find((s) => s.completedAt === undefined) ?? sets.at(-1);
 
@@ -182,7 +184,17 @@ export default function ExercisePanel({
             {selected.completedAt !== undefined && <span className="set-editor__badge">zaliczona</span>}
           </p>
           <div className="set-editor__field">
-            <span className="set-editor__label">Ciężar (kg)</span>
+            <span className="set-editor__label">
+              Ciężar (kg)
+              <button
+                type="button"
+                className="set-editor__calc"
+                aria-label="Kalkulator talerzy"
+                onClick={() => setCalcOpen(true)}
+              >
+                <Calculator size={18} aria-hidden="true" />
+              </button>
+            </span>
             <div className="set-editor__stepper">
               <button
                 type="button"
@@ -285,6 +297,14 @@ export default function ExercisePanel({
         <button type="button" className="set-editor__complete" onClick={() => void addSet(workoutId, index)}>
           + Dodaj serię
         </button>
+      )}
+      {calcOpen && selected && (
+        <PlateCalculatorSheet
+          initialWeight={selected.weight}
+          exercise={exercise}
+          onUse={(kg) => void updateSet(selected.id, { weight: kg })}
+          onClose={() => setCalcOpen(false)}
+        />
       )}
     </section>
   );

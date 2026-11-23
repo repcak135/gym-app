@@ -121,3 +121,81 @@
 
 .settings-about { padding-bottom: var(--space-2); line-height: 1.5; }
 .settings-about a { color: var(--accent); }
+
+/* Kalkulator talerzy row is a button styled like the link rows */
+.settings-calc {
+  width: 100%;
+  background: none;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.settings-calc .settings-row__label { display: inline-flex; align-items: center; gap: var(--space-2); }
+
+/* Available plates: removable chips + add field */
+.settings-plates {
+  border-top: 1px solid var(--border);
+  padding: var(--space-3) 0;
+  display: grid;
+  gap: var(--space-3);
+}
+.settings-plates__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.settings-plates__list li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding-left: var(--space-3);
+  min-height: 40px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-variant-numeric: tabular-nums;
+}
+.settings-plates__list button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: 0;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.settings-plates__list .settings-plates__empty { padding-right: var(--space-3); color: var(--text-muted); }
+.settings-plates__add { display: flex; gap: var(--space-2); }
+.settings-plates__add input {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem;
+}
+.settings-plates__add button {
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.settings-plates__error { margin: 0; color: var(--danger); font-size: 0.85rem; }
