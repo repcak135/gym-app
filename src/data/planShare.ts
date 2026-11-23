@@ -74,7 +74,7 @@ function parseExercise(raw: unknown): SharedExercise {
   if (!Array.isArray(raw)) bad();
   const [id, rawName] = raw as unknown[];
   if (typeof id !== 'string' || !id || typeof rawName !== 'string') bad();
-  const name = rawName.trim();
+  const name = rawName.trim().slice(0, 100).trim();
   if (!name) bad();
   if (raw.length === 2) {
     return { id, name, custom: false, primaryMuscles: [], secondaryMuscles: [], equipment: null };
@@ -83,7 +83,15 @@ function parseExercise(raw: unknown): SharedExercise {
   const [, , primary, secondary, equipment] = raw as unknown[];
   if (!isStrArray(primary) || !isStrArray(secondary)) bad();
   if (equipment !== null && typeof equipment !== 'string') bad();
-  return { id, name, custom: true, primaryMuscles: [...primary], secondaryMuscles: [...secondary], equipment };
+  const clip = (a: string[]) => a.slice(0, 10).map((s) => s.slice(0, 40));
+  return {
+    id,
+    name,
+    custom: true,
+    primaryMuscles: clip(primary),
+    secondaryMuscles: clip(secondary),
+    equipment: equipment === null ? null : equipment.slice(0, 40),
+  };
 }
 
 export function decodePlan(data: string): SharedPlan {
@@ -117,7 +125,7 @@ export function decodePlan(data: string): SharedPlan {
           restSec: num(restSec, 0, 900),
         };
       });
-      return { name: rawName.trim() || `Dzień ${i + 1}`, items };
+      return { name: rawName.trim().slice(0, 60).trim() || `Dzień ${i + 1}`, items };
     });
     return { name, days, exercises };
   } catch {
