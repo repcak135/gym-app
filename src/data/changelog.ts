@@ -23,6 +23,7 @@ export const CHANGELOG: ChangelogEntry[] = [
       'Statystyki: cel treningów w tygodniu, seria tygodni z rzędu, serie na mięsień, rekordy i odznaki, kalendarz całego roku.',
       'Pomiary ciała (waga, obwody) z wykresami.',
       'Import historii z pliku CSV, kopia zapasowa do pliku i odtworzenie planu z ostatnich treningów.',
+      'Instrukcja instalacji na telefonie (iPhone, Android, komputer) na ekranie Start przy pierwszym otwarciu strony w przeglądarce; potem w Ustawieniach › „Jak zainstalować na telefonie”.',
       'Wszystko zostaje w Twoim telefonie i działa bez internetu.',
     ],
   },

@@ -9,6 +9,7 @@ import { useNow } from '../hooks/useNow';
 import { unlockAudio } from '../audio/beep';
 import { formatClock } from '../data/progression';
 import { exercisesLabel } from '../data/plural';
+import { InstallCard } from '../components/InstallGuide';
 import type { Workout } from '../data/types';
 import ScanQrSheet from '../components/ScanQrSheet';
 import BackupReminder from '../components/BackupReminder';
@@ -96,6 +97,7 @@ export default function StartPage() {
     return (
       <article>
         <StartHeader />
+        <InstallCard />
         <BackupReminder />
         <section className="start-card">
           <p style={{ margin: 0 }}>Brak aktywnego planu</p>
@@ -113,6 +115,7 @@ export default function StartPage() {
   return (
     <article>
       <StartHeader />
+      <InstallCard />
       <BackupReminder />
       <section className="start-card" aria-label="Następny trening">
         <p className="start-label">Aktywny plan</p>

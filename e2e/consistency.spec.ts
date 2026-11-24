@@ -154,3 +154,43 @@ test('zamiana ćwiczenia: najpierw ćwiczenia na ten sam mięsień, wyszukiwanie
   await swap.getByRole('button', { name: 'Barbell Squat', exact: true }).click();
   await expect(page.locator('.ex-panel__name', { hasText: 'Barbell Squat' })).toBeVisible();
 });
+
+test('instrukcja instalacji: karta w karcie przeglądarki, Nie teraz, ponownie z Ustawień', async ({ page }) => {
+  await page.goto('/#/');
+  const card = page.getByRole('region', { name: 'Zainstaluj aplikację na telefonie' });
+  await expect(card).toBeVisible();
+  // iPhone 13 profile → opens on iPhone steps, other systems one tap away.
+  await expect(card.getByRole('tab', { name: 'iPhone', selected: true })).toBeVisible();
+  await expect(card).toContainText('Do ekranu początkowego');
+  await expect(card).toContainText('dane w karcie przeglądarki i w zainstalowanej aplikacji są osobne');
+  await card.getByRole('tab', { name: 'Android' }).click();
+  await expect(card).toContainText('Zainstaluj aplikację');
+
+  await card.getByRole('button', { name: 'Nie teraz' }).click();
+  await expect(card).toHaveCount(0);
+  await page.reload();
+  await expect(page.getByRole('heading', { level: 1, name: 'Start' })).toBeVisible();
+  await expect(card).toHaveCount(0);
+
+  await page.getByRole('link', { name: 'Ustawienia' }).click();
+  await page.getByRole('button', { name: 'Jak zainstalować na telefonie' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Jak zainstalować na telefonie' });
+  await expect(sheet).toContainText('Udostępnij');
+  await sheet.getByRole('button', { name: 'Zamknij' }).click();
+  await expect(sheet).toHaveCount(0);
+});
+
+test('instrukcja instalacji: nie w zainstalowanej aplikacji, „Mam już zainstalowaną” chowa na stałe', async ({ page }) => {
+  await page.addInitScript(() => {
+    if (sessionStorage.getItem('standalone') === '1') Object.defineProperty(navigator, 'standalone', { value: true });
+  });
+  await page.goto('/#/');
+  const card = page.getByRole('region', { name: 'Zainstaluj aplikację na telefonie' });
+  await card.getByRole('button', { name: 'Mam już zainstalowaną' }).click();
+  await expect(card).toHaveCount(0);
+  await page.evaluate(() => localStorage.removeItem('gym.installGuide'));
+  await page.evaluate(() => sessionStorage.setItem('standalone', '1'));
+  await page.reload();
+  await expect(page.getByRole('heading', { level: 1, name: 'Start' })).toBeVisible();
+  await expect(card).toHaveCount(0);
+});

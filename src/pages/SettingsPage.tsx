@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Link, useNavigate } from 'react-router';
-import { ArrowLeft, Calculator, ChevronRight, Sparkles, X } from 'lucide-react';
+import { ArrowLeft, Calculator, ChevronRight, Smartphone, Sparkles, X } from 'lucide-react';
 import PlateCalculatorSheet from '../components/PlateCalculatorSheet';
 import WhatsNewSheet from '../components/WhatsNewSheet';
+import InstallGuideSheet from '../components/InstallGuide';
 import { CHANGELOG } from '../data/changelog';
 import { APP_VERSION } from '../version';
 import { parseWeight } from '../data/progression';
@@ -36,6 +37,7 @@ export default function SettingsPage() {
   const settings = useLiveQuery(() => getSettings(), []);
   const [calcOpen, setCalcOpen] = useState(false);
   const [newsOpen, setNewsOpen] = useState(false);
+  const [installOpen, setInstallOpen] = useState(false);
   const [del, setDel] = useState<{ mode: DeleteMode; counts: UserDataCounts } | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [deleted, setDeleted] = useState<string | null>(null);
@@ -220,10 +222,17 @@ export default function SettingsPage() {
         </button>
       </section>
       {calcOpen && <PlateCalculatorSheet onClose={() => setCalcOpen(false)} />}
+      {installOpen && <InstallGuideSheet onClose={() => setInstallOpen(false)} />}
       {newsOpen && <WhatsNewSheet title="Co nowego" entries={CHANGELOG} showVersions onClose={() => setNewsOpen(false)} />}
 
       <section className="settings-group" aria-labelledby="set-about">
         <h2 id="set-about" className="settings-group__title">O aplikacji</h2>
+        <button type="button" className="settings-row settings-link settings-calc" onClick={() => setInstallOpen(true)}>
+          <span className="settings-row__label">
+            <Smartphone size={18} aria-hidden="true" /> Jak zainstalować na telefonie
+          </span>
+          <ChevronRight size={20} aria-hidden="true" />
+        </button>
         <div className="settings-row">
           <span className="settings-row__label">Wersja</span>
           <span className="settings-version">{APP_VERSION}</span>
