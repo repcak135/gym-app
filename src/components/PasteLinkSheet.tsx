@@ -25,12 +25,11 @@ export default function PasteLinkSheet({
 
   return (
     <div
-      className="sheet-backdrop"
+      className="sheet-backdrop sheet-backdrop--top"
       onClick={(e) => { if (e.target === e.currentTarget) onCancel(); }}
       onKeyDown={(e) => { if (e.key === 'Escape') onCancel(); }}
     >
       <div role="dialog" aria-label="Dodaj plan z linku" aria-modal="true" className="sheet">
-        <div className="sheet__handle" aria-hidden="true" />
         <form className="confirm-sheet__body" onSubmit={(e) => { e.preventDefault(); submit(); }}>
           <p className="confirm-sheet__title">Dodaj plan z linku</p>
           <label className="name-sheet__label">

@@ -1,10 +1,13 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
+import pkg from './package.json' with { type: 'json' }
 
 // https://vite.dev/config/
 export default defineConfig({
   base: process.env.VITE_BASE ?? '/',
+  // The app version lives only in package.json; the build bakes it in (Ustawienia, Co nowego, backups).
+  define: { __APP_VERSION__: JSON.stringify(pkg.version) },
   // Lazy-loaded libraries: pre-bundle them so the dev server does not reload the page
   // the first time a report or QR code is made.
   optimizeDeps: { include: ['exceljs', 'qrcode-generator', 'lz-string'] },

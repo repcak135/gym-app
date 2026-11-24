@@ -8,6 +8,7 @@ import { getActiveWorkout, startWorkout } from '../data/workouts';
 import { useNow } from '../hooks/useNow';
 import { unlockAudio } from '../audio/beep';
 import { formatClock } from '../data/progression';
+import { exercisesLabel } from '../data/plural';
 import type { Workout } from '../data/types';
 import ScanQrSheet from '../components/ScanQrSheet';
 import BackupReminder from '../components/BackupReminder';
@@ -62,14 +63,6 @@ function ScanButton() {
       {open && <ScanQrSheet onClose={() => setOpen(false)} />}
     </>
   );
-}
-
-function exercisesLabel(n: number): string {
-  if (n === 1) return '1 ćwiczenie';
-  const last = n % 10;
-  const last2 = n % 100;
-  if (last >= 2 && last <= 4 && !(last2 >= 12 && last2 <= 14)) return `${n} ćwiczenia`;
-  return `${n} ćwiczeń`;
 }
 
 export default function StartPage() {

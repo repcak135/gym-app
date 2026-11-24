@@ -14,18 +14,12 @@ import type { WorkoutSet } from '../data/types';
 import ConfirmSheet from '../components/ConfirmSheet';
 import SetEditSheet from '../components/SetEditSheet';
 import { formatDay } from './planFormat';
-import { WEEKDAYS_SHORT, setsLabel } from './historyFormat';
+import { WEEKDAYS_SHORT } from './historyFormat';
+import { workingSetsLabel } from '../data/plural';
 import './HistoryPage.css';
 import '../components/Sheet.css';
 import './PlansPage.css';
 import './WorkoutDetailPage.css';
-
-function workingWord(n: number): string {
-  if (n === 1) return 'robocza';
-  const l = n % 10;
-  const l2 = n % 100;
-  return l >= 2 && l <= 4 && !(l2 >= 12 && l2 <= 14) ? 'robocze' : 'roboczych';
-}
 
 export default function WorkoutDetailPage() {
   const { id = '' } = useParams();
@@ -76,7 +70,7 @@ export default function WorkoutDetailPage() {
       <p className="plan-muted wd-sub">
         {formatDay(workout.startedAt)}, {WEEKDAYS_SHORT[new Date(workout.startedAt).getDay()]}
         {duration !== undefined && ` · ${formatClock(duration)}`}
-        {` · ${setsLabel(working)} ${workingWord(working)}`}
+        {` · ${workingSetsLabel(working)}`}
       </p>
 
       {groups.map((g) => {
@@ -88,19 +82,24 @@ export default function WorkoutDetailPage() {
             </Link>
             <ul className="wd-sets">
               {g.sets.map((s, i) => {
-                const text = `${formatKg(s.weight)} kg × ${s.reps}`;
-                const rirText = s.rir !== undefined ? ` · ${rirToRpeLabel(s.rir)}` : '';
+                const text = `${formatKg(s.weight)} kg × ${s.reps} powt.`;
+                // Same wording as the exercise history: "Rozgrzewka · RPE 8".
+                const meta = [s.warmup ? 'Rozgrzewka' : null, s.rir !== undefined ? rirToRpeLabel(s.rir) : null]
+                  .filter(Boolean)
+                  .join(' · ');
                 return (
                   <li key={s.id}>
                     <button
                       type="button"
                       className="wd-set"
-                      aria-label={`Seria ${i + 1}: ${text}${s.warmup ? ', rozgrzewka' : ''}`}
+                      aria-label={`Seria ${i + 1}: ${text}${meta ? `, ${meta}` : ''}`}
                       onClick={() => setEditing(s)}
                     >
                       <span className="wd-set__num" aria-hidden="true">{i + 1}</span>
-                      <span aria-hidden="true">{text}{rirText}</span>
-                      {s.warmup && <span className="history-badge" aria-hidden="true">R</span>}
+                      <span className="wd-set__body" aria-hidden="true">
+                        <span>{text}</span>
+                        {meta && <span className="wd-set__meta">{meta}</span>}
+                      </span>
                     </button>
                   </li>
                 );

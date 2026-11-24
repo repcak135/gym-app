@@ -1,16 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { X } from 'lucide-react';
 import { db } from '../../data/db';
-import { saveNote } from '../../data/exercises';
 import { getExerciseHistory } from '../../data/workouts';
-import { epley1RM, formatKg } from '../../data/progression';
-import type { Workout, WorkoutSet } from '../../data/types';
-import MiniChart from './MiniChart';
 import ExerciseHistoryList from '../ExerciseHistoryList';
-import { formatDay } from '../../pages/planFormat';
+import ExerciseHowTo from '../ExerciseHowTo';
+import ExerciseProgressChart from '../ExerciseProgressChart';
+import NoteEditor from '../NoteEditor';
+import RecordsSection from '../RecordsSection';
 
-export type InfoTab = 'historia' | 'notatki' | 'statystyki';
+export type InfoTab = 'opis' | 'historia' | 'notatki' | 'statystyki';
 
 interface Props {
   exerciseId: string;
@@ -22,86 +20,15 @@ interface Props {
 }
 
 const TABS: { id: InfoTab; label: string }[] = [
+  { id: 'opis', label: 'Opis' },
   { id: 'historia', label: 'Historia' },
   { id: 'notatki', label: 'Notatki' },
   { id: 'statystyki', label: 'Statystyki' },
 ];
 
-function Notes({ exerciseId }: { exerciseId: string }) {
-  const [text, setText] = useState<string | null>(null);
-  const latest = useRef('');
-  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-
-  useEffect(() => {
-    void db.notes.get(exerciseId).then((n) => {
-      latest.current = n?.text ?? '';
-      setText(latest.current);
-    });
-    return () => {
-      if (timer.current) {
-        clearTimeout(timer.current);
-        void saveNote(exerciseId, latest.current);
-      }
-    };
-  }, [exerciseId]);
-
-  if (text === null) return null;
-  return (
-    <textarea
-      className="info-note"
-      aria-label="Notatka do ćwiczenia"
-      placeholder="Np. ławka na 3, łokcie bliżej ciała…"
-      value={text}
-      onChange={(e) => {
-        setText(e.target.value);
-        latest.current = e.target.value;
-        if (timer.current) clearTimeout(timer.current);
-        timer.current = setTimeout(() => {
-          timer.current = undefined;
-          void saveNote(exerciseId, latest.current);
-        }, 400);
-      }}
-      onBlur={() => {
-        if (timer.current) clearTimeout(timer.current);
-        timer.current = undefined;
-        void saveNote(exerciseId, latest.current);
-      }}
-    />
-  );
-}
-
-function Stats({ history }: { history: { workout: Workout; sets: WorkoutSet[] }[] }) {
-  const points = [...history]
-    .reverse()
-    .map(({ workout, sets }) => {
-      const working = sets.filter((s) => !s.warmup && s.reps > 0);
-      return {
-        t: workout.startedAt,
-        weight: Math.max(0, ...working.map((s) => s.weight)),
-        e1rm: Math.max(0, ...working.map((s) => epley1RM(s.weight, s.reps))),
-      };
-    })
-    .filter((p) => p.weight > 0);
-  if (points.length === 0) return <p className="info-empty">Statystyki pojawią się po pierwszym treningu z ciężarem.</p>;
-  const bestW = Math.max(...points.map((p) => p.weight));
-  const bestE = Math.max(...points.map((p) => p.e1rm));
-  return (
-    <div className="info-stats">
-      <div className="info-stats__tiles">
-        <div><span className="muted">Najcięższa seria</span><strong>{formatKg(bestW)} kg</strong></div>
-        <div><span className="muted">Szac. maks. (1RM)</span><strong>{formatKg(bestE)} kg</strong></div>
-      </div>
-      <MiniChart
-        points={points.map((p) => ({ label: formatDay(p.t).slice(0, 5), a: p.weight, b: p.e1rm }))}
-        labelA="Ciężar"
-        labelB="Szac. 1RM"
-      />
-    </div>
-  );
-}
-
 export default function ExerciseInfoSheet({ exerciseId, exerciseName, workoutId, tab, onTab, onClose }: Props) {
   const history = useLiveQuery(() => getExerciseHistory(exerciseId, workoutId), [exerciseId, workoutId]);
+  const exercise = useLiveQuery(() => db.exercises.get(exerciseId), [exerciseId]);
   return (
     <div
       className="sheet-backdrop"
@@ -130,9 +57,15 @@ export default function ExerciseInfoSheet({ exerciseId, exerciseName, workoutId,
           ))}
         </div>
         <div className="info-body">
-          {tab === 'notatki' && <Notes exerciseId={exerciseId} />}
+          {tab === 'opis' && exercise && <ExerciseHowTo exercise={exercise} />}
+          {tab === 'notatki' && <NoteEditor exerciseId={exerciseId} className="info-note" />}
           {tab === 'historia' && history && <ExerciseHistoryList history={history} />}
-          {tab === 'statystyki' && history && <Stats history={history} />}
+          {tab === 'statystyki' && history && (
+            <>
+              <ExerciseProgressChart history={history} emptyText="Wykres pojawi się po pierwszym treningu z ciężarem." />
+              <RecordsSection exerciseId={exerciseId} />
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -50,7 +50,7 @@ export async function deleteImportedHistory(): Promise<{ workouts: number; sets:
 /**
  * Deletes all user data (also clears any unfinished workout, which is a workout row).
  * The built-in catalogue stays, with its per-exercise settings reset; settings go back
- * to defaults except exerciseDbVersion, so the catalogue is not reseeded.
+ * to defaults except exerciseDbVersion (the catalogue is not reseeded) and lastSeenVersion ("Co nowego" is not shown again).
  */
 export async function deleteAllUserData(): Promise<void> {
   await db.transaction('rw', [db.plans, db.workouts, db.sets, db.notes, db.aliases, db.body, db.exercises, db.settings], async () => {
@@ -64,6 +64,7 @@ export async function deleteAllUserData(): Promise<void> {
       .modify((e) => { delete e.weightStep; delete e.barWeight; });
     const settings: AppSettings = { ...DEFAULT_SETTINGS, key: 'app' };
     if (device?.exerciseDbVersion !== undefined) settings.exerciseDbVersion = device.exerciseDbVersion;
+    if (device?.lastSeenVersion !== undefined) settings.lastSeenVersion = device.lastSeenVersion;
     await db.settings.clear();
     await db.settings.put(settings);
   });

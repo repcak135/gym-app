@@ -158,6 +158,7 @@ export default function ExercisePanel({
       </p>
 
       <div className="ex-panel__info">
+        <button type="button" onClick={() => onInfo('opis')}>Opis</button>
         <button type="button" onClick={() => onInfo('historia')}>Historia</button>
         <button type="button" onClick={() => onInfo('notatki')}>Notatki</button>
         <button type="button" onClick={() => onInfo('statystyki')}>Statystyki</button>

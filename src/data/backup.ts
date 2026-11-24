@@ -1,13 +1,13 @@
 import { db } from './db';
 import { DEFAULT_SETTINGS, getSettings, updateSettings } from './settings';
-import pkg from '../../package.json';
+import { APP_VERSION } from '../version';
 import type {
   AppSettings, BodyEntry, Exercise, ExerciseAlias, ExerciseNote, Plan, Workout, WorkoutSet,
 } from './types';
 
 /** Bump when the file layout changes; add the upgrade step to `migrate`. */
 export const BACKUP_FORMAT_VERSION = 1;
-export const APP_VERSION: string = pkg.version;
+export { APP_VERSION };
 
 const DAY = 24 * 60 * 60 * 1000;
 export const BACKUP_REMIND_AFTER_MS = 14 * DAY;
@@ -20,7 +20,7 @@ export interface ExerciseOverride {
 }
 
 /** Settings that travel with the data (device-only fields stay on the device). */
-export type BackupSettings = Partial<Omit<AppSettings, 'key' | 'exerciseDbVersion' | 'lastBackupAt' | 'backupReminderSnoozedUntil'>>;
+export type BackupSettings = Partial<Omit<AppSettings, 'key' | 'exerciseDbVersion' | 'lastBackupAt' | 'backupReminderSnoozedUntil' | 'lastSeenVersion'>>;
 
 export interface BackupData {
   plans: Plan[];
@@ -49,7 +49,7 @@ export class BackupError extends Error {
   }
 }
 
-const DEVICE_ONLY = new Set(['key', 'exerciseDbVersion', 'lastBackupAt', 'backupReminderSnoozedUntil']);
+const DEVICE_ONLY = new Set(['key', 'exerciseDbVersion', 'lastBackupAt', 'backupReminderSnoozedUntil', 'lastSeenVersion']);
 
 export async function createBackup(now = Date.now()): Promise<BackupFile> {
   return db.transaction('r', [db.plans, db.workouts, db.sets, db.notes, db.aliases, db.body, db.exercises, db.settings], async () => {
@@ -229,9 +229,11 @@ export async function restoreBackup(f: BackupFile): Promise<void> {
       ...d.settings,
       key: 'app',
       exerciseDbVersion: device?.exerciseDbVersion,
+      lastSeenVersion: device?.lastSeenVersion,
       lastBackupAt: f.exportedAt,
     };
     if (settings.exerciseDbVersion === undefined) delete settings.exerciseDbVersion;
+    if (settings.lastSeenVersion === undefined) delete settings.lastSeenVersion;
     await db.settings.put(settings);
   });
 }

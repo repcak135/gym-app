@@ -140,4 +140,6 @@ export interface AppSettings {
   /** Backup reminder on Start hidden until this time ("Później"). */
   backupReminderSnoozedUntil?: number;
   exerciseDbVersion?: number;
+  /** Device-only: last app version whose "Co nowego" the user has seen (not in backups). */
+  lastSeenVersion?: string;
 }

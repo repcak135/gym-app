@@ -1,0 +1,37 @@
+.whats-new__body {
+  padding: var(--space-2) var(--space-4) var(--space-4);
+}
+
+.whats-new__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 var(--space-3);
+  font-size: 1.2rem;
+}
+
+.whats-new__title svg { color: var(--accent); }
+
+.whats-new__entry + .whats-new__entry { margin-top: var(--space-4); }
+
+.whats-new__version {
+  margin: 0 0 var(--space-2);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.whats-new__version span { font-weight: 500; letter-spacing: 0; text-transform: none; }
+
+.whats-new__items {
+  margin: 0 0 var(--space-4);
+  padding-left: 1.2em;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  line-height: 1.4;
+}
+
+.whats-new__items li::marker { color: var(--accent); }

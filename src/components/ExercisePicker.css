@@ -34,25 +34,6 @@
 .picker__title { margin: 0; font-size: 1.15rem; }
 
 
-.picker__search { padding: var(--space-3) var(--space-4) var(--space-2); }
-
-.picker__search input {
-  width: 100%;
-  min-height: 44px;
-  padding: 0 var(--space-4);
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text);
-  font-size: 1rem;
-  outline: none;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-.picker__search input:focus { border-color: var(--accent); }
-.picker__search input::-webkit-search-cancel-button { display: none; }
-
 .picker__list {
   flex: 1;
   overflow-y: auto;
@@ -107,4 +88,7 @@
   background: var(--bg);
 }
 
-.picker__scope { padding: var(--space-3) var(--space-4) 0; }
+.picker__finder { margin: 0 calc(-1 * var(--space-4)); padding: var(--space-1) var(--space-4) 0; }
+/* The list scrolls under the bar, not under the status bar: stick right at its top. */
+.picker .exercises-toolbar { top: 0; }
+.picker__section { display: flex; flex-direction: column; gap: 2px; }

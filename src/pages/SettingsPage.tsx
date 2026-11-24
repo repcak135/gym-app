@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Link, useNavigate } from 'react-router';
-import { ArrowLeft, Calculator, ChevronRight, X } from 'lucide-react';
+import { ArrowLeft, Calculator, ChevronRight, Sparkles, X } from 'lucide-react';
 import PlateCalculatorSheet from '../components/PlateCalculatorSheet';
+import WhatsNewSheet from '../components/WhatsNewSheet';
+import { CHANGELOG } from '../data/changelog';
+import { APP_VERSION } from '../version';
 import { parseWeight } from '../data/progression';
 
 import { getSettings, updateSettings, WEIGHT_STEP_OPTIONS, BAR_WEIGHT_OPTIONS } from '../data/settings';
@@ -32,6 +35,7 @@ export default function SettingsPage() {
   const navigate = useNavigate();
   const settings = useLiveQuery(() => getSettings(), []);
   const [calcOpen, setCalcOpen] = useState(false);
+  const [newsOpen, setNewsOpen] = useState(false);
   const [del, setDel] = useState<{ mode: DeleteMode; counts: UserDataCounts } | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [deleted, setDeleted] = useState<string | null>(null);
@@ -216,9 +220,20 @@ export default function SettingsPage() {
         </button>
       </section>
       {calcOpen && <PlateCalculatorSheet onClose={() => setCalcOpen(false)} />}
+      {newsOpen && <WhatsNewSheet title="Co nowego" entries={CHANGELOG} showVersions onClose={() => setNewsOpen(false)} />}
 
       <section className="settings-group" aria-labelledby="set-about">
         <h2 id="set-about" className="settings-group__title">O aplikacji</h2>
+        <div className="settings-row">
+          <span className="settings-row__label">Wersja</span>
+          <span className="settings-version">{APP_VERSION}</span>
+        </div>
+        <button type="button" className="settings-row settings-link settings-calc" onClick={() => setNewsOpen(true)}>
+          <span className="settings-row__label">
+            <Sparkles size={18} aria-hidden="true" /> Co nowego
+          </span>
+          <ChevronRight size={20} aria-hidden="true" />
+        </button>
         <p className="settings-group__hint settings-about">
           Licencja GNU AGPL v3.0 —{' '}
           <a href="https://github.com/repcak135/gym-app" target="_blank" rel="noreferrer">kod źródłowy</a>.

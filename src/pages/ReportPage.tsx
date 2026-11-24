@@ -13,6 +13,7 @@ import {
 } from '../data/report';
 import { shareFile } from '../data/shareFile';
 import { isFinished } from '../data/workouts';
+import { workoutsLabel } from '../data/plural';
 import Segmented from '../components/stats/Segmented';
 import './PlansPage.css';
 import './StatsPage.css';
@@ -34,13 +35,6 @@ function ymd(d: Date): string {
 function plDate(s: string): string {
   const [y, m, d] = s.split('-');
   return `${d}.${m}.${y}`;
-}
-
-function workoutsLabel(n: number): string {
-  if (n === 1) return '1 trening';
-  const l = n % 10;
-  const l2 = n % 100;
-  return `${n} ${l >= 2 && l <= 4 && !(l2 >= 12 && l2 <= 14) ? 'treningi' : 'treningów'}`;
 }
 
 type Status =

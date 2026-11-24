@@ -58,3 +58,4 @@
   font-weight: 600;
   cursor: pointer;
 }
+.info-empty { color: var(--text-muted); }

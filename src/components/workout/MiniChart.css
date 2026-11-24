@@ -1,0 +1,16 @@
+.info-empty { color: var(--text-muted); }
+
+.mini-chart { margin: 0; }
+.mini-chart svg { width: 100%; height: auto; display: block; }
+.mini-chart__grid { stroke: var(--border); stroke-width: 1; }
+.mini-chart__axis { fill: var(--text-muted); font-size: 10px; }
+.mini-chart__line { fill: none; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.mini-chart__line--a { stroke: var(--accent); }
+.mini-chart__line--b { stroke: var(--success); stroke-dasharray: 5 4; }
+.mini-chart__dot--a { fill: var(--accent); }
+.mini-chart__dot--b { fill: var(--success); }
+.mini-chart__legend { display: flex; gap: var(--space-4); margin-top: var(--space-2); font-size: 0.85rem; color: var(--text-muted); }
+.mini-chart__legend span { display: inline-flex; align-items: center; gap: 6px; }
+.mini-chart__key { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+.mini-chart__key--a { background: var(--accent); }
+.mini-chart__key--b { background: var(--success); }

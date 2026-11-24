@@ -3,11 +3,10 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { Check, X } from 'lucide-react';
 
 import { db } from '../data/db';
-import { filterExercises } from '../data/exercises';
-import { muscleLabel, equipmentLabel } from '../data/exerciseLabels';
-import { SCOPE_OPTIONS, emptyScopeText, useScopedExercises, type Scope } from '../hooks/useExerciseScope';
-import Segmented from './stats/Segmented';
-import ExerciseThumb from './ExerciseThumb';
+import type { Exercise } from '../data/types';
+import ExerciseFinder, { FinderEmpty } from './ExerciseFinder';
+import { EMPTY_FINDER, useExerciseFinder, type FinderState } from '../hooks/useExerciseFinder';
+import ExerciseRowContent from './ExerciseRow';
 import '../pages/ExercisesPage.css';
 import './ExercisePicker.css';
 
@@ -36,18 +35,16 @@ export default function ExercisePicker({
   single = false,
 }: ExercisePickerProps) {
   const all = useLiveQuery(() => db.exercises.toArray(), []);
-  const [query, setQuery] = useState('');
-  const [scope, setScope] = useState<Scope>('all');
+  const [finder, setFinder] = useState<FinderState>(EMPTY_FINDER);
   const [limit, setLimit] = useState(PAGE_SIZE);
   const [selected, setSelected] = useState<string[]>([]);
   const existing = useMemo(() => new Set(existingIds), [existingIds]);
 
-  const pool = useScopedExercises(all, scope);
-  const filtered = useMemo(
-    () => filterExercises(pool, { query: query || undefined }),
-    [pool, query],
-  );
-  const emptyText = !query ? emptyScopeText(scope, false) : null;
+  const { filtered, recent, isFiltered } = useExerciseFinder(all, finder);
+  const changeFinder = (patch: Partial<FinderState>) => {
+    setFinder((f) => ({ ...f, ...patch }));
+    setLimit(PAGE_SIZE);
+  };
 
   const toggle = (id: string) => {
     if (single) {
@@ -55,6 +52,31 @@ export default function ExercisePicker({
       return;
     }
     setSelected((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
+  };
+
+  const renderRow = (ex: Exercise) => {
+    const inDay = existing.has(ex.id);
+    const isSelected = selected.includes(ex.id);
+    return (
+      <button
+        key={ex.id}
+        type="button"
+        className={`exercise-row picker__row${isSelected ? ' picker__row--selected' : ''}`}
+        aria-label={ex.name}
+        aria-pressed={inDay || single ? undefined : isSelected}
+        disabled={inDay}
+        onClick={() => toggle(ex.id)}
+      >
+        <ExerciseRowContent exercise={ex} size={48} />
+        {inDay ? (
+          <span className="picker__in-day">{existingLabel}</span>
+        ) : (
+          <span className={`picker__check${isSelected ? ' picker__check--on' : ''}`} aria-hidden="true">
+            {isSelected && <Check size={18} strokeWidth={3} />}
+          </span>
+        )}
+      </button>
+    );
   };
 
   const done = async () => {
@@ -77,65 +99,22 @@ export default function ExercisePicker({
         <h2 className="picker__title">{title}</h2>
       </div>
 
-      <div className="picker__scope">
-        <Segmented<Scope>
-          label="Które ćwiczenia"
-          options={SCOPE_OPTIONS}
-          value={scope}
-          onChange={(v) => { setScope(v); setLimit(PAGE_SIZE); }}
-        />
-      </div>
-
-      <div className="picker__search">
-        <input
-          type="search"
-          placeholder="Szukaj ćwiczenia"
-          aria-label="Szukaj ćwiczenia"
-          value={query}
-          onChange={(e) => { setQuery(e.target.value); setLimit(PAGE_SIZE); }}
-        />
-      </div>
-
       <div className="picker__list">
+        <div className="picker__finder">
+          <ExerciseFinder state={finder} onChange={changeFinder} />
+        </div>
         {all === undefined && <p className="picker__empty">Ładowanie…</p>}
         {all !== undefined && filtered.length === 0 && (
-          <p className="picker__empty">{emptyText ?? 'Brak wyników.'}</p>
+          <FinderEmpty state={finder} withAddHint={false} onReset={() => changeFinder({ query: '', muscle: null, equipment: null })} />
         )}
-        {filtered.slice(0, limit).map((ex) => {
-          const meta = [ex.primaryMuscles.map(muscleLabel).join(', '), equipmentLabel(ex.equipment)]
-            .filter(Boolean)
-            .join(' · ');
-          const inDay = existing.has(ex.id);
-          const isSelected = selected.includes(ex.id);
-          return (
-            <button
-              key={ex.id}
-              type="button"
-              className={`exercise-row picker__row${isSelected ? ' picker__row--selected' : ''}`}
-              aria-label={ex.name}
-              aria-pressed={inDay || single ? undefined : isSelected}
-              disabled={inDay}
-              onClick={() => toggle(ex.id)}
-            >
-              <ExerciseThumb exercise={ex} size={48} />
-              <span className="exercise-row__info">
-                <span className="exercise-row__name">
-                  {ex.name}
-                  {ex.custom && <span className="badge-custom">Własne</span>}
-                </span>
-                {ex.namePl && <span className="exercise-row__pl">{ex.namePl}</span>}
-                <span className="exercise-row__meta">{meta}</span>
-              </span>
-              {inDay ? (
-                <span className="picker__in-day">{existingLabel}</span>
-              ) : (
-                <span className={`picker__check${isSelected ? ' picker__check--on' : ''}`} aria-hidden="true">
-                  {isSelected && <Check size={18} strokeWidth={3} />}
-                </span>
-              )}
-            </button>
-          );
-        })}
+        {!isFiltered && recent.length > 0 && (
+          <section aria-label="Ostatnio używane" className="picker__section">
+            <p className="exercises-section-title">Ostatnio używane</p>
+            {recent.map(renderRow)}
+            <p className="exercises-section-title">Wszystkie ćwiczenia</p>
+          </section>
+        )}
+        {filtered.slice(0, limit).map(renderRow)}
         {filtered.length > limit && (
           <button type="button" className="exercises-more-btn" onClick={() => setLimit((l) => l + PAGE_SIZE)}>
             Pokaż więcej ({filtered.length - limit} pozostałych)

@@ -1,12 +1,12 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Link, useParams } from 'react-router';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { ArrowLeft, Share2, Copy } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 import { db } from '../data/db';
-import { encodePlan, qrFits, shareUrl } from '../data/planShare';
+import { encodePlan, shareUrl } from '../data/planShare';
 import type { Exercise } from '../data/types';
-import QrCode from '../components/QrCode';
+import ShareLinkPanel from '../components/ShareLinkPanel';
 import './PlansPage.css';
 import './PlanSharePage.css';
 
@@ -21,7 +21,6 @@ export default function PlanSharePage() {
     for (const e of list) if (e) exercises.set(e.id, e);
     return { plan, exercises };
   }, [planId]);
-  const [status, setStatus] = useState<string | null>(null);
 
   const url = useMemo(() => (data ? shareUrl(encodePlan(data.plan, data.exercises)) : ''), [data]);
 
@@ -36,25 +35,6 @@ export default function PlanSharePage() {
   }
 
   const { plan } = data;
-  const canShare = typeof navigator.share === 'function';
-
-  const share = async () => {
-    try {
-      await navigator.share({ title: plan.name, text: `Plan treningowy: ${plan.name}`, url });
-      setStatus(null);
-    } catch (e) {
-      if ((e as Error)?.name !== 'AbortError') setStatus('Nie udało się otworzyć udostępniania — skopiuj link.');
-    }
-  };
-
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(url);
-      setStatus('Skopiowano link');
-    } catch {
-      setStatus('Nie udało się skopiować — zaznacz link poniżej i skopiuj go ręcznie.');
-    }
-  };
 
   return (
     <article className="pshare">
@@ -70,38 +50,14 @@ export default function PlanSharePage() {
 
       {plan.days.length === 0 && <p className="plan-muted">Ten plan nie ma jeszcze dni.</p>}
 
-      <div className="pshare__qr">
-        {qrFits(url) ? (
-          <QrCode text={url} label="Kod QR planu" />
-        ) : (
-          <p className="pshare__toolong" role="note">
-            Plan jest za duży na kod QR — wyślij link.
-          </p>
-        )}
-      </div>
-
-      <div className="pshare__actions">
-        {canShare && (
-          <button type="button" className="plan-btn plan-btn--primary plan-btn--block" onClick={() => void share()}>
-            <Share2 size={18} aria-hidden="true" /> Udostępnij link
-          </button>
-        )}
-        <button type="button" className="plan-btn plan-btn--block" onClick={() => void copy()}>
-          <Copy size={18} aria-hidden="true" /> Kopiuj link
-        </button>
-      </div>
-      {status && <p className="pshare__status" role="status">{status}</p>}
-
-      <label className="pshare__label">
-        Link do planu
-        <textarea
-          className="pshare__link"
-          readOnly
-          rows={3}
-          value={url}
-          onFocus={(e) => e.target.select()}
-        />
-      </label>
+      <ShareLinkPanel
+        url={url}
+        shareTitle={plan.name}
+        shareText={`Plan treningowy: ${plan.name}`}
+        qrLabel="Kod QR planu"
+        tooLongText="Plan jest za duży na kod QR — wyślij link."
+        linkLabel="Link do planu"
+      />
     </article>
   );
 }

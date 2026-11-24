@@ -9,6 +9,7 @@ import {
   type BackupFile, type BackupSummary,
 } from '../data/backup';
 import { useMakeBackup } from '../data/backupShare';
+import { plural, workoutsLabel } from '../data/plural';
 import BackupStatusText from '../components/BackupStatusText';
 import { backupButtonLabel, daysAgo, formatBackupDate } from './backupFormat';
 import './PlansPage.css';
@@ -16,13 +17,6 @@ import './SettingsPage.css';
 import './ImportPage.css';
 import './BackupPage.css';
 import '../components/Sheet.css';
-
-function plural(n: number, one: string, few: string, many: string): string {
-  if (n === 1) return `${n} ${one}`;
-  const l = n % 10;
-  const l2 = n % 100;
-  return `${n} ${l >= 2 && l <= 4 && !(l2 >= 12 && l2 <= 14) ? few : many}`;
-}
 
 function Counts({ s }: { s: Omit<BackupSummary, 'exportedAt' | 'appVersion'> }) {
   return (
@@ -156,8 +150,8 @@ export default function BackupPage() {
                 <>
                   <p className="confirm-sheet__title">Na pewno zastąpić wszystkie dane?</p>
                   <p className="action-sheet__message">
-                    Obecne dane w telefonie ({plural(current?.workouts ?? 0, 'trening', 'treningi', 'treningów')},{' '}
-                    {plural(current?.plans ?? 0, 'plan', 'plany', 'planów')}, {plural(current?.measurements ?? 0, 'pomiar', 'pomiary', 'pomiarów')})
+                    Obecne dane w telefonie ({workoutsLabel(current?.workouts ?? 0)},{' '}
+                    {`${current?.plans ?? 0} ${plural(current?.plans ?? 0, 'plan', 'plany', 'planów')}`}, {`${current?.measurements ?? 0} ${plural(current?.measurements ?? 0, 'pomiar', 'pomiary', 'pomiarów')}`})
                     zostaną usunięte i zastąpione kopią z {formatBackupDate(summary.exportedAt)}. Tego nie da się cofnąć.
                   </p>
                   <div className="confirm-sheet__actions">

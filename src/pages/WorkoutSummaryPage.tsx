@@ -13,6 +13,7 @@ import type { Workout } from '../data/types';
 import '../components/Sheet.css';
 import { formatClock, formatKg } from '../data/progression';
 import { formatDay } from './planFormat';
+import { plural, setsLabel } from '../data/plural';
 import './PlansPage.css';
 import './WorkoutSummaryPage.css';
 
@@ -28,17 +29,10 @@ function recordValue(r: { kind: RecordKind; value: number; weight?: number; reps
   return `${formatKg(r.value)} kg`;
 }
 
-function setsLabel(n: number): string {
-  if (n === 1) return 'seria';
-  const l = n % 10;
-  const l2 = n % 100;
-  return l >= 2 && l <= 4 && !(l2 >= 12 && l2 <= 14) ? 'serie' : 'serii';
-}
-
 function describeChange(c: PlanChange, name: (id: string) => string): string {
   switch (c.kind) {
     case 'swap': return `Zamiana: ${name(c.fromExerciseId)} → ${name(c.toExerciseId)}`;
-    case 'add': return `Nowe ćwiczenie: ${name(c.exerciseId)} (${c.item.sets} ${setsLabel(c.item.sets)})`;
+    case 'add': return `Nowe ćwiczenie: ${name(c.exerciseId)} (${setsLabel(c.item.sets)})`;
     case 'remove': return `Usunięte: ${name(c.exerciseId)}`;
     case 'sets': return `Serie: ${name(c.exerciseId)} ${c.from} → ${c.to}`;
     case 'warmups': return `Rozgrzewka: ${name(c.exerciseId)} ${c.from} → ${c.to}`;
@@ -274,7 +268,7 @@ export default function WorkoutSummaryPage() {
         <div className="summary__tile">
           <span>Serie</span>
           <strong>{summary.sets}</strong>
-          <small>{setsLabel(summary.sets)} robocze</small>
+          <small>{plural(summary.sets, 'seria robocza', 'serie robocze', 'serii roboczych')}</small>
         </div>
         <div className="summary__tile summary__tile--wide">
           <span>Objętość</span>

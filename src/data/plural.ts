@@ -8,3 +8,6 @@ export function plural(n: number, one: string, few: string, many: string): strin
 
 export const workoutsLabel = (n: number) => `${n} ${plural(n, 'trening', 'treningi', 'treningów')}`;
 export const setsLabel = (n: number) => `${n} ${plural(n, 'seria', 'serie', 'serii')}`;
+export const exercisesLabel = (n: number) => `${n} ${plural(n, 'ćwiczenie', 'ćwiczenia', 'ćwiczeń')}`;
+export const daysLabel = (n: number) => `${n} ${plural(n, 'dzień', 'dni', 'dni')}`;
+export const workingSetsLabel = (n: number) => `${setsLabel(n)} ${plural(n, 'robocza', 'robocze', 'roboczych')}`;

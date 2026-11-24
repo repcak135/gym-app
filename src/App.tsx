@@ -3,6 +3,7 @@ import { HashRouter, Routes, Route, useLocation, useNavigate } from 'react-route
 import BottomNav from './components/BottomNav';
 import UndoToast from './components/UndoToast';
 import KeyboardInset from './components/KeyboardInset';
+import { WhatsNewOnLaunch } from './components/WhatsNewSheet';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from './data/db';
 import { setHapticsEnabled } from './haptics';
@@ -124,6 +125,7 @@ export default function App() {
         </Screen>
       </main>
       <UndoToast />
+      <WhatsNewOnLaunch />
       <BottomNav />
     </HashRouter>
   );

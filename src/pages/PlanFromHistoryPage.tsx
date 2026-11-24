@@ -7,6 +7,7 @@ import { db } from '../data/db';
 import { formatReps } from '../data/plans';
 import { createPlanFromCandidates, planCandidates, type DayCandidate } from '../data/planFromHistory';
 import { formatDay } from './planFormat';
+import { daysLabel } from '../data/plural';
 import './PlansPage.css';
 import './SettingsPage.css';
 import './ImportPage.css';
@@ -179,7 +180,7 @@ export default function PlanFromHistoryPage() {
 
       <div className="imp-footer">
         <button type="button" className="plan-btn plan-btn--primary plan-btn--block" disabled={!canSave} onClick={() => void save()}>
-          Utwórz plan ({selected.length} {selected.length === 1 ? 'dzień' : 'dni'})
+          Utwórz plan ({daysLabel(selected.length)})
         </button>
       </div>
     </article>

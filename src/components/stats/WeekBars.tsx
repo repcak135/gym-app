@@ -1,18 +1,12 @@
 import { useState } from 'react';
 
+import { workoutsLabel } from '../../data/plural';
+
 const SHORT_MONTHS = ['sty', 'lut', 'mar', 'kwi', 'maj', 'cze', 'lip', 'sie', 'wrz', 'paź', 'lis', 'gru'];
 const W = 320;
 const H = 120;
 const AXIS = 16; // room for month labels under the bars
 const TOP = 14;
-
-function workoutsLabel(n: number): string {
-  const mod10 = n % 10;
-  const mod100 = n % 100;
-  if (n === 1) return '1 trening';
-  if (mod10 >= 2 && mod10 <= 4 && !(mod100 >= 12 && mod100 <= 14)) return `${n} treningi`;
-  return `${n} treningów`;
-}
 
 function weekLabel(start: number): string {
   const a = new Date(start);

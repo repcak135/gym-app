@@ -1,4 +1,5 @@
 import { formatKg } from '../../data/progression';
+import './MiniChart.css';
 
 interface Point {
   label: string;
