@@ -17,6 +17,7 @@ export const CHANGELOG: ChangelogEntry[] = [
       'Plany treningowe z dniami i ćwiczeniami — możesz je wysłać znajomemu linkiem albo kodem QR.',
       'Trening na żywo: ciężar i powtórzenia wpisane z ostatniego razu, podpowiedź, kiedy dołożyć ciężar, i licznik przerwy z dźwiękiem.',
       'Ponad 4700 ćwiczeń ze zdjęciami lub opisem, polskimi nazwami i radami. Przy dodawaniu ćwiczenia do planu lub treningu działają teraz te same filtry „Mięśnie” i „Sprzęt” co w zakładce Ćwiczenia.',
+      'Zamiana ćwiczenia w trakcie treningu pokazuje najpierw ćwiczenia na ten sam mięsień (np. „Podobne (barki)”), a dopiero potem pozostałe — wyszukiwarka dalej znajduje wszystko.',
       'W trakcie treningu pod „Opis” zobaczysz zdjęcia, rady i instrukcję ćwiczenia, a w „Statystykach” także swoje rekordy.',
       'Czytelna historia: każdy trening, każda seria, rozgrzewki, ocena trudności (RPE) i puchar przy rekordzie.',
       'Statystyki: cel treningów w tygodniu, seria tygodni z rzędu, serie na mięsień, rekordy i odznaki, kalendarz całego roku.',

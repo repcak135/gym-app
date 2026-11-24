@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Check, X } from 'lucide-react';
 
@@ -7,6 +7,9 @@ import type { Exercise } from '../data/types';
 import ExerciseFinder, { FinderEmpty } from './ExerciseFinder';
 import { EMPTY_FINDER, useExerciseFinder, type FinderState } from '../hooks/useExerciseFinder';
 import ExerciseRowContent from './ExerciseRow';
+import { useUsedIds } from '../hooks/useExerciseScope';
+import { rankForSwap, swapMuscles } from '../data/swapRank';
+import { muscleLabel } from '../data/exerciseLabels';
 import '../pages/ExercisesPage.css';
 import './ExercisePicker.css';
 
@@ -24,6 +27,8 @@ interface ExercisePickerProps {
   existingLabel?: string;
   /** Single choice: a tap picks the exercise and closes the picker. */
   single?: boolean;
+  /** Swap mode: id of the exercise being replaced — same-muscle alternatives are listed first. */
+  replacing?: string;
 }
 
 export default function ExercisePicker({
@@ -33,6 +38,7 @@ export default function ExercisePicker({
   title = 'Dodaj ćwiczenia',
   existingLabel = 'W dniu',
   single = false,
+  replacing,
 }: ExercisePickerProps) {
   const all = useLiveQuery(() => db.exercises.toArray(), []);
   const [finder, setFinder] = useState<FinderState>(EMPTY_FINDER);
@@ -41,6 +47,18 @@ export default function ExercisePicker({
   const existing = useMemo(() => new Set(existingIds), [existingIds]);
 
   const { filtered, recent, isFiltered } = useExerciseFinder(all, finder);
+  const usedIds = useUsedIds();
+  const replaced = useMemo(() => (replacing ? all?.find((e) => e.id === replacing) : undefined), [all, replacing]);
+  const swap = useMemo(
+    () => (replaced ? rankForSwap(filtered, replaced, usedIds) : null),
+    [replaced, filtered, usedIds],
+  );
+  // Swap mode: "Podobne (barki)" first, then "Pozostałe"; otherwise the plain list.
+  const ordered = swap ? [...swap.similar, ...swap.rest] : filtered;
+  const similarCount = swap?.similar.length ?? 0;
+  const similarTitle = replaced
+    ? `Podobne (${swapMuscles(replaced).map((m) => muscleLabel(m).toLowerCase()).join(', ')})`
+    : '';
   const changeFinder = (patch: Partial<FinderState>) => {
     setFinder((f) => ({ ...f, ...patch }));
     setLimit(PAGE_SIZE);
@@ -107,14 +125,20 @@ export default function ExercisePicker({
         {all !== undefined && filtered.length === 0 && (
           <FinderEmpty state={finder} withAddHint={false} onReset={() => changeFinder({ query: '', muscle: null, equipment: null })} />
         )}
-        {!isFiltered && recent.length > 0 && (
+        {!swap && !isFiltered && recent.length > 0 && (
           <section aria-label="Ostatnio używane" className="picker__section">
             <p className="exercises-section-title">Ostatnio używane</p>
             {recent.map(renderRow)}
             <p className="exercises-section-title">Wszystkie ćwiczenia</p>
           </section>
         )}
-        {filtered.slice(0, limit).map(renderRow)}
+        {ordered.slice(0, limit).map((ex, i) => (
+          <Fragment key={ex.id}>
+            {swap && i === 0 && similarCount > 0 && <p className="exercises-section-title">{similarTitle}</p>}
+            {swap && i === similarCount && similarCount > 0 && <p className="exercises-section-title">Pozostałe</p>}
+            {renderRow(ex)}
+          </Fragment>
+        ))}
         {filtered.length > limit && (
           <button type="button" className="exercises-more-btn" onClick={() => setLimit((l) => l + PAGE_SIZE)}>
             Pokaż więcej ({filtered.length - limit} pozostałych)

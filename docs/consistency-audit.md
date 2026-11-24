@@ -6,6 +6,7 @@ Funkcje, które istniały w jednym miejscu, a w jego „bliźniaku” nie. Zasad
 |---|---|---|---|
 | Wybór ćwiczeń (plan, trening) | Zakładka Ćwiczenia | Picker miał tylko wyszukiwarkę i zakres; brak filtrów „Mięśnie” / „Sprzęt”, przycisku × w wyszukiwarce i „Ostatnio używane” | Wspólny `ExerciseFinder` + `useExerciseFinder` (zakres, wyszukiwarka z ×, filtry, arkusze filtrów, ostatnio używane) w obu miejscach |
 | Wybór ćwiczeń | Zakładka Ćwiczenia | Wiersz ćwiczenia zbudowany dwa razy (zdjęcie, nazwa, polska nazwa, „Własne”, mięśnie · sprzęt) | Wspólny `ExerciseRowContent` |
+| Zamiana ćwiczenia w treningu | — | Wyniki alfabetycznie, ćwiczenia na zamieniany mięsień ginęły w liście (uwaga znajomego) | Tryb zamiany w pickerze: „Podobne (barki)” na górze (ten sam mięsień, potem ten sam sprzęt, potem używane), niżej „Pozostałe”; `rankForSwap` + test |
 | Wybór ćwiczeń / Ćwiczenia | — | Pusta lista: picker „Brak wyników.”, zakładka — sam licznik „0 ćwiczeń” | Wspólny `FinderEmpty`: „Brak ćwiczeń dla tego wyszukiwania.” + „Wyczyść wyszukiwanie i filtry” |
 | Arkusz „i” w treningu | Karta ćwiczenia | W treningu brak zdjęć, rad, instrukcji i rekordów | Nowa zakładka „Opis” (`ExerciseHowTo`: zdjęcia, mięśnie, rady, instrukcja) i `RecordsSection` w „Statystykach” |
 | Karta ćwiczenia | Arkusz „i” w treningu | Na karcie brak wykresu ciężaru / szac. 1RM | Wspólny `ExerciseProgressChart`, sekcja „Postęp” na karcie |

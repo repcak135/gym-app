@@ -125,3 +125,32 @@ test('Co nowego: raz po aktualizacji, potem z Ustawień', async ({ page }) => {
   await all.getByRole('button', { name: 'Super, zamknij' }).click();
   await expect(all).toHaveCount(0);
 });
+
+test('zamiana ćwiczenia: najpierw ćwiczenia na ten sam mięsień, wyszukiwanie dalej obejmuje wszystko', async ({ page }) => {
+  const REAR = 'Seated Bent-Over Rear Delt Raise';
+  await page.goto('/#/');
+  await page.getByRole('button', { name: 'Pusty trening' }).click();
+  await page.getByRole('button', { name: 'Dodaj ćwiczenie' }).click();
+  const add = page.getByRole('dialog', { name: 'Dodaj ćwiczenia' });
+  await add.getByRole('searchbox', { name: 'Szukaj ćwiczenia' }).fill('seated bent over rear delt');
+  await add.getByRole('button', { name: REAR, exact: true }).click({ timeout: 15_000 });
+  await page.getByRole('button', { name: 'Gotowe (1)' }).click();
+
+  await page.getByRole('button', { name: 'Opcje treningu' }).click();
+  await page.getByRole('button', { name: `Zamień: ${REAR}` }).click();
+  const swap = page.getByRole('dialog', { name: `Zamień: ${REAR}` });
+  const titles = swap.locator('.exercises-section-title');
+  await expect(titles.first()).toHaveText('Podobne (barki)', { timeout: 15_000 });
+  await expect(swap.getByText('Pozostałe', { exact: true })).toHaveCount(0); // beyond the first page
+  // The first rows are shoulder exercises, the dumbbell ones first.
+  const metas = await swap.locator('.picker__row .exercise-row__meta').allTextContents();
+  for (const m of metas.slice(0, 10)) expect(m).toContain('Barki');
+  expect(metas[1]).toContain('Hantle');
+
+  // Searching still reaches other muscles: they come under "Pozostałe".
+  await swap.getByRole('searchbox', { name: 'Szukaj ćwiczenia' }).fill('row');
+  await expect(swap.getByText('Pozostałe', { exact: true })).toBeVisible();
+  await swap.getByRole('searchbox', { name: 'Szukaj ćwiczenia' }).fill('barbell squat');
+  await swap.getByRole('button', { name: 'Barbell Squat', exact: true }).click();
+  await expect(page.locator('.ex-panel__name', { hasText: 'Barbell Squat' })).toBeVisible();
+});

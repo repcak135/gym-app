@@ -474,6 +474,7 @@ export default function WorkoutPage() {
       {sheet?.kind === 'swap' && currentItem && (
         <ExercisePicker
           title={`Zamień: ${currentName}`}
+          replacing={currentItem.exerciseId}
           single
           existingIds={items.map((i) => i.exerciseId)}
           existingLabel="W treningu"
