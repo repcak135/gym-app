@@ -14,6 +14,8 @@ import PlanImportPage from './pages/PlanImportPage';
 import ReportPage from './pages/ReportPage';
 import ExercisesPage from './pages/ExercisesPage';
 import ExerciseDetailPage from './pages/ExerciseDetailPage';
+import ExerciseSharePage from './pages/ExerciseSharePage';
+import ExercisesImportPage from './pages/ExercisesImportPage';
 import ExerciseFormPage from './pages/ExerciseFormPage';
 import HistoryPage from './pages/HistoryPage';
 import WorkoutDetailPage from './pages/WorkoutDetailPage';
@@ -97,6 +99,9 @@ export default function App() {
           <Route path="/plany/:planId/wyslij" element={<PlanSharePage />} />
           <Route path="/plan" element={<PlanImportPage />} />
           <Route path="/cwiczenia" element={<ExercisesPage />} />
+          <Route path="/cwiczenia/wyslij" element={<ExerciseSharePage />} />
+          <Route path="/cwiczenia/import" element={<ExercisesImportPage />} />
+          <Route path="/cwiczenia/:id/wyslij" element={<ExerciseSharePage />} />
           <Route path="/cwiczenia/nowe" element={<ExerciseFormPage />} />
           <Route path="/cwiczenia/:id/edytuj" element={<ExerciseFormPage />} />
           <Route path="/cwiczenia/:id" element={<ExerciseDetailPage />} />

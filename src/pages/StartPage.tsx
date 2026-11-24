@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Link, useNavigate } from 'react-router';
-import { Settings } from 'lucide-react';
+import { useState } from 'react';
+import { Settings, ScanLine } from 'lucide-react';
 import { db } from '../data/db';
 import { formatReps, getLastPlanDayId, nextDay } from '../data/plans';
 import { getActiveWorkout, startWorkout } from '../data/workouts';
@@ -8,6 +9,7 @@ import { useNow } from '../hooks/useNow';
 import { unlockAudio } from '../audio/beep';
 import { formatClock } from '../data/progression';
 import type { Workout } from '../data/types';
+import ScanQrSheet from '../components/ScanQrSheet';
 import BackupReminder from '../components/BackupReminder';
 import './StartPage.css';
 import './SettingsPage.css';
@@ -46,6 +48,18 @@ function EmptyWorkoutButton() {
     >
       Pusty trening
     </button>
+  );
+}
+
+function ScanButton() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <button type="button" className="start-scan" onClick={() => setOpen(true)}>
+        <ScanLine size={16} aria-hidden="true" /> Skanuj kod od znajomego
+      </button>
+      {open && <ScanQrSheet onClose={() => setOpen(false)} />}
+    </>
   );
 }
 
@@ -94,6 +108,7 @@ export default function StartPage() {
           <Link to="/plany" className="start-btn inline">Utwórz plan</Link>
         </section>
         <EmptyWorkoutButton />
+        <ScanButton />
       </article>
     );
   }
@@ -146,6 +161,7 @@ export default function StartPage() {
         )}
       </section>
       <EmptyWorkoutButton />
+      <ScanButton />
     </article>
   );
 }

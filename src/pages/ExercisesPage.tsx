@@ -1,10 +1,17 @@
 import { useState, useCallback, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Plus, X, ChevronDown } from 'lucide-react';
+import { Plus, X, ChevronDown, ScanLine, Send } from 'lucide-react';
 
 import { db } from '../data/db';
 import { filterExercises, getRecentExerciseIds } from '../data/exercises';
+import {
+  SCOPE_OPTIONS,
+  emptyScopeText,
+  useScopedExercises,
+  type Scope,
+} from '../hooks/useExerciseScope';
+import ScanQrSheet from '../components/ScanQrSheet';
 import {
   MUSCLES,
   EQUIPMENT,
@@ -21,8 +28,6 @@ import SwipeRow from '../components/SwipeRow';
 import './ExercisesPage.css';
 
 const PAGE_SIZE = 60;
-
-type Scope = 'all' | 'moje' | 'uzywane';
 
 export default function ExercisesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -62,31 +67,22 @@ export default function ExercisesPage() {
     [],
   );
 
-  // Exercises the user has used: in any logged set or any plan day
-  const usedIds = useLiveQuery(async () => {
-    const ids = new Set<string>((await db.sets.orderBy('exerciseId').uniqueKeys()) as string[]);
-    for (const plan of await db.plans.toArray())
-      for (const day of plan.days) for (const item of day.items) ids.add(item.exerciseId);
-    return ids;
-  }, []);
+  const pool = useScopedExercises(allExercises, scope);
+  const customCount = allExercises ? allExercises.filter((e) => e.custom).length : 0;
+  const [scanning, setScanning] = useState(false);
 
   const isFiltered = !!(query || muscleVal || equipVal) || scope !== 'all';
   const isLoaded   = allExercises !== undefined && allExercises.length > 0;
 
-  const filtered = useMemo(() => {
-    if (!allExercises) return [];
-    const pool =
-      scope === 'moje'
-        ? allExercises.filter((e) => e.custom)
-        : scope === 'uzywane'
-          ? allExercises.filter((e) => usedIds?.has(e.id))
-          : allExercises;
-    return filterExercises(pool, {
-      query:     query     || undefined,
-      muscle:    muscleVal ?? undefined,
-      equipment: equipVal  ?? undefined,
-    });
-  }, [allExercises, query, muscleVal, equipVal, scope, usedIds]);
+  const filtered = useMemo(
+    () =>
+      filterExercises(pool, {
+        query:     query     || undefined,
+        muscle:    muscleVal ?? undefined,
+        equipment: equipVal  ?? undefined,
+      }),
+    [pool, query, muscleVal, equipVal],
+  );
 
   const recentExercises = useMemo(() => {
     if (!allExercises || !recentIds || isFiltered) return [];
@@ -124,15 +120,24 @@ export default function ExercisesPage() {
       <div className="exercises-scope">
         <Segmented<Scope>
           label="Które ćwiczenia"
-          options={[
-            { key: 'all', label: 'Wszystkie' },
-            { key: 'moje', label: 'Moje' },
-            { key: 'uzywane', label: 'Używane' },
-          ]}
+          options={SCOPE_OPTIONS}
           value={scope}
           onChange={(v) => setParam('t', v === 'all' ? '' : v)}
         />
       </div>
+
+      {scope === 'moje' && (
+        <div className="exercises-share-actions">
+          <button type="button" className="plan-btn" onClick={() => setScanning(true)}>
+            <ScanLine size={18} aria-hidden="true" /> Skanuj kod QR
+          </button>
+          {customCount > 0 && (
+            <Link to="/cwiczenia/wyslij" className="plan-btn">
+              <Send size={18} aria-hidden="true" /> Wyślij wszystkie moje
+            </Link>
+          )}
+        </div>
+      )}
 
       {/* Sticky toolbar */}
       <div className="exercises-toolbar">
@@ -210,15 +215,8 @@ export default function ExercisesPage() {
       {/* Result list */}
       <section aria-label="Lista ćwiczeń">
         <p className="exercises-count">{exercisesLabel(filtered.length)}</p>
-        {filtered.length === 0 && scope === 'moje' && !query && !muscleVal && !equipVal && (
-          <p className="exercises-empty">
-            Nie masz jeszcze własnych ćwiczeń. Dodaj je przyciskiem + u góry.
-          </p>
-        )}
-        {filtered.length === 0 && scope === 'uzywane' && !query && !muscleVal && !equipVal && (
-          <p className="exercises-empty">
-            Tu pojawią się ćwiczenia z Twoich planów i treningów.
-          </p>
+        {filtered.length === 0 && !query && !muscleVal && !equipVal && emptyScopeText(scope, true) && (
+          <p className="exercises-empty">{emptyScopeText(scope, true)}</p>
         )}
         <div className="exercise-list">
           {visible.map((ex) => {
@@ -275,6 +273,8 @@ export default function ExercisesPage() {
           </button>
         )}
       </section>
+
+      {scanning && <ScanQrSheet onClose={() => setScanning(false)} />}
 
       {/* Filter sheets */}
       {openSheet === 'muscle' && (

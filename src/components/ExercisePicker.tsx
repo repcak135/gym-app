@@ -5,6 +5,8 @@ import { Check, X } from 'lucide-react';
 import { db } from '../data/db';
 import { filterExercises } from '../data/exercises';
 import { muscleLabel, equipmentLabel } from '../data/exerciseLabels';
+import { SCOPE_OPTIONS, emptyScopeText, useScopedExercises, type Scope } from '../hooks/useExerciseScope';
+import Segmented from './stats/Segmented';
 import ExerciseThumb from './ExerciseThumb';
 import '../pages/ExercisesPage.css';
 import './ExercisePicker.css';
@@ -35,14 +37,17 @@ export default function ExercisePicker({
 }: ExercisePickerProps) {
   const all = useLiveQuery(() => db.exercises.toArray(), []);
   const [query, setQuery] = useState('');
+  const [scope, setScope] = useState<Scope>('all');
   const [limit, setLimit] = useState(PAGE_SIZE);
   const [selected, setSelected] = useState<string[]>([]);
   const existing = useMemo(() => new Set(existingIds), [existingIds]);
 
+  const pool = useScopedExercises(all, scope);
   const filtered = useMemo(
-    () => (all ? filterExercises(all, { query: query || undefined }) : []),
-    [all, query],
+    () => filterExercises(pool, { query: query || undefined }),
+    [pool, query],
   );
+  const emptyText = !query ? emptyScopeText(scope, false) : null;
 
   const toggle = (id: string) => {
     if (single) {
@@ -72,6 +77,15 @@ export default function ExercisePicker({
         <h2 className="picker__title">{title}</h2>
       </div>
 
+      <div className="picker__scope">
+        <Segmented<Scope>
+          label="Które ćwiczenia"
+          options={SCOPE_OPTIONS}
+          value={scope}
+          onChange={(v) => { setScope(v); setLimit(PAGE_SIZE); }}
+        />
+      </div>
+
       <div className="picker__search">
         <input
           type="search"
@@ -84,7 +98,9 @@ export default function ExercisePicker({
 
       <div className="picker__list">
         {all === undefined && <p className="picker__empty">Ładowanie…</p>}
-        {all !== undefined && filtered.length === 0 && <p className="picker__empty">Brak wyników.</p>}
+        {all !== undefined && filtered.length === 0 && (
+          <p className="picker__empty">{emptyText ?? 'Brak wyników.'}</p>
+        )}
         {filtered.slice(0, limit).map((ex) => {
           const meta = [ex.primaryMuscles.map(muscleLabel).join(', '), equipmentLabel(ex.equipment)]
             .filter(Boolean)

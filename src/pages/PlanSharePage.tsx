@@ -64,7 +64,7 @@ export default function PlanSharePage() {
       </Link>
       <h1>Wyślij plan</h1>
       <p className="plan-muted">
-        Znajomy otwiera link albo skanuje kod aparatem. Plan dodaje się u niego jako osobna kopia —
+        Znajomy skanuje kod w aplikacji: Plany → Skanuj kod QR (albo otwiera link). Plan dodaje się u niego jako osobna kopia —
         jego zmiany nie wpływają na Twój plan.
       </p>
 

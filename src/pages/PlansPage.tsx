@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Plus, MoreHorizontal, Link2 } from 'lucide-react';
+import { Plus, MoreHorizontal, Link2, ScanLine } from 'lucide-react';
 
 import { db } from '../data/db';
 import { createPlan, renamePlan, copyPlan, setActivePlan } from '../data/plans';
@@ -10,6 +10,7 @@ import { showUndo } from '../undo';
 import SwipeRow from '../components/SwipeRow';
 import type { Plan } from '../data/types';
 import NameSheet from '../components/NameSheet';
+import ScanQrSheet from '../components/ScanQrSheet';
 import PasteLinkSheet from '../components/PasteLinkSheet';
 import ConfirmSheet from '../components/ConfirmSheet';
 import { formatDate, daysLabel } from './planFormat';
@@ -20,6 +21,7 @@ import './PlansPage.css';
 type Modal =
   | { kind: 'new' }
   | { kind: 'paste' }
+  | { kind: 'scan' }
   | { kind: 'options'; plan: Plan }
   | { kind: 'rename'; plan: Plan }
   | { kind: 'delete'; plan: Plan }
@@ -96,13 +98,23 @@ export default function PlansPage() {
         <Link2 size={18} aria-hidden="true" />
         Dodaj plan z linku
       </button>
+      <button
+        type="button"
+        className="plan-btn plan-btn--block plans-from-link plans-from-link--next"
+        onClick={() => setModal({ kind: 'scan' })}
+      >
+        <ScanLine size={18} aria-hidden="true" />
+        Skanuj kod QR
+      </button>
+
+      {modal?.kind === 'scan' && <ScanQrSheet onClose={() => setModal(null)} />}
 
       {modal?.kind === 'paste' && (
         <PasteLinkSheet
           onCancel={() => setModal(null)}
-          onOpen={(data) => {
+          onOpen={(path) => {
             setModal(null);
-            navigate(`/plan?d=${data}`);
+            navigate(path);
           }}
         />
       )}

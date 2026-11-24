@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { ArrowLeft, Dumbbell, Pencil, Trash2 } from 'lucide-react';
+import { ArrowLeft, Dumbbell, Pencil, Send, Trash2 } from 'lucide-react';
 
 import { db } from '../data/db';
 import {
@@ -351,6 +351,13 @@ export default function ExerciseDetailPage() {
           >
             <Pencil size={16} aria-hidden="true" />
             Edytuj
+          </Link>
+          <Link
+            to={`/cwiczenia/${encodeURIComponent(exercise.id)}/wyslij`}
+            className="detail-btn detail-btn--edit"
+          >
+            <Send size={16} aria-hidden="true" />
+            Wyślij ćwiczenie
           </Link>
           <button
             type="button"

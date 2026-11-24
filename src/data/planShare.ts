@@ -6,7 +6,7 @@ import type { Exercise, Plan, PlanItem } from './types';
 export const SHARE_ROUTE = '/plan';
 export const QR_MAX_URL = 1800;
 
-const CORRUPTED = 'Link jest uszkodzony';
+export const CORRUPTED = 'Link jest uszkodzony';
 
 type PayloadItem = [number, number, number, number, number, number];
 type PayloadExercise = [string, string] | [string, string, string[], string[], string | null];
@@ -57,11 +57,11 @@ export function encodePlan(plan: Plan, exercises: Map<string, Exercise>): string
   return LZString.compressToEncodedURIComponent(JSON.stringify(payload));
 }
 
-function bad(): never {
+export function bad(): never {
   throw new Error(CORRUPTED);
 }
 
-function isStrArray(v: unknown): v is string[] {
+export function isStrArray(v: unknown): v is string[] {
   return Array.isArray(v) && v.every((x) => typeof x === 'string');
 }
 
@@ -133,8 +133,12 @@ export function decodePlan(data: string): SharedPlan {
   }
 }
 
-export function shareUrl(data: string, base: string = location.origin + location.pathname): string {
-  return `${base}#${SHARE_ROUTE}?d=${data}`;
+export function shareUrl(
+  data: string,
+  base: string = location.origin + location.pathname,
+  route: string = SHARE_ROUTE,
+): string {
+  return `${base}#${route}?d=${data}`;
 }
 
 export function extractPayload(text: string): string | null {

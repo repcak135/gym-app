@@ -1,23 +1,26 @@
 import { useState } from 'react';
-import { extractPayload } from '../data/planShare';
+import { routePayload } from '../data/payloadRouter';
 import './Sheet.css';
 import '../pages/PlanSharePage.css';
 
-/** Paste a shared plan link (iPhone: links open in Safari, not in the installed app). */
+/** Paste a shared plan or exercises link (iPhone: links open in Safari, not in the installed app). */
 export default function PasteLinkSheet({
   onOpen,
   onCancel,
 }: {
-  onOpen: (data: string) => void;
+  /** Gets the in-app route, e.g. `/plan?d=…` or `/cwiczenia/import?d=…`. */
+  onOpen: (path: string) => void;
   onCancel: () => void;
 }) {
   const [text, setText] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   const submit = () => {
-    const data = extractPayload(text);
-    if (!data) return setError('To nie jest link do planu. Wklej cały link od znajomego.');
-    onOpen(data);
+    const routed = routePayload(text);
+    if (routed.kind === 'unknown') {
+      return setError('To nie jest link do planu ani do ćwiczeń. Wklej cały link od znajomego.');
+    }
+    onOpen(routed.path);
   };
 
   return (
