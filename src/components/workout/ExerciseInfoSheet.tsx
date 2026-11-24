@@ -5,9 +5,9 @@ import { db } from '../../data/db';
 import { saveNote } from '../../data/exercises';
 import { getExerciseHistory } from '../../data/workouts';
 import { epley1RM, formatKg } from '../../data/progression';
-import { rirToRpeLabel } from '../../data/difficulty';
 import type { Workout, WorkoutSet } from '../../data/types';
 import MiniChart from './MiniChart';
+import ExerciseHistoryList from '../ExerciseHistoryList';
 import { formatDay } from '../../pages/planFormat';
 
 export type InfoTab = 'historia' | 'notatki' | 'statystyki';
@@ -26,31 +26,6 @@ const TABS: { id: InfoTab; label: string }[] = [
   { id: 'notatki', label: 'Notatki' },
   { id: 'statystyki', label: 'Statystyki' },
 ];
-
-function History({ history }: { history: { workout: Workout; sets: WorkoutSet[] }[] }) {
-  if (history.length === 0) return <p className="info-empty">Brak wcześniejszych treningów z tym ćwiczeniem.</p>;
-  return (
-    <ul className="info-history">
-      {history.map(({ workout, sets }) => (
-        <li key={workout.id}>
-          <p className="info-history__head">
-            <span>{formatDay(workout.startedAt)}</span>
-            <span className="muted">{workout.name}</span>
-          </p>
-          <p className="info-history__sets">
-            {sets.map((s) => (
-              <span key={s.id} className={s.warmup ? 'muted' : undefined}>
-                {s.warmup ? 'R ' : ''}
-                {formatKg(s.weight)} × {s.reps}
-                {s.rir !== undefined && ` · ${rirToRpeLabel(s.rir)}`}
-              </span>
-            ))}
-          </p>
-        </li>
-      ))}
-    </ul>
-  );
-}
 
 function Notes({ exerciseId }: { exerciseId: string }) {
   const [text, setText] = useState<string | null>(null);
@@ -156,7 +131,7 @@ export default function ExerciseInfoSheet({ exerciseId, exerciseName, workoutId,
         </div>
         <div className="info-body">
           {tab === 'notatki' && <Notes exerciseId={exerciseId} />}
-          {tab === 'historia' && history && <History history={history} />}
+          {tab === 'historia' && history && <ExerciseHistoryList history={history} />}
           {tab === 'statystyki' && history && <Stats history={history} />}
         </div>
       </div>

@@ -310,3 +310,16 @@ test('ustawienia: domyślne wartości dla nowych ćwiczeń', async ({ page }) =>
   await expect(item.getByLabel('Powtórzenia od')).toHaveValue('6');
   await expect(item.getByLabel('Powtórzenia do')).toHaveValue('10');
 });
+
+test('arkusz z nazwą otwiera się u góry ekranu z kursorem w polu (klawiatura iPhone go nie zasłoni)', async ({ page }) => {
+  await page.goto('/#/plany');
+  await page.getByRole('button', { name: 'Nowy plan' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Nowy plan' });
+  const input = sheet.getByLabel('Nazwa');
+  await expect(input).toBeFocused();
+  await expect(input).toBeInViewport();
+  const vh = page.viewportSize()!.height;
+  const box = (await input.boundingBox())!;
+  // in the top third: above where the on-screen keyboard appears
+  expect(box.y + box.height).toBeLessThan(vh / 3);
+});

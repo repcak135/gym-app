@@ -107,7 +107,7 @@ test('pusty trening: dodaj ćwiczenie, zakończ, podsumowanie; następny trening
   await expect(bench2.getByLabel('Ciężar')).toHaveValue('62,5');
   await expect(bench2.getByLabel('Powtórzenia')).toHaveValue('8');
   await bench2.getByRole('button', { name: 'Historia' }).click();
-  await expect(page.getByRole('dialog', { name: BENCH })).toContainText('60 × 12');
+  await expect(page.getByRole('dialog', { name: BENCH })).toContainText('60 kg × 12 powt.');
   await page.getByRole('dialog', { name: BENCH }).getByRole('button', { name: 'Zamknij' }).click();
 
   await bench2.getByRole('button', { name: 'Zalicz serię' }).click();
@@ -232,6 +232,11 @@ test('RIR: domyślnie ukryte; po włączeniu zapisuje się przy serii i widać j
   await bench.getByRole('button', { name: 'Zalicz serię' }).click();
   await expect(bench.getByRole('button', { name: 'Seria 1: 35 kg × 8, RPE 8, zaliczona' })).toBeVisible();
   await page.getByRole('timer', { name: 'Przerwa' }).getByRole('button', { name: 'Pomiń' }).click();
+  // second set as a warm-up (shown as "Rozgrzewka" in the history)
+  await bench.getByLabel('Ciężar').fill('20');
+  await bench.getByLabel('Powtórzenia', { exact: true }).fill('10');
+  await bench.getByRole('checkbox', { name: 'Rozgrzewka' }).click();
+  await bench.getByRole('button', { name: 'Zalicz serię' }).click();
   await page.getByRole('button', { name: 'Zakończ' }).click();
   await page.getByRole('button', { name: 'Zakończ trening' }).click();
   await page.getByRole('link', { name: 'Gotowe' }).click();
@@ -240,7 +245,25 @@ test('RIR: domyślnie ukryte; po włączeniu zapisuje się przy serii i widać j
   const bench2 = panel(page, BENCH);
   await expect(bench2.getByText('Ostatnio: 35×8 (RPE 8)')).toBeVisible();
   await bench2.getByRole('button', { name: 'Historia' }).click();
-  await expect(page.getByRole('dialog', { name: BENCH })).toContainText('35 × 8 · RPE 8');
+  const sets = page.getByRole('dialog', { name: BENCH }).getByRole('list', { name: /^Serie: / }).getByRole('listitem');
+  await expect(sets).toHaveCount(2);
+  // numbered rows; warm-up marked, difficulty as RPE
+  await expect(sets.filter({ hasText: '35 kg × 8 powt.' })).toContainText('RPE 8');
+  await expect(sets.filter({ hasText: '20 kg × 10 powt.' })).toContainText('Rozgrzewka');
+  await expect(sets.nth(0).locator('.xhist__n')).toHaveText('1');
+  await expect(sets.nth(1).locator('.xhist__n')).toHaveText('2');
+  // the exercise card shows the same history
+  await page.getByRole('dialog', { name: BENCH }).getByRole('button', { name: 'Zamknij' }).click();
+  await page.getByRole('button', { name: 'Opcje treningu' }).click();
+  await page.getByRole('button', { name: 'Anuluj trening' }).click();
+  await page.getByRole('button', { name: 'Usuń trening' }).click();
+  await expect(page.getByRole('button', { name: 'Pusty trening' })).toBeVisible();
+  await page.goto('/#/cwiczenia');
+  await page.getByPlaceholder('Szukaj ćwiczenia').fill('barbell bench press');
+  await page.getByRole('link', { name: BENCH, exact: true }).click();
+  const card = page.getByRole('region', { name: 'Historia' });
+  await expect(card.getByRole('list', { name: /^Serie: / }).getByRole('listitem').first()).toContainText('RPE 8');
+  await expect(card).toContainText('Rozgrzewka');
 });
 
 test('trudność: ustawienie „pytaj po zaliczeniu” otwiera arkusz, X zamyka, przejście dalej dopiero po zamknięciu', async ({ page }) => {

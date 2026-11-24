@@ -27,12 +27,11 @@ export default function NameSheet({ title, initialValue = '', onSave, onCancel }
 
   return (
     <div
-      className="sheet-backdrop"
+      className="sheet-backdrop sheet-backdrop--top"
       onClick={(e) => { if (e.target === e.currentTarget) onCancel(); }}
       onKeyDown={(e) => { if (e.key === 'Escape') onCancel(); }}
     >
       <div role="dialog" aria-label={title} aria-modal="true" className="sheet">
-        <div className="sheet__handle" aria-hidden="true" />
         <form
           className="confirm-sheet__body"
           onSubmit={(e) => { e.preventDefault(); void submit(); }}

@@ -397,10 +397,6 @@
 .info-tab--on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
 .info-body { padding: var(--space-2) var(--space-4) var(--space-5); overflow-y: auto; }
 .info-empty { color: var(--text-muted); }
-.info-history { list-style: none; margin: 0; padding: 0; }
-.info-history li { padding: var(--space-3) 0; border-bottom: 1px solid var(--border); }
-.info-history__head { display: flex; justify-content: space-between; gap: var(--space-3); margin: 0 0 4px; font-weight: 700; }
-.info-history__sets { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0; }
 .info-note {
   width: 100%;
   min-height: 160px;

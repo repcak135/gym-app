@@ -40,12 +40,11 @@ export default function DeleteDataSheet({ mode, counts, busy, onConfirm, onCance
 
   return (
     <div
-      className="sheet-backdrop"
+      className="sheet-backdrop sheet-backdrop--top"
       onClick={(e) => { if (e.target === e.currentTarget) onCancel(); }}
       onKeyDown={(e) => { if (e.key === 'Escape') onCancel(); }}
     >
       <div role="dialog" aria-label={title} aria-modal="true" className="sheet">
-        <div className="sheet__handle" aria-hidden="true" />
         <div className="confirm-sheet__body">
           <p className="confirm-sheet__title">{title}</p>
           <p className="action-sheet__message">
@@ -64,6 +63,7 @@ export default function DeleteDataSheet({ mode, counts, busy, onConfirm, onCance
             <input
               className="name-sheet__input"
               type="text"
+              autoFocus
               autoCapitalize="characters"
               autoComplete="off"
               value={text}

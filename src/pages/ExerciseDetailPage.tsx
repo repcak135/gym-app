@@ -18,6 +18,7 @@ import {
   LEVEL_PL,
 } from '../data/exerciseLabels';
 import RecordsSection from '../components/RecordsSection';
+import ExerciseHistorySection from '../components/ExerciseHistorySection';
 import EquipmentIcon from '../components/EquipmentIcon';
 import { removeCustomExerciseUndoable } from '../data/undoable';
 import { showUndo } from '../undo';
@@ -329,6 +330,8 @@ export default function ExerciseDetailPage() {
           {saved ? 'Zapisano' : ''}
         </p>
       </section>
+
+      <ExerciseHistorySection exerciseId={exercise.id} />
 
       {/* Instructions */}
       {instructions.length > 0 && (

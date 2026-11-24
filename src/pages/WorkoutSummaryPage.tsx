@@ -165,12 +165,11 @@ function SaveAsDaySection({ workout }: { workout: Workout }) {
       </section>
       {open && (
         <div
-          className="sheet-backdrop"
+          className="sheet-backdrop sheet-backdrop--top"
           onClick={(e) => { if (e.target === e.currentTarget) setOpen(false); }}
           onKeyDown={(e) => { if (e.key === 'Escape') setOpen(false); }}
         >
           <div role="dialog" aria-label="Zapisz jako dzień planu" aria-modal="true" className="sheet">
-            <div className="sheet__handle" aria-hidden="true" />
             <form
               className="confirm-sheet__body"
               onSubmit={(e) => { e.preventDefault(); void save(); }}
@@ -181,6 +180,7 @@ function SaveAsDaySection({ workout }: { workout: Workout }) {
                 <input
                   type="text"
                   className="name-sheet__input"
+                  autoFocus
                   value={dayName}
                   onChange={(e) => setDayName(e.target.value)}
                 />

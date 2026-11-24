@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { HashRouter, Routes, Route, useLocation, useNavigate } from 'react-router';
 import BottomNav from './components/BottomNav';
 import UndoToast from './components/UndoToast';
+import KeyboardInset from './components/KeyboardInset';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from './data/db';
 import { setHapticsEnabled } from './haptics';
@@ -91,6 +92,7 @@ export default function App() {
       <ScrollToTop />
       <ResumeWorkout />
       <HapticsSetting />
+      <KeyboardInset />
       <main>
         <Screen>
         <Routes>

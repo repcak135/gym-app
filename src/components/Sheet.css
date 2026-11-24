@@ -10,8 +10,24 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding: 0 var(--space-3) max(var(--space-3), env(safe-area-inset-bottom));
+  padding: 0 var(--space-3) max(var(--space-3), env(safe-area-inset-bottom), calc(var(--kb-inset, 0px) + var(--space-2)));
   animation: sheet-fade-in 0.18s ease;
+}
+
+/* Sheets for typing (names, "USUŃ"): at the top, so the iPhone keyboard never covers them. */
+.sheet-backdrop--top {
+  align-items: flex-start;
+  padding-top: calc(max(var(--space-3), env(safe-area-inset-top)) + var(--kb-top, 0px));
+  padding-bottom: var(--space-3);
+}
+.sheet-backdrop--top .sheet {
+  border-radius: var(--radius-sm) var(--radius-sm) var(--radius) var(--radius);
+  padding-bottom: 0;
+  animation-name: sheet-slide-down;
+}
+@keyframes sheet-slide-down {
+  from { transform: translateY(-40%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
 }
 
 @keyframes sheet-fade-in {
@@ -25,7 +41,7 @@
   border-radius: var(--radius) var(--radius) var(--radius-sm) var(--radius-sm);
   width: 100%;
   max-width: 540px;
-  max-height: 70vh;
+  max-height: min(70vh, calc(100dvh - var(--kb-inset, 0px) - var(--kb-top, 0px) - 2 * var(--space-3)));
   overflow-y: auto;
   overscroll-behavior: contain;
   animation: sheet-slide-up 0.22s cubic-bezier(0.32, 0.72, 0, 1);

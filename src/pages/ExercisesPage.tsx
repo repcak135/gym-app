@@ -1,5 +1,5 @@
-import { useState, useCallback, useMemo } from 'react';
-import { Link, useSearchParams } from 'react-router';
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
+import { Link, useLocation, useSearchParams } from 'react-router';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Plus, X, ChevronDown, ScanLine, Send } from 'lucide-react';
 
@@ -25,6 +25,7 @@ import { exercisesLabel } from './planFormat';
 import { removeCustomExerciseUndoable } from '../data/undoable';
 import { showUndo } from '../undo';
 import SwipeRow from '../components/SwipeRow';
+import { saveListMemo, takeListMemo } from './exercisesListMemo';
 import './ExercisesPage.css';
 
 const PAGE_SIZE = 60;
@@ -42,7 +43,15 @@ export default function ExercisesPage() {
   const equipVal   = equipFilter   || null;
 
   const [openSheet, setOpenSheet] = useState<'muscle' | 'equip' | null>(null);
-  const [limit, setLimit] = useState(PAGE_SIZE);
+  // Coming back from an exercise card: same search/filters, same loaded rows, same scroll position.
+  const location = useLocation();
+  const [memo] = useState(() => takeListMemo());
+  const [limit, setLimit] = useState(memo?.limit ?? PAGE_SIZE);
+  const restored = useRef(!memo);
+  useEffect(() => {
+    // The card's "Wróć" links to the bare list: put the remembered filters back.
+    if (memo?.search && !location.search) setSearchParams(new URLSearchParams(memo.search), { replace: true });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Reset page limit when filter/search changes
   const setParam = useCallback(
@@ -93,6 +102,18 @@ export default function ExercisesPage() {
 
   const visible = filtered.slice(0, limit);
 
+  useEffect(() => {
+    if (restored.current || !memo || !isLoaded || filtered.length === 0) return;
+    if (memo.search !== location.search) {
+      // filters not back yet (next render), or the list was opened with other filters
+      if (location.search) restored.current = true;
+      return;
+    }
+    restored.current = true;
+    // After the screen's own scroll-to-top.
+    requestAnimationFrame(() => window.scrollTo(0, memo.scrollY));
+  }, [memo, isLoaded, filtered.length, location.search]);
+
   if (!isLoaded) {
     return (
       <article>
@@ -105,7 +126,13 @@ export default function ExercisesPage() {
   }
 
   return (
-    <article>
+    <article
+      onClickCapture={(e) => {
+        if ((e.target as Element).closest('a[href*="/cwiczenia/"]')) {
+          saveListMemo({ search: location.search, limit, scrollY: window.scrollY });
+        }
+      }}
+    >
       <div className="exercises-header">
         <h1>Ćwiczenia</h1>
         <Link

@@ -192,3 +192,29 @@ test('zakładki Moje i Używane pokazują własne i używane ćwiczenia', async 
   await expect(page.getByRole('link', { name: 'Tokarski lateral raises' })).toBeVisible();
   await expect(page.getByRole('tab', { name: 'Moje' })).toHaveAttribute('aria-selected', 'true');
 });
+
+test('powrót z karty ćwiczenia: ta sama wyszukiwarka, wczytane wiersze i miejsce na liście', async ({ page }) => {
+  await page.goto('/#/cwiczenia');
+  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  await page.getByPlaceholder('Szukaj ćwiczenia').fill('press');
+  const more = page.getByRole('button', { name: /^Pokaż więcej/ });
+  await more.click();
+  const moreText = await more.textContent();
+
+  const rows = page.locator('a[href^="#/cwiczenia/"]:not([href$="/nowe"])');
+  await expect(rows.nth(110)).toBeAttached(); // second page loaded
+  const href = (await rows.nth(100).getAttribute('href'))!;
+  const target = page.locator(`a[href="${href}"]`);
+  await target.scrollIntoViewIfNeeded();
+  const yBefore = await page.evaluate(() => window.scrollY);
+  expect(yBefore).toBeGreaterThan(1000);
+  await target.click();
+  await expect(page).toHaveURL((u) => decodeURIComponent(u.hash) === decodeURIComponent(href));
+
+  await page.getByRole('link', { name: 'Wróć do listy ćwiczeń' }).click();
+  await expect(page.getByPlaceholder('Szukaj ćwiczenia')).toHaveValue('press');
+  await expect(more).toHaveText(moreText!);
+  await expect(page.locator(`a[href="${href}"]`)).toBeInViewport();
+  const yAfter = await page.evaluate(() => window.scrollY);
+  expect(Math.abs(yAfter - yBefore)).toBeLessThan(50);
+});
