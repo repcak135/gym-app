@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Link, useNavigate } from 'react-router';
-import { ChevronLeft, MoreHorizontal } from 'lucide-react';
+import { Check, ChevronLeft, ListChecks, MoreHorizontal } from 'lucide-react';
 import { db } from '../data/db';
 import { getSettings } from '../data/settings';
 import { formatClock } from '../data/progression';
@@ -24,6 +24,8 @@ import { useWakeLock } from '../hooks/useWakeLock';
 import ExercisePanel from '../components/workout/ExercisePanel';
 import RestBar, { RestEndBanner } from '../components/workout/RestBar';
 import ExerciseInfoSheet, { type InfoTab } from '../components/workout/ExerciseInfoSheet';
+import ExerciseThumb from '../components/ExerciseThumb';
+import { isExerciseDone, nextAfterExerciseDone, setsWord, type ExerciseProgress } from '../data/workoutFlow';
 import ExercisePicker from '../components/ExercisePicker';
 import ActionSheet from '../components/ActionSheet';
 import './PlansPage.css';
@@ -152,6 +154,54 @@ export default function WorkoutPage() {
     return map;
   }, [data]);
 
+  // ---- list view + auto-advance ----
+  const [view, setView] = useState<'list' | 'exercise'>('exercise');
+  const progress = useMemo<ExerciseProgress[]>(
+    () =>
+      items.map((it) => {
+        const list = setsByExercise.get(it.exerciseId) ?? [];
+        return { completed: list.filter((s) => s.completedAt !== undefined).length, total: list.length };
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [data, setsByExercise],
+  );
+  const mode = data?.workout ? data.settings.afterExerciseDone : 'next';
+  const latest = useRef({ progress, current, mode, view });
+  latest.current = { progress, current, mode, view };
+
+  const advanceTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  useEffect(() => () => clearTimeout(advanceTimer.current), []);
+  const onExerciseDone = useCallback((doneIndex: number) => {
+    clearTimeout(advanceTimer.current);
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+    advanceTimer.current = setTimeout(
+      () => {
+        const l = latest.current;
+        // The user may have moved on or undone the set during the wait.
+        if (l.view !== 'exercise' || l.current !== doneIndex || !isExerciseDone(l.progress[doneIndex] ?? { completed: 0, total: 0 })) return;
+        const action = nextAfterExerciseDone(l.progress, doneIndex, l.mode);
+        if (action.kind === 'list') setView('list');
+        else if (action.kind === 'exercise') goTo(action.index);
+      },
+      reduce ? 0 : 700,
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Back from the list: the (hidden) pager shows the exercise that is current now.
+  useEffect(() => {
+    const el = pager.current;
+    if (view !== 'exercise' || !el) return;
+    el.scrollTo({ left: current * el.clientWidth, behavior: 'instant' as ScrollBehavior });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [view]);
+
+  const openFromList = (i: number) => {
+    if (workout) void setCurrentIndex(workout.id, i);
+    setIndex(i);
+    setView('exercise');
+  };
+
   if (!data) return <div className="workout" />;
   if (!workout) {
     return (
@@ -191,6 +241,15 @@ export default function WorkoutPage() {
           <h1>{workout.name}</h1>
           <Elapsed since={workout.startedAt} />
         </div>
+        <button
+          type="button"
+          className={`workout-bar__icon${view === 'list' ? ' workout-bar__icon--on' : ''}`}
+          aria-label="Lista ćwiczeń"
+          aria-pressed={view === 'list'}
+          onClick={() => setView(view === 'list' ? 'exercise' : 'list')}
+        >
+          <ListChecks size={24} aria-hidden="true" />
+        </button>
         <button type="button" className="workout-bar__icon" aria-label="Opcje treningu" onClick={() => setSheet({ kind: 'menu' })}>
           <MoreHorizontal size={24} aria-hidden="true" />
         </button>
@@ -199,7 +258,7 @@ export default function WorkoutPage() {
         </button>
       </header>
 
-      {items.length > 1 && (
+      {view === 'exercise' && items.length > 1 && (
         <nav className="workout-dots" aria-label="Ćwiczenia">
           {items.map((it, i) => {
             const list = setsByExercise.get(it.exerciseId) ?? [];
@@ -218,7 +277,53 @@ export default function WorkoutPage() {
         </nav>
       )}
 
-      <div className="workout-pager" ref={pager} onScroll={onScroll}>
+      {view === 'list' && (
+        <div className="workout-list">
+          <ul className="wl" aria-label="Lista ćwiczeń">
+            {items.map((it, i) => {
+              const ex = exercises[i];
+              const p = progress[i] ?? { completed: 0, total: 0 };
+              const done = isExerciseDone(p);
+              const started = p.completed > 0;
+              return (
+                <li key={it.exerciseId}>
+                  <button
+                    type="button"
+                    className={`wl-row${done ? ' wl-row--done' : started ? ' wl-row--active' : ''}${i === current ? ' wl-row--current' : ''}`}
+                    aria-current={i === current ? 'true' : undefined}
+                    onClick={() => openFromList(i)}
+                  >
+                    {ex ? <ExerciseThumb exercise={ex} size={56} /> : <span style={{ width: 56, height: 56 }} />}
+                    <span className="wl-row__text">
+                      <span className="wl-row__name">{ex?.name ?? 'Nieznane ćwiczenie'}</span>
+                      {ex?.namePl && <span className="wl-row__pl">{ex.namePl}</span>}
+                      <span className="wl-row__progress">
+                        {p.completed}/{p.total} {setsWord(p.total)}
+                        {done && ' · Zrobione'}
+                      </span>
+                    </span>
+                    {done && (
+                      <span className="wl-row__badge" role="img" aria-label="Zrobione">
+                        <Check size={18} strokeWidth={3} aria-hidden="true" />
+                      </span>
+                    )}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+          <button type="button" className="workout-add" onClick={() => setSheet({ kind: 'add' })}>
+            + Dodaj ćwiczenie
+          </button>
+          {items.length > 0 && progress.every(isExerciseDone) && (
+            <button type="button" className="wl-finish" onClick={() => setSheet({ kind: 'finish' })}>
+              Zakończ trening
+            </button>
+          )}
+        </div>
+      )}
+
+      <div className={`workout-pager${view === 'list' ? ' workout-pager--hidden' : ''}`} ref={pager} onScroll={onScroll} inert={view === 'list'}>
         {items.length === 0 && (
           <div className="workout-page workout-page--empty">
             <p>Pusty trening. Dodaj pierwsze ćwiczenie.</p>
@@ -243,6 +348,7 @@ export default function WorkoutPage() {
                 showRir={settings.showRir}
                 onInfo={(tab) => setSheet({ kind: 'info', tab })}
                 onConfirmRemoveSet={(set) => setSheet({ kind: 'remove-set', set })}
+                onExerciseDone={onExerciseDone}
               />
               {i === items.length - 1 && (
                 <button type="button" className="workout-add" onClick={() => setSheet({ kind: 'add' })}>

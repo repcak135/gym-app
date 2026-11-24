@@ -111,6 +111,9 @@ export interface ExerciseAlias {
   exerciseId: Id;
 }
 
+/** What the live workout does after the last set of an exercise is completed. */
+export type AfterExerciseDone = 'next' | 'list' | 'stay';
+
 export interface AppSettings {
   key: 'app';
   activePlanId?: Id;
@@ -128,6 +131,7 @@ export interface AppSettings {
   restVibration: boolean;
   /** Advanced: show the RIR picker on each set. */
   showRir: boolean;
+  afterExerciseDone: AfterExerciseDone;
   lastBackupAt?: number;
   /** Backup reminder on Start hidden until this time ("Później"). */
   backupReminderSnoozedUntil?: number;

@@ -7,12 +7,18 @@ import { parseWeight } from '../data/progression';
 
 import { getSettings, updateSettings, WEIGHT_STEP_OPTIONS, BAR_WEIGHT_OPTIONS } from '../data/settings';
 import { REST_OPTIONS, formatRest } from '../data/plans';
-import type { AppSettings } from '../data/types';
+import type { AfterExerciseDone, AppSettings } from '../data/types';
 import './PlansPage.css';
 import './SettingsPage.css';
 
 const kg = (n: number) => `${String(n).replace('.', ',')} kg`;
 const range = (from: number, to: number) => Array.from({ length: to - from + 1 }, (_, i) => from + i);
+
+const AFTER_OPTIONS: [AfterExerciseDone, string][] = [
+  ['next', 'Przejdź do następnego ćwiczenia'],
+  ['list', 'Pokaż listę ćwiczeń'],
+  ['stay', 'Zostań na ćwiczeniu'],
+];
 
 type NumKey = Exclude<{
   [K in keyof AppSettings]: AppSettings[K] extends number ? K : never;
@@ -94,6 +100,24 @@ export default function SettingsPage() {
           checked={settings.restVibration}
           onChange={(v) => void updateSettings({ restVibration: v })}
         />
+      </section>
+
+      <section className="settings-group" aria-labelledby="set-after">
+        <h2 id="set-after" className="settings-group__title">Po ukończeniu ćwiczenia</h2>
+        <p className="settings-group__hint">Co robi trening po zaliczeniu ostatniej serii ćwiczenia. Przerwa liczy się dalej.</p>
+        <div role="radiogroup" aria-labelledby="set-after">
+          {AFTER_OPTIONS.map(([value, label]) => (
+            <label key={value} className="settings-row settings-radio">
+              <span className="settings-row__label">{label}</span>
+              <input
+                type="radio"
+                name="after-exercise-done"
+                checked={settings.afterExerciseDone === value}
+                onChange={() => void updateSettings({ afterExerciseDone: value })}
+              />
+            </label>
+          ))}
+        </div>
       </section>
 
       <section className="settings-group" aria-labelledby="set-adv">

@@ -536,3 +536,66 @@
 /* Rest bar rises in from the bottom. */
 .rest-bar { animation: rest-in var(--dur) var(--ease-out); }
 @keyframes rest-in { from { transform: translateY(24px); opacity: 0; } }
+
+/* ---- exercise list view ---- */
+.workout-bar__icon--on { background: var(--accent-soft); color: var(--accent); }
+
+/* Kept mounted (so its scroll position survives) but out of sight while the list is shown. */
+.workout-pager--hidden { flex: 0 0 0; height: 0; overflow: hidden; visibility: hidden; }
+
+.workout-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  padding: var(--space-3) var(--space-4) calc(env(safe-area-inset-bottom) + 120px);
+}
+.workout-list > * { max-width: 560px; margin-left: auto; margin-right: auto; }
+.wl { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.wl-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 72px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-muted);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.wl-row__text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.wl-row__name { color: var(--text); font-weight: 700; line-height: 1.25; }
+.wl-row__pl { font-size: 0.8rem; color: var(--text-muted); }
+.wl-row__progress { font-size: 0.85rem; font-weight: 600; }
+.wl-row--active { border-color: var(--accent); color: var(--accent); }
+.wl-row--done { border-color: var(--success); background: var(--success-soft); color: var(--success); }
+.wl-row--current { box-shadow: 0 0 0 2px var(--accent); }
+.wl-row__badge {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--success);
+  color: #062016;
+}
+.wl-finish {
+  display: block;
+  width: 100%;
+  min-height: 60px;
+  margin-top: var(--space-4);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--success);
+  color: #062016;
+  font: inherit;
+  font-size: 1.15rem;
+  font-weight: 800;
+  cursor: pointer;
+}

@@ -14,6 +14,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   restSound: true,
   restVibration: true,
   showRir: false,
+  afterExerciseDone: 'next',
 };
 
 export const WEIGHT_STEP_OPTIONS = [0.5, 1, 1.25, 2.5, 5];

@@ -29,6 +29,8 @@ interface Props {
   showRir: boolean;
   onInfo: (tab: InfoTab) => void;
   onConfirmRemoveSet: (set: WorkoutSet) => void;
+  /** Called when "Zalicz serię" completed the last uncompleted set of this exercise. */
+  onExerciseDone?: (index: number) => void;
 }
 
 function setLabel(sets: WorkoutSet[], set: WorkoutSet): string {
@@ -97,6 +99,7 @@ export default function ExercisePanel({
   showRir,
   onInfo,
   onConfirmRemoveSet,
+  onExerciseDone,
 }: Props) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [calcOpen, setCalcOpen] = useState(false);
@@ -123,6 +126,7 @@ export default function ExercisePanel({
     haptic('tick');
     setJustDone(set.id);
     setSelectedId(null); // move on to the next undone set
+    if (sets.every((s) => s.id === set.id || s.completedAt !== undefined)) onExerciseDone?.(index);
   };
 
   return (

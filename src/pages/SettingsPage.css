@@ -199,3 +199,6 @@
   cursor: pointer;
 }
 .settings-plates__error { margin: 0; color: var(--danger); font-size: 0.85rem; }
+
+.settings-radio { cursor: pointer; min-height: 48px; }
+.settings-radio input { width: 24px; height: 24px; margin: 0; flex-shrink: 0; accent-color: var(--accent); }

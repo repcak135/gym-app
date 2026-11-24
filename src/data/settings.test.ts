@@ -28,6 +28,13 @@ describe('settings', () => {
     expect(s.activePlanId).toBe('p1');
     expect(s.defaultRestSec).toBe(120);
     expect([s.defaultSets, s.defaultWarmupSets, s.defaultRepsMin, s.defaultRepsMax]).toEqual([3, 0, 8, 12]);
+    expect(s.afterExerciseDone).toBe('next');
+  });
+
+  it('afterExerciseDone: domyślnie next, zmiana zostaje zapisana', async () => {
+    expect((await getSettings()).afterExerciseDone).toBe('next');
+    await updateSettings({ afterExerciseDone: 'list' });
+    expect((await getSettings()).afterExerciseDone).toBe('list');
   });
 
   it('zakres powtórzeń zostaje poprawny', async () => {
