@@ -9,6 +9,8 @@
 // Elsewhere (Android, desktop): no audio session API; the alarm is scheduled ahead on
 // the audio clock so it plays on time even if JS timers are throttled.
 
+import type { RestSoundPreset } from '../data/types';
+
 type AudioSessionType = 'auto' | 'playback' | 'transient' | 'transient-solo' | 'ambient' | 'play-and-record';
 type NavigatorWithSession = Navigator & { audioSession?: { type: AudioSessionType } };
 
@@ -89,8 +91,24 @@ function tone(at: number, freq: number, dur: number, volume: number, type: Oscil
   scheduled.push(osc);
 }
 
+/** A struck sine partial: fast attack, exponential decay over `dur` seconds. */
+function ring(at: number, freq: number, dur: number, volume: number): void {
+  if (!ctx) return;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(freq, at);
+  gain.gain.setValueAtTime(0.0001, at);
+  gain.gain.exponentialRampToValueAtTime(volume, at + 0.008);
+  gain.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start(at);
+  osc.stop(at + dur + 0.02);
+  scheduled.push(osc);
+}
+
 /** Three rising, loud beeps starting at audio time t0 (~0.9 s). */
-function alarmAt(t0: number): void {
+function beepsAt(t0: number): void {
   const notes = [880, 1175, 1568];
   notes.forEach((f, i) => {
     const at = t0 + i * 0.3;
@@ -99,45 +117,123 @@ function alarmAt(t0: number): void {
   });
 }
 
+/** Soft bell, struck twice 0.45 s apart (~1.7 s). */
+function bellAt(t0: number): void {
+  for (const hit of [0, 0.45]) {
+    ring(t0 + hit, 1046, 1.2, 0.3);
+    ring(t0 + hit, 1046 * 2.76, 0.6, 0.08);
+  }
+}
+
+/** Low gong with inharmonic partials (~2 s). */
+function gongAt(t0: number): void {
+  ring(t0, 110, 2, 0.5);
+  ring(t0, 110 * 1.58, 1.6, 0.18);
+  ring(t0, 110 * 2.42, 1.2, 0.12);
+  ring(t0, 110 * 3.7, 0.8, 0.06);
+}
+
+/** Two short tones, 660 then 880 Hz. */
+function twoTonesAt(t0: number): void {
+  tone(t0, 660, 0.18, 0.4, 'sine');
+  tone(t0 + 0.2, 880, 0.18, 0.4, 'sine');
+}
+
+/** True when the preset makes a sound (vibrate and silent do not). */
+export function presetHasSound(preset: RestSoundPreset): boolean {
+  return preset !== 'vibrate' && preset !== 'silent';
+}
+
+function alarmAt(t0: number, preset: RestSoundPreset): void {
+  switch (preset) {
+    case 'bell': return bellAt(t0);
+    case 'gong': return gongAt(t0);
+    case 'twoTones': return twoTonesAt(t0);
+    case 'beeps': return beepsAt(t0);
+    default: return;
+  }
+}
+
 function tickAt(t: number): void {
   tone(t, 660, 0.07, 0.25, 'sine');
 }
 
 /** Non-iOS: schedule ticks at −3/−2/−1 s and the alarm at `endMs` on the audio clock. */
-export function scheduleRestSound(endMs: number, ticks: boolean): void {
+export function scheduleRestSound(endMs: number, ticks: boolean, preset: RestSoundPreset): void {
   cancelScheduled();
-  if (!ctx || playsLive()) return;
-  const delay = (endMs - Date.now()) / 1000;
-  if (delay < 0) return;
-  const t0 = ctx.currentTime + delay;
-  if (ticks) for (const s of [3, 2, 1]) if (delay - s > 0) tickAt(t0 - s);
-  alarmAt(t0);
+  try {
+    if (!ctx || playsLive() || !presetHasSound(preset)) return;
+    const delay = (endMs - Date.now()) / 1000;
+    if (delay < 0) return;
+    const t0 = ctx.currentTime + delay;
+    if (ticks) for (const s of [3, 2, 1]) if (delay - s > 0) tickAt(t0 - s);
+    alarmAt(t0, preset);
+  } catch {
+    // audio must never break the workout
+  }
 }
 
 /** iOS: a soft tick now (obeys the silent switch, does not touch music). */
 export function playTick(): void {
-  if (!ctx || !playsLive()) return;
-  if (ctx.state !== 'running') void ctx.resume().catch(() => {});
-  tickAt(ctx.currentTime + 0.01);
+  try {
+    if (!ctx || !playsLive()) return;
+    if (ctx.state !== 'running') void ctx.resume().catch(() => {});
+    tickAt(ctx.currentTime + 0.01);
+  } catch {
+    // audio must never break the workout
+  }
+}
+
+/** Longest preset (gong ~2 s) plus a margin, then the audio session goes back to 'auto'. */
+const RESTORE_MS = 2300;
+
+/** Plays the preset now. On iOS through the silent switch, then hands audio back to other apps. */
+async function playNow(preset: RestSoundPreset, live: boolean): Promise<void> {
+  if (!ctx || !presetHasSound(preset)) return;
+  if (restoreTimer) clearTimeout(restoreTimer);
+  try {
+    if (live) {
+      // The category change takes effect when the context (re)starts.
+      await ctx.suspend().catch(() => {});
+      setSessionType('playback');
+    }
+    await ctx.resume().catch(() => {});
+    alarmAt(ctx.currentTime + 0.05, preset);
+  } catch {
+    // audio must never break the workout
+  } finally {
+    if (live) {
+      restoreTimer = setTimeout(() => {
+        restoreTimer = undefined;
+        setSessionType('auto');
+      }, RESTORE_MS);
+    }
+  }
 }
 
 /** iOS: play the alarm now, through the silent switch, then hand audio back to other apps. */
-export async function playAlarmNow(): Promise<void> {
-  if (!ctx) return;
-  if (restoreTimer) clearTimeout(restoreTimer);
+export async function playAlarmNow(preset: RestSoundPreset): Promise<void> {
+  await playNow(preset, true);
+}
+
+/** Settings "Posłuchaj": from a tap, play the preset now. */
+export async function previewSound(preset: RestSoundPreset): Promise<void> {
   try {
-    // The category change takes effect when the context (re)starts.
-    await ctx.suspend().catch(() => {});
-    setSessionType('playback');
-    await ctx.resume().catch(() => {});
-    alarmAt(ctx.currentTime + 0.05);
-  } finally {
-    restoreTimer = setTimeout(() => {
-      restoreTimer = undefined;
-      setSessionType('auto');
-    }, 1300);
+    unlockAudio();
+    await playNow(preset, playsLive());
+  } catch {
+    // audio must never break the app
   }
 }
+
+export const REST_SOUND_PRESETS: { value: RestSoundPreset; label: string }[] = [
+  { value: 'bell', label: 'Delikatny dzwonek' },
+  { value: 'gong', label: 'Gong' },
+  { value: 'twoTones', label: 'Dwa krótkie tony' },
+  { value: 'beeps', label: 'Piknięcia (dawne)' },
+  { value: 'vibrate', label: 'Tylko wibracja' },
+  { value: 'silent', label: 'Cisza (tylko napis)' },
+];
 
 export function vibrateRestEnd(): void {
   try {

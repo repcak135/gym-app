@@ -131,6 +131,20 @@ describe('backup', () => {
     expect(f.data.settings).toEqual({ restSound: false });
   });
 
+  it('old backup without a sound preset: muted stays silent, otherwise the default bell; bad preset ignored', async () => {
+    const good = await createBackup(1);
+    const make = (settings: object) => parseBackup(JSON.stringify({ ...good, data: { ...good.data, settings } }));
+    await restoreBackup(make({ restSound: false }));
+    expect((await getSettings()).restSoundPreset).toBe('silent');
+    await restoreBackup(make({}));
+    const s = await getSettings();
+    expect([s.restSoundPreset, s.restTicks]).toEqual(['bell', true]);
+    expect(make({ restSoundPreset: 'nope' }).data.settings).toEqual({});
+    await restoreBackup(make({ restSoundPreset: 'gong', restTicks: false }));
+    const g = await getSettings();
+    expect([g.restSoundPreset, g.restTicks]).toEqual(['gong', false]);
+  });
+
   it('a failing restore leaves the existing data untouched', async () => {
     await seedEverything();
     const before = await dump();

@@ -14,6 +14,7 @@ import {
   skipRest,
   swapExercise,
   removeExercise,
+  moveExercise,
   addExercises,
   addSet,
   finishWorkout,
@@ -249,6 +250,37 @@ describe('exercises mid-workout', () => {
     const sets = await getWorkoutSets(w.id);
     expect(sets.some((s) => s.exerciseId === 'bench')).toBe(false);
     expect(sets.filter((s) => s.exerciseId === 'squat').every((s) => s.exerciseOrder === 1)).toBe(true);
+  });
+
+  it('moveExercise reorders exercises and sets, currentIndex follows the shown exercise', async () => {
+    const { plan, day } = await planDay(['a', 'b', 'c']);
+    const w = await startWorkout({ planId: plan.id, dayId: day.id });
+    const [first] = await getWorkoutSets(w.id);
+    await completeSet(first.id, 5000);
+    const restEndsAt = (await db.workouts.get(w.id))!.restEndsAt;
+    await moveExercise(w.id, 0, 2);
+    const after = await db.workouts.get(w.id);
+    expect(after?.exercises?.map((e) => e.exerciseId)).toEqual(['b', 'c', 'a']);
+    expect(after?.currentIndex).toBe(2);
+    expect(after?.restEndsAt).toBe(restEndsAt);
+    const sets = await db.sets.where('workoutId').equals(w.id).toArray();
+    for (const [id, order] of [['b', 0], ['c', 1], ['a', 2]] as const) {
+      expect(sets.filter((s) => s.exerciseId === id).every((s) => s.exerciseOrder === order)).toBe(true);
+    }
+    expect((await db.sets.get(first.id))?.completedAt).toBe(5000);
+    // current stays on the same exercise when another one moves around it
+    await setCurrentIndex(w.id, 1); // c
+    await moveExercise(w.id, 0, 2); // b to the end: [c, a, b]
+    expect((await db.workouts.get(w.id))?.currentIndex).toBe(0);
+  });
+
+  it('moveExercise ignores same or out-of-range indexes', async () => {
+    const { plan, day } = await planDay(['a', 'b']);
+    const w = await startWorkout({ planId: plan.id, dayId: day.id });
+    await moveExercise(w.id, 0, 0);
+    await moveExercise(w.id, 0, 5);
+    await moveExercise(w.id, -1, 1);
+    expect((await db.workouts.get(w.id))?.exercises?.map((e) => e.exerciseId)).toEqual(['a', 'b']);
   });
 
   it('addExercises skips exercises already in the workout', async () => {

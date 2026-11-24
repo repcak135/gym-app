@@ -1,4 +1,7 @@
+import { readFileSync } from 'node:fs';
 import { test, expect, type Page } from '@playwright/test';
+
+const VERSION: string = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version;
 
 const BENCH = 'Barbell Bench Press - Medium Grip';
 
@@ -105,7 +108,7 @@ test('Co nowego: raz po aktualizacji, potem z Ustawień', async ({ page }) => {
 
   await page.goto('/#/');
   await page.reload(); // a hash change alone is not a new launch
-  const news = page.getByRole('dialog', { name: 'Co nowego w 0.9.0' });
+  const news = page.getByRole('dialog', { name: `Co nowego w ${VERSION}` });
   await expect(news).toBeVisible();
   await expect(news.getByRole('listitem').first()).toBeVisible();
   await news.getByRole('button', { name: 'Super, zamknij' }).click();
@@ -118,10 +121,10 @@ test('Co nowego: raz po aktualizacji, potem z Ustawień', async ({ page }) => {
   await expect(page.getByRole('dialog', { name: /Co nowego/ })).toHaveCount(0);
 
   await page.goto('/#/ustawienia');
-  await expect(page.getByText('0.9.0', { exact: true })).toBeVisible();
+  await expect(page.getByText(VERSION, { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Co nowego' }).click();
   const all = page.getByRole('dialog', { name: 'Co nowego' });
-  await expect(all.getByRole('region', { name: 'Wersja 0.9.0' })).toBeVisible();
+  await expect(all.getByRole('region', { name: `Wersja ${VERSION}` })).toBeVisible();
   await all.getByRole('button', { name: 'Super, zamknij' }).click();
   await expect(all).toHaveCount(0);
 });

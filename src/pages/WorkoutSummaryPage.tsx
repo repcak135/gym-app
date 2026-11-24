@@ -36,6 +36,7 @@ function describeChange(c: PlanChange, name: (id: string) => string): string {
     case 'remove': return `Usunięte: ${name(c.exerciseId)}`;
     case 'sets': return `Serie: ${name(c.exerciseId)} ${c.from} → ${c.to}`;
     case 'warmups': return `Rozgrzewka: ${name(c.exerciseId)} ${c.from} → ${c.to}`;
+    case 'order': return `Kolejność ćwiczeń: ${c.order.map(name).join(' → ')}`;
   }
 }
 
@@ -49,7 +50,7 @@ function PlanChangesSection({ workout }: { workout: Workout }) {
     let cancelled = false;
     void (async () => {
       const changes = await diffWorkoutVsPlan(workout.id);
-      const ids = [...new Set(changes.flatMap((c) => (c.kind === 'swap' ? [c.fromExerciseId, c.toExerciseId] : [c.exerciseId])))];
+      const ids = [...new Set(changes.flatMap((c) => (c.kind === 'swap' ? [c.fromExerciseId, c.toExerciseId] : c.kind === 'order' ? c.order : [c.exerciseId])))];
       const found = await db.exercises.bulkGet(ids);
       const names = new Map(ids.map((x, i) => [x, found[i]?.name ?? 'Nieznane ćwiczenie']));
       if (cancelled) return;

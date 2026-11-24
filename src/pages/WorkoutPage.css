@@ -559,6 +559,23 @@
   cursor: pointer;
   touch-action: manipulation;
 }
+.wl-item { position: relative; }
+.wl-item--drag { z-index: 2; opacity: 0.92; filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4)); }
+.wl-item .wl-row { padding-right: 52px; }
+.wl-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 48px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: grab;
+  touch-action: none;
+}
 .wl-row__text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .wl-row__name { color: var(--text); font-weight: 700; line-height: 1.25; }
 .wl-row__pl { font-size: 0.8rem; color: var(--text-muted); }

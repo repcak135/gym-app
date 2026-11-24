@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Link, useNavigate } from 'react-router';
-import { Check, ChevronLeft, ListChecks, MoreHorizontal } from 'lucide-react';
+import { Check, ChevronLeft, GripVertical, ListChecks, MoreHorizontal } from 'lucide-react';
 import { db } from '../data/db';
 import { getSettings } from '../data/settings';
 import { formatClock } from '../data/progression';
@@ -14,6 +14,7 @@ import {
   getExerciseHistory,
   getLastSets,
   getWorkoutSets,
+  moveExercise,
   removeExercise,
   removeSet,
   setCurrentIndex,
@@ -223,6 +224,52 @@ export default function WorkoutPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [view]);
 
+  // ---- reorder (drag handle in the list, "Przesuń" in the menu) ----
+  const rowRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const [drag, setDrag] = useState<{ from: number; dy: number } | null>(null);
+  const dragInfo = useRef<{ startY: number; mids: number[]; from: number; to: number } | null>(null);
+
+  const reorder = async (from: number, to: number) => {
+    if (!workout || from === to) return;
+    // Which position the exercise on screen ends up at.
+    let next = current;
+    if (current === from) next = to;
+    else if (from < current && to >= current) next = current - 1;
+    else if (from > current && to <= current) next = current + 1;
+    await moveExercise(workout.id, from, to);
+    setIndex(next);
+    requestAnimationFrame(() => {
+      const el = pager.current;
+      if (el) el.scrollTo({ left: next * el.clientWidth, behavior: 'instant' as ScrollBehavior });
+    });
+  };
+
+  const onHandleDown = (e: React.PointerEvent<HTMLButtonElement>, i: number) => {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    const mids = rowRefs.current.slice(0, items.length).map((li) => {
+      const r = li?.getBoundingClientRect();
+      return r ? r.top + r.height / 2 : 0;
+    });
+    dragInfo.current = { startY: e.clientY, mids, from: i, to: i };
+    setDrag({ from: i, dy: 0 });
+  };
+  const onHandleMove = (e: React.PointerEvent<HTMLButtonElement>) => {
+    const d = dragInfo.current;
+    if (!d) return;
+    const dy = e.clientY - d.startY;
+    const center = d.mids[d.from] + dy;
+    d.to = d.mids.filter((m, k) => k !== d.from && m < center).length;
+    setDrag({ from: d.from, dy });
+  };
+  const onHandleUp = (e: React.PointerEvent<HTMLButtonElement>, commit: boolean) => {
+    const d = dragInfo.current;
+    if (!d) return;
+    dragInfo.current = null;
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
+    setDrag(null);
+    if (commit) void reorder(d.from, d.to);
+  };
+
   const openFromList = (i: number) => {
     if (workout) void setCurrentIndex(workout.id, i);
     setIndex(i);
@@ -313,7 +360,12 @@ export default function WorkoutPage() {
               const done = isExerciseDone(p);
               const started = p.completed > 0;
               return (
-                <li key={it.exerciseId}>
+                <li
+                  key={it.exerciseId}
+                  ref={(el) => { rowRefs.current[i] = el; }}
+                  className={`wl-item${drag?.from === i ? ' wl-item--drag' : ''}`}
+                  style={drag?.from === i ? { transform: `translateY(${drag.dy}px)` } : undefined}
+                >
                   <button
                     type="button"
                     className={`wl-row${done ? ' wl-row--done' : started ? ' wl-row--active' : ''}${i === current ? ' wl-row--current' : ''}`}
@@ -334,6 +386,17 @@ export default function WorkoutPage() {
                         <Check size={18} strokeWidth={3} aria-hidden="true" />
                       </span>
                     )}
+                  </button>
+                  <button
+                    type="button"
+                    className="wl-handle"
+                    aria-label="Przeciągnij, aby zmienić kolejność"
+                    onPointerDown={(e) => onHandleDown(e, i)}
+                    onPointerMove={onHandleMove}
+                    onPointerUp={(e) => onHandleUp(e, true)}
+                    onPointerCancel={(e) => onHandleUp(e, false)}
+                  >
+                    <GripVertical size={22} aria-hidden="true" />
                   </button>
                 </li>
               );
@@ -394,7 +457,8 @@ export default function WorkoutPage() {
         workoutId={workout.id}
         restEndsAt={workout.restEndsAt}
         restTotalSec={workout.restTotalSec}
-        sound={settings.restSound}
+        preset={settings.restSoundPreset}
+        ticks={settings.restTicks}
         vibration={settings.restVibration}
         onEnd={onRestEnd}
       />
@@ -412,6 +476,12 @@ export default function WorkoutPage() {
                     label: `Zamień: ${currentName}`,
                     onClick: () => setSheet(currentHasDone ? { kind: 'swap-refused' } : { kind: 'swap' }),
                   },
+                  ...(current > 0
+                    ? [{ label: `Przesuń wyżej: ${currentName}`, onClick: () => { close(); void reorder(current, current - 1); } }]
+                    : []),
+                  ...(current < items.length - 1
+                    ? [{ label: `Przesuń niżej: ${currentName}`, onClick: () => { close(); void reorder(current, current + 1); } }]
+                    : []),
                   { label: `Usuń: ${currentName}`, onClick: () => setSheet({ kind: 'remove-exercise' }) },
                 ]
               : []),

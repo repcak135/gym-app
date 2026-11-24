@@ -47,7 +47,7 @@ test('lista ćwiczeń: postęp, odznaka "zrobione", otwieranie ćwiczenia z list
   await expect(page.getByRole('timer', { name: 'Przerwa' })).toBeVisible();
   await expect(page.getByLabel('Czas treningu')).toBeVisible();
 
-  await squatRow.getByRole('button').click();
+  await squatRow.locator('.wl-row').click();
   await expect(list).toHaveCount(0);
   await expect(panel(page, SQUAT)).toBeVisible();
   await expect(page.getByRole('button', { name: `Ćwiczenie 2: ${SQUAT}` })).toHaveAttribute('aria-current', 'step');
@@ -70,10 +70,41 @@ test('ustawienie "Pokaż listę ćwiczeń": po ostatniej serii lista; po wszystk
   await expect(list).toBeVisible({ timeout: 5000 });
   await expect(page.getByRole('button', { name: 'Zakończ trening' })).toHaveCount(0);
 
-  await list.getByRole('listitem').filter({ hasText: SQUAT }).getByRole('button').click();
+  await list.getByRole('listitem').filter({ hasText: SQUAT }).locator('.wl-row').click();
   await completeAll(page, SQUAT);
   await expect(list).toBeVisible({ timeout: 5000 });
   await page.getByRole('button', { name: 'Zakończ trening' }).click();
   await page.getByRole('dialog', { name: 'Zakończyć trening?' }).getByRole('button', { name: 'Zakończ trening' }).click();
   await expect(page).toHaveURL(/#\/trening\/podsumowanie\//);
+});
+
+test('kolejność: menu "Przesuń niżej" przesuwa pierwsze ćwiczenie na drugie miejsce', async ({ page }) => {
+  await workoutWithTwo(page);
+  await page.getByRole('button', { name: 'Opcje treningu' }).click();
+  await expect(page.getByRole('button', { name: `Przesuń wyżej: ${BENCH}` })).toHaveCount(0);
+  await page.getByRole('button', { name: `Przesuń niżej: ${BENCH}` }).click();
+  // the pager keeps showing the moved exercise, now second
+  await expect(page.getByRole('button', { name: `Ćwiczenie 2: ${BENCH}` })).toHaveAttribute('aria-current', 'step');
+  await expect(panel(page, BENCH)).toBeVisible();
+  await page.getByRole('button', { name: 'Lista ćwiczeń' }).click();
+  const rows = page.getByRole('list', { name: 'Lista ćwiczeń' }).getByRole('listitem');
+  await expect(rows.nth(0)).toContainText(SQUAT);
+  await expect(rows.nth(1)).toContainText(BENCH);
+});
+
+test('kolejność: przeciągnięcie uchwytu ostatniego wiersza na górę', async ({ page }) => {
+  await workoutWithTwo(page);
+  await page.getByRole('button', { name: 'Lista ćwiczeń' }).click();
+  const rows = page.getByRole('list', { name: 'Lista ćwiczeń' }).getByRole('listitem');
+  await expect(rows.nth(0)).toContainText(BENCH);
+  const handle = rows.nth(1).getByRole('button', { name: 'Przeciągnij, aby zmienić kolejność' });
+  const h = (await handle.boundingBox())!;
+  const top = (await rows.nth(0).boundingBox())!;
+  await page.mouse.move(h.x + h.width / 2, h.y + h.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(h.x + h.width / 2, h.y + h.height / 2 - 20, { steps: 4 });
+  await page.mouse.move(h.x + h.width / 2, top.y + 4, { steps: 8 });
+  await page.mouse.up();
+  await expect(rows.nth(0)).toContainText(SQUAT);
+  await expect(rows.nth(1)).toContainText(BENCH);
 });

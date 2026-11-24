@@ -193,18 +193,17 @@ test('koniec przerwy, gdy aplikacja była w tle: napis po powrocie; Pomiń nie p
   await expect(page.getByRole('alert')).toHaveCount(0);
 });
 
-test('ustawienia: dźwięk i wibracja końca przerwy można wyłączyć', async ({ page }) => {
+test('ustawienia: cisza i wibracja końca przerwy można wyłączyć', async ({ page }) => {
   await page.goto('/#/ustawienia');
-  const sound = page.getByRole('switch', { name: 'Dźwięk końca przerwy' });
+  const silent = page.getByRole('radio', { name: 'Cisza (tylko napis)' });
   const vibration = page.getByRole('switch', { name: 'Wibracja' });
-  await expect(sound).toBeChecked();
   await expect(vibration).toBeChecked();
-  await sound.click();
-  await expect(sound).not.toBeChecked();
+  await silent.click();
+  await expect(silent).toBeChecked();
   await vibration.click();
   await expect(vibration).not.toBeChecked();
   await page.reload();
-  await expect(page.getByRole('switch', { name: 'Dźwięk końca przerwy' })).not.toBeChecked();
+  await expect(page.getByRole('radio', { name: 'Cisza (tylko napis)' })).toBeChecked();
   await expect(page.getByRole('switch', { name: 'Wibracja' })).not.toBeChecked();
 });
 

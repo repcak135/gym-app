@@ -7,6 +7,7 @@ import WhatsNewSheet from '../components/WhatsNewSheet';
 import InstallGuideSheet from '../components/InstallGuide';
 import { CHANGELOG } from '../data/changelog';
 import { APP_VERSION } from '../version';
+import { REST_SOUND_PRESETS, presetHasSound, previewSound } from '../audio/beep';
 import { parseWeight } from '../data/progression';
 
 import { getSettings, updateSettings, WEIGHT_STEP_OPTIONS, BAR_WEIGHT_OPTIONS } from '../data/settings';
@@ -158,12 +159,39 @@ export default function SettingsPage() {
       <section className="settings-group" aria-labelledby="set-rest">
         <h2 id="set-rest" className="settings-group__title">Koniec przerwy</h2>
         <p className="settings-group__hint">
-          Na koniec przerwy zawsze pojawia się duży napis „Koniec przerwy!”. Dźwięk gra też przy wyciszonym iPhonie, gdy aplikacja jest otwarta. Wibracja działa tylko na Androidzie.
+          Na koniec przerwy zawsze pojawia się duży napis „Koniec przerwy!”. Dźwięk gra też przy wyciszonym iPhonie, gdy aplikacja jest otwarta. Wibracja działa tylko na Androidzie (na iPhonie przy „Tylko wibracja” zobaczysz sam napis).
         </p>
+        <div role="radiogroup" aria-labelledby="set-rest">
+          {REST_SOUND_PRESETS.map((o) => (
+            <div key={o.value} className="settings-row settings-radio settings-sound">
+              <label className="settings-sound__pick">
+                <span className="settings-row__label">{o.label}</span>
+                <input
+                  type="radio"
+                  name="rest-sound-preset"
+                  aria-label={o.label}
+                  checked={settings.restSoundPreset === o.value}
+                  onChange={() => void updateSettings({ restSoundPreset: o.value })}
+                />
+              </label>
+              {presetHasSound(o.value) && (
+                <button
+                  type="button"
+                  className="settings-sound__play"
+                  aria-label={`Posłuchaj: ${o.label}`}
+                  onClick={() => void previewSound(o.value)}
+                >
+                  Posłuchaj
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
         <ToggleRow
-          label="Dźwięk końca przerwy"
-          checked={settings.restSound}
-          onChange={(v) => void updateSettings({ restSound: v })}
+          label="Odliczanie 3-2-1 (ciche tyknięcia)"
+          checked={settings.restTicks}
+          disabled={!presetHasSound(settings.restSoundPreset)}
+          onChange={(v) => void updateSettings({ restTicks: v })}
         />
         <ToggleRow
           label="Wibracja"

@@ -35,7 +35,7 @@ describe('decideWhatsNew', () => {
 
 describe('changelog', () => {
   it('has an entry for the current version, newest first', () => {
-    expect(APP_VERSION).toBe('0.9.0');
+    expect(APP_VERSION).toMatch(/^0\.\d+\.\d+$/);
     expect(CHANGELOG[0].version).toBe(APP_VERSION);
     for (let i = 1; i < CHANGELOG.length; i++) {
       expect(compareVersions(CHANGELOG[i - 1].version, CHANGELOG[i].version)).toBeGreaterThan(0);

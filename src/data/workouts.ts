@@ -192,6 +192,27 @@ export async function removeExercise(workoutId: string, index: number): Promise<
   });
 }
 
+/** Moves an exercise within the workout; sets keep their data, currentIndex follows the shown exercise. */
+export async function moveExercise(workoutId: string, from: number, to: number): Promise<void> {
+  await db.transaction('rw', db.workouts, db.sets, async () => {
+    const w = await db.workouts.get(workoutId);
+    const list = w?.exercises;
+    if (!w || !list) return;
+    if (from === to || from < 0 || to < 0 || from >= list.length || to >= list.length) return;
+    const currentId = list[w.currentIndex ?? 0]?.exerciseId;
+    const [moved] = list.splice(from, 1);
+    list.splice(to, 0, moved);
+    if (currentId !== undefined) {
+      const ci = list.findIndex((e) => e.exerciseId === currentId);
+      if (ci >= 0) w.currentIndex = ci;
+    }
+    await db.workouts.put(w);
+    const order = new Map(list.map((e, i) => [e.exerciseId, i]));
+    const sets = await db.sets.where('workoutId').equals(workoutId).toArray();
+    await db.sets.bulkPut(sets.map((s) => ({ ...s, exerciseOrder: order.get(s.exerciseId) ?? s.exerciseOrder })));
+  });
+}
+
 export async function updateSet(
   setId: string,
   patch: Partial<Pick<WorkoutSet, 'weight' | 'reps' | 'warmup'>> & { rir?: number | null },

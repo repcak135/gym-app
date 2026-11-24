@@ -7,15 +7,19 @@ import {
   playAlarmNow,
   playTick,
   playsLive,
+  presetHasSound,
   scheduleRestSound,
   vibrateRestEnd,
 } from '../../audio/beep';
+import type { RestSoundPreset } from '../../data/types';
 
 interface RestBarProps {
   workoutId: string;
   restEndsAt?: number;
   restTotalSec?: number;
-  sound: boolean;
+  preset: RestSoundPreset;
+  /** Soft 3-2-1 ticks (only with a sound preset). */
+  ticks: boolean;
   vibration: boolean;
   /** Rest is over. `late` = it ended while the app was hidden or closed. */
   onEnd: (late: boolean) => void;
@@ -25,7 +29,10 @@ interface RestBarProps {
 const LATE_MS = 3000;
 
 /** Rest countdown from the stored end time, so it is right after the app was in the background. */
-export default function RestBar({ workoutId, restEndsAt, restTotalSec, sound, vibration, onEnd }: RestBarProps) {
+export default function RestBar({ workoutId, restEndsAt, restTotalSec, preset, ticks, vibration, onEnd }: RestBarProps) {
+  const sound = presetHasSound(preset);
+  const vibrate = vibration || preset === 'vibrate';
+  const tickOn = ticks && sound;
   const now = useNow(250, restEndsAt !== undefined);
   const remaining = restRemainingSec(restEndsAt, now);
   const handled = useRef<number | undefined>(undefined);
@@ -37,19 +44,19 @@ export default function RestBar({ workoutId, restEndsAt, restTotalSec, sound, vi
       cancelScheduled();
       return;
     }
-    scheduleRestSound(restEndsAt, true);
+    scheduleRestSound(restEndsAt, tickOn, preset);
     const onVisible = () => {
-      if (document.visibilityState === 'visible') scheduleRestSound(restEndsAt, true);
+      if (document.visibilityState === 'visible') scheduleRestSound(restEndsAt, tickOn, preset);
     };
     document.addEventListener('visibilitychange', onVisible);
     return () => document.removeEventListener('visibilitychange', onVisible);
-  }, [restEndsAt, sound]);
+  }, [restEndsAt, sound, tickOn, preset]);
 
   useEffect(() => () => cancelScheduled(), []);
 
   // iOS: soft ticks at 3-2-1 s, played live.
   useEffect(() => {
-    if (!sound || !playsLive() || restEndsAt === undefined) return;
+    if (!tickOn || !playsLive() || restEndsAt === undefined) return;
     if (remaining >= 1 && remaining <= 3) {
       const key = `${restEndsAt}:${remaining}`;
       if (ticked.current !== key) {
@@ -57,7 +64,7 @@ export default function RestBar({ workoutId, restEndsAt, restTotalSec, sound, vi
         playTick();
       }
     }
-  }, [remaining, restEndsAt, sound]);
+  }, [remaining, restEndsAt, tickOn]);
 
   // End of rest: alert once, then clear the rest so a reload does not alert again.
   useEffect(() => {
@@ -66,12 +73,12 @@ export default function RestBar({ workoutId, restEndsAt, restTotalSec, sound, vi
     handled.current = restEndsAt;
     const late = Date.now() - restEndsAt > LATE_MS;
     if (!late) {
-      if (sound && playsLive()) void playAlarmNow();
-      if (vibration) vibrateRestEnd();
+      if (sound && playsLive()) void playAlarmNow(preset);
+      if (vibrate) vibrateRestEnd();
     }
     onEnd(late);
     void skipRest(workoutId);
-  }, [remaining, restEndsAt, sound, vibration, onEnd, workoutId]);
+  }, [remaining, restEndsAt, sound, preset, vibrate, onEnd, workoutId]);
 
   if (restEndsAt === undefined || remaining <= 0) return null;
 

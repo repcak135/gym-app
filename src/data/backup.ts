@@ -1,5 +1,5 @@
 import { db } from './db';
-import { DEFAULT_SETTINGS, getSettings, updateSettings } from './settings';
+import { DEFAULT_SETTINGS, getSettings, migrateSound, updateSettings } from './settings';
 import { APP_VERSION } from '../version';
 import type {
   AppSettings, BodyEntry, Exercise, ExerciseAlias, ExerciseNote, Plan, Workout, WorkoutSet,
@@ -117,6 +117,8 @@ function migrate(raw: Row): Row {
   return { ...raw, data, formatVersion: BACKUP_FORMAT_VERSION };
 }
 
+const SOUND_PRESETS: string[] = ['bell', 'gong', 'twoTones', 'beeps', 'vibrate', 'silent'];
+
 function cleanSettings(raw: unknown): BackupSettings {
   if (!isObj(raw)) throw new BackupError('Plik jest uszkodzony (ustawienia).');
   const out: Record<string, unknown> = {};
@@ -127,6 +129,7 @@ function cleanSettings(raw: unknown): BackupSettings {
       if (Array.isArray(v) && v.every((x) => num(x) && x > 0)) out[k] = v;
     } else if (typeof v === typeof def && (typeof v !== 'number' || num(v))) out[k] = v;
   }
+  if (!SOUND_PRESETS.includes(out.restSoundPreset as string)) delete out.restSoundPreset;
   if (str(raw.activePlanId)) out.activePlanId = raw.activePlanId;
   return out as BackupSettings;
 }
@@ -224,14 +227,14 @@ export async function restoreBackup(f: BackupFile): Promise<void> {
       if (o.barWeight !== undefined) patch.barWeight = o.barWeight;
       await db.exercises.update(o.id, patch);
     }
-    const settings: AppSettings = {
+    const settings: AppSettings = migrateSound({
       ...DEFAULT_SETTINGS,
       ...d.settings,
       key: 'app',
       exerciseDbVersion: device?.exerciseDbVersion,
       lastSeenVersion: device?.lastSeenVersion,
       lastBackupAt: f.exportedAt,
-    };
+    }, d.settings);
     if (settings.exerciseDbVersion === undefined) delete settings.exerciseDbVersion;
     if (settings.lastSeenVersion === undefined) delete settings.lastSeenVersion;
     await db.settings.put(settings);

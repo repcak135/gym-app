@@ -31,6 +31,23 @@ describe('settings', () => {
     expect(s.afterExerciseDone).toBe('next');
   });
 
+  it('dźwięk końca przerwy: domyślnie dzwonek i tyknięcia', async () => {
+    const s = await getSettings();
+    expect([s.restSoundPreset, s.restTicks]).toEqual(['bell', true]);
+  });
+
+  it('stare restSound:false bez presetu daje ciszę', async () => {
+    await db.settings.put({ key: 'app', restSound: false } as never);
+    expect((await getSettings()).restSoundPreset).toBe('silent');
+  });
+
+  it('zapisany preset zostaje, także przy restSound:false', async () => {
+    await db.settings.put({ key: 'app', restSound: false, restSoundPreset: 'gong' } as never);
+    expect((await getSettings()).restSoundPreset).toBe('gong');
+    await updateSettings({ restSoundPreset: 'beeps' });
+    expect((await getSettings()).restSoundPreset).toBe('beeps');
+  });
+
   it('askDifficultyAfterSet: domyślnie wyłączone, zmiana zostaje zapisana', async () => {
     expect((await getSettings()).askDifficultyAfterSet).toBe(false);
     await updateSettings({ askDifficultyAfterSet: true });

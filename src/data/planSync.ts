@@ -7,7 +7,8 @@ export type PlanChange =
   | { kind: 'add'; exerciseId: string; item: PlanItem }
   | { kind: 'remove'; exerciseId: string }
   | { kind: 'sets'; exerciseId: string; from: number; to: number } // working sets
-  | { kind: 'warmups'; exerciseId: string; from: number; to: number };
+  | { kind: 'warmups'; exerciseId: string; from: number; to: number }
+  | { kind: 'order'; order: string[] }; // workout's exercise ids in their new order
 
 interface DoneCounts {
   working: number;
@@ -96,6 +97,19 @@ export async function diffWorkoutVsPlan(workoutId: string): Promise<PlanChange[]
       changes.push({ kind: 'warmups', exerciseId: ex.exerciseId, from: item.warmupSets, to: ex.warmupSets });
     }
   }
+
+  // Order: plan ids (swaps mapped to their new exercise) vs workout ids, both limited to common ids.
+  const swapMap = new Map<string, string>();
+  for (const c of changes) if (c.kind === 'swap') swapMap.set(c.fromExerciseId, c.toExerciseId);
+  const mappedPlan = [...new Set(day.items.map((it) => swapMap.get(it.exerciseId) ?? it.exerciseId))];
+  const wIds = w.exercises.map((e) => e.exerciseId);
+  const wSet = new Set(wIds);
+  const pSet = new Set(mappedPlan);
+  const planSeq = mappedPlan.filter((id) => wSet.has(id));
+  const workoutSeq = wIds.filter((id) => pSet.has(id));
+  if (planSeq.length === workoutSeq.length && planSeq.some((id, i) => id !== workoutSeq[i])) {
+    changes.push({ kind: 'order', order: wIds });
+  }
   return changes;
 }
 
@@ -122,6 +136,20 @@ export async function applyPlanChanges(planId: string, dayId: string, changes: P
     }
     for (const c of changes) {
       if (c.kind === 'add') day.items.push({ ...c.item });
+    }
+    const orderChange = changes.find((c): c is Extract<PlanChange, { kind: 'order' }> => c.kind === 'order');
+    if (orderChange) {
+      const pos = new Map(orderChange.order.map((id, i) => [id, i]));
+      const slots: number[] = [];
+      day.items.forEach((it, i) => {
+        if (pos.has(it.exerciseId)) slots.push(i);
+      });
+      const sorted = slots
+        .map((i) => day.items[i])
+        .sort((a, b) => pos.get(a.exerciseId)! - pos.get(b.exerciseId)!);
+      slots.forEach((slot, k) => {
+        day.items[slot] = sorted[k];
+      });
     }
     await db.plans.put(plan);
   });

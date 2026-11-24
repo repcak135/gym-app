@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { db } from './db';
 import { getSettings } from './settings';
 import { createPlan, addDay, addItems, updateItem } from './plans';
-import { startWorkout, getWorkoutSets, completeSet, finishWorkout, swapExercise, addExercises, addSet, removeExercise } from './workouts';
+import { startWorkout, getWorkoutSets, completeSet, finishWorkout, swapExercise, addExercises, addSet, removeExercise, moveExercise } from './workouts';
 import { diffWorkoutVsPlan, applyPlanChanges, saveWorkoutAsDay } from './planSync';
 
 beforeEach(async () => {
@@ -97,6 +97,26 @@ describe('diffWorkoutVsPlan', () => {
     expect(changes).toHaveLength(2);
   });
 
+  it('detects a changed exercise order, also together with a swap', async () => {
+    const { plan, day } = await setup();
+    const w = await startWorkout({ planId: plan.id, dayId: day.id });
+    await moveExercise(w.id, 2, 0);
+    await completeAll(w.id);
+    await ended(w.id);
+    expect(await diffWorkoutVsPlan(w.id)).toEqual([{ kind: 'order', order: ['c', 'a', 'b'] }]);
+
+    const s = await setup();
+    const w2 = await startWorkout({ planId: s.plan.id, dayId: s.day.id });
+    await swapExercise(w2.id, 0, 'x');
+    await moveExercise(w2.id, 1, 2);
+    await completeAll(w2.id);
+    await ended(w2.id);
+    expect(await diffWorkoutVsPlan(w2.id)).toEqual([
+      { kind: 'swap', index: 0, fromExerciseId: 'a', toExerciseId: 'x' },
+      { kind: 'order', order: ['x', 'c', 'b'] },
+    ]);
+  });
+
   it('detects changed working-set and warm-up counts, ignores untouched exercises', async () => {
     const { plan, day } = await setup();
     await updateItem(plan.id, day.id, 0, { warmupSets: 2 });
@@ -131,6 +151,25 @@ describe('applyPlanChanges', () => {
     expect(items[0]).toMatchObject({ repsMin: 5, repsMax: 6, restSec: 60, sets: 3 });
     expect(items[1]).toMatchObject({ sets: 5, warmupSets: 2 });
     expect(items[2]).toMatchObject({ sets: 2, warmupSets: 1, restSec: 90 });
+  });
+
+  it('order change refills the slots of listed items and keeps other items in place', async () => {
+    const { plan, day } = await setup(['a', 'x', 'b', 'c']);
+    await applyPlanChanges(plan.id, day.id, [{ kind: 'order', order: ['c', 'a', 'b'] }]);
+    const items = (await db.plans.get(plan.id))!.days[0].items;
+    expect(items.map((i) => i.exerciseId)).toEqual(['c', 'x', 'a', 'b']);
+  });
+
+  it('round trip with a reorder leaves no further diff', async () => {
+    const { plan, day } = await setup();
+    const w = await startWorkout({ planId: plan.id, dayId: day.id });
+    await swapExercise(w.id, 0, 'x');
+    await moveExercise(w.id, 1, 2);
+    await completeAll(w.id);
+    await ended(w.id);
+    await applyPlanChanges(plan.id, day.id, await diffWorkoutVsPlan(w.id));
+    expect((await db.plans.get(plan.id))!.days[0].items.map((i) => i.exerciseId)).toEqual(['x', 'c', 'b']);
+    expect(await diffWorkoutVsPlan(w.id)).toEqual([]);
   });
 
   it('round trip: diff then apply leaves no further diff', async () => {

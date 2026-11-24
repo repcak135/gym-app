@@ -12,6 +12,8 @@ export const DEFAULT_SETTINGS: AppSettings = {
   defaultRepsMin: 8,
   defaultRepsMax: 12,
   restSound: true,
+  restSoundPreset: 'bell',
+  restTicks: true,
   restVibration: true,
   showRir: false,
   askDifficultyAfterSet: false,
@@ -26,7 +28,14 @@ export const BAR_WEIGHT_OPTIONS = [7.5, 10, 15, 20, 25];
 export async function getSettings(): Promise<AppSettings> {
   const stored = await db.settings.get('app');
   // Settings saved by older versions lack newer fields: fill them with defaults.
-  return { ...DEFAULT_SETTINGS, ...stored, key: 'app' };
+  const merged: AppSettings = { ...DEFAULT_SETTINGS, ...stored, key: 'app' };
+  return stored ? migrateSound(merged, stored) : merged;
+}
+
+/** Someone who muted the old sound toggle keeps silence (no preset stored yet). */
+export function migrateSound<T extends { restSound?: boolean; restSoundPreset?: unknown }>(merged: AppSettings, stored: T): AppSettings {
+  if (stored.restSoundPreset === undefined && stored.restSound === false) return { ...merged, restSoundPreset: 'silent' };
+  return merged;
 }
 
 export async function updateSettings(patch: Partial<Omit<AppSettings, 'key'>>): Promise<AppSettings> {

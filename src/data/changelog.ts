@@ -11,6 +11,17 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.1',
+    date: '2026-11-24',
+    items: [
+      'Podpowiedź dla każdej serii osobno: każda seria ma swój cel i krótkie wyjaśnienie, np. „Ostatnio 9 powtórzeń — dorzuć 1”. Przycisk „?” tłumaczy, jak to działa.',
+      'Nowe ustawienie „Jak ciężko trenujesz?” — jeśli oceniasz trudność serii, podpowiedź bierze to pod uwagę.',
+      'Gdy przez 3 treningi nic nie rośnie, aplikacja zaproponuje zejście o ok. 10% na ten trening.',
+      'Kolejność ćwiczeń zmienisz w trakcie treningu: przeciągnij na liście albo „Przesuń wyżej/niżej” w opcjach. Po treningu możesz zapisać nową kolejność w planie.',
+      'Nowe dźwięki końca przerwy (dzwonek, gong, dwa tony…) z przyciskiem „Posłuchaj” i osobnym włącznikiem odliczania 3-2-1.',
+    ],
+  },
+  {
     version: '0.9.0',
     date: '2026-11-24',
     items: [

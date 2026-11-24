@@ -116,6 +116,8 @@ export interface ExerciseAlias {
 /** What the live workout does after the last set of an exercise is completed. */
 export type AfterExerciseDone = 'next' | 'list' | 'stay';
 
+export type RestSoundPreset = 'bell' | 'gong' | 'twoTones' | 'beeps' | 'vibrate' | 'silent';
+
 export interface AppSettings {
   key: 'app';
   activePlanId?: Id;
@@ -128,8 +130,13 @@ export interface AppSettings {
   defaultWarmupSets: number;
   defaultRepsMin: number;
   defaultRepsMax: number;
-  /** End of rest: sound (beats the iPhone silent switch) and vibration (Android). */
+  /** Legacy on/off sound (old rows and backups); superseded by restSoundPreset. */
   restSound: boolean;
+  /** End-of-rest sound (beats the iPhone silent switch). */
+  restSoundPreset: RestSoundPreset;
+  /** Soft 3-2-1 ticks before the end of the rest (only with a sound preset). */
+  restTicks: boolean;
+  /** End of rest: vibration (Android). */
   restVibration: boolean;
   /** Advanced: show the RIR picker on each set. */
   showRir: boolean;
