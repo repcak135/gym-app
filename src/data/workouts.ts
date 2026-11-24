@@ -352,6 +352,45 @@ function bests(sets: WorkoutSet[]): Record<Exclude<RecordKind, 'reps'>, number> 
   };
 }
 
+/**
+ * New records of one exercise in one workout against its earlier workouts (each an array of sets).
+ * An exercise's first workout never counts (everything would be a "record").
+ */
+export function findNewRecords(exerciseId: string, nowSets: WorkoutSet[], earlier: WorkoutSet[][]): NewRecord[] {
+  if (earlier.length === 0) return [];
+  const records: NewRecord[] = [];
+  const working = nowSets.filter((s) => !s.warmup && s.completedAt !== undefined);
+  const now = bests(working);
+  const before = { weight: 0, e1rm: 0, volume: 0 };
+  for (const sets of earlier) {
+    const b = bests(sets);
+    before.weight = Math.max(before.weight, b.weight);
+    before.e1rm = Math.max(before.e1rm, b.e1rm);
+    before.volume = Math.max(before.volume, b.volume);
+  }
+  for (const kind of ['weight', 'e1rm', 'volume'] as const) {
+    if (now[kind] > before[kind]) records.push({ exerciseId, kind, value: Math.round(now[kind] * 10) / 10 });
+  }
+  // Most reps at a weight: best new set beating the old best at that same weight.
+  const bestReps = new Map<number, number>();
+  for (const sets of earlier) {
+    for (const s of sets) {
+      if (s.warmup || s.completedAt === undefined || s.reps <= 0) continue;
+      bestReps.set(s.weight, Math.max(bestReps.get(s.weight) ?? 0, s.reps));
+    }
+  }
+  let repsRecord: { weight: number; reps: number } | null = null;
+  for (const s of working) {
+    const prev = bestReps.get(s.weight);
+    if (prev === undefined || s.reps <= prev) continue;
+    if (!repsRecord || s.weight > repsRecord.weight || (s.weight === repsRecord.weight && s.reps > repsRecord.reps)) {
+      repsRecord = { weight: s.weight, reps: s.reps };
+    }
+  }
+  if (repsRecord) records.push({ exerciseId, kind: 'reps', value: repsRecord.reps, ...repsRecord });
+  return records;
+}
+
 export async function summarizeWorkout(workoutId: string): Promise<WorkoutSummary> {
   const w = await db.workouts.get(workoutId);
   if (!w) throw new Error('Nie znaleziono treningu');
@@ -361,35 +400,7 @@ export async function summarizeWorkout(workoutId: string): Promise<WorkoutSummar
   const exerciseIds = [...new Set(working.map((s) => s.exerciseId))];
   for (const exerciseId of exerciseIds) {
     const earlier = (await getExerciseHistory(exerciseId, workoutId)).filter((h) => h.workout.startedAt < w.startedAt);
-    if (earlier.length === 0) continue; // first time: everything would be a "record"
-    const now = bests(working.filter((s) => s.exerciseId === exerciseId));
-    const before = { weight: 0, e1rm: 0, volume: 0 };
-    for (const h of earlier) {
-      const b = bests(h.sets);
-      before.weight = Math.max(before.weight, b.weight);
-      before.e1rm = Math.max(before.e1rm, b.e1rm);
-      before.volume = Math.max(before.volume, b.volume);
-    }
-    for (const kind of ['weight', 'e1rm', 'volume'] as const) {
-      if (now[kind] > before[kind]) records.push({ exerciseId, kind, value: Math.round(now[kind] * 10) / 10 });
-    }
-    // Most reps at a weight: best new set beating the old best at that same weight.
-    const bestReps = new Map<number, number>();
-    for (const h of earlier) {
-      for (const s of h.sets) {
-        if (s.warmup || s.completedAt === undefined || s.reps <= 0) continue;
-        bestReps.set(s.weight, Math.max(bestReps.get(s.weight) ?? 0, s.reps));
-      }
-    }
-    let repsRecord: { weight: number; reps: number } | null = null;
-    for (const s of working.filter((x) => x.exerciseId === exerciseId)) {
-      const prev = bestReps.get(s.weight);
-      if (prev === undefined || s.reps <= prev) continue;
-      if (!repsRecord || s.weight > repsRecord.weight || (s.weight === repsRecord.weight && s.reps > repsRecord.reps)) {
-        repsRecord = { weight: s.weight, reps: s.reps };
-      }
-    }
-    if (repsRecord) records.push({ exerciseId, kind: 'reps', value: repsRecord.reps, ...repsRecord });
+    records.push(...findNewRecords(exerciseId, working.filter((s) => s.exerciseId === exerciseId), earlier.map((h) => h.sets)));
   }
   return {
     durationSec: Math.max(0, Math.round(((w.endedAt ?? Date.now()) - w.startedAt) / 1000)),

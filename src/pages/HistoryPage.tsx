@@ -10,22 +10,22 @@ import { MONTHS, MONTHS_GENITIVE, WEEKDAYS_SHORT, setsLabel } from './historyFor
 import { removeWorkoutUndoable } from '../data/undoable';
 import { showUndo } from '../undo';
 import SwipeRow from '../components/SwipeRow';
+import { historyView } from './historyView';
 import './HistoryPage.css';
 
 const WEEK_HEADER = ['pn', 'wt', 'śr', 'cz', 'pt', 'so', 'nd'];
 
 // Coming back from a workout's details returns to the month and day you were looking at.
-let lastView: { year: number; month: number; day: number | null } | null = null;
 
 export default function HistoryPage() {
   const items = useLiveQuery(() => listFinishedWorkouts(), []);
   const [now] = useState(() => new Date());
   const [view, setView] = useState(() =>
-    lastView ? { year: lastView.year, month: lastView.month } : { year: now.getFullYear(), month: now.getMonth() },
+    historyView.last ? { year: historyView.last.year, month: historyView.last.month } : { year: now.getFullYear(), month: now.getMonth() },
   );
-  const [selectedDay, setSelectedDay] = useState<number | null>(() => lastView?.day ?? null);
+  const [selectedDay, setSelectedDay] = useState<number | null>(() => historyView.last?.day ?? null);
   useEffect(() => {
-    lastView = { ...view, day: selectedDay };
+    historyView.last = { ...view, day: selectedDay };
   }, [view, selectedDay]);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
 

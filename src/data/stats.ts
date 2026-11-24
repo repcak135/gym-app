@@ -2,6 +2,7 @@ import { db } from './db';
 import { workoutDurationSec } from './history';
 import { bodyParts, MUSCLE_GROUPS, muscleGroup, type BodyPart, type MuscleGroup } from './muscleMap';
 import { workingSets } from './records';
+import { weekStartOf } from './motivation';
 import { isFinished } from './workouts';
 import type { Workout, WorkoutSet } from './types';
 
@@ -38,12 +39,7 @@ const MONTHS_FULL = [
   'lipiec', 'sierpień', 'wrzesień', 'październik', 'listopad', 'grudzień',
 ];
 
-/** Local midnight of the Monday of the week containing `t`, shifted by `weeks` weeks. */
-function mondayOf(t: number, weeks = 0): number {
-  const d = new Date(t);
-  const sinceMonday = (d.getDay() + 6) % 7;
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate() - sinceMonday + weeks * 7).getTime();
-}
+const mondayOf = weekStartOf;
 
 function addDays(t: number, days: number): number {
   const d = new Date(t);

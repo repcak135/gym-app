@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { ChevronLeft, ChevronRight, FileSpreadsheet } from 'lucide-react';
-import { Link } from 'react-router';
+import { ChevronLeft, ChevronRight, FileSpreadsheet, Trophy } from 'lucide-react';
+import { Link, useNavigate } from 'react-router';
 
 import {
   computeStats,
@@ -10,6 +10,7 @@ import {
   periodRange,
   weeklyCounts,
   type Period,
+  type StatsInput,
 } from '../data/stats';
 import { isFinished } from '../data/workouts';
 import { MUSCLE_GROUPS } from '../data/muscleMap';
@@ -18,6 +19,10 @@ import WeekBars from '../components/stats/WeekBars';
 import BodyMap from '../components/stats/BodyMap';
 import Segmented from '../components/stats/Segmented';
 import BodyStats from './BodyStats';
+import MuscleWeek from './MuscleWeek';
+import YearCalendar from '../components/stats/YearCalendar';
+import { yearActivity, type DayActivity } from '../data/motivation';
+import { openHistoryDay } from './historyView';
 import { setsLabel } from './historyFormat';
 import './StatsPage.css';
 
@@ -30,7 +35,8 @@ const PERIODS: { key: Period; label: string }[] = [
 
 // Coming back to the tab keeps the period you were looking at.
 let lastView: { period: Period; offset: number } = { period: 'month', offset: 0 };
-let lastTab: 'training' | 'body' = 'training';
+let lastTab: 'training' | 'week' | 'body' = 'training';
+let lastYear: number | null = null;
 
 function formatDuration(sec: number): string {
   const min = Math.round(sec / 60);
@@ -64,16 +70,24 @@ export default function StatsPage() {
           Raport dla trenera
         </Link>
       </div>
+      <Link to="/statystyki/rekordy" className="stats-records-link">
+        <Trophy size={18} aria-hidden="true" />
+        <span>Rekordy i odznaki</span>
+        <ChevronRight size={18} aria-hidden="true" className="stats-records-link__chev" />
+      </Link>
       <Segmented
         label="Statystyki"
         options={[
           { key: 'training', label: 'Treningi' },
+          { key: 'week', label: 'Mięśnie' },
           { key: 'body', label: 'Ciało' },
         ]}
         value={tab}
         onChange={setTab}
       />
-      <div className="stats-tab">{tab === 'training' ? <TrainingStats /> : <BodyStats />}</div>
+      <div className="stats-tab">
+        {tab === 'training' ? <TrainingStats /> : tab === 'week' ? <MuscleWeek /> : <BodyStats />}
+      </div>
     </article>
   );
 }
@@ -255,6 +269,8 @@ function TrainingStats() {
             </>
           )}
 
+          {firstAt !== undefined && <ActivityCard input={input!} firstAt={firstAt} now={now} />}
+
           {weeks.length > 0 && (firstAt !== undefined) && (
             <section className="stats-card" aria-labelledby="st-weeks">
               <div className="stats-card__head">
@@ -266,5 +282,44 @@ function TrainingStats() {
         </>
       )}
     </>
+  );
+}
+
+function ActivityCard({ input, firstAt, now }: { input: StatsInput; firstAt: number; now: number }) {
+  const navigate = useNavigate();
+  const thisYear = new Date(now).getFullYear();
+  const firstYear = new Date(firstAt).getFullYear();
+  const [year, setYear] = useState(() => Math.min(thisYear, Math.max(firstYear, lastYear ?? thisYear)));
+  useEffect(() => {
+    lastYear = year;
+  }, [year]);
+  const days = useMemo(() => yearActivity(input, year), [input, year]);
+
+  function open(key: string, a: DayActivity) {
+    if (a.workoutIds.length === 1) {
+      navigate(`/historia/${a.workoutIds[0]}`);
+      return;
+    }
+    const [y, m, d] = key.split('-').map(Number);
+    openHistoryDay(y, m - 1, d);
+    navigate('/historia');
+  }
+
+  return (
+    <section className="stats-card" aria-labelledby="st-activity">
+      <div className="stats-card__head">
+        <h2 id="st-activity">Aktywność</h2>
+      </div>
+      <YearCalendar
+        year={year}
+        days={days}
+        canPrev={year > firstYear}
+        canNext={year < thisYear}
+        onPrev={() => setYear((y) => y - 1)}
+        onNext={() => setYear((y) => y + 1)}
+        onOpenDay={open}
+      />
+      <p className="stats-note">Kolor: liczba serii roboczych w danym dniu. Dotknij dnia, aby otworzyć trening.</p>
+    </section>
   );
 }

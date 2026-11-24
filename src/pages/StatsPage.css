@@ -239,3 +239,20 @@
 }
 .stats-head { margin-bottom: var(--space-3); }
 .stats .stats-head h1 { margin: 0; }
+
+.stats-records-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 48px;
+  margin-bottom: var(--space-3);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+}
+.stats-records-link svg:first-child { color: var(--accent); }
+.stats-records-link__chev { margin-left: auto; color: var(--text-muted); }

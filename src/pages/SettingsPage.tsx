@@ -7,6 +7,7 @@ import { parseWeight } from '../data/progression';
 
 import { getSettings, updateSettings, WEIGHT_STEP_OPTIONS, BAR_WEIGHT_OPTIONS } from '../data/settings';
 import { REST_OPTIONS, formatRest } from '../data/plans';
+import { clampGoal } from '../data/motivation';
 import type { AfterExerciseDone, AppSettings } from '../data/types';
 import DeleteDataSheet, { type DeleteMode } from '../components/DeleteDataSheet';
 import { countUserData, deleteAllUserData, deleteImportedHistory, type UserDataCounts } from '../data/wipe';
@@ -111,6 +112,18 @@ export default function SettingsPage() {
             </select>
           </span>
         </div>
+      </section>
+
+      <section className="settings-group" aria-labelledby="set-goal">
+        <h2 id="set-goal" className="settings-group__title">Motywacja</h2>
+        <p className="settings-group__hint">
+          Tydzień (od poniedziałku do niedzieli) liczy się do serii na ekranie Start, gdy zrobisz tyle treningów.
+        </p>
+        <SettingRow label="Cel: treningi w tygodniu" id="s-goal">
+          <select id="s-goal" value={clampGoal(settings.weeklyGoal)} onChange={save('weeklyGoal')}>
+            {range(1, 7).map((n) => <option key={n} value={n}>{n}</option>)}
+          </select>
+        </SettingRow>
       </section>
 
       <section className="settings-group" aria-labelledby="set-rest">

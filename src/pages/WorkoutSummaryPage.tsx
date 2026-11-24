@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Link, useParams } from 'react-router';
-import { Trophy } from 'lucide-react';
+import { Award, Trophy } from 'lucide-react';
+import { computeBadges } from '../data/badges';
+import { clampGoal } from '../data/motivation';
+import { getSettings } from '../data/settings';
+import { loadStatsInput } from '../data/stats';
 import { db } from '../data/db';
-import { summarizeWorkout, type RecordKind } from '../data/workouts';
+import { isFinished, summarizeWorkout, type RecordKind } from '../data/workouts';
 import { applyPlanChanges, diffWorkoutVsPlan, saveWorkoutAsDay, type PlanChange } from '../data/planSync';
 import type { Workout } from '../data/types';
 import '../components/Sheet.css';
@@ -230,7 +234,13 @@ export default function WorkoutSummaryPage() {
     const summary = await summarizeWorkout(id);
     const names = await db.exercises.bulkGet(summary.records.map((r) => r.exerciseId));
     const hasDone = (await db.sets.where('workoutId').equals(id).toArray()).some((s) => s.completedAt !== undefined);
-    return { workout, summary, hasDone, names: names.map((e) => e?.name ?? 'Nieznane ćwiczenie') };
+    // Badges earned by this very workout (computed from finished history, so only once it is finished).
+    const badges = isFinished(workout)
+      ? computeBadges(await loadStatsInput(), clampGoal((await getSettings()).weeklyGoal), Date.now()).filter(
+          (b) => b.workoutId === id,
+        )
+      : [];
+    return { workout, summary, hasDone, badges, names: names.map((e) => e?.name ?? 'Nieznane ćwiczenie') };
   }, [id]);
   // Remembered from the first load: saving as a plan day links the workout, which must not swap the sections.
   const startedWithoutPlan = useRef<boolean | null>(null);
@@ -247,7 +257,7 @@ export default function WorkoutSummaryPage() {
       </article>
     );
   }
-  const { workout, summary, names, hasDone } = data as Exclude<typeof data, { workout: undefined }>;
+  const { workout, summary, names, hasDone, badges } = data as Exclude<typeof data, { workout: undefined }>;
   const finished = workout.endedAt !== undefined;
 
   return (
@@ -272,6 +282,26 @@ export default function WorkoutSummaryPage() {
           <small>bez rozgrzewek</small>
         </div>
       </div>
+
+      {badges.length > 0 && (
+        <section className="summary__badges" aria-label="Nowa odznaka">
+          <h2>{badges.length === 1 ? 'Nowa odznaka!' : 'Nowe odznaki!'}</h2>
+          <ul>
+            {badges.map((b, i) => (
+              <li key={b.id} style={{ animationDelay: `${120 + i * 80}ms` }}>
+                <span className="summary__badge-icon" aria-hidden="true">
+                  <Award size={24} />
+                </span>
+                <span>
+                  <strong>{b.title}</strong>
+                  <span className="muted"> — {b.description}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+          <Link to="/statystyki/rekordy" className="summary__badges-link">Wszystkie odznaki</Link>
+        </section>
+      )}
 
       <section className="summary__records" aria-label="Nowe rekordy">
         <h2>Nowe rekordy</h2>

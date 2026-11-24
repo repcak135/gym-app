@@ -1,0 +1,79 @@
+.ycal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ycal__year {
+  margin: 0;
+  font-size: 1.1rem;
+}
+.ycal__count {
+  margin: var(--space-1) 0 var(--space-3);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+.ycal__months {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  animation: ycal-in 200ms ease-out;
+}
+.ycal__mname {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  margin-bottom: 2px;
+}
+.ycal__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.ycal__empty,
+.ycal__day,
+.ycal__sq {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  display: block;
+}
+.ycal__day,
+.ycal__sq {
+  background: var(--surface-2);
+}
+.ycal__day {
+  padding: 0;
+  border: 0;
+  min-width: 0;
+  min-height: 0;
+}
+button.ycal__day {
+  cursor: pointer;
+}
+.ycal__day--l1 { background: color-mix(in srgb, var(--accent) 30%, var(--surface-2)); }
+.ycal__day--l2 { background: color-mix(in srgb, var(--accent) 55%, var(--surface-2)); }
+.ycal__day--l3 { background: color-mix(in srgb, var(--accent) 80%, var(--surface-2)); }
+.ycal__day--l4 { background: var(--accent); }
+.ycal__day--today {
+  outline: 1px solid var(--text-muted);
+}
+.ycal__legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3px;
+  margin-top: var(--space-3);
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+.ycal__legend .ycal__sq {
+  width: 10px;
+  aspect-ratio: auto;
+  height: 10px;
+}
+.ycal__legend span:first-child { margin-right: 3px; }
+.ycal__legend span:last-child { margin-left: 3px; }
+
+@keyframes ycal-in {
+  from { opacity: 0; transform: translateX(8px); }
+  to { opacity: 1; transform: none; }
+}

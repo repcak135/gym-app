@@ -134,6 +134,8 @@ export interface AppSettings {
   /** With showRir on: open the difficulty sheet right after "Zalicz serię". */
   askDifficultyAfterSet: boolean;
   afterExerciseDone: AfterExerciseDone;
+  /** Finished workouts per week (Mon–Sun) that make the week count for the streak; 1–7. */
+  weeklyGoal: number;
   lastBackupAt?: number;
   /** Backup reminder on Start hidden until this time ("Później"). */
   backupReminderSnoozedUntil?: number;

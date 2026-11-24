@@ -73,3 +73,41 @@
 .summary__plans { border: none; margin: 0 0 var(--space-4); padding: 0; display: flex; flex-direction: column; }
 .summary__plans legend { padding: 0; margin-bottom: var(--space-1); font-size: 0.85rem; color: var(--text-muted); }
 .summary__radio { display: flex; align-items: center; gap: var(--space-3); min-height: 44px; cursor: pointer; }
+
+.summary__badges {
+  margin-top: var(--space-5);
+  padding: var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--accent) 50%, var(--border));
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, var(--accent-soft), var(--surface) 70%);
+}
+.summary__badges h2 { margin: 0 0 var(--space-3); font-size: 1.2rem; color: var(--accent); }
+.summary__badges ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+.summary__badges li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  animation: badge-pop 250ms var(--ease-out, ease-out) both;
+}
+.summary__badge-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.summary__badges-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: var(--space-2);
+  color: var(--accent);
+  font-weight: 600;
+}
+@keyframes badge-pop {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}

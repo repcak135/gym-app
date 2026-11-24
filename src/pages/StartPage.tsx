@@ -11,6 +11,7 @@ import { formatClock } from '../data/progression';
 import type { Workout } from '../data/types';
 import ScanQrSheet from '../components/ScanQrSheet';
 import BackupReminder from '../components/BackupReminder';
+import WeekGoalCard from '../components/WeekGoalCard';
 import './StartPage.css';
 import './SettingsPage.css';
 
@@ -108,6 +109,7 @@ export default function StartPage() {
           <Link to="/plany" className="start-btn inline">Utwórz plan</Link>
         </section>
         <EmptyWorkoutButton />
+        <WeekGoalCard />
         <ScanButton />
       </article>
     );
@@ -161,6 +163,7 @@ export default function StartPage() {
         )}
       </section>
       <EmptyWorkoutButton />
+      <WeekGoalCard />
       <ScanButton />
     </article>
   );

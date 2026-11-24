@@ -1,0 +1,39 @@
+.mweek__label { margin: var(--space-3) 0 0; font-size: 1rem; text-align: center; }
+.mweek { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+.mweek__row {
+  display: grid;
+  grid-template-columns: 1fr auto 4.5em;
+  align-items: baseline;
+  column-gap: var(--space-2);
+  row-gap: 6px;
+}
+.mweek__name { font-weight: 600; }
+.mweek__val { font-weight: 800; font-variant-numeric: tabular-nums; }
+.mweek__status { justify-self: end; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+.mweek__row--ok .mweek__status { color: var(--success); }
+.mweek__row--high .mweek__status { color: var(--accent); }
+.mweek__bar {
+  grid-column: 1 / -1;
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.mweek__band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: var(--success-soft);
+  box-shadow: inset 1px 0 0 var(--success), inset -1px 0 0 var(--success);
+}
+.mweek__fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  background: var(--text-muted);
+  border-radius: 4px;
+  transition: transform var(--dur, 200ms) var(--ease-out, ease-out);
+}
+.mweek__row--ok .mweek__fill { background: var(--success); }
+.mweek__row--high .mweek__fill { background: var(--accent); }
