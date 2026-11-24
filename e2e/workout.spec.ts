@@ -208,24 +208,29 @@ test('ustawienia: dźwięk i wibracja końca przerwy można wyłączyć', async 
 
 test('RIR: domyślnie ukryte; po włączeniu zapisuje się przy serii i widać je w historii', async ({ page }) => {
   await emptyWorkoutWithBench(page);
-  await expect(panel(page, BENCH).getByRole('group', { name: /RIR/ })).toHaveCount(0);
+  await expect(panel(page, BENCH).getByRole('button', { name: /Trudność serii/ })).toHaveCount(0);
   await page.getByRole('button', { name: 'Opcje treningu' }).click();
   await page.getByRole('button', { name: 'Anuluj trening' }).click();
   await page.getByRole('button', { name: 'Usuń trening' }).click();
   await expect(page.getByRole('button', { name: 'Pusty trening' })).toBeVisible();
 
   await page.goto('/#/ustawienia');
-  await page.getByRole('switch', { name: 'Pokaż RIR (zaawansowane)' }).click();
-  await expect(page.getByRole('switch', { name: 'Pokaż RIR (zaawansowane)' })).toBeChecked();
+  await page.getByRole('switch', { name: 'Ocena trudności serii (RPE/RIR)' }).click();
+  await expect(page.getByRole('switch', { name: 'Ocena trudności serii (RPE/RIR)' })).toBeChecked();
 
   await emptyWorkoutWithBench(page);
   const bench = panel(page, BENCH);
   await bench.getByLabel('Ciężar').fill('35');
   await bench.getByLabel('Powtórzenia', { exact: true }).fill('8');
-  await bench.getByRole('button', { name: 'RIR 1', exact: true }).click();
-  await expect(bench.getByRole('button', { name: 'RIR 1', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(bench.getByRole('button', { name: 'Trudność serii: oceń' })).toHaveText('Oceń');
+  await bench.getByRole('button', { name: 'Trudność serii: oceń' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Jak ciężka była ta seria?' });
+  await expect(sheet).toContainText('35 kg × 8');
+  await sheet.getByRole('radio', { name: /^RPE 8 — Ciężko/ }).click();
+  await expect(sheet).toHaveCount(0);
+  await expect(bench.getByRole('button', { name: 'Trudność serii: RPE 8' })).toHaveText('RPE 8');
   await bench.getByRole('button', { name: 'Zalicz serię' }).click();
-  await expect(bench.getByRole('button', { name: 'Seria 1: 35 kg × 8, RIR 1, zaliczona' })).toBeVisible();
+  await expect(bench.getByRole('button', { name: 'Seria 1: 35 kg × 8, RPE 8, zaliczona' })).toBeVisible();
   await page.getByRole('timer', { name: 'Przerwa' }).getByRole('button', { name: 'Pomiń' }).click();
   await page.getByRole('button', { name: 'Zakończ' }).click();
   await page.getByRole('button', { name: 'Zakończ trening' }).click();
@@ -233,7 +238,42 @@ test('RIR: domyślnie ukryte; po włączeniu zapisuje się przy serii i widać j
 
   await emptyWorkoutWithBench(page);
   const bench2 = panel(page, BENCH);
-  await expect(bench2.getByText('Ostatnio: 35×8 (RIR 1)')).toBeVisible();
+  await expect(bench2.getByText('Ostatnio: 35×8 (RPE 8)')).toBeVisible();
   await bench2.getByRole('button', { name: 'Historia' }).click();
-  await expect(page.getByRole('dialog', { name: BENCH })).toContainText('35 × 8 · RIR 1');
+  await expect(page.getByRole('dialog', { name: BENCH })).toContainText('35 × 8 · RPE 8');
+});
+
+test('trudność: ustawienie „pytaj po zaliczeniu” otwiera arkusz, X zamyka, przejście dalej dopiero po zamknięciu', async ({ page }) => {
+  await page.goto('/#/ustawienia');
+  const ask = page.getByRole('switch', { name: 'Pytaj o trudność po zaliczeniu serii' });
+  await expect(ask).toBeDisabled();
+  await page.getByRole('switch', { name: 'Ocena trudności serii (RPE/RIR)' }).click();
+  await expect(ask).toBeEnabled();
+  await ask.click();
+  await expect(ask).toBeChecked();
+
+  await emptyWorkoutWithBench(page);
+  const bench = panel(page, BENCH);
+  const sheet = page.getByRole('dialog', { name: 'Jak ciężka była ta seria?' });
+
+  // set 1: sheet appears, X closes it without a rating
+  await bench.getByRole('button', { name: 'Zalicz serię' }).click();
+  await expect(sheet).toBeVisible();
+  await expect(page.getByRole('timer', { name: 'Przerwa' })).toBeVisible();
+  await sheet.getByRole('button', { name: 'Zamknij' }).click();
+  await expect(sheet).toHaveCount(0);
+  await expect(bench.getByRole('button', { name: /^Seria 1: .*zaliczona$/ })).not.toContainText('RPE');
+
+  // set 2: pick a level
+  await bench.getByRole('button', { name: 'Zalicz serię' }).click();
+  await sheet.getByRole('radio', { name: /^RPE 9 — / }).click();
+  await expect(bench.getByRole('button', { name: /^Seria 2: .*RPE 9, zaliczona$/ })).toBeVisible();
+
+  // last set: the auto-advance (list view for a single exercise) waits for the sheet
+  await bench.getByRole('button', { name: 'Zalicz serię' }).click();
+  await expect(sheet).toBeVisible();
+  await page.waitForTimeout(1200);
+  await expect(page.getByRole('list', { name: 'Lista ćwiczeń' })).toHaveCount(0);
+  await sheet.getByRole('button', { name: 'Zamknij' }).click();
+  await expect(page.getByRole('list', { name: 'Lista ćwiczeń' })).toBeVisible();
 });

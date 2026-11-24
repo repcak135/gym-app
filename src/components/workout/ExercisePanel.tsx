@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Calculator, Check, Minus, Plus } from 'lucide-react';
 import PlateCalculatorSheet from '../PlateCalculatorSheet';
+import DifficultySheet from './DifficultySheet';
+import { rirToRpeLabel } from '../../data/difficulty';
 import type { Exercise, WorkoutExercise, WorkoutSet } from '../../data/types';
-import { formatKg, formatRir, formatSetShort, parseWeight, progressionText, suggestProgression } from '../../data/progression';
+import { formatKg, formatSetShort, parseWeight, progressionText, suggestProgression } from '../../data/progression';
 import { formatReps, formatRest } from '../../data/plans';
 import {
   addSet,
@@ -27,6 +29,8 @@ interface Props {
   note?: string;
   step: number;
   showRir: boolean;
+  /** Open the difficulty sheet right after "Zalicz serię". */
+  askDifficulty?: boolean;
   onInfo: (tab: InfoTab) => void;
   onConfirmRemoveSet: (set: WorkoutSet) => void;
   /** Called when "Zalicz serię" completed the last uncompleted set of this exercise. */
@@ -97,12 +101,16 @@ export default function ExercisePanel({
   note,
   step,
   showRir,
+  askDifficulty = false,
   onInfo,
   onConfirmRemoveSet,
   onExerciseDone,
 }: Props) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [calcOpen, setCalcOpen] = useState(false);
+  const [diffSetId, setDiffSetId] = useState<string | null>(null);
+  const pendingDone = useRef(false);
+  const diffSet = sets.find((s) => s.id === diffSetId);
   // The set just ticked off plays the green fill + check pop once.
   const [justDone, setJustDone] = useState<string | null>(null);
   useEffect(() => {
@@ -126,7 +134,20 @@ export default function ExercisePanel({
     haptic('tick');
     setJustDone(set.id);
     setSelectedId(null); // move on to the next undone set
-    if (sets.every((s) => s.id === set.id || s.completedAt !== undefined)) onExerciseDone?.(index);
+    const exerciseDone = sets.every((s) => s.id === set.id || s.completedAt !== undefined);
+    if (askDifficulty && showRir) {
+      setDiffSetId(set.id);
+      // Auto-advance waits until the difficulty sheet is closed.
+      pendingDone.current = exerciseDone;
+    } else if (exerciseDone) onExerciseDone?.(index);
+  };
+
+  const closeDifficulty = () => {
+    setDiffSetId(null);
+    if (pendingDone.current) {
+      pendingDone.current = false;
+      onExerciseDone?.(index);
+    }
   };
 
   return (
@@ -176,13 +197,13 @@ export default function ExercisePanel({
                 type="button"
                 className={`set-row${done ? ' set-row--done' : ''}${done && s.id === justDone ? ' set-row--just-done' : ''}${isSel ? ' set-row--selected' : ''}${s.warmup ? ' set-row--warmup' : ''}`}
                 aria-current={isSel ? 'true' : undefined}
-                aria-label={`Seria ${setLabel(sets, s)}: ${formatKg(s.weight)} kg × ${s.reps}${s.rir !== undefined ? `, RIR ${formatRir(s.rir)}` : ''}${done ? ', zaliczona' : ''}`}
+                aria-label={`Seria ${setLabel(sets, s)}: ${formatKg(s.weight)} kg × ${s.reps}${s.rir !== undefined ? `, ${rirToRpeLabel(s.rir)}` : ''}${done ? ', zaliczona' : ''}`}
                 onClick={() => setSelectedId(s.id)}
               >
                 <span className="set-row__num">{setLabel(sets, s)}</span>
                 <span className="set-row__val">
                   {formatKg(s.weight)} <small>kg</small> × {s.reps}
-                  {s.rir !== undefined && <small className="set-row__rir"> · RIR {formatRir(s.rir)}</small>}
+                  {s.rir !== undefined && <small className="set-row__rir"> · {rirToRpeLabel(s.rir)}</small>}
                 </span>
                 <span className="set-row__check" aria-hidden="true">{done && <Check size={18} strokeWidth={3} />}</span>
               </button>
@@ -258,21 +279,16 @@ export default function ExercisePanel({
             </div>
           </div>
           {showRir && (
-            <div className="set-editor__field">
-              <span className="set-editor__label" id={`rir-${selected.id}`}>RIR (powtórzenia w zapasie, opcjonalnie)</span>
-              <div className="set-editor__rir" role="group" aria-labelledby={`rir-${selected.id}`}>
-                {[0, 1, 2, 3, 4, 5].map((n) => (
-                  <button
-                    key={n}
-                    type="button"
-                    aria-label={`RIR ${formatRir(n)}`}
-                    aria-pressed={selected.rir === n}
-                    onClick={() => void updateSet(selected.id, { rir: selected.rir === n ? null : n })}
-                  >
-                    {formatRir(n)}
-                  </button>
-                ))}
-              </div>
+            <div className="set-editor__field set-editor__field--inline">
+              <span className="set-editor__label">Trudność</span>
+              <button
+                type="button"
+                className={`set-editor__diff${selected.rir !== undefined ? ' set-editor__diff--set' : ''}`}
+                aria-label={`Trudność serii: ${selected.rir !== undefined ? rirToRpeLabel(selected.rir) : 'oceń'}`}
+                onClick={() => setDiffSetId(selected.id)}
+              >
+                {selected.rir !== undefined ? rirToRpeLabel(selected.rir) : 'Oceń'}
+              </button>
             </div>
           )}
           <label className="set-editor__warmup">
@@ -312,6 +328,7 @@ export default function ExercisePanel({
           + Dodaj serię
         </button>
       )}
+      {diffSet && <DifficultySheet set={diffSet} onClose={closeDifficulty} />}
       {calcOpen && selected && (
         <PlateCalculatorSheet
           initialWeight={selected.weight}

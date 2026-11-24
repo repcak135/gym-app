@@ -1,4 +1,6 @@
-export type SetValue = { weight: number; reps: number }
+import { rirToRpeLabel } from './difficulty'
+
+export type SetValue ={ weight: number; reps: number }
 type FullSet = SetValue & { warmup: boolean }
 
 export type Suggestion =
@@ -77,9 +79,9 @@ export function formatRir(rir: number): string {
   return rir >= 5 ? '5+' : String(rir)
 }
 
-/** "30×10" or "30×10 (RIR 1)". */
+/** "30×10" or "30×10 (RPE 9)". */
 export function formatSetShort(s: SetValue & { rir?: number }): string {
-  return `${formatKg(s.weight)}×${s.reps}${s.rir !== undefined ? ` (RIR ${formatRir(s.rir)})` : ''}`
+  return `${formatKg(s.weight)}×${s.reps}${s.rir !== undefined ? ` (${rirToRpeLabel(s.rir)})` : ''}`
 }
 
 export function parseWeight(text: string): number | null {

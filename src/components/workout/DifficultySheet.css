@@ -1,0 +1,89 @@
+.diff-sheet {
+  max-height: 92vh;
+  position: relative;
+  padding-top: max(var(--space-3), env(safe-area-inset-top));
+}
+
+.diff-sheet__close {
+  position: absolute;
+  top: max(var(--space-2), env(safe-area-inset-top));
+  left: var(--space-2);
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.diff-sheet__head {
+  padding: var(--space-4) var(--space-5) var(--space-3);
+  text-align: center;
+}
+
+.diff-sheet__title { margin: 0; font-size: 1.15rem; font-weight: 700; }
+.diff-sheet__sub { margin: var(--space-1) 0 0; color: var(--text-muted); font-size: 0.95rem; }
+
+.diff-sheet__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: 0 var(--space-4);
+}
+
+.diff-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 64px;
+  padding: var(--space-2) var(--space-3) var(--space-2) 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.diff-row--active {
+  border-color: var(--diff-color);
+  background: color-mix(in srgb, var(--diff-color) 16%, var(--surface));
+}
+
+.diff-row__bar {
+  align-self: stretch;
+  width: 6px;
+  background: var(--diff-color);
+  flex-shrink: 0;
+}
+
+.diff-row__num {
+  min-width: 3.2ch;
+  font-size: 1.6rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--diff-color);
+  font-variant-numeric: tabular-nums;
+}
+
+.diff-row__text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.diff-row__text strong { font-size: 1rem; }
+.diff-row__text span { font-size: 0.85rem; color: var(--text-muted); }
+
+.diff-sheet__clear {
+  display: block;
+  margin: var(--space-2) auto var(--space-3);
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  text-decoration: underline;
+  cursor: pointer;
+}

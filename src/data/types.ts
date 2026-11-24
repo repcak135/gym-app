@@ -131,6 +131,8 @@ export interface AppSettings {
   restVibration: boolean;
   /** Advanced: show the RIR picker on each set. */
   showRir: boolean;
+  /** With showRir on: open the difficulty sheet right after "Zalicz serię". */
+  askDifficultyAfterSet: boolean;
   afterExerciseDone: AfterExerciseDone;
   lastBackupAt?: number;
   /** Backup reminder on Start hidden until this time ("Później"). */

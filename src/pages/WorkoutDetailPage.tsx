@@ -8,7 +8,8 @@ import { getWorkoutDetail, workoutDurationSec } from '../data/history';
 import { removeWorkoutUndoable } from '../data/undoable';
 import { showUndo } from '../undo';
 import { getSettings } from '../data/settings';
-import { formatClock, formatKg, formatRir } from '../data/progression';
+import { formatClock, formatKg } from '../data/progression';
+import { rirToRpeLabel } from '../data/difficulty';
 import type { WorkoutSet } from '../data/types';
 import ConfirmSheet from '../components/ConfirmSheet';
 import SetEditSheet from '../components/SetEditSheet';
@@ -88,7 +89,7 @@ export default function WorkoutDetailPage() {
             <ul className="wd-sets">
               {g.sets.map((s, i) => {
                 const text = `${formatKg(s.weight)} kg × ${s.reps}`;
-                const rirText = s.rir !== undefined ? ` · RIR ${formatRir(s.rir)}` : '';
+                const rirText = s.rir !== undefined ? ` · ${rirToRpeLabel(s.rir)}` : '';
                 return (
                   <li key={s.id}>
                     <button

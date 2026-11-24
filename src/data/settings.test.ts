@@ -31,6 +31,12 @@ describe('settings', () => {
     expect(s.afterExerciseDone).toBe('next');
   });
 
+  it('askDifficultyAfterSet: domyślnie wyłączone, zmiana zostaje zapisana', async () => {
+    expect((await getSettings()).askDifficultyAfterSet).toBe(false);
+    await updateSettings({ askDifficultyAfterSet: true });
+    expect((await getSettings()).askDifficultyAfterSet).toBe(true);
+  });
+
   it('afterExerciseDone: domyślnie next, zmiana zostaje zapisana', async () => {
     expect((await getSettings()).afterExerciseDone).toBe('next');
     await updateSettings({ afterExerciseDone: 'list' });

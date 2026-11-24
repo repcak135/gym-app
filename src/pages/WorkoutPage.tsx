@@ -346,6 +346,7 @@ export default function WorkoutPage() {
                 note={notes[i]?.text}
                 step={ex?.weightStep ?? settings.defaultWeightStep}
                 showRir={settings.showRir}
+                askDifficulty={settings.showRir && settings.askDifficultyAfterSet}
                 onInfo={(tab) => setSheet({ kind: 'info', tab })}
                 onConfirmRemoveSet={(set) => setSheet({ kind: 'remove-set', set })}
                 onExerciseDone={onExerciseDone}

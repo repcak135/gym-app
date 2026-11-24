@@ -123,12 +123,18 @@ export default function SettingsPage() {
       <section className="settings-group" aria-labelledby="set-adv">
         <h2 id="set-adv" className="settings-group__title">Zaawansowane</h2>
         <p className="settings-group__hint">
-          RIR (powtórzenia w zapasie): ile powtórzeń jeszcze dałbyś radę zrobić. Przy każdej serii pojawi się szybki wybór 0–5+. Pole jest opcjonalne.
+          Ocena trudności: przy każdej serii pojawi się przycisk „Trudność” z listą RPE (ile powtórzeń jeszcze dałbyś radę zrobić). Pole jest opcjonalne.
         </p>
         <ToggleRow
-          label="Pokaż RIR (zaawansowane)"
+          label="Ocena trudności serii (RPE/RIR)"
           checked={settings.showRir}
           onChange={(v) => void updateSettings({ showRir: v })}
+        />
+        <ToggleRow
+          label="Pytaj o trudność po zaliczeniu serii"
+          checked={settings.showRir && settings.askDifficultyAfterSet}
+          disabled={!settings.showRir}
+          onChange={(v) => void updateSettings({ askDifficultyAfterSet: v })}
         />
       </section>
 
@@ -193,11 +199,11 @@ function SettingRow({ label, id, children }: { label: string; id: string; childr
   );
 }
 
-function ToggleRow({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
+function ToggleRow({ label, checked, onChange, disabled }: { label: string; checked: boolean; onChange: (v: boolean) => void; disabled?: boolean }) {
   return (
     <label className="settings-row settings-toggle">
       <span className="settings-row__label">{label}</span>
-      <input type="checkbox" role="switch" checked={checked} onChange={(e) => onChange(e.target.checked)} />
+      <input type="checkbox" role="switch" checked={checked} disabled={disabled} onChange={(e) => onChange(e.target.checked)} />
     </label>
   );
 }
