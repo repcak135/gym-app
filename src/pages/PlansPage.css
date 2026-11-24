@@ -31,6 +31,8 @@
   color: var(--on-accent);
 }
 
+.plan-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
 .plan-btn--block { width: 100%; }
 
 .plan-list {

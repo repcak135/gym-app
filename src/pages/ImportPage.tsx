@@ -11,6 +11,7 @@ import ExercisePicker from '../components/ExercisePicker';
 import './PlansPage.css';
 import './SettingsPage.css';
 import './ImportPage.css';
+import './PlanFromHistoryPage.css';
 
 type Step =
   | { kind: 'pick'; error?: string }
@@ -128,6 +129,11 @@ export default function ImportPage() {
           Zaimportowano {workoutsLabel(step.workouts)} ({setsLabel(step.sets)}).
           {step.created > 0 && ` Utworzono ${step.created} ${plural(step.created, 'własne ćwiczenie', 'własne ćwiczenia', 'własnych ćwiczeń')}.`}
         </p>
+        <section className="pfh-card pfh-card__cta" aria-labelledby="imp-plan-cta">
+          <h2 id="imp-plan-cta" className="settings-group__title">Odtwórz plan z historii?</h2>
+          <p className="muted">Możemy zbudować dni planu z Twoich ostatnich treningów. Sam wybierasz, które.</p>
+          <Link to="/ustawienia/plan-z-historii" className="plan-btn plan-btn--block">Odtwórz plan z historii</Link>
+        </section>
         <Link to="/historia" className="plan-btn plan-btn--primary plan-btn--block">Pokaż historię</Link>
         <button type="button" className="plan-btn plan-btn--block imp-again" onClick={() => setStep({ kind: 'pick' })}>
           Importuj kolejny plik

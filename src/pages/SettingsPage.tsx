@@ -142,6 +142,10 @@ export default function SettingsPage() {
           <span className="settings-row__label">Importuj historię</span>
           <ChevronRight size={20} aria-hidden="true" />
         </Link>
+        <Link to="/ustawienia/plan-z-historii" className="settings-row settings-link">
+          <span className="settings-row__label">Odtwórz plan z historii</span>
+          <ChevronRight size={20} aria-hidden="true" />
+        </Link>
       </section>
 
       <section className="settings-group" aria-labelledby="set-weight">
