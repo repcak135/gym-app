@@ -1,0 +1,15 @@
+.del-sheet__list {
+  margin: 0 0 var(--space-3);
+  padding-left: var(--space-5);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.del-sheet__backup {
+  display: block;
+  margin-bottom: var(--space-4);
+  min-height: 44px;
+  line-height: 44px;
+  color: var(--accent);
+  font-weight: 600;
+}

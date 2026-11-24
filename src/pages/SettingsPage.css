@@ -200,5 +200,24 @@
 }
 .settings-plates__error { margin: 0; color: var(--danger); font-size: 0.85rem; }
 
+/* Usuń dane: red-accented danger zone */
+.settings-group--danger { border-color: var(--danger); }
+.settings-group--danger .settings-group__title { color: var(--danger); }
+.settings-danger {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  margin: var(--space-2) 0;
+  background: none;
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-sm);
+  color: var(--danger);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.settings-danger:disabled { opacity: 0.45; cursor: not-allowed; }
+.settings-deleted { margin: var(--space-2) 0; color: var(--success); font-size: 0.9rem; }
+
 .settings-radio { cursor: pointer; min-height: 48px; }
 .settings-radio input { width: 24px; height: 24px; margin: 0; flex-shrink: 0; accent-color: var(--accent); }

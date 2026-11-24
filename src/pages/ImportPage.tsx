@@ -7,6 +7,7 @@ import { db } from '../data/db';
 import { seedExercises } from '../data/exercises';
 import { AUTO_MIN, ImportFormatError, PRESELECT_MIN } from '../data/csvImport';
 import { commitImport, prepareImport, type ImportChoice, type ImportPreview } from '../data/importHistory';
+import { plural, setsLabel, workoutsLabel } from '../data/plural';
 import ExercisePicker from '../components/ExercisePicker';
 import './PlansPage.css';
 import './SettingsPage.css';
@@ -20,14 +21,6 @@ type Step =
   | { kind: 'saving'; preview: ImportPreview }
   | { kind: 'done'; workouts: number; sets: number; created: number };
 
-function plural(n: number, one: string, few: string, many: string): string {
-  if (n === 1) return one;
-  const l = n % 10;
-  const l2 = n % 100;
-  return l >= 2 && l <= 4 && !(l2 >= 12 && l2 <= 14) ? few : many;
-}
-const workoutsLabel = (n: number) => `${n} ${plural(n, 'trening', 'treningi', 'treningów')}`;
-const setsLabel = (n: number) => `${n} ${plural(n, 'seria', 'serie', 'serii')}`;
 
 function initialChoices(p: ImportPreview): Record<string, ImportChoice> {
   return Object.fromEntries(
@@ -144,6 +137,31 @@ export default function ImportPage() {
 
   const { preview } = step;
   const saving = step.kind === 'saving';
+
+  if (preview.newWorkouts === 0) {
+    return (
+      <article className="imp">
+        {back}
+        <h1>Masz już te treningi</h1>
+        <p className="imp-summary" role="status">
+          {preview.existingWorkouts === 1
+            ? 'Ten trening z pliku jest już w aplikacji — nic nie zostało zdublowane.'
+            : `Wszystkie ${workoutsLabel(preview.existingWorkouts)} z tego pliku są już w aplikacji — nic nie zostało zdublowane.`}
+          {preview.skipped > 0 && ` Pominięte błędne wiersze: ${preview.skipped}.`}
+        </p>
+        <div className="imp-footer">
+          <Link to="/ustawienia/plan-z-historii" className="plan-btn plan-btn--primary plan-btn--block">
+            Odtwórz plan z historii
+          </Link>
+          <Link to="/ustawienia" className="plan-btn plan-btn--block">Wróć do ustawień</Link>
+          <button type="button" className="plan-btn plan-btn--block" onClick={() => setStep({ kind: 'pick' })}>
+            Wybierz inny plik
+          </button>
+        </div>
+      </article>
+    );
+  }
+
   const review = preview.names.filter((n) => n.how === 'none' || (n.how === 'fuzzy' && n.score < AUTO_MIN));
   const auto = preview.names.filter((n) => n.how === 'fuzzy' && n.score >= AUTO_MIN);
   const known = preview.names.length - review.length - auto.length;
@@ -199,10 +217,8 @@ export default function ImportPage() {
       {back}
       <h1>Dopasuj ćwiczenia</h1>
       <p className="imp-summary" role="status">
-        {preview.newWorkouts > 0
-          ? `W pliku: ${workoutsLabel(preview.newWorkouts)} do dodania (${setsLabel(preview.sets)}).`
-          : 'Wszystkie treningi z tego pliku są już zaimportowane.'}
-        {preview.existingWorkouts > 0 && ` Już zaimportowane: ${preview.existingWorkouts} — zostaną pominięte.`}
+        {`W pliku: ${workoutsLabel(preview.newWorkouts)} do dodania (${setsLabel(preview.sets)}).`}
+        {preview.existingWorkouts > 0 && ` ${workoutsLabel(preview.existingWorkouts)} już masz — zostaną pominięte.`}
         {preview.skipped > 0 && ` Pominięte błędne wiersze: ${preview.skipped}.`}
       </p>
 

@@ -9,11 +9,14 @@ import './DifficultySheet.css';
 interface Props {
   set: WorkoutSet;
   onClose: () => void;
+  /** When given, the choice is handed to the caller instead of being saved to the set. */
+  onPick?: (rir: number | null) => void;
 }
 
-export default function DifficultySheet({ set, onClose }: Props) {
+export default function DifficultySheet({ set, onClose, onPick }: Props) {
   const pick = async (rir: number | null) => {
-    await updateSet(set.id, { rir });
+    if (onPick) onPick(rir);
+    else await updateSet(set.id, { rir });
     onClose();
   };
 

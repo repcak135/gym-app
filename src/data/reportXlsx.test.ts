@@ -95,7 +95,7 @@ describe('buildWorkbook', () => {
     expect(sets.getRow(2).getCell(8).value).toBe('Tak');
     expect(sets.getRow(3).getCell(8).value).toBe('Nie');
     expect(sets.getRow(2).getCell(7).value).toBeNull();
-    expect(sets.getRow(3).getCell(7).value).toBe(2);
+    expect(sets.getRow(3).getCell(7).value).toBe('8');
     expect(sets.getRow(3).getCell(5).numFmt).toBe('0.0');
     const prog = wb.getWorksheet('Progres ćwiczeń')!.getRow(2);
     expect(prog.getCell(5).value).toBe(2.5);

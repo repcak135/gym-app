@@ -2,7 +2,9 @@ import { useState } from 'react';
 
 import type { WorkoutSet } from '../data/types';
 import { updateSet, removeSet } from '../data/workouts';
-import { formatKg, formatRir, parseWeight } from '../data/progression';
+import { formatKg, parseWeight } from '../data/progression';
+import { rirToRpeLabel } from '../data/difficulty';
+import DifficultySheet from './workout/DifficultySheet';
 import './Sheet.css';
 import './SetEditSheet.css';
 
@@ -12,13 +14,12 @@ interface SetEditSheetProps {
   onClose: () => void;
 }
 
-const RIR_VALUES = [0, 1, 2, 3, 4, 5];
-
 export default function SetEditSheet({ set, showRir, onClose }: SetEditSheetProps) {
   const [weightText, setWeightText] = useState(formatKg(set.weight));
   const [repsText, setRepsText] = useState(String(set.reps));
   const [warmup, setWarmup] = useState(set.warmup);
   const [rir, setRir] = useState<number | undefined>(set.rir);
+  const [diffOpen, setDiffOpen] = useState(false);
 
   async function save() {
     const weight = parseWeight(weightText) ?? set.weight;
@@ -74,23 +75,24 @@ export default function SetEditSheet({ set, showRir, onClose }: SetEditSheetProp
           </label>
 
           {(showRir || set.rir !== undefined) && (
-            <div className="set-edit__rir" role="group" aria-label="RIR">
-              {RIR_VALUES.map((v) => (
-                <button
-                  key={v}
-                  type="button"
-                  className="set-edit__chip"
-                  aria-pressed={rir === v}
-                  aria-label={`RIR ${formatRir(v)}`}
-                  onClick={() => setRir(v)}
-                >
-                  {formatRir(v)}
-                </button>
-              ))}
-              <button type="button" className="set-edit__chip" aria-pressed={rir === undefined} onClick={() => setRir(undefined)}>
-                brak
+            <div className="set-edit__switch">
+              <span>Trudność</span>
+              <button
+                type="button"
+                className="set-edit__chip"
+                aria-label={`Trudność serii: ${rir !== undefined ? rirToRpeLabel(rir) : 'oceń'}`}
+                onClick={() => setDiffOpen(true)}
+              >
+                {rir !== undefined ? rirToRpeLabel(rir) : 'Oceń'}
               </button>
             </div>
+          )}
+          {diffOpen && (
+            <DifficultySheet
+              set={{ ...set, rir }}
+              onClose={() => setDiffOpen(false)}
+              onPick={(v) => setRir(v === null ? undefined : v)}
+            />
           )}
 
           <div className="confirm-sheet__actions">

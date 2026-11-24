@@ -48,8 +48,61 @@ test('import CSV: dopasowanie, import, historia, rekordy, bez duplikatów przy p
   // the same file again adds nothing
   await page.goto('/#/ustawienia/import');
   await page.getByLabel('Plik CSV').setInputFiles(FIXTURE);
-  await expect(page.getByRole('status')).toContainText('Wszystkie treningi z tego pliku są już zaimportowane');
-  await expect(page.getByRole('status')).toContainText('Już zaimportowane: 3');
+  await expect(page.getByRole('heading', { name: 'Masz już te treningi' })).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByRole('status')).toContainText('Wszystkie 3 treningi z tego pliku są już w aplikacji — nic nie zostało zdublowane.');
+  await expect(page.getByRole('link', { name: 'Odtwórz plan z historii' })).toHaveAttribute('href', /plan-z-historii/);
+  await expect(page.getByRole('link', { name: 'Wróć do ustawień' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Wybierz inny plik' })).toBeVisible();
+});
+
+async function importFixture(page: import('@playwright/test').Page) {
+  await page.goto('/#/ustawienia/import');
+  await page.getByLabel('Plik CSV').setInputFiles(FIXTURE);
+  await page.getByRole('button', { name: 'Importuj 3 treningi' }).click({ timeout: 15_000 });
+  await expect(page.getByRole('status')).toContainText('Zaimportowano 3 treningi');
+}
+
+test('usuwanie zaimportowanej historii wymaga wpisania USUŃ', async ({ page }) => {
+  await importFixture(page);
+  await page.goto('/#/ustawienia');
+  await page.getByRole('button', { name: 'Usuń zaimportowaną historię' }).click();
+  const dialog = page.getByRole('dialog', { name: 'Usunąć zaimportowaną historię?' });
+  await expect(dialog).toContainText('3 treningi, 12 serii');
+  await expect(dialog.getByRole('link', { name: 'Najpierw zrób kopię zapasową' })).toBeVisible();
+  const del = dialog.getByRole('button', { name: 'Usuń', exact: true });
+  await expect(del).toBeDisabled();
+  const input = dialog.getByLabel('Wpisz USUŃ, aby potwierdzić');
+  await input.fill('usu');
+  await expect(del).toBeDisabled();
+  await input.fill(' usuń ');
+  await expect(del).toBeEnabled();
+  await del.click();
+  await expect(page.getByRole('status')).toContainText('Usunięto zaimportowaną historię: 3 treningi, 12 serii');
+
+  // history has no imported workouts any more
+  await page.goto('/#/historia');
+  for (let i = 0; i < 24; i++) {
+    if (await page.getByRole('heading', { name: 'marzec 2026' }).isVisible()) break;
+    await page.getByRole('button', { name: 'Poprzedni miesiąc' }).click();
+  }
+  await expect(page.getByText('Pull A')).toHaveCount(0);
+});
+
+test('usunięcie wszystkich danych zostawia pełną bazę ćwiczeń', async ({ page }) => {
+  await page.goto('/#/cwiczenia');
+  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  await importFixture(page); // creates a custom exercise too
+  await page.goto('/#/ustawienia');
+  await page.getByRole('button', { name: 'Usuń wszystkie dane' }).click();
+  const dialog = page.getByRole('dialog', { name: 'Usunąć wszystkie dane?' });
+  await expect(dialog).toContainText('3 treningi, 12 serii');
+  await expect(dialog).toContainText('własne ćwiczenie');
+  await dialog.getByLabel('Wpisz USUŃ, aby potwierdzić').fill('USUN');
+  await dialog.getByRole('button', { name: 'Usuń', exact: true }).click();
+  await expect(page).toHaveURL(/#\/$/);
+
+  await page.goto('/#/cwiczenia');
+  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
 });
 
 test('import: plik w złym formacie pokazuje komunikat', async ({ page }) => {

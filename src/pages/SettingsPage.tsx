@@ -8,6 +8,9 @@ import { parseWeight } from '../data/progression';
 import { getSettings, updateSettings, WEIGHT_STEP_OPTIONS, BAR_WEIGHT_OPTIONS } from '../data/settings';
 import { REST_OPTIONS, formatRest } from '../data/plans';
 import type { AfterExerciseDone, AppSettings } from '../data/types';
+import DeleteDataSheet, { type DeleteMode } from '../components/DeleteDataSheet';
+import { countUserData, deleteAllUserData, deleteImportedHistory, type UserDataCounts } from '../data/wipe';
+import { setsLabel, workoutsLabel } from '../data/plural';
 import './PlansPage.css';
 import './SettingsPage.css';
 
@@ -28,6 +31,31 @@ export default function SettingsPage() {
   const navigate = useNavigate();
   const settings = useLiveQuery(() => getSettings(), []);
   const [calcOpen, setCalcOpen] = useState(false);
+  const [del, setDel] = useState<{ mode: DeleteMode; counts: UserDataCounts } | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleted, setDeleted] = useState<string | null>(null);
+
+  const askDelete = async (mode: DeleteMode) => {
+    setDeleted(null);
+    setDel({ mode, counts: await countUserData() });
+  };
+
+  const runDelete = async () => {
+    if (!del) return;
+    setDeleting(true);
+    try {
+      if (del.mode === 'imported') {
+        const r = await deleteImportedHistory();
+        setDeleted(`Usunięto zaimportowaną historię: ${workoutsLabel(r.workouts)}, ${setsLabel(r.sets)}.`);
+      } else {
+        await deleteAllUserData();
+        navigate('/');
+      }
+    } finally {
+      setDeleting(false);
+      setDel(null);
+    }
+  };
 
   if (!settings) return <article><h1>Ustawienia</h1></article>;
 
@@ -186,6 +214,27 @@ export default function SettingsPage() {
           <a href="https://github.com/DuarteSantos8/openGym" target="_blank" rel="noreferrer">openGym</a> (AGPL v3.0, bez zdjęć).
         </p>
       </section>
+
+      <section className="settings-group settings-group--danger" aria-labelledby="set-danger">
+        <h2 id="set-danger" className="settings-group__title">Usuń dane</h2>
+        <p className="settings-group__hint">Tego nie da się cofnąć. Najpierw zrób kopię zapasową.</p>
+        {deleted && <p className="settings-deleted" role="status">{deleted}</p>}
+        <button type="button" className="settings-danger" onClick={() => void askDelete('imported')}>
+          Usuń zaimportowaną historię
+        </button>
+        <button type="button" className="settings-danger" onClick={() => void askDelete('all')}>
+          Usuń wszystkie dane
+        </button>
+      </section>
+      {del && (
+        <DeleteDataSheet
+          mode={del.mode}
+          counts={del.counts}
+          busy={deleting}
+          onConfirm={() => void runDelete()}
+          onCancel={() => setDel(null)}
+        />
+      )}
     </article>
   );
 }
