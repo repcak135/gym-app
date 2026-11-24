@@ -193,7 +193,13 @@ export async function updateSet(
   if (typeof patch.reps === 'number' && Number.isFinite(patch.reps))
     clean.reps = Math.min(999, Math.max(0, Math.round(patch.reps)));
   if (typeof patch.warmup === 'boolean') clean.warmup = patch.warmup;
-  await db.sets.update(setId, clean);
+  await db.transaction('rw', db.workouts, db.sets, async () => {
+    const before = await db.sets.get(setId);
+    await db.sets.update(setId, clean);
+    if (before && typeof clean.warmup === 'boolean' && clean.warmup !== before.warmup) {
+      await adjustCounts(before.workoutId, before.exerciseId, clean.warmup ? -1 : 1, clean.warmup ? 1 : -1);
+    }
+  });
 }
 
 /** Sets suggested weight on all not-yet-done working sets of one exercise. */
@@ -223,11 +229,29 @@ export async function addSet(workoutId: string, index: number): Promise<void> {
       reps: last?.reps ?? ex.repsMin,
       warmup: false,
     });
+    // The workout's exercise entry records the intended structure (used to suggest plan changes).
+    ex.sets += 1;
+    await db.workouts.put(w!);
   });
 }
 
+/** Keeps WorkoutExercise.sets / warmupSets equal to the sets the user chose to keep. */
+async function adjustCounts(workoutId: string, exerciseId: string, dWorking: number, dWarmup: number): Promise<void> {
+  const w = await db.workouts.get(workoutId);
+  const ex = w?.exercises?.find((e) => e.exerciseId === exerciseId);
+  if (!w || !ex) return;
+  ex.sets = Math.max(0, ex.sets + dWorking);
+  ex.warmupSets = Math.max(0, ex.warmupSets + dWarmup);
+  await db.workouts.put(w);
+}
+
 export async function removeSet(setId: string): Promise<void> {
-  await db.sets.delete(setId);
+  await db.transaction('rw', db.workouts, db.sets, async () => {
+    const set = await db.sets.get(setId);
+    if (!set) return;
+    await db.sets.delete(setId);
+    await adjustCounts(set.workoutId, set.exerciseId, set.warmup ? 0 : -1, set.warmup ? -1 : 0);
+  });
 }
 
 export async function completeSet(setId: string, now = Date.now()): Promise<void> {

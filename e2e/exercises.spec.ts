@@ -39,7 +39,10 @@ test('filtr Mięśnie i Sprzęt', async ({ page }) => {
 
   const metas = page.locator('.exercise-row__meta');
   await expect(metas.first()).toBeVisible();
-  for (const text of await metas.allTextContents()) expect(text).toContain('Maszyna');
+  // the list re-renders after the sheet closes; wait until every row reflects the filter
+  await expect
+    .poll(async () => (await metas.allTextContents()).every((t) => t.includes('Maszyna')))
+    .toBe(true);
   await page.getByPlaceholder('Szukaj ćwiczenia').fill('seated calf raise');
   await expect(page.getByRole('link', { name: 'Seated Calf Raise', exact: true })).toBeVisible();
 

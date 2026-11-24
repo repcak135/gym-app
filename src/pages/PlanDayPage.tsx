@@ -19,6 +19,7 @@ import type { Exercise, PlanItem } from '../data/types';
 import ExerciseThumb from '../components/ExerciseThumb';
 import ExercisePicker from '../components/ExercisePicker';
 import NameSheet from '../components/NameSheet';
+import { useStartDay } from '../components/useStartDay';
 import { exercisesLabel } from './planFormat';
 import '../components/Sheet.css';
 import './ExercisesPage.css';
@@ -188,6 +189,7 @@ export default function PlanDayPage() {
   const exercises = useLiveQuery(() => db.exercises.bulkGet(exerciseIds), [idsKey]);
   const [renaming, setRenaming] = useState(false);
   const [picking, setPicking] = useState(false);
+  const { start, sheet: startSheet } = useStartDay();
 
   if (plan === undefined) {
     return <article><p className="plan-muted">Ładowanie…</p></article>;
@@ -217,6 +219,15 @@ export default function PlanDayPage() {
       </div>
       <p className="plan-muted day-page__count">{exercisesLabel(day.items.length)}</p>
 
+      <button
+        type="button"
+        className="plan-btn plan-btn--primary plan-btn--block day-page__start"
+        disabled={day.items.length === 0}
+        onClick={() => start(plan.id, day.id)}
+      >
+        Rozpocznij trening
+      </button>
+
       {day.items.length === 0 && <p className="plan-muted">Brak ćwiczeń w tym dniu.</p>}
 
       <div className="plan-list list-in">
@@ -244,6 +255,8 @@ export default function PlanDayPage() {
           Dodaj ćwiczenia
         </button>
       </div>
+
+      {startSheet}
 
       {renaming && (
         <NameSheet

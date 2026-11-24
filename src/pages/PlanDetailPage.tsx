@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { ArrowLeft, Pencil, ChevronUp, ChevronDown, MoreHorizontal, Send } from 'lucide-react';
+import { ArrowLeft, Pencil, ChevronUp, ChevronDown, MoreHorizontal, Send, Play } from 'lucide-react';
 
 import { db } from '../data/db';
 import { renamePlan, setActivePlan, addDay, renameDay, moveDay } from '../data/plans';
@@ -11,6 +11,7 @@ import SwipeRow from '../components/SwipeRow';
 import type { PlanDay } from '../data/types';
 import NameSheet from '../components/NameSheet';
 import ConfirmSheet from '../components/ConfirmSheet';
+import { useStartDay } from '../components/useStartDay';
 import { formatDate, exercisesLabel } from './planFormat';
 import '../components/Sheet.css';
 import './ExercisesPage.css';
@@ -31,6 +32,7 @@ export default function PlanDetailPage() {
   const plan = useLiveQuery(async () => (await db.plans.get(planId)) ?? null, [planId]);
   const settings = useLiveQuery(() => db.settings.get('app'), []);
   const [modal, setModal] = useState<Modal>(null);
+  const { start, sheet: startSheet } = useStartDay();
 
   if (plan === undefined) {
     return <article><p className="plan-muted">Ładowanie…</p></article>;
@@ -92,6 +94,15 @@ export default function PlanDetailPage() {
             </Link>
             <button
               type="button"
+              className="day-row__start"
+              aria-label={`Rozpocznij trening: ${day.name}`}
+              disabled={day.items.length === 0}
+              onClick={() => start(plan.id, day.id)}
+            >
+              <Play size={18} aria-hidden="true" fill="currentColor" />
+            </button>
+            <button
+              type="button"
               className="icon-btn"
               aria-label={`Przesuń w górę: ${day.name}`}
               disabled={i === 0}
@@ -133,6 +144,8 @@ export default function PlanDetailPage() {
         <Send size={18} aria-hidden="true" />
         Wyślij plan
       </Link>
+
+      {startSheet}
 
       {modal?.kind === 'renamePlan' && (
         <NameSheet
