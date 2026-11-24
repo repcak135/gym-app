@@ -1,3 +1,5 @@
+import type { EffortTarget } from './setTargets';
+
 export type Id = string; // crypto.randomUUID()
 
 export interface Exercise {
@@ -134,6 +136,8 @@ export interface AppSettings {
   /** With showRir on: open the difficulty sheet right after "Zalicz serię". */
   askDifficultyAfterSet: boolean;
   afterExerciseDone: AfterExerciseDone;
+  /** How close to failure the owner trains; sets the progression targets (default 'close'). */
+  effortTarget: EffortTarget;
   /** Finished workouts per week (Mon–Sun) that make the week count for the streak; 1–7. */
   weeklyGoal: number;
   lastBackupAt?: number;

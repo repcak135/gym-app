@@ -1,6 +1,7 @@
 import { db } from './db';
 import { getSettings } from './settings';
-import { buildPrefill, epley1RM, suggestProgression } from './progression';
+import { buildPrefill, epley1RM } from './progression';
+import { deloadWeight, setTargets } from './setTargets';
 import type { Workout, WorkoutExercise, WorkoutSet } from './types';
 
 // Every function here is one short Dexie transaction, so closing the app at any
@@ -52,12 +53,24 @@ export async function getLastSets(exerciseId: string, excludeWorkoutId?: string)
 async function prefilledSets(workoutId: string, ex: WorkoutExercise, exerciseOrder: number): Promise<WorkoutSet[]> {
   const last = await getLastSets(ex.exerciseId, workoutId);
   let values = buildPrefill(last, ex.warmupSets, ex.sets, ex.repsMin);
-  // Full range last time → start at the new weight from the bottom of the range.
+  // Working sets get a target per set (see setTargets); warm-ups stay as last time.
   const [exercise, settings] = await Promise.all([db.exercises.get(ex.exerciseId), getSettings()]);
   const step = exercise?.weightStep ?? settings.defaultWeightStep;
-  const hint = suggestProgression(last.filter((s) => !s.warmup), ex.repsMin, ex.repsMax, step);
-  if (hint.kind === 'increase' && hint.fromWeight > 0) {
-    values = values.map((v) => (v.warmup ? v : { ...v, weight: hint.weight, reps: hint.repsLow }));
+  const targets = setTargets({
+    lastWorking: last.filter((s) => !s.warmup),
+    count: ex.sets,
+    repsMin: ex.repsMin,
+    repsMax: ex.repsMax,
+    step,
+    effort: settings.effortTarget,
+  });
+  if (targets.length > 0) {
+    let w = 0;
+    values = values.map((v) => {
+      if (v.warmup) return v;
+      const t = targets[w++];
+      return t ? { ...v, weight: t.weight, reps: t.reps } : v;
+    });
   }
   return values.map((v, i) => ({
     id: crypto.randomUUID(),
@@ -208,6 +221,18 @@ export async function applyWeight(workoutId: string, exerciseId: string, weight:
     const sets = await db.sets.where({ exerciseId, workoutId }).toArray();
     await db.sets.bulkPut(
       sets.filter((s) => !s.warmup && s.completedAt === undefined).map((s) => ({ ...s, weight })),
+    );
+  });
+}
+
+/** Lowers the weight (~10%, by step) of all not-yet-done working sets of one exercise. */
+export async function scaleWorkingWeights(workoutId: string, exerciseId: string, step: number): Promise<void> {
+  await db.transaction('rw', db.sets, async () => {
+    const sets = await db.sets.where({ exerciseId, workoutId }).toArray();
+    await db.sets.bulkPut(
+      sets
+        .filter((s) => !s.warmup && s.completedAt === undefined)
+        .map((s) => ({ ...s, weight: deloadWeight(s.weight, step) })),
     );
   });
 }

@@ -16,6 +16,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   showRir: false,
   askDifficultyAfterSet: false,
   afterExerciseDone: 'next',
+  effortTarget: 'close',
   weeklyGoal: 3,
 };
 
