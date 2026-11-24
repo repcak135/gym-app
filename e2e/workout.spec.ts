@@ -102,7 +102,9 @@ test('pusty trening: dodaj ćwiczenie, zakończ, podsumowanie; następny trening
   await page.getByRole('button', { name: 'Gotowe (1)' }).click();
   const bench2 = panel(page, BENCH);
   await expect(bench2.getByText('Ostatnio: 60×12')).toBeVisible();
-  await expect(bench2.getByText('Spróbuj 62,5 kg × 8–10 (ostatnio pełny zakres przy 60 kg)')).toBeVisible();
+  await expect(
+    bench2.getByText('Ostatnio 12, czyli górna granica — weź 2,5 kg więcej i zacznij od 8'),
+  ).toBeVisible();
   // prefilled with the new weight from the bottom of the range
   await expect(bench2.getByLabel('Ciężar')).toHaveValue('62,5');
   await expect(bench2.getByLabel('Powtórzenia')).toHaveValue('8');
@@ -299,4 +301,97 @@ test('trudność: ustawienie „pytaj po zaliczeniu” otwiera arkusz, X zamyka,
   await expect(page.getByRole('list', { name: 'Lista ćwiczeń' })).toHaveCount(0);
   await sheet.getByRole('button', { name: 'Zamknij' }).click();
   await expect(page.getByRole('list', { name: 'Lista ćwiczeń' })).toBeVisible();
+});
+
+/** Puts rows straight into the app's IndexedDB (same helper idea as polish.spec.ts). */
+async function seedDb(page: Page, data: { plans?: unknown[]; workouts?: unknown[]; sets?: unknown[] }) {
+  await page.goto('/#/');
+  await expect(page.getByRole('navigation')).toBeVisible();
+  await page.evaluate(async (d) => {
+    await new Promise<void>((resolve, reject) => {
+      const req = indexedDB.open('gym-app');
+      req.onerror = () => reject(req.error);
+      req.onsuccess = () => {
+        const db = req.result;
+        const stores = [...Object.keys(d).filter((k) => (d as Record<string, unknown[]>)[k]?.length), 'settings'];
+        const tx = db.transaction(stores, 'readwrite');
+        for (const s of stores) for (const row of (d as Record<string, unknown[]>)[s] ?? []) tx.objectStore(s).put(row);
+        // keep the existing settings row (exercise db version etc.), only add the active plan
+        const st = tx.objectStore('settings');
+        const get = st.get('app');
+        get.onsuccess = () => st.put({ ...(get.result ?? { key: 'app' }), activePlanId: 'p1' });
+        tx.oncomplete = () => { db.close(); resolve(); };
+        tx.onerror = () => reject(tx.error);
+      };
+    });
+  }, data);
+}
+
+/** Plan with one day (exercise x-prog, 2 × 8–12) and `sessions` finished workouts of [30×12, 30×10], oldest first. */
+async function seedProgression(page: Page, sessions: number) {
+  const day = 24 * 3600_000;
+  const base = new Date('2026-10-01T18:00:00').getTime();
+  const workouts = [];
+  const sets = [];
+  for (let k = 0; k < sessions; k++) {
+    const at = base + k * 3 * day;
+    workouts.push({ id: `w${k}`, name: 'Day 1', startedAt: at, endedAt: at + 3600_000, source: 'app' });
+    [12, 10].forEach((reps, i) =>
+      sets.push({
+        id: `s${k}-${i}`, workoutId: `w${k}`, exerciseId: 'x-prog', exerciseOrder: 0, setOrder: i + 1,
+        weight: 30, reps, warmup: false, completedAt: at + (i + 1) * 60_000,
+      }),
+    );
+  }
+  await seedDb(page, {
+    plans: [{
+      id: 'p1', name: 'Plan', startedAt: '2026-10-01',
+      days: [{ id: 'd1', name: 'Day 1', items: [{ exerciseId: 'x-prog', sets: 2, warmupSets: 0, repsMin: 8, repsMax: 12, restSec: 120 }] }],
+    }],
+    workouts,
+    sets,
+  });
+  await page.reload();
+  await page.getByRole('button', { name: 'Rozpocznij trening' }).click();
+  await expect(page).toHaveURL(/#\/trening$/);
+}
+
+test('podpowiedź per seria: wartości, powód i arkusz „Jak działa podpowiedź?”', async ({ page }) => {
+  await seedProgression(page, 1);
+  const ex = page.getByRole('region').first();
+  await expect(ex.getByLabel('Ciężar')).toHaveValue('32,5');
+  await expect(ex.getByLabel('Powtórzenia')).toHaveValue('8');
+  await expect(ex.getByText('górna granica')).toBeVisible();
+  await expect(page.getByText('3 treningi bez postępu')).toHaveCount(0);
+
+  await ex.getByRole('button', { name: 'Jak działa podpowiedź?' }).click();
+  const dialog = page.getByRole('dialog', { name: 'Jak działa podpowiedź?' });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByRole('heading', { name: 'Jak działa podpowiedź?' })).toBeVisible();
+  await dialog.getByRole('button', { name: 'Zamknij' }).click();
+  await expect(dialog).toHaveCount(0);
+
+  // set 2 has its own target: 30 × 10 -> 30 × 11
+  await ex.getByRole('button', { name: /^Seria 2/ }).click();
+  await expect(ex.getByLabel('Ciężar')).toHaveValue('30');
+  await expect(ex.getByLabel('Powtórzenia')).toHaveValue('11');
+});
+
+test('3 treningi bez postępu: „Zastosuj −10%” zmniejsza ciężar tylko w tym treningu', async ({ page }) => {
+  await seedProgression(page, 4);
+  const ex = page.getByRole('region').first();
+  await expect(ex.getByText('3 treningi bez postępu')).toBeVisible();
+  await expect(ex.getByLabel('Ciężar')).toHaveValue('32,5');
+  await ex.getByRole('button', { name: 'Zastosuj −10%' }).click();
+  await expect(ex.getByText('Ciężar zmniejszony o ok. 10% na ten trening')).toBeVisible();
+  await expect(ex.getByLabel('Ciężar')).toHaveValue('27,5');
+});
+
+test('ustawienia: cel wysiłku „Z zapasem” zapisuje się po przeładowaniu', async ({ page }) => {
+  await page.goto('/#/ustawienia');
+  await expect(page.getByRole('radio', { name: 'Blisko upadku — 1–2 w zapasie' })).toBeChecked();
+  await page.getByRole('radio', { name: 'Z zapasem — 2–3 w zapasie' }).click();
+  await expect(page.getByRole('radio', { name: 'Z zapasem — 2–3 w zapasie' })).toBeChecked();
+  await page.reload();
+  await expect(page.getByRole('radio', { name: 'Z zapasem — 2–3 w zapasie' })).toBeChecked();
 });

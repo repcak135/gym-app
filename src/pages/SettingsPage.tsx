@@ -12,6 +12,7 @@ import { parseWeight } from '../data/progression';
 import { getSettings, updateSettings, WEIGHT_STEP_OPTIONS, BAR_WEIGHT_OPTIONS } from '../data/settings';
 import { REST_OPTIONS, formatRest } from '../data/plans';
 import { clampGoal } from '../data/motivation';
+import { EFFORT_OPTIONS } from '../data/setTargets';
 import type { AfterExerciseDone, AppSettings } from '../data/types';
 import DeleteDataSheet, { type DeleteMode } from '../components/DeleteDataSheet';
 import { countUserData, deleteAllUserData, deleteImportedHistory, type UserDataCounts } from '../data/wipe';
@@ -118,6 +119,28 @@ export default function SettingsPage() {
             </select>
           </span>
         </div>
+      </section>
+
+      <section className="settings-group" aria-labelledby="set-effort">
+        <h2 id="set-effort" className="settings-group__title">Jak ciężko trenujesz?</h2>
+        <div role="radiogroup" aria-labelledby="set-effort">
+          {EFFORT_OPTIONS.map((o) => (
+            <label key={o.value} className="settings-row settings-radio">
+              <span className="settings-row__label">
+                {o.label}
+                <small className="settings-row__sub">{o.hint}</small>
+              </span>
+              <input
+                type="radio"
+                name="effort-target"
+                aria-label={o.label}
+                checked={settings.effortTarget === o.value}
+                onChange={() => void updateSettings({ effortTarget: o.value })}
+              />
+            </label>
+          ))}
+        </div>
+        <p className="settings-group__hint">Jeśli oceniasz trudność serii, podpowiedź porówna ją z tym celem.</p>
       </section>
 
       <section className="settings-group" aria-labelledby="set-goal">

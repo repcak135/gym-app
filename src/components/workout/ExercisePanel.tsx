@@ -4,13 +4,15 @@ import PlateCalculatorSheet from '../PlateCalculatorSheet';
 import DifficultySheet from './DifficultySheet';
 import { rirToRpeLabel } from '../../data/difficulty';
 import type { Exercise, WorkoutExercise, WorkoutSet } from '../../data/types';
-import { formatKg, formatSetShort, parseWeight, progressionText, suggestProgression } from '../../data/progression';
+import { formatKg, formatSetShort, parseWeight } from '../../data/progression';
+import { setTargets, type EffortTarget } from '../../data/setTargets';
+import ProgressionHelpSheet from './ProgressionHelpSheet';
 import { formatReps, formatRest } from '../../data/plans';
 import {
   addSet,
-  applyWeight,
   completeSet,
   removeSet,
+  scaleWorkingWeights,
   uncompleteSet,
   updateSet,
 } from '../../data/workouts';
@@ -29,6 +31,10 @@ interface Props {
   note?: string;
   step: number;
   showRir: boolean;
+  /** How hard the owner wants to train (Ustawienia). */
+  effort: EffortTarget;
+  /** Last 3 sessions brought no progress. */
+  stagnating: boolean;
   /** Open the difficulty sheet right after "Zalicz serię". */
   askDifficulty?: boolean;
   onInfo: (tab: InfoTab) => void;
@@ -101,6 +107,8 @@ export default function ExercisePanel({
   note,
   step,
   showRir,
+  effort,
+  stagnating,
   askDifficulty = false,
   onInfo,
   onConfirmRemoveSet,
@@ -108,6 +116,7 @@ export default function ExercisePanel({
 }: Props) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [calcOpen, setCalcOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const [diffSetId, setDiffSetId] = useState<string | null>(null);
   const pendingDone = useRef(false);
   const diffSet = sets.find((s) => s.id === diffSetId);
@@ -122,11 +131,23 @@ export default function ExercisePanel({
     sets.find((s) => s.id === selectedId) ?? sets.find((s) => s.completedAt === undefined) ?? sets.at(-1);
 
   const lastWorking = lastSets.filter((s) => !s.warmup);
-  const suggestion = suggestProgression(lastWorking, item.repsMin, item.repsMax, step);
-  const showHint = suggestion.kind !== 'none' && !(suggestion.kind === 'increase' && suggestion.fromWeight === 0);
-  const canApply =
-    suggestion.kind === 'increase' &&
-    sets.some((s) => !s.warmup && s.completedAt === undefined && s.weight !== suggestion.weight);
+  const workingSets = sets.filter((s) => !s.warmup);
+  const targets = setTargets({
+    lastWorking,
+    count: workingSets.length,
+    repsMin: item.repsMin,
+    repsMax: item.repsMax,
+    step,
+    effort,
+  });
+  const selectedWorkingIndex = selected && !selected.warmup ? workingSets.findIndex((s) => s.id === selected.id) : -1;
+  const [deloaded, setDeloaded] = useState(false);
+  // After "Zastosuj −10%" the old target no longer matches the weights, so no reason line.
+  const reason =
+    !deloaded && selected && selected.completedAt === undefined && selectedWorkingIndex >= 0
+      ? targets[selectedWorkingIndex]?.text
+      : undefined;
+  const showStagnation = stagnating && (deloaded || !workingSets.some((s) => s.completedAt !== undefined));
 
   const complete = async (set: WorkoutSet) => {
     unlockAudio();
@@ -175,15 +196,24 @@ export default function ExercisePanel({
           <p className="ex-panel__last">
             Ostatnio: {lastWorking.map(formatSetShort).join(', ')}
           </p>
-          {showHint && <p className="ex-panel__suggest">{progressionText(suggestion)}</p>}
-          {canApply && suggestion.kind === 'increase' && (
-            <button
-              type="button"
-              className="ex-panel__apply"
-              onClick={() => void applyWeight(workoutId, item.exerciseId, suggestion.weight)}
-            >
-              Użyj {formatKg(suggestion.weight)} kg
-            </button>
+        </div>
+      )}
+
+      {showStagnation && (
+        <div className="ex-panel__stagnation">
+          {deloaded ? (
+            <p>Ciężar zmniejszony o ok. 10% na ten trening</p>
+          ) : (
+            <>
+              <p>3 treningi bez postępu — rozważ zejście o ok. 10% i zbudowanie od nowa</p>
+              <button
+                type="button"
+                className="ex-panel__apply"
+                onClick={() => void scaleWorkingWeights(workoutId, item.exerciseId, step).then(() => setDeloaded(true))}
+              >
+                Zastosuj −10%
+              </button>
+            </>
           )}
         </div>
       )}
@@ -219,6 +249,19 @@ export default function ExercisePanel({
             {selected.warmup ? 'Rozgrzewka' : 'Seria'} {setLabel(sets, selected).replace('R', '')}
             {selected.completedAt !== undefined && <span className="set-editor__badge">zaliczona</span>}
           </p>
+          {reason && (
+            <div className="set-editor__reasonrow">
+              <p className="set-editor__reason">{reason}</p>
+              <button
+                type="button"
+                className="set-editor__help"
+                aria-label="Jak działa podpowiedź?"
+                onClick={() => setHelpOpen(true)}
+              >
+                ?
+              </button>
+            </div>
+          )}
           <div className="set-editor__field">
             <span className="set-editor__label">
               Ciężar (kg)
@@ -329,6 +372,7 @@ export default function ExercisePanel({
           + Dodaj serię
         </button>
       )}
+      {helpOpen && <ProgressionHelpSheet onClose={() => setHelpOpen(false)} />}
       {diffSet && <DifficultySheet set={diffSet} onClose={closeDifficulty} />}
       {calcOpen && selected && (
         <PlateCalculatorSheet

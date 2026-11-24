@@ -177,7 +177,28 @@
   background: var(--accent-soft);
 }
 .ex-panel__last { margin: 0; color: var(--text-muted); font-size: 0.85rem; }
-.ex-panel__suggest { margin: var(--space-1) 0 0; font-weight: 700; color: var(--accent); }
+.ex-panel__stagnation {
+  margin-bottom: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.ex-panel__stagnation p { margin: 0; font-size: 0.9rem; overflow-wrap: anywhere; }
+.set-editor__reasonrow { display: flex; align-items: center; gap: var(--space-2); }
+.set-editor__reason { margin: 0; flex: 1; min-width: 0; font-size: 0.9rem; font-weight: 600; color: var(--accent); overflow-wrap: anywhere; }
+.set-editor__help {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
 .ex-panel__apply {
   margin-top: var(--space-2);
   min-height: 40px;

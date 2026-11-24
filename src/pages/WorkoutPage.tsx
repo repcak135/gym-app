@@ -5,11 +5,13 @@ import { Check, ChevronLeft, ListChecks, MoreHorizontal } from 'lucide-react';
 import { db } from '../data/db';
 import { getSettings } from '../data/settings';
 import { formatClock } from '../data/progression';
+import { isStagnating } from '../data/setTargets';
 import {
   addExercises,
   discardWorkout,
   finishWorkout,
   getActiveWorkout,
+  getExerciseHistory,
   getLastSets,
   getWorkoutSets,
   removeExercise,
@@ -81,6 +83,31 @@ export default function WorkoutPage() {
       setLastSets((prev) => {
         const next = { ...prev };
         missing.forEach((id, i) => (next[id] = res[i]));
+        return next;
+      });
+    });
+    return () => {
+      alive = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idsKey, workout?.id]);
+
+  // The 4 newest finished sessions per exercise (working sets) for the stagnation hint; also loaded once.
+  const [recent, setRecent] = useState<Record<string, { weight: number; reps: number }[][]>>({});
+  useEffect(() => {
+    if (!workout) return;
+    let alive = true;
+    const missing = items.map((i) => i.exerciseId).filter((id) => !(id in recent));
+    if (missing.length === 0) return;
+    void Promise.all(missing.map((id) => getExerciseHistory(id, workout.id))).then((res) => {
+      if (!alive) return;
+      setRecent((prev) => {
+        const next = { ...prev };
+        missing.forEach((id, i) => {
+          next[id] = res[i].slice(0, 4).map((h) =>
+            h.sets.filter((s) => !s.warmup).map((s) => ({ weight: s.weight, reps: s.reps })),
+          );
+        });
         return next;
       });
     });
@@ -345,6 +372,8 @@ export default function WorkoutPage() {
                 lastSets={lastSets[it.exerciseId] ?? []}
                 note={notes[i]?.text}
                 step={ex?.weightStep ?? settings.defaultWeightStep}
+                effort={settings.effortTarget}
+                stagnating={isStagnating(recent[it.exerciseId] ?? [])}
                 showRir={settings.showRir}
                 askDifficulty={settings.showRir && settings.askDifficultyAfterSet}
                 onInfo={(tab) => setSheet({ kind: 'info', tab })}
