@@ -127,15 +127,17 @@ export default function InstallGuideSheet({ onClose }: { onClose: () => void }) 
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
       onKeyDown={(e) => { if (e.key === 'Escape') onClose(); }}
     >
-      <div role="dialog" aria-label="Jak zainstalować na telefonie" aria-modal="true" className="sheet">
-        <div className="sheet__handle" aria-hidden="true" />
-        <div className="install-sheet__body">
+      <div role="dialog" aria-label="Jak zainstalować na telefonie" aria-modal="true" className="sheet sheet--split">
+        <div className="sheet__header install-sheet__head">
+          <div className="sheet__handle" aria-hidden="true" />
           <div className="install-sheet__bar">
             <h2 className="install-card__title">Jak zainstalować na telefonie</h2>
             <button type="button" className="install-sheet__close" aria-label="Zamknij" onClick={onClose}>
               <X size={22} aria-hidden="true" />
             </button>
           </div>
+        </div>
+        <div className="sheet__body install-sheet__body">
           {isStandalone() && <p className="install-note">Ta aplikacja jest już zainstalowana na tym urządzeniu.</p>}
           <InstallSteps />
         </div>

@@ -440,6 +440,8 @@ export default function WorkoutPage() {
                 effort={settings.effortTarget}
                 stagnating={isStagnating(recent[it.exerciseId] ?? [])}
                 showRir={settings.showRir}
+                restSoundPreset={settings.restSoundPreset}
+                restVibration={settings.restVibration}
                 askDifficulty={settings.showRir && settings.askDifficultyAfterSet}
                 onInfo={(tab) => setSheet({ kind: 'info', tab })}
                 onConfirmRemoveSet={(set) => setSheet({ kind: 'remove-set', set })}

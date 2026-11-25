@@ -18,6 +18,7 @@ import {
   moveInArray,
   formatRest,
   formatReps,
+  formatTarget,
   nextDay,
   getLastPlanDayId,
 } from './plans';
@@ -194,5 +195,16 @@ describe('getLastPlanDayId', () => {
     ]);
     expect(await getLastPlanDayId('p')).toBe('d2');
     expect(await getLastPlanDayId('none')).toBeUndefined();
+  });
+});
+
+describe('formatTarget', () => {
+  const base = { sets: 3, repsMin: 8, repsMax: 12 };
+  it('formats by measure', () => {
+    expect(formatTarget(base, 'reps')).toBe('3 × 8–12');
+    expect(formatTarget({ ...base, targetSec: 30 }, 'time')).toBe('3 × 0:30');
+    expect(formatTarget({ ...base, targetM: 40 }, 'distance')).toBe('3 × 40 m');
+    expect(formatTarget({ ...base, sets: 1, targetSec: 1200 }, 'timeDistance')).toBe('1 × 20 min');
+    expect(formatTarget(base, 'time')).toBe('3 serie');
   });
 });

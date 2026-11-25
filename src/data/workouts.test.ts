@@ -381,3 +381,31 @@ describe('finish and summary', () => {
     expect((await summarizeWorkout(w.id)).records).toEqual([]);
   });
 });
+
+describe('timed sets', () => {
+  it('prefills a hold from targetSec, then last time +5 s, and updateSet stores duration', async () => {
+    await db.exercises.put({ id: 'plank-x', name: 'Plank X', measure: 'time' } as never);
+    const plan = await createPlan('T');
+    const day = await addDay(plan.id, 'D');
+    await addItems(plan.id, day.id, ['plank-x']);
+    await updateItem(plan.id, day.id, 0, { sets: 2, targetSec: 45 });
+    const w = await startWorkout({ planId: plan.id, dayId: day.id });
+    let sets = await getWorkoutSets(w.id);
+    expect(sets.map((s) => s.durationSec)).toEqual([45, 45]);
+    expect(sets.every((s) => s.reps === 0)).toBe(true);
+    await updateSet(sets[0].id, { durationSec: 40.4 });
+    await updateSet(sets[1].id, { durationSec: -3, distanceM: 12.6 });
+    sets = await getWorkoutSets(w.id);
+    expect(sets.map((s) => s.durationSec)).toEqual([40, 0]);
+    expect(sets[1].distanceM).toBe(13);
+    await completeSet(sets[0].id);
+    await completeSet(sets[1].id);
+    expect(await finishWorkout(w.id)).toBe('finished');
+    const next = await startWorkout({ planId: plan.id, dayId: day.id });
+    const nextSets = await getWorkoutSets(next.id);
+    expect(nextSets.map((s) => s.durationSec)).toEqual([45, 5]);
+    await addSet(next.id, 0);
+    expect((await getWorkoutSets(next.id)).at(-1)?.durationSec).toBe(5);
+    expect((await summarizeWorkout(w.id)).sets).toBe(2);
+  });
+});

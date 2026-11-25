@@ -10,14 +10,16 @@ export default function ProgressionHelpSheet({ onClose }: { onClose: () => void 
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
       onKeyDown={(e) => { if (e.key === 'Escape') onClose(); }}
     >
-      <div role="dialog" aria-label="Jak działa podpowiedź?" aria-modal="true" className="sheet diff-sheet help-sheet">
-        <button type="button" className="diff-sheet__close" aria-label="Zamknij" onClick={onClose}>
-          <X size={22} aria-hidden="true" />
-        </button>
-        <div className="diff-sheet__head">
-          <h2 className="diff-sheet__title">Jak działa podpowiedź?</h2>
+      <div role="dialog" aria-label="Jak działa podpowiedź?" aria-modal="true" className="sheet sheet--split diff-sheet help-sheet">
+        <div className="sheet__header">
+          <button type="button" className="diff-sheet__close" aria-label="Zamknij" onClick={onClose}>
+            <X size={22} aria-hidden="true" />
+          </button>
+          <div className="diff-sheet__head">
+            <h2 className="diff-sheet__title">Jak działa podpowiedź?</h2>
+          </div>
         </div>
-        <div className="help-sheet__body">
+        <div className="sheet__body help-sheet__body">
           <p>Każda seria ma swój własny cel. Aplikacja patrzy, ile zrobiłeś w tej samej serii ostatnim razem.</p>
           <p>Jeśli zrobiłeś mniej niż górna granica zakresu powtórzeń — dorzuć jedno powtórzenie.</p>
           <p>Gdy seria dojdzie do górnej granicy — następnym razem weź trochę więcej kilogramów i zacznij od dołu zakresu.</p>

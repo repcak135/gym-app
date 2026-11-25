@@ -1,4 +1,5 @@
 import { formatKg } from './progression';
+import { formatDuration } from './measure';
 
 /** How close to failure the owner wants to train (AppSettings.effortTarget). */
 export type EffortTarget = 'failure' | 'close' | 'reserve';
@@ -98,6 +99,32 @@ export function setTargets(opts: {
     }
   }
   return out;
+}
+
+/** Hold targets: last per-set duration +5 s; no history → targetSec ?? 30. */
+export function timeTargets(opts: {
+  lastDurations: number[];
+  count: number;
+  targetSec?: number;
+}): { durationSec: number; text: string }[] {
+  const { lastDurations, count } = opts;
+  const out: { durationSec: number; text: string }[] = [];
+  for (let i = 0; i < count; i++) {
+    if (lastDurations.length === 0) {
+      out.push({ durationSec: opts.targetSec ?? 30, text: '' });
+    } else if (i < lastDurations.length) {
+      const last = lastDurations[i];
+      out.push({ durationSec: last + 5, text: `Ostatnio ${formatDuration(last)} — spróbuj ${formatDuration(last + 5)}` });
+    } else {
+      out.push({ durationSec: out[i - 1].durationSec, text: 'Jak poprzednia seria' });
+    }
+  }
+  return out;
+}
+
+/** Distance / cardio sets repeat last time's values. */
+export function repeatText(hasHistory: boolean): string {
+  return hasHistory ? 'Jak ostatnio' : '';
 }
 
 /** Sessions newest first (working sets only): true when the 3 newest brought no progress over the one before. */

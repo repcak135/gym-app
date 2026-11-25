@@ -1,7 +1,8 @@
 import { db } from './db';
 import { getSettings } from './settings';
 import { buildPrefill, epley1RM } from './progression';
-import { deloadWeight, setTargets } from './setTargets';
+import { deloadWeight, setTargets, timeTargets } from './setTargets';
+import { measureOf } from './measure';
 import type { Workout, WorkoutExercise, WorkoutSet } from './types';
 
 // Every function here is one short Dexie transaction, so closing the app at any
@@ -52,9 +53,46 @@ export async function getLastSets(exerciseId: string, excludeWorkoutId?: string)
 
 async function prefilledSets(workoutId: string, ex: WorkoutExercise, exerciseOrder: number): Promise<WorkoutSet[]> {
   const last = await getLastSets(ex.exerciseId, workoutId);
+  const [exercise, settings] = await Promise.all([db.exercises.get(ex.exerciseId), getSettings()]);
+  const measure = measureOf(exercise);
+  const mk = (i: number, v: Partial<WorkoutSet> & { weight: number; reps: number; warmup: boolean }): WorkoutSet => ({
+    id: crypto.randomUUID(),
+    workoutId,
+    exerciseId: ex.exerciseId,
+    exerciseOrder,
+    setOrder: i,
+    ...v,
+  });
+  if (measure !== 'reps') {
+    const lastWork = last.filter((s) => !s.warmup);
+    const lastSet = lastWork.at(-1);
+    const out: WorkoutSet[] = [];
+    if (measure === 'time') {
+      const t = timeTargets({
+        lastDurations: lastWork.map((s) => s.durationSec ?? 0),
+        count: ex.sets,
+        targetSec: ex.targetSec,
+      });
+      t.forEach((x, i) => out.push(mk(i, { weight: (lastWork[i] ?? lastSet)?.weight ?? 0, reps: 0, warmup: false, durationSec: x.durationSec })));
+    } else {
+      for (let i = 0; i < ex.sets; i++) {
+        const from = lastWork[i] ?? lastSet;
+        const v: Partial<WorkoutSet> & { weight: number; reps: number; warmup: boolean } = {
+          weight: from?.weight ?? 0,
+          reps: 0,
+          warmup: false,
+        };
+        const sec = from ? from.durationSec : measure === 'timeDistance' ? ex.targetSec : undefined;
+        const m = from ? from.distanceM : measure === 'distance' ? ex.targetM : undefined;
+        if (sec) v.durationSec = sec;
+        if (m) v.distanceM = m;
+        out.push(mk(i, v));
+      }
+    }
+    return out;
+  }
   let values = buildPrefill(last, ex.warmupSets, ex.sets, ex.repsMin);
   // Working sets get a target per set (see setTargets); warm-ups stay as last time.
-  const [exercise, settings] = await Promise.all([db.exercises.get(ex.exerciseId), getSettings()]);
   const step = exercise?.weightStep ?? settings.defaultWeightStep;
   const targets = setTargets({
     lastWorking: last.filter((s) => !s.warmup),
@@ -72,16 +110,7 @@ async function prefilledSets(workoutId: string, ex: WorkoutExercise, exerciseOrd
       return t ? { ...v, weight: t.weight, reps: t.reps } : v;
     });
   }
-  return values.map((v, i) => ({
-    id: crypto.randomUUID(),
-    workoutId,
-    exerciseId: ex.exerciseId,
-    exerciseOrder,
-    setOrder: i,
-    weight: v.weight,
-    reps: v.reps,
-    warmup: v.warmup,
-  }));
+  return values.map((v, i) => mk(i, v));
 }
 
 export async function startWorkout(opts: { planId?: string; dayId?: string } = {}): Promise<Workout> {
@@ -215,7 +244,11 @@ export async function moveExercise(workoutId: string, from: number, to: number):
 
 export async function updateSet(
   setId: string,
-  patch: Partial<Pick<WorkoutSet, 'weight' | 'reps' | 'warmup'>> & { rir?: number | null },
+  patch: Partial<Pick<WorkoutSet, 'weight' | 'reps' | 'warmup'>> & {
+    rir?: number | null;
+    durationSec?: number | null;
+    distanceM?: number | null;
+  },
 ): Promise<void> {
   const clean: Partial<WorkoutSet> = {};
   // null clears RIR (Dexie removes a property set to undefined).
@@ -226,6 +259,12 @@ export async function updateSet(
     clean.weight = Math.min(2000, Math.max(0, Math.round(patch.weight * 100) / 100));
   if (typeof patch.reps === 'number' && Number.isFinite(patch.reps))
     clean.reps = Math.min(999, Math.max(0, Math.round(patch.reps)));
+  if (patch.durationSec === null) clean.durationSec = undefined;
+  else if (typeof patch.durationSec === 'number' && Number.isFinite(patch.durationSec))
+    clean.durationSec = Math.min(86400, Math.max(0, Math.round(patch.durationSec)));
+  if (patch.distanceM === null) clean.distanceM = undefined;
+  else if (typeof patch.distanceM === 'number' && Number.isFinite(patch.distanceM))
+    clean.distanceM = Math.min(1000000, Math.max(0, Math.round(patch.distanceM)));
   if (typeof patch.warmup === 'boolean') clean.warmup = patch.warmup;
   await db.transaction('rw', db.workouts, db.sets, async () => {
     const before = await db.sets.get(setId);
@@ -259,12 +298,13 @@ export async function scaleWorkingWeights(workoutId: string, exerciseId: string,
 }
 
 export async function addSet(workoutId: string, index: number): Promise<void> {
-  await db.transaction('rw', db.workouts, db.sets, async () => {
+  await db.transaction('rw', db.workouts, db.sets, db.exercises, async () => {
     const w = await db.workouts.get(workoutId);
     const ex = w?.exercises?.[index];
     if (!ex) throw new Error('Nie znaleziono ćwiczenia');
     const sets = (await db.sets.where({ exerciseId: ex.exerciseId, workoutId }).toArray()).sort(byOrder);
     const last = sets.filter((s) => !s.warmup).at(-1) ?? sets.at(-1);
+    const timed = measureOf(await db.exercises.get(ex.exerciseId)) !== 'reps';
     await db.sets.add({
       id: crypto.randomUUID(),
       workoutId,
@@ -272,8 +312,10 @@ export async function addSet(workoutId: string, index: number): Promise<void> {
       exerciseOrder: index,
       setOrder: (sets.at(-1)?.setOrder ?? -1) + 1,
       weight: last?.weight ?? 0,
-      reps: last?.reps ?? ex.repsMin,
+      reps: timed ? 0 : (last?.reps ?? ex.repsMin),
       warmup: false,
+      ...(last?.durationSec ? { durationSec: last.durationSec } : {}),
+      ...(last?.distanceM ? { distanceM: last.distanceM } : {}),
     });
     // The workout's exercise entry records the intended structure (used to suggest plan changes).
     ex.sets += 1;

@@ -53,6 +53,33 @@
   to   { transform: translateY(0);   opacity: 1; }
 }
 
+/* Long sheets: header stays put, only the body scrolls, with a soft fade at both edges. */
+.sheet--split {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.sheet__header {
+  flex: none;
+  background: var(--surface-2);
+  position: relative;
+  z-index: 1;
+  /* Clear gap between the title and scrolled text (owner: the top cut-off was too tight). */
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.sheet__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 20px;
+  padding-bottom: 24px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 20px, #000 calc(100% - 24px), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 20px, #000 calc(100% - 24px), transparent 100%);
+}
+
 .sheet__handle {
   width: 36px;
   height: 4px;

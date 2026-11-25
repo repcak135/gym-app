@@ -35,7 +35,8 @@ export default function ExerciseInfoSheet({ exerciseId, exerciseName, workoutId,
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
       onKeyDown={(e) => { if (e.key === 'Escape') onClose(); }}
     >
-      <div role="dialog" aria-label={exerciseName} aria-modal="true" className="sheet info-sheet">
+      <div role="dialog" aria-label={exerciseName} aria-modal="true" className="sheet sheet--split info-sheet">
+        <div className="sheet__header">
         <div className="info-sheet__bar">
           <h2>{exerciseName}</h2>
           <button type="button" className="info-sheet__close" aria-label="Zamknij" onClick={onClose}>
@@ -56,7 +57,8 @@ export default function ExerciseInfoSheet({ exerciseId, exerciseName, workoutId,
             </button>
           ))}
         </div>
-        <div className="info-body">
+        </div>
+        <div className="sheet__body info-body">
           {tab === 'opis' && exercise && <ExerciseHowTo exercise={exercise} />}
           {tab === 'notatki' && <NoteEditor exerciseId={exerciseId} className="info-note" />}
           {tab === 'historia' && history && <ExerciseHistoryList history={history} />}

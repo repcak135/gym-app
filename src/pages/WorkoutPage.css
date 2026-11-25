@@ -356,6 +356,34 @@
   cursor: pointer;
 }
 
+/* ---- stopwatch (timed sets) ---- */
+.stopwatch {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+.stopwatch__time { font-size: 3rem; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
+.stopwatch__target { color: var(--text-muted); font-weight: 600; }
+.stopwatch__buttons { display: flex; gap: var(--space-2); width: 100%; }
+.stopwatch__btn {
+  flex: 1;
+  min-height: 52px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.stopwatch__btn--start { background: var(--accent); color: #fff; border-color: var(--accent); }
+.stopwatch__btn--stop { background: var(--danger, #c0392b); color: #fff; border-color: transparent; }
+
 /* ---- rest bar ---- */
 .rest-bar {
   position: absolute;
@@ -416,7 +444,7 @@
   cursor: pointer;
 }
 .info-tab--on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
-.info-body { padding: var(--space-2) var(--space-4) var(--space-5); overflow-y: auto; }
+.info-body { padding-inline: var(--space-4); }
 .info-note {
   width: 100%;
   min-height: 160px;

@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router';
 import { useState } from 'react';
 import { Settings, ScanLine } from 'lucide-react';
 import { db } from '../data/db';
-import { formatReps, getLastPlanDayId, nextDay } from '../data/plans';
+import { formatTarget, getLastPlanDayId, nextDay } from '../data/plans';
+import { measureOf } from '../data/measure';
 import { getActiveWorkout, startWorkout } from '../data/workouts';
 import { useNow } from '../hooks/useNow';
 import { unlockAudio } from '../audio/beep';
@@ -78,7 +79,13 @@ export default function StartPage() {
     const day = nextDay(plan, lastDayId);
     const items = day?.items ?? [];
     const exercises = await db.exercises.bulkGet(items.map((i) => i.exerciseId));
-    return { plan, day, items, names: exercises.map((e) => e?.name ?? 'Nieznane ćwiczenie') };
+    return {
+      plan,
+      day,
+      items,
+      names: exercises.map((e) => e?.name ?? 'Nieznane ćwiczenie'),
+      measures: exercises.map((e) => measureOf(e)),
+    };
   });
 
   if (!data) return <article><StartHeader /></article>;
@@ -110,7 +117,7 @@ export default function StartPage() {
     );
   }
 
-  const { day, items = [], names = [] } = data;
+  const { day, items = [], names = [], measures = [] } = data;
 
   return (
     <article>
@@ -142,7 +149,7 @@ export default function StartPage() {
                 {items.slice(0, MAX_SHOWN).map((it, i) => (
                   <li key={i}>
                     <span>{names[i]}</span>
-                    <span className="muted">{it.sets} × {formatReps(it)}</span>
+                    <span className="muted">{formatTarget(it, measures[i])}</span>
                   </li>
                 ))}
                 {items.length > MAX_SHOWN && (

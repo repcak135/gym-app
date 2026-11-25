@@ -38,12 +38,14 @@ export default function WhatsNewSheet({
       onClick={(e) => { if (e.target === e.currentTarget) close(); }}
       onKeyDown={(e) => { if (e.key === 'Escape') close(); }}
     >
-      <div role="dialog" aria-label={title} aria-modal="true" className="sheet whats-new">
-        <div className="sheet__handle" aria-hidden="true" />
-        <div className="whats-new__body">
+      <div role="dialog" aria-label={title} aria-modal="true" className="sheet sheet--split whats-new">
+        <div className="sheet__header whats-new__head">
+          <div className="sheet__handle" aria-hidden="true" />
           <h2 className="whats-new__title">
             <Sparkles size={20} aria-hidden="true" /> {title}
           </h2>
+        </div>
+        <div className="sheet__body whats-new__body">
           {entries.map((e) => (
             <section key={e.version} className="whats-new__entry" aria-label={`Wersja ${e.version}`}>
               {showVersions && (

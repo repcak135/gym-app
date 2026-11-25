@@ -15,7 +15,8 @@ import {
 import { removeItemUndoable } from '../data/undoable';
 import { showUndo } from '../undo';
 import SwipeRow from '../components/SwipeRow';
-import type { Exercise, PlanItem } from '../data/types';
+import type { Exercise, Measure, PlanItem } from '../data/types';
+import { measureOf } from '../data/measure';
 import ExerciseThumb from '../components/ExerciseThumb';
 import ExercisePicker from '../components/ExercisePicker';
 import NameSheet from '../components/NameSheet';
@@ -93,6 +94,47 @@ function RepsFields({ item, onSave }: { item: PlanItem; onSave: (p: Partial<Omit
   );
 }
 
+const TIME_TARGETS = Array.from({ length: 20 }, (_, i) => 15 + i * 15);
+const DISTANCE_TARGETS = [10, 20, 30, 40, 50, 75, 100, 150, 200, 300, 400, 500, 800, 1000];
+const CARDIO_MINUTES = Array.from({ length: 18 }, (_, i) => 5 + i * 5);
+
+/** Target of a time / distance / cardio item, instead of the reps range. */
+function TargetField({ item, measure, onSave }: { item: PlanItem; measure: Exclude<Measure, 'reps'>; onSave: (p: Partial<Omit<PlanItem, 'exerciseId'>>) => void }) {
+  let label: string;
+  let value: number;
+  let options: { value: number; text: string }[];
+  let save: (v: number) => void;
+  if (measure === 'time') {
+    label = 'Cel (s)';
+    value = item.targetSec ?? 30;
+    options = TIME_TARGETS.map((v) => ({ value: v, text: String(v) }));
+    save = (v) => onSave({ targetSec: v });
+  } else if (measure === 'distance') {
+    label = 'Cel (m)';
+    value = item.targetM ?? 40;
+    options = DISTANCE_TARGETS.map((v) => ({ value: v, text: String(v) }));
+    save = (v) => onSave({ targetM: v });
+  } else {
+    label = 'Cel (min)';
+    value = Math.round((item.targetSec ?? 1200) / 60) * 60;
+    options = CARDIO_MINUTES.map((v) => ({ value: v * 60, text: String(v) }));
+    save = (v) => onSave({ targetSec: v });
+  }
+  if (!options.some((o) => o.value === value)) {
+    options = [...options, { value, text: measure === 'timeDistance' ? String(Math.round(value / 60)) : String(value) }].sort((a, b) => a.value - b.value);
+  }
+  return (
+    <div className="item-field">
+      <span className="item-field__label">{label}</span>
+      <select className="item-input item-select" aria-label={label} value={value} onChange={(e) => save(Number(e.target.value))}>
+        {options.map((o) => (
+          <option key={o.value} value={o.value}>{o.text}</option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
 interface ItemCardProps {
   planId: string;
   dayId: string;
@@ -110,6 +152,7 @@ async function removeItemWithUndo(planId: string, dayId: string, index: number, 
 function ItemCard({ planId, dayId, index, count, item, exercise }: ItemCardProps) {
   const name = exercise?.name ?? 'Nieznane ćwiczenie';
   const patch = (p: Partial<Omit<PlanItem, 'exerciseId'>>) => void updateItem(planId, dayId, index, p);
+  const measure = measureOf(exercise);
 
   const restOptions = REST_OPTIONS.includes(item.restSec)
     ? REST_OPTIONS
@@ -131,7 +174,11 @@ function ItemCard({ planId, dayId, index, count, item, exercise }: ItemCardProps
         <Stepper label="Serie" value={item.sets} onChange={(v) => patch({ sets: v })} />
         <Stepper label="Rozgrzewka" value={item.warmupSets} onChange={(v) => patch({ warmupSets: v })} />
 
-        <RepsFields key={`${item.repsMin}-${item.repsMax}`} item={item} onSave={patch} />
+        {measure === 'reps' ? (
+          <RepsFields key={`${item.repsMin}-${item.repsMax}`} item={item} onSave={patch} />
+        ) : (
+          <TargetField item={item} measure={measure} onSave={patch} />
+        )}
 
         <div className="item-field">
           <span className="item-field__label">Przerwa</span>

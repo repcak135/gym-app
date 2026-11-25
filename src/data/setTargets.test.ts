@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { setTargets, effortOf, isStagnating, deloadWeight, EFFORT_OPTIONS } from './setTargets';
+import { setTargets, timeTargets, effortOf, isStagnating, deloadWeight, EFFORT_OPTIONS } from './setTargets';
 
 const base = { repsMin: 8, repsMax: 12, step: 2.5, effort: 'close' as const };
 
@@ -109,5 +109,21 @@ describe('deloadWeight', () => {
 describe('EFFORT_OPTIONS', () => {
   it('has the three targets', () => {
     expect(EFFORT_OPTIONS.map((o) => o.value)).toEqual(['failure', 'close', 'reserve']);
+  });
+});
+
+describe('timeTargets', () => {
+  it('adds 5 s to the last duration per set', () => {
+    const t = timeTargets({ lastDurations: [40, 35], count: 3 });
+    expect(t.map((x) => x.durationSec)).toEqual([45, 40, 40]);
+    expect(t[0].text).toBe('Ostatnio 0:40 — spróbuj 0:45');
+    expect(t[2].text).toBe('Jak poprzednia seria');
+  });
+  it('uses targetSec or 30 without history', () => {
+    expect(timeTargets({ lastDurations: [], count: 2, targetSec: 45 })).toEqual([
+      { durationSec: 45, text: '' },
+      { durationSec: 45, text: '' },
+    ]);
+    expect(timeTargets({ lastDurations: [], count: 1 })[0].durationSec).toBe(30);
   });
 });

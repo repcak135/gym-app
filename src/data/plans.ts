@@ -1,6 +1,8 @@
 import { db } from './db';
 import { getSettings, updateSettings } from './settings';
-import type { Plan, PlanDay, PlanItem } from './types';
+import { formatDistance, formatDuration, measureOf } from './measure';
+import { setsLabel } from './plural';
+import type { Measure, Plan, PlanDay, PlanItem } from './types';
 
 export const DEFAULT_ITEM = { sets: 3, warmupSets: 0, repsMin: 8, repsMax: 12, restSec: 120 };
 
@@ -27,6 +29,23 @@ export function formatRest(sec: number): string {
 
 export function formatReps(item: Pick<PlanItem, 'repsMin' | 'repsMax'>): string {
   return item.repsMin === item.repsMax ? `${item.repsMin}` : `${item.repsMin}–${item.repsMax}`;
+}
+
+/** Plan line "3 × 8–12" for reps, "3 × 0:30" for holds, "3 × 40 m" for distance, "1 × 20 min" for cardio. */
+export function formatTarget(
+  item: Pick<PlanItem, 'sets' | 'repsMin' | 'repsMax' | 'targetSec' | 'targetM'>,
+  measure: Measure = 'reps',
+): string {
+  if (measure === 'reps') return `${item.sets} × ${formatReps(item)}`;
+  if (measure === 'time' && item.targetSec) return `${item.sets} × ${formatDuration(item.targetSec)}`;
+  if (measure === 'distance' && item.targetM) return `${item.sets} × ${formatDistance(item.targetM, 'distance')}`;
+  if (measure === 'timeDistance') {
+    if (item.targetSec) {
+      return `${item.sets} × ${item.targetSec % 60 === 0 ? `${item.targetSec / 60} min` : formatDuration(item.targetSec)}`;
+    }
+    if (item.targetM) return `${item.sets} × ${formatDistance(item.targetM, 'timeDistance')}`;
+  }
+  return setsLabel(item.sets);
 }
 
 export function nextDay(plan: Plan, lastDayId?: string): PlanDay | undefined {
@@ -163,8 +182,10 @@ export async function deleteDay(planId: string, dayId: string): Promise<void> {
 export async function addItems(planId: string, dayId: string, exerciseIds: string[]): Promise<void> {
   // New items take the defaults from Ustawienia; existing items keep their own values.
   const s = await getSettings();
+  const measures = new Map((await db.exercises.bulkGet(exerciseIds)).map((e, i) => [exerciseIds[i], measureOf(e)]));
   await mutateDay(planId, dayId, (day) => {
     for (const exerciseId of exerciseIds) {
+      const m = measures.get(exerciseId);
       day.items.push({
         exerciseId,
         sets: s.defaultSets,
@@ -172,6 +193,7 @@ export async function addItems(planId: string, dayId: string, exerciseIds: strin
         repsMin: s.defaultRepsMin,
         repsMax: s.defaultRepsMax,
         restSec: s.defaultRestSec,
+        ...(m === 'time' ? { targetSec: 30 } : m === 'distance' ? { targetM: 40 } : m === 'timeDistance' ? { targetSec: 1200 } : {}),
       });
     }
   });
@@ -186,6 +208,10 @@ export async function updateItem(
   await mutateDay(planId, dayId, (day) => {
     const item = day.items[index];
     if (!item) return;
+    for (const key of ['targetSec', 'targetM'] as const) {
+      const v = patch[key];
+      if (typeof v === 'number' && Number.isFinite(v)) item[key] = clamp(v, 0, 100000);
+    }
     const apply = (key: 'sets' | 'warmupSets' | 'repsMin' | 'repsMax' | 'restSec', min: number, max: number) => {
       const v = patch[key];
       if (typeof v === 'number' && Number.isFinite(v)) item[key] = clamp(v, min, max);
