@@ -270,6 +270,44 @@ export default function ExercisePanel({
     }
   };
 
+  // Weight: first for rep sets; for time / distance sets it is optional, so it comes after them.
+  const weightField = selected ? (
+    <div className="set-editor__field">
+      <span className="set-editor__label">
+        {isReps ? 'Ciężar (kg)' : 'Ciężar (kg, opcjonalnie)'}
+        <button
+          type="button"
+          className="set-editor__calc"
+          aria-label="Kalkulator talerzy"
+          onClick={() => setCalcOpen(true)}
+        >
+          <Calculator size={18} aria-hidden="true" />
+        </button>
+      </span>
+      <div className="set-editor__stepper">
+        <button
+          type="button"
+          aria-label="Mniej kg"
+          onClick={() => void updateSet(selected.id, { weight: Math.max(0, selected.weight - step) })}
+        >
+          <Minus size={22} aria-hidden="true" />
+        </button>
+        <NumberField
+          label="Ciężar"
+          decimal
+          value={selected.weight}
+          onCommit={(n) => void updateSet(selected.id, { weight: n })}
+        />
+        <button
+          type="button"
+          aria-label="Więcej kg"
+          onClick={() => void updateSet(selected.id, { weight: selected.weight + step })}
+        >
+          <Plus size={22} aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+  ) : null;
   // The open set's editor sits right under its row (one open at a time).
   const editor = selected ? (
         <div ref={editorRef} className={`set-editor${selected.completedAt !== undefined ? ' set-editor--done' : ''}`}>
@@ -290,41 +328,7 @@ export default function ExercisePanel({
               </button>
             </div>
           )}
-          <div className="set-editor__field">
-            <span className="set-editor__label">
-              {isReps ? 'Ciężar (kg)' : 'Ciężar (kg, opcjonalnie)'}
-              <button
-                type="button"
-                className="set-editor__calc"
-                aria-label="Kalkulator talerzy"
-                onClick={() => setCalcOpen(true)}
-              >
-                <Calculator size={18} aria-hidden="true" />
-              </button>
-            </span>
-            <div className="set-editor__stepper">
-              <button
-                type="button"
-                aria-label="Mniej kg"
-                onClick={() => void updateSet(selected.id, { weight: Math.max(0, selected.weight - step) })}
-              >
-                <Minus size={22} aria-hidden="true" />
-              </button>
-              <NumberField
-                label="Ciężar"
-                decimal
-                value={selected.weight}
-                onCommit={(n) => void updateSet(selected.id, { weight: n })}
-              />
-              <button
-                type="button"
-                aria-label="Więcej kg"
-                onClick={() => void updateSet(selected.id, { weight: selected.weight + step })}
-              >
-                <Plus size={22} aria-hidden="true" />
-              </button>
-            </div>
-          </div>
+          {isReps && weightField}
           {isReps ? (
             <div className="set-editor__field">
               <span className="set-editor__label">Powtórzenia</span>
@@ -418,6 +422,7 @@ export default function ExercisePanel({
                   </div>
                 </div>
               )}
+              {weightField}
               {measure !== 'distance' && selected.completedAt === undefined && (
                 <Stopwatch
                   targetSec={measure === 'time' ? (timeT[Math.max(0, selectedWorkingIndex)]?.durationSec ?? item.targetSec) : item.targetSec}

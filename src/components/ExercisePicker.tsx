@@ -167,7 +167,16 @@ export default function ExercisePicker({
       </div>
 
       {creating && (
-        <div className="picker picker--form" role="dialog" aria-label="Nowe ćwiczenie" aria-modal="true">
+        <div
+          className="picker picker--form"
+          role="dialog"
+          aria-label="Nowe ćwiczenie"
+          aria-modal="true"
+          onKeyDown={(e) => {
+            // Escape closes only the form, not the picker under it.
+            if (e.key === 'Escape') { e.stopPropagation(); setCreating(false); }
+          }}
+        >
           <div className="picker__bar">
             <button type="button" className="picker__close" aria-label="Wróć do listy" onClick={() => setCreating(false)}>
               <X size={24} aria-hidden="true" />

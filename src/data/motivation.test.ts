@@ -122,6 +122,16 @@ describe('yearActivity', () => {
     expect([...m.keys()]).toEqual(['2026-03-02']);
     expect(m.get('2026-03-02')).toEqual({ sets: 3, workoutIds: [a.id, b.id] });
   });
+  it('counts time and distance sets (they store 0 reps)', () => {
+    const a = w(d(2026, 3, 3, 8));
+    const sets = [
+      s(a.id, 'plank', { reps: 0, weight: 0, durationSec: 30 }),
+      s(a.id, 'walk', { reps: 0, distanceM: 40 }),
+      s(a.id, 'plank', { reps: 0, weight: 0 }),
+    ];
+    const m = yearActivity({ workouts: [a], sets, muscles: new Map() }, 2026);
+    expect(m.get('2026-03-03')?.sets).toBe(2);
+  });
   it('activityLevel thresholds', () => {
     expect([0, 11, 12, 19, 20, 27, 28, 60].map(activityLevel)).toEqual([1, 1, 2, 2, 3, 3, 4, 4]);
   });

@@ -1,5 +1,5 @@
 import { MUSCLE_GROUPS, muscleGroup, type MuscleGroup } from './muscleMap';
-import { workingSets } from './records';
+import { countedSets } from './records';
 import { isFinished } from './workouts';
 import type { StatsInput } from './stats';
 import type { Workout } from './types';
@@ -72,7 +72,7 @@ export interface MuscleWeekRow {
   status: MuscleStatus;
 }
 
-/** Working sets per muscle group in the week starting at `weekStart`: primary 1, secondary 0.5. */
+/** Working sets (reps, time or distance) per muscle group in the week starting at `weekStart`: primary 1, secondary 0.5. */
 export function muscleWeek(input: StatsInput, weekStart: number): { rows: MuscleWeekRow[]; unmapped: number } {
   const end = weekStartOf(weekStart, 1);
   const ids = new Set(
@@ -80,7 +80,7 @@ export function muscleWeek(input: StatsInput, weekStart: number): { rows: Muscle
   );
   const totals = new Map<MuscleGroup, number>();
   let unmapped = 0;
-  for (const s of workingSets(input.sets.filter((x) => ids.has(x.workoutId)))) {
+  for (const s of countedSets(input.sets.filter((x) => ids.has(x.workoutId)))) {
     const m = input.muscles.get(s.exerciseId);
     const primary = new Set((m?.primary ?? []).map(muscleGroup).filter((g): g is MuscleGroup => !!g));
     if (primary.size === 0) unmapped++;
@@ -124,7 +124,7 @@ export function yearActivity(input: StatsInput, year: number): Map<string, DayAc
     if (a) a.workoutIds.push(w.id);
     else out.set(k, { sets: 0, workoutIds: [w.id] });
   }
-  for (const s of workingSets(input.sets)) {
+  for (const s of countedSets(input.sets)) {
     const k = dayOf.get(s.workoutId);
     if (k) out.get(k)!.sets++;
   }

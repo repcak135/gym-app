@@ -1,6 +1,7 @@
 import { db } from './db';
 import { DEFAULT_SETTINGS, getSettings, migrateSound, updateSettings } from './settings';
 import { APP_VERSION } from '../version';
+import { getTheme, isThemeId, setTheme, type ThemeId } from '../theme/themes';
 import type {
   AppSettings, BodyEntry, Exercise, ExerciseAlias, ExerciseNote, Measure, Plan, Workout, WorkoutSet,
 } from './types';
@@ -41,6 +42,8 @@ export interface BackupFile {
   formatVersion: number;
   appVersion: string;
   exportedAt: number;
+  /** Colour theme (kept in localStorage, not in Dexie). Missing in files from before 0.9.7. */
+  theme?: ThemeId;
   data: BackupData;
 }
 
@@ -66,6 +69,7 @@ export async function createBackup(now = Date.now()): Promise<BackupFile> {
       formatVersion: BACKUP_FORMAT_VERSION,
       appVersion: APP_VERSION,
       exportedAt: now,
+      theme: getTheme(),
       data: {
         plans: await db.plans.toArray(),
         workouts: await db.workouts.toArray(),
@@ -166,6 +170,7 @@ export function parseBackup(text: string): BackupFile {
     formatVersion: BACKUP_FORMAT_VERSION,
     appVersion: typeof raw.appVersion === 'string' ? raw.appVersion : '?',
     exportedAt: raw.exportedAt as number,
+    ...(isThemeId(raw.theme) && { theme: raw.theme }),
     data: data as unknown as BackupData,
   };
 }
@@ -245,6 +250,8 @@ export async function restoreBackup(f: BackupFile): Promise<void> {
     if (settings.lastSeenVersion === undefined) delete settings.lastSeenVersion;
     await db.settings.put(settings);
   });
+  // Only after the data is safely in: a failed restore must not change the look either.
+  if (f.theme) setTheme(f.theme);
 }
 
 // ---------- reminder ----------

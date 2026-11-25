@@ -52,7 +52,7 @@
 .workout-bar__time { color: var(--accent); font-weight: 700; font-size: 0.95rem; }
 
 .workout-bar__finish {
-  min-height: 40px;
+  min-height: 44px;
   padding: 0 var(--space-4);
   border: 1px solid var(--success);
   border-radius: 999px;
@@ -142,7 +142,7 @@
 .ex-panel__info { display: flex; gap: var(--space-2); margin-bottom: var(--space-3); }
 .ex-panel__info button {
   flex: 1;
-  min-height: 40px;
+  min-height: 44px;
   border: 1px solid var(--border);
   border-radius: 999px;
   background: var(--surface);
@@ -201,7 +201,7 @@
 }
 .ex-panel__apply {
   margin-top: var(--space-2);
-  min-height: 40px;
+  min-height: 44px;
   padding: 0 var(--space-4);
   border: 0;
   border-radius: 999px;
@@ -274,8 +274,8 @@
   justify-content: space-between;
 }
 .set-editor__calc {
-  min-width: 40px;
-  min-height: 40px;
+  min-width: 44px;
+  min-height: 44px;
   display: grid;
   place-items: center;
   background: var(--surface);
@@ -435,7 +435,7 @@
 .info-tabs { display: flex; gap: var(--space-1); padding: var(--space-2) var(--space-4); }
 .info-tab {
   flex: 1;
-  min-height: 40px;
+  min-height: 44px;
   border: 1px solid var(--border);
   border-radius: 999px;
   background: none;
@@ -643,11 +643,13 @@
   display: inline-block;
   margin: 0 0 var(--space-1);
   padding: 2px 10px;
-  border-radius: 999px;
+  /* Not a full pill: a long "dalej: …" name wraps to two lines. */
+  border-radius: var(--radius-sm);
   background: var(--accent-soft);
   color: var(--accent);
   font-size: 0.8rem;
   font-weight: 700;
+  line-height: 1.35;
 }
 .wl-group-head { padding-left: var(--space-3); color: var(--accent); font-size: 0.85rem; list-style: none; margin-bottom: calc(var(--space-2) * -1); }
 .wl-item--grouped { border-left: 3px solid var(--accent); padding-left: var(--space-2); }

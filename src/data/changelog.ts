@@ -11,6 +11,18 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.7',
+    date: '2026-11-25',
+    items: [
+      'Porządki: większe przyciski w treningu, w planie („Połącz z następnym”) i w Ustawieniach — łatwiej trafić palcem.',
+      'Serie na czas i dystans (np. deska) liczą się w kalendarzu aktywności i w seriach na mięsień w tygodniu.',
+      '„Co nowego” otwiera się od początku listy, a nie przewinięte na dół.',
+      'Ćwiczenia na czas i dystans: pole „Czas” (i „Dystans”) jest teraz nad opcjonalnym ciężarem.',
+      'Drobne poprawki wyglądu w superseriach i w formularzu nowego ćwiczenia.',
+      'Kopia zapasowa zapamiętuje też motyw kolorów.',
+    ],
+  },
+  {
     version: '0.9.6',
     date: '2026-11-25',
     items: [

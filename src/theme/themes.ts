@@ -1,5 +1,6 @@
 // Colour themes: the accent colour of buttons, links and highlights. A device setting (this
-// browser only, like the install guide), kept out of backups. The dark background stays the same.
+// browser only, like the install guide). Backups carry it as a top-level `theme` field and a
+// restore applies it. The dark background stays the same.
 
 export type ThemeId = 'banana' | 'orange' | 'blue' | 'violet' | 'pink';
 

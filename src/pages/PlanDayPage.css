@@ -93,7 +93,7 @@
 .item-card__actions { align-items: center; flex-wrap: wrap; }
 .item-card__link {
   margin-right: auto;
-  min-height: 40px;
+  min-height: 44px;
   padding: 0 var(--space-3);
   border: 1px solid var(--border);
   border-radius: 999px;

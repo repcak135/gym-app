@@ -126,6 +126,8 @@
 /* The custom exercise form opened from the picker, above it. */
 .picker--form {
   z-index: 310;
+  /* iPhone keyboard: end the form above it so the lower fields can scroll into view. */
+  bottom: var(--kb-inset, 0px);
 }
 
 .picker__form {

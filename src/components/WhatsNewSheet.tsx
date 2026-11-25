@@ -36,6 +36,16 @@ export default function WhatsNewSheet({
 }) {
   const [index, setIndex] = useState(0);
   const touchX = useRef<number | null>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  // Focus the close button without scrolling the list to it (autoFocus opened long notes at the bottom).
+  useEffect(() => {
+    closeRef.current?.focus({ preventScroll: true });
+  }, []);
+  // Another version starts at the top of its list.
+  useEffect(() => {
+    if (bodyRef.current) bodyRef.current.scrollTop = 0;
+  }, [index]);
   const close = () => {
     void markVersionSeen(APP_VERSION);
     onClose();
@@ -77,6 +87,7 @@ export default function WhatsNewSheet({
           )}
         </div>
         <div
+          ref={bodyRef}
           className="sheet__body whats-new__body"
           onTouchStart={(e) => { touchX.current = e.touches[0]?.clientX ?? null; }}
           onTouchEnd={(e) => {
@@ -97,7 +108,7 @@ export default function WhatsNewSheet({
               {entry.items.map((item, i) => <li key={i}>{item}</li>)}
             </ul>
           </section>
-          <button type="button" className="plan-btn plan-btn--primary plan-btn--block" onClick={close} autoFocus>
+          <button type="button" className="plan-btn plan-btn--primary plan-btn--block" onClick={close} ref={closeRef}>
             Super, zamknij
           </button>
         </div>

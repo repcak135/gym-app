@@ -6,6 +6,7 @@ import {
   parseBackup, restoreBackup, snoozeBackupReminder, summarizeBackup, type BackupFile,
 } from './backup';
 import type { Exercise } from './types';
+import { getTheme, setTheme } from '../theme/themes';
 
 beforeEach(async () => {
   await db.delete();
@@ -86,6 +87,43 @@ describe('backup', () => {
     const s = await getSettings();
     expect(s).toEqual({ ...settingsBefore, lastBackupAt: 123456 });
     expect(s.exerciseDbVersion).toBe(4);
+  });
+
+  it('round-trip keeps own exercise names and superset/time fields in plans', async () => {
+    await seedEverything();
+    await db.exercises.update('Bench_Press', { userNames: ['klata płasko'] });
+    await db.plans.add({
+      id: 'pS', name: 'Super', startedAt: '2026-11-25',
+      days: [{ id: 'dS', name: 'A', items: [
+        { exerciseId: 'Bench_Press', sets: 3, warmupSets: 1, repsMin: 6, repsMax: 10, restSec: 90, group: 'g1' },
+        { exerciseId: 'Squat', sets: 3, warmupSets: 0, repsMin: 1, repsMax: 1, restSec: 60, group: 'g1', targetSec: 45 },
+      ] }],
+    });
+    const file = await createBackup(1);
+    await db.exercises.update('Bench_Press', { userNames: undefined });
+    await db.plans.clear();
+    await restoreBackup(parseBackup(JSON.stringify(file)));
+    expect((await db.exercises.get('Bench_Press'))?.userNames).toEqual(['klata płasko']);
+    const items = (await db.plans.get('pS'))?.days[0].items;
+    expect(items?.map((i) => i.group)).toEqual(['g1', 'g1']);
+    expect(items?.[1].targetSec).toBe(45);
+  });
+
+  it('carries the colour theme; old files and bad values leave it alone', async () => {
+    await seedEverything();
+    setTheme('violet');
+    const file = await createBackup(1);
+    expect(file.theme).toBe('violet');
+    setTheme('blue');
+    await restoreBackup(parseBackup(JSON.stringify(file)));
+    expect(getTheme()).toBe('violet');
+    expect(document.documentElement.dataset.theme).toBe('violet');
+
+    const { theme: _t, ...old } = file;
+    void _t;
+    await restoreBackup(parseBackup(JSON.stringify(old)));
+    expect(getTheme()).toBe('violet');
+    expect(parseBackup(JSON.stringify({ ...file, theme: 'neon' })).theme).toBeUndefined();
   });
 
   it('summary counts', async () => {
