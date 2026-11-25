@@ -51,8 +51,10 @@ interface Props {
   askDifficulty?: boolean;
   onInfo: (tab: InfoTab) => void;
   onConfirmRemoveSet: (set: WorkoutSet) => void;
-  /** Called when "Zalicz serię" completed the last uncompleted set of this exercise. */
-  onExerciseDone?: (index: number) => void;
+  /** Called after "Zalicz serię"; exerciseDone = it was the last uncompleted set of this exercise. */
+  onSetCompleted?: (index: number, exerciseDone: boolean) => void;
+  /** Superset / circuit chip above the name, e.g. "Superseria 1/2 · dalej: Wiosłowanie". */
+  groupChip?: string;
 }
 
 function targetLine(item: WorkoutExercise, measure: Measure): string {
@@ -150,7 +152,8 @@ export default function ExercisePanel({
   restVibration,
   onInfo,
   onConfirmRemoveSet,
-  onExerciseDone,
+  onSetCompleted,
+  groupChip,
 }: Props) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [calcOpen, setCalcOpen] = useState(false);
@@ -158,6 +161,7 @@ export default function ExercisePanel({
   const [warmupOpen, setWarmupOpen] = useState(false);
   const [diffSetId, setDiffSetId] = useState<string | null>(null);
   const pendingDone = useRef(false);
+  const pendingExerciseDone = useRef(false);
   const diffSet = sets.find((s) => s.id === diffSetId);
   // The set just ticked off plays the green fill + check pop once.
   const [justDone, setJustDone] = useState<string | null>(null);
@@ -220,21 +224,23 @@ export default function ExercisePanel({
     const exerciseDone = sets.every((s) => s.id === set.id || s.completedAt !== undefined);
     if (askDifficulty && showRir) {
       setDiffSetId(set.id);
-      // Auto-advance waits until the difficulty sheet is closed.
-      pendingDone.current = exerciseDone;
-    } else if (exerciseDone) onExerciseDone?.(index);
+      // Moving on (next exercise / superset partner) waits until the difficulty sheet is closed.
+      pendingDone.current = true;
+      pendingExerciseDone.current = exerciseDone;
+    } else onSetCompleted?.(index, exerciseDone);
   };
 
   const closeDifficulty = () => {
     setDiffSetId(null);
     if (pendingDone.current) {
       pendingDone.current = false;
-      onExerciseDone?.(index);
+      onSetCompleted?.(index, pendingExerciseDone.current);
     }
   };
 
   return (
     <section className="ex-panel" aria-label={exercise?.name ?? 'Ćwiczenie'}>
+      {groupChip && <p className="ex-panel__group">{groupChip}</p>}
       <h2 className="ex-panel__name">{exercise?.name ?? 'Nieznane ćwiczenie'}</h2>
       <p className="ex-panel__target">
         {targetLine(item, measure)} · przerwa {formatRest(item.restSec)}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { ArrowLeft, Pencil, ChevronUp, ChevronDown, Trash2, Minus, Plus } from 'lucide-react';
@@ -11,7 +11,10 @@ import {
   addItems,
   updateItem,
   moveItem,
+  linkWithNext,
+  unlinkItem,
 } from '../data/plans';
+import { groupAt, groupLabel, groupsOf, linkItems } from '../data/supersets';
 import { removeItemUndoable } from '../data/undoable';
 import { showUndo } from '../undo';
 import SwipeRow from '../components/SwipeRow';
@@ -141,6 +144,7 @@ interface ItemCardProps {
   index: number;
   count: number;
   item: PlanItem;
+  items: PlanItem[];
   exercise: Exercise | undefined;
 }
 
@@ -149,7 +153,7 @@ async function removeItemWithUndo(planId: string, dayId: string, index: number, 
   showUndo(`Usunięto ćwiczenie „${name}”`, restore);
 }
 
-function ItemCard({ planId, dayId, index, count, item, exercise }: ItemCardProps) {
+function ItemCard({ planId, dayId, index, count, item, items, exercise }: ItemCardProps) {
   const name = exercise?.name ?? 'Nieznane ćwiczenie';
   const patch = (p: Partial<Omit<PlanItem, 'exerciseId'>>) => void updateItem(planId, dayId, index, p);
   const measure = measureOf(exercise);
@@ -157,6 +161,9 @@ function ItemCard({ planId, dayId, index, count, item, exercise }: ItemCardProps
   const restOptions = REST_OPTIONS.includes(item.restSec)
     ? REST_OPTIONS
     : [...REST_OPTIONS, item.restSec].sort((a, b) => a - b);
+
+  const canLink = linkItems(items, index) !== null;
+  const grouped = groupAt(items, index) !== null;
 
   return (
     <section className="item-card" aria-label={name}>
@@ -196,6 +203,16 @@ function ItemCard({ planId, dayId, index, count, item, exercise }: ItemCardProps
       </div>
 
       <div className="item-card__actions">
+        {canLink && (
+          <button type="button" className="item-card__link" onClick={() => void linkWithNext(planId, dayId, index)}>
+            Połącz z następnym
+          </button>
+        )}
+        {grouped && (
+          <button type="button" className="item-card__link" onClick={() => void unlinkItem(planId, dayId, index)}>
+            Odłącz z superserii
+          </button>
+        )}
         <button
           type="button"
           className="icon-btn"
@@ -251,6 +268,8 @@ export default function PlanDayPage() {
     );
   }
 
+  const groups = groupsOf(day.items);
+
   return (
     <article className="day-page">
       <Link to={`/plany/${plan.id}`} className="plan-back" aria-label="Wróć do planu">
@@ -278,23 +297,38 @@ export default function PlanDayPage() {
       {day.items.length === 0 && <p className="plan-muted">Brak ćwiczeń w tym dniu.</p>}
 
       <div className="plan-list list-in">
-        {day.items.map((item, i) => (
-          <SwipeRow
-            key={`${i}-${item.exerciseId}`}
-            label={exercises?.[i]?.name ?? 'Nieznane ćwiczenie'}
-            onDelete={() => removeItemWithUndo(plan.id, day.id, i, exercises?.[i]?.name ?? 'Nieznane ćwiczenie')}
-            index={i}
-          >
-          <ItemCard
-            planId={plan.id}
-            dayId={day.id}
-            index={i}
-            count={day.items.length}
-            item={item}
-            exercise={exercises?.[i]}
-          />
-          </SwipeRow>
-        ))}
+        {day.items.map((item, i) => {
+          const g = groups.find((x) => i >= x.start && i <= x.end);
+          return (
+            <Fragment key={`${i}-${item.exerciseId}`}>
+              {g && g.start === i && (
+                <div className="day-group__head">
+                  <strong>{groupLabel(g.end - g.start + 1)}</strong>
+                  <span>Robisz po jednej serii z każdego ćwiczenia, przerwa po rundzie</span>
+                </div>
+              )}
+              <div
+                className={g ? `day-group${g.start === i ? ' day-group--first' : ''}${g.end === i ? ' day-group--last' : ''}` : undefined}
+              >
+                <SwipeRow
+                  label={exercises?.[i]?.name ?? 'Nieznane ćwiczenie'}
+                  onDelete={() => removeItemWithUndo(plan.id, day.id, i, exercises?.[i]?.name ?? 'Nieznane ćwiczenie')}
+                  index={i}
+                >
+                  <ItemCard
+                    planId={plan.id}
+                    dayId={day.id}
+                    index={i}
+                    count={day.items.length}
+                    item={item}
+                    items={day.items}
+                    exercise={exercises?.[i]}
+                  />
+                </SwipeRow>
+              </div>
+            </Fragment>
+          );
+        })}
       </div>
 
       <div className="day-page__add">

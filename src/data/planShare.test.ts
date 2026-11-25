@@ -79,6 +79,22 @@ describe('encode/decode', () => {
     expect(sp.days[1].items[0].exercise.id).toBe('fly-1');
   });
 
+  it('round-trip keeps groups and time/distance targets; old payloads carry none', () => {
+    const plan = samplePlan();
+    plan.days[0].items[0] = { ...plan.days[0].items[0], group: 'x', targetSec: 45 };
+    plan.days[0].items[1] = { ...plan.days[0].items[1], group: 'x', targetM: 40 };
+    const sp = decodePlan(encodePlan(plan, exMap));
+    const [a, b] = sp.days[0].items;
+    expect(a.group).toBeTruthy();
+    expect(a.group).toBe(b.group);
+    expect(a.targetSec).toBe(45);
+    expect(b.targetM).toBe(40);
+    expect(sp.days[1].items[0].group).toBeUndefined();
+    const old = decodePlan(enc({ v: 1, n: 'X', d: [['D', [[0, 3, 0, 8, 12, 60]]]], e: [['a', 'A']] }));
+    expect(old.days[0].items[0].group).toBeUndefined();
+    expect(old.days[0].items[0].targetSec).toBeUndefined();
+  });
+
   it('encoded string is URL-safe', () => {
     expect(encodePlan(samplePlan(), exMap)).toMatch(/^[A-Za-z0-9+\-$_.]*$/);
   });

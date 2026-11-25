@@ -2,6 +2,7 @@ import { db } from './db';
 import { getSettings, updateSettings } from './settings';
 import { formatDistance, formatDuration, measureOf } from './measure';
 import { setsLabel } from './plural';
+import { linkItems, moveGrouped, removeGrouped, unlinkItems } from './supersets';
 import type { Measure, Plan, PlanDay, PlanItem } from './types';
 
 export const DEFAULT_ITEM = { sets: 3, warmupSets: 0, repsMin: 8, repsMax: 12, restSec: 120 };
@@ -227,13 +228,33 @@ export async function updateItem(
 
 export async function moveItem(planId: string, dayId: string, from: number, to: number): Promise<void> {
   await mutateDay(planId, dayId, (day) => {
-    day.items = moveInArray(day.items, from, to);
+    day.items = moveGrouped(day.items, from, to);
   });
 }
 
 export async function removeItem(planId: string, dayId: string, index: number): Promise<void> {
   await mutateDay(planId, dayId, (day) => {
-    day.items = day.items.filter((_, i) => i !== index);
+    day.items = removeGrouped(day.items, index);
+  });
+}
+
+/** Joins item `index` with the next one into a superset / circuit (max 3 items). */
+export async function linkWithNext(planId: string, dayId: string, index: number): Promise<boolean> {
+  let ok = false;
+  await mutateDay(planId, dayId, (day) => {
+    const next = linkItems(day.items, index);
+    if (next) {
+      day.items = next;
+      ok = true;
+    }
+  });
+  return ok;
+}
+
+/** Removes item `index` from its superset; a group left with one item dissolves. */
+export async function unlinkItem(planId: string, dayId: string, index: number): Promise<void> {
+  await mutateDay(planId, dayId, (day) => {
+    day.items = unlinkItems(day.items, index);
   });
 }
 

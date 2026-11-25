@@ -11,6 +11,17 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.2',
+    date: '2026-11-25',
+    items: [
+      'Superserie i obwody: połącz 2–3 ćwiczenia w planie albo w trakcie treningu — robisz po jednej serii z każdego, a przerwa jest dopiero po rundzie.',
+      'Ćwiczenia na czas i dystans: deska i inne utrzymania ze stoperem, spacer farmera w metrach, bieżnia i rower z czasem i kilometrami. Rodzaj ćwiczenia zmienisz na jego karcie.',
+      'Przycisk „Rozgrzewka” przy ćwiczeniu proponuje lżejsze serie przed właściwym ciężarem (np. sam gryf, potem ok. 40%, 60% i 80%).',
+      'Gotowe plany do wyboru (Plany › „Dodaj z szablonu”): FBW dla początkujących — wersje dla kobiet i mężczyzn — oraz plan 4-dniowy dla średnio zaawansowanych, z opisem, dla kogo są i jak z nimi robić postępy.',
+      'Długie okienka (np. „Co nowego”) mają teraz stały nagłówek i wygodny odstęp przy przewijaniu.',
+    ],
+  },
+  {
     version: '0.9.1',
     date: '2026-11-24',
     items: [

@@ -1,0 +1,130 @@
+{
+  "Dumbbell_Raise": {
+    "primary": [
+      "front"
+    ],
+    "secondary": []
+  },
+  "Single_Dumbbell_Raise": {
+    "primary": [
+      "front"
+    ],
+    "secondary": []
+  },
+  "Shoulder_Raise": null,
+  "Power_Partials": {
+    "primary": [
+      "side"
+    ],
+    "secondary": []
+  },
+  "Crucifix": {
+    "primary": [
+      "side"
+    ],
+    "secondary": []
+  },
+  "Iron_Cross": null,
+  "Anti-Gravity_Press": {
+    "primary": [
+      "rear"
+    ],
+    "secondary": []
+  },
+  "Side_Wrist_Pull": null,
+  "Cuban_Press": {
+    "primary": [
+      "rear"
+    ],
+    "secondary": [
+      "side"
+    ]
+  },
+  "Dumbbell_Scaption": {
+    "primary": [
+      "front",
+      "side"
+    ],
+    "secondary": []
+  },
+  "Back_Flyes_-_With_Bands": {
+    "primary": [
+      "rear"
+    ],
+    "secondary": []
+  },
+  "Low_Pulley_Row_To_Neck": {
+    "primary": [
+      "rear"
+    ],
+    "secondary": []
+  },
+  "Straight_Raises_on_Incline_Bench": {
+    "primary": [
+      "rear"
+    ],
+    "secondary": []
+  },
+  "Barbell_Incline_Shoulder_Raise": {
+    "primary": [
+      "front"
+    ],
+    "secondary": []
+  },
+  "Dumbbell_Incline_Shoulder_Raise": {
+    "primary": [
+      "front"
+    ],
+    "secondary": []
+  },
+  "Smith_Incline_Shoulder_Raise": {
+    "primary": [
+      "front"
+    ],
+    "secondary": []
+  },
+  "Standing_Low-Pulley_Deltoid_Raise": {
+    "primary": [
+      "front"
+    ],
+    "secondary": []
+  },
+  "Backward_Medicine_Ball_Throw": null,
+  "Medicine_Ball_Scoop_Throw": null,
+  "Standing_Two-Arm_Overhead_Throw": null,
+  "og-0191": {
+    "primary": [
+      "rear"
+    ],
+    "secondary": []
+  },
+  "og-0341": {
+    "primary": [
+      "rear"
+    ],
+    "secondary": []
+  },
+  "og-5818": {
+    "primary": [
+      "front",
+      "side"
+    ],
+    "secondary": []
+  },
+  "og-5819": {
+    "primary": [
+      "front",
+      "side"
+    ],
+    "secondary": []
+  },
+  "og-5820": {
+    "primary": [
+      "rear"
+    ],
+    "secondary": []
+  },
+  "og-3375": null,
+  "og-5161": null,
+  "og-3967": null
+}

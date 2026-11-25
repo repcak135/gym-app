@@ -323,3 +323,20 @@ test('arkusz z nazwą otwiera się u góry ekranu z kursorem w polu (klawiatura 
   // in the top third: above where the on-screen keyboard appears
   expect(box.y + box.height).toBeLessThan(vh / 3);
 });
+
+test('superseria: połącz dwa ćwiczenia, nagłówek, odłącz', async ({ page }) => {
+  await planWithDay(page);
+  await openPicker(page);
+  await pickExercise(page, 'barbell bench press', 'Barbell Bench Press - Medium Grip');
+  await pickExercise(page, 'squat', 'Barbell Squat');
+  await page.getByRole('button', { name: 'Gotowe (2)' }).click();
+  await expect(page.getByText('Superseria', { exact: true })).toHaveCount(0);
+
+  await page.getByRole('button', { name: 'Połącz z następnym' }).click();
+  await expect(page.getByText('Superseria', { exact: true })).toBeVisible();
+  await expect(page.getByText('Robisz po jednej serii z każdego ćwiczenia, przerwa po rundzie')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Połącz z następnym' })).toHaveCount(0);
+
+  await page.getByRole('button', { name: 'Odłącz z superserii' }).first().click();
+  await expect(page.getByText('Superseria', { exact: true })).toHaveCount(0);
+});

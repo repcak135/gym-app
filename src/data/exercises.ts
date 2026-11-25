@@ -6,12 +6,14 @@ import extra from './exercises-extra.json';
 import akaData from './exercise-aka.json';
 import measureData from './exercise-measure.json';
 import type { Measure } from './types';
+import { classifyDelts } from './deltHeads';
 
 // 2: built-in extra exercises (machines, cables, Smith) and other names for matching the import.
 // 3: openGym catalogue text (AGPL-3.0): ~4200 more exercises, Polish names.
 // 4: duplicates merged (scripts/dedupe-exercises.ts); user data on removed ids moves to the kept exercise.
 // 5: exercise measure (time / distance / cardio) from exercise-measure.json; the user's choice is kept.
-export const EXERCISE_DB_VERSION = 5;
+// 6: deltoid heads (przód / bok / tył) from deltHeads.ts for built-in exercises.
+export const EXERCISE_DB_VERSION = 6;
 
 type AkaEntry = { aka?: string[]; similar?: string[]; maybe?: string[] };
 const AKA = akaData as Record<string, AkaEntry>;
@@ -64,6 +66,8 @@ export function fromDb(raw: RawExercise): Exercise {
     ...(raw.namePl ? { namePl: raw.namePl } : {}),
     ...AKA[raw.name],
   };
+  const delts = classifyDelts(ex);
+  if (delts) ex.delts = delts;
   const measure = MEASURE_BY_ID.get(raw.id);
   if (measure) ex.measure = measure;
   if (raw.mergedNames?.length) ex.aka = [...new Set([...(ex.aka ?? []), ...raw.mergedNames])];

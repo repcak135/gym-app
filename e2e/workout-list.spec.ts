@@ -108,3 +108,40 @@ test('kolejność: przeciągnięcie uchwytu ostatniego wiersza na górę', async
   await expect(rows.nth(0)).toContainText(SQUAT);
   await expect(rows.nth(1)).toContainText(BENCH);
 });
+
+test('superseria: seria A -> pager na B bez przerwy, seria B -> przerwa i powrót do A', async ({ page }) => {
+  await page.goto('/#/plany');
+  await page.getByRole('button', { name: 'Nowy plan' }).click();
+  await page.getByRole('dialog', { name: 'Nowy plan' }).getByLabel('Nazwa').fill('Plan');
+  await page.getByRole('dialog', { name: 'Nowy plan' }).getByRole('button', { name: 'Zapisz' }).click();
+  await page.getByRole('button', { name: 'Dodaj dzień' }).click();
+  await page.getByRole('dialog', { name: 'Nowy dzień' }).getByLabel('Nazwa').fill('Dzień');
+  await page.getByRole('dialog', { name: 'Nowy dzień' }).getByRole('button', { name: 'Zapisz' }).click();
+  await page.getByRole('button', { name: 'Dodaj ćwiczenia' }).click();
+  await pickExercise(page, 'barbell bench press', BENCH);
+  await pickExercise(page, 'squat', SQUAT);
+  await page.getByRole('button', { name: 'Gotowe (2)' }).click();
+  await page.getByRole('button', { name: 'Połącz z następnym' }).click();
+  await expect(page.getByText('Superseria', { exact: true })).toBeVisible();
+  await page.locator('.day-page__start').click();
+
+  const dotA = page.getByRole('button', { name: `Ćwiczenie 1: ${BENCH}` });
+  const dotB = page.getByRole('button', { name: `Ćwiczenie 2: ${SQUAT}` });
+  await expect(panel(page, BENCH).getByText(`Superseria 1/2 · dalej: ${SQUAT}`)).toBeVisible();
+
+  await panel(page, BENCH).getByRole('button', { name: 'Zalicz serię' }).click();
+  await expect(dotB).toHaveAttribute('aria-current', 'step', { timeout: 5000 });
+  await expect(page.getByRole('timer', { name: 'Przerwa' })).toHaveCount(0);
+
+  await panel(page, SQUAT).getByRole('button', { name: 'Zalicz serię' }).click();
+  await expect(page.getByRole('timer', { name: 'Przerwa' })).toBeVisible();
+  await expect(dotA).toHaveAttribute('aria-current', 'step', { timeout: 5000 });
+
+  // list view shows the label, menu offers to unlink
+  await page.getByRole('button', { name: 'Lista ćwiczeń' }).click();
+  await expect(page.locator('.wl-group-head')).toContainText('Superseria');
+  await page.getByRole('button', { name: 'Lista ćwiczeń' }).click();
+  await page.getByRole('button', { name: 'Opcje treningu' }).click();
+  await page.getByRole('button', { name: 'Odłącz z superserii' }).click();
+  await expect(panel(page, BENCH).getByText(/Superseria/)).toHaveCount(0);
+});

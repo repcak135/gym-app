@@ -122,3 +122,24 @@ describe('importSharedExercises', () => {
     expect(r.added).toBe(1);
   });
 });
+
+describe('głowy barków we własnym ćwiczeniu w linku', () => {
+  it('własne ćwiczenie z głowami przechodzi przez link, stary link bez głów też się czyta', () => {
+    const withHeads = ex('Boczne', { primaryMuscles: ['shoulders'], secondaryMuscles: [], delts: { primary: ['side'], secondary: ['front'] } });
+    const [back] = decodeExercises(encodeExercises([withHeads]));
+    expect(back.delts).toEqual({ primary: ['side'], secondary: ['front'] });
+    expect(back.measure).toBeUndefined();
+    const [plain] = decodeExercises(encodeExercises([ex('Zwykłe')]));
+    expect(plain.delts).toBeUndefined();
+    const old = LZString.compressToEncodedURIComponent(JSON.stringify({ v: 1, t: 'x', x: [['Stare', ['shoulders'], [], null, 'strength']] }));
+    expect(decodeExercises(old)).toEqual([{ name: 'Stare', primaryMuscles: ['shoulders'], secondaryMuscles: [], equipment: null, category: 'strength' }]);
+  });
+
+  it('śmieci w głowach są ignorowane, import zapisuje głowy', async () => {
+    const junk = LZString.compressToEncodedURIComponent(JSON.stringify({ v: 1, t: 'x', x: [['A', ['shoulders'], [], null, 'strength', 'reps', { primary: ['top', 'rear'], secondary: 5 }]] }));
+    expect(decodeExercises(junk)[0].delts).toEqual({ primary: ['rear'], secondary: [] });
+    const [item] = decodeExercises(encodeExercises([ex('B', { delts: { primary: ['rear'], secondary: [] } })]));
+    await importSharedExercises([item]);
+    expect((await db.exercises.filter((e) => e.name === 'B').first())?.delts).toEqual({ primary: ['rear'], secondary: [] });
+  });
+});

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Link, useNavigate } from 'react-router';
 import { Check, ChevronLeft, GripVertical, ListChecks, MoreHorizontal } from 'lucide-react';
@@ -14,12 +14,15 @@ import {
   getExerciseHistory,
   getLastSets,
   getWorkoutSets,
+  linkExercises,
   moveExercise,
   removeExercise,
   removeSet,
   setCurrentIndex,
   swapExercise,
+  unlinkExercise,
 } from '../data/workouts';
+import { groupAt, groupLabel, groupsOf, linkItems, nextInRound } from '../data/supersets';
 import type { WorkoutSet } from '../data/types';
 import { useNow } from '../hooks/useNow';
 import { unlockAudio } from '../audio/beep';
@@ -216,6 +219,43 @@ export default function WorkoutPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // A set was completed: inside a superset / circuit move to the partner (no rest), at the end of a
+  // round go back to the first exercise that still has sets; a finished group (or a plain exercise)
+  // uses the auto-advance setting.
+  const onSetCompleted = useCallback(
+    async (index: number, exerciseDone: boolean) => {
+      if (!workout) return;
+      const w = await db.workouts.get(workout.id);
+      const list = w?.exercises ?? [];
+      const g = groupAt(list, index);
+      if (!g) {
+        if (exerciseDone) onExerciseDone(index);
+        return;
+      }
+      const sets = await getWorkoutSets(workout.id);
+      const remaining = list.map(
+        (e) => sets.filter((s) => s.exerciseId === e.exerciseId && s.completedAt === undefined).length,
+      );
+      const r = nextInRound(list, remaining, index);
+      if (r.next !== null && !r.endOfRound) {
+        goTo(r.next);
+        return;
+      }
+      let first: number | null = null;
+      for (let i = g.start; i <= g.end; i++) {
+        if (remaining[i] > 0) {
+          first = i;
+          break;
+        }
+      }
+      if (first !== null) {
+        if (first !== index) goTo(first);
+      } else if (exerciseDone) onExerciseDone(index);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [workout?.id, onExerciseDone],
+  );
+
   // Back from the list: the (hidden) pager shows the exercise that is current now.
   useEffect(() => {
     const el = pager.current;
@@ -293,6 +333,17 @@ export default function WorkoutPage() {
     ? (setsByExercise.get(currentItem.exerciseId) ?? []).some((s) => s.completedAt !== undefined)
     : false;
 
+  const groups = groupsOf(items);
+  const groupChipOf = (i: number): string | undefined => {
+    const g = groups.find((x) => i >= x.start && i <= x.end);
+    if (!g) return undefined;
+    const size = g.end - g.start + 1;
+    const nextIdx = i === g.end ? g.start : i + 1;
+    return `${groupLabel(size)} ${i - g.start + 1}/${size} · dalej: ${exercises[nextIdx]?.name ?? 'Nieznane ćwiczenie'}`;
+  };
+  const canLink = linkItems(items, current) !== null;
+  const currentGrouped = groupAt(items, current) !== null;
+
   const finish = async () => {
     const result = await finishWorkout(workout.id);
     if (result === 'empty') setSheet({ kind: 'empty' });
@@ -359,11 +410,17 @@ export default function WorkoutPage() {
               const p = progress[i] ?? { completed: 0, total: 0 };
               const done = isExerciseDone(p);
               const started = p.completed > 0;
+              const g = groups.find((x) => i >= x.start && i <= x.end);
               return (
+                <Fragment key={it.exerciseId}>
+                {g && g.start === i && (
+                  <li className="wl-group-head" role="presentation">
+                    <strong>{groupLabel(g.end - g.start + 1)}</strong>
+                  </li>
+                )}
                 <li
-                  key={it.exerciseId}
                   ref={(el) => { rowRefs.current[i] = el; }}
-                  className={`wl-item${drag?.from === i ? ' wl-item--drag' : ''}`}
+                  className={`wl-item${g ? ' wl-item--grouped' : ''}${g && g.start === i ? ' wl-item--gfirst' : ''}${g && g.end === i ? ' wl-item--glast' : ''}${drag?.from === i ? ' wl-item--drag' : ''}`}
                   style={drag?.from === i ? { transform: `translateY(${drag.dy}px)` } : undefined}
                 >
                   <button
@@ -399,6 +456,7 @@ export default function WorkoutPage() {
                     <GripVertical size={22} aria-hidden="true" />
                   </button>
                 </li>
+                </Fragment>
               );
             })}
           </ul>
@@ -445,7 +503,8 @@ export default function WorkoutPage() {
                 askDifficulty={settings.showRir && settings.askDifficultyAfterSet}
                 onInfo={(tab) => setSheet({ kind: 'info', tab })}
                 onConfirmRemoveSet={(set) => setSheet({ kind: 'remove-set', set })}
-                onExerciseDone={onExerciseDone}
+                onSetCompleted={(i, done) => void onSetCompleted(i, done)}
+                groupChip={groupChipOf(i)}
               />
               {i === items.length - 1 && (
                 <button type="button" className="workout-add" onClick={() => setSheet({ kind: 'add' })}>
@@ -485,6 +544,12 @@ export default function WorkoutPage() {
                     : []),
                   ...(current < items.length - 1
                     ? [{ label: `Przesuń niżej: ${currentName}`, onClick: () => { close(); void reorder(current, current + 1); } }]
+                    : []),
+                  ...(canLink
+                    ? [{ label: 'Połącz z następnym w superserię', onClick: () => { close(); void linkExercises(workout.id, current); } }]
+                    : []),
+                  ...(currentGrouped
+                    ? [{ label: 'Odłącz z superserii', onClick: () => { close(); void unlinkExercise(workout.id, current); } }]
                     : []),
                   { label: `Usuń: ${currentName}`, onClick: () => setSheet({ kind: 'remove-exercise' }) },
                 ]

@@ -635,3 +635,18 @@
   font-weight: 800;
   cursor: pointer;
 }
+
+/* Superset / circuit chip, list-view bracket */
+.ex-panel__group {
+  display: inline-block;
+  margin: 0 0 var(--space-1);
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.wl-group-head { padding-left: var(--space-3); color: var(--accent); font-size: 0.85rem; list-style: none; margin-bottom: calc(var(--space-2) * -1); }
+.wl-item--grouped { border-left: 3px solid var(--accent); padding-left: var(--space-2); }
+.wl-item--grouped:not(.wl-item--glast) { margin-bottom: calc(var(--space-2) * -1); padding-bottom: var(--space-2); }

@@ -1,4 +1,5 @@
 import type { EffortTarget } from './setTargets';
+import type { Delts } from './deltHeads';
 
 export type Id = string; // crypto.randomUUID()
 
@@ -30,6 +31,8 @@ export interface Exercise {
   similar?: string[];
   /** Names that might mean this exercise: proposed but not pre-selected. */
   maybe?: string[];
+  /** Deltoid heads (przód / bok / tył) of a built-in shoulder exercise; absent = plain "Barki". */
+  delts?: Delts;
 }
 
 export interface ExerciseNote {
@@ -48,6 +51,8 @@ export interface PlanItem {
   /** Targets for time / distance exercises (reps fields stay as they are). */
   targetSec?: number;
   targetM?: number;
+  /** Consecutive items with an equal group id form one superset / circuit (2-3 items). */
+  group?: string;
 }
 
 export interface PlanDay {
@@ -73,6 +78,7 @@ export interface WorkoutExercise {
   restSec: number;
   targetSec?: number;
   targetM?: number;
+  group?: string;
 }
 
 export interface Workout {

@@ -3,6 +3,7 @@ import { getSettings } from './settings';
 import { buildPrefill, epley1RM } from './progression';
 import { deloadWeight, setTargets, timeTargets } from './setTargets';
 import { measureOf } from './measure';
+import { linkItems, moveGrouped, nextInRound, normalizeGroups, removeGrouped, unlinkItems } from './supersets';
 import type { Workout, WorkoutExercise, WorkoutSet } from './types';
 
 // Every function here is one short Dexie transaction, so closing the app at any
@@ -126,9 +127,11 @@ export async function startWorkout(opts: { planId?: string; dayId?: string } = {
       name = day.name;
       // Plan items may repeat an exercise; a workout keeps one entry per exercise.
       const seen = new Set<string>();
-      exercises = day.items
-        .filter((it) => (seen.has(it.exerciseId) ? false : (seen.add(it.exerciseId), true)))
-        .map((it) => ({ ...it }));
+      exercises = normalizeGroups(
+        day.items
+          .filter((it) => (seen.has(it.exerciseId) ? false : (seen.add(it.exerciseId), true)))
+          .map((it) => ({ ...it })),
+      );
     }
   }
 
@@ -211,7 +214,7 @@ export async function removeExercise(workoutId: string, index: number): Promise<
     const ex = w?.exercises?.[index];
     if (!w || !ex) throw new Error('Nie znaleziono ćwiczenia');
     await db.sets.where({ exerciseId: ex.exerciseId, workoutId }).delete();
-    w.exercises = w.exercises!.filter((_, i) => i !== index);
+    w.exercises = removeGrouped(w.exercises!, index);
     w.currentIndex = Math.min(w.currentIndex ?? 0, Math.max(0, w.exercises.length - 1));
     await db.workouts.put(w);
     // Keep exerciseOrder equal to the position in the list.
@@ -229,8 +232,8 @@ export async function moveExercise(workoutId: string, from: number, to: number):
     if (!w || !list) return;
     if (from === to || from < 0 || to < 0 || from >= list.length || to >= list.length) return;
     const currentId = list[w.currentIndex ?? 0]?.exerciseId;
-    const [moved] = list.splice(from, 1);
-    list.splice(to, 0, moved);
+    const reordered = moveGrouped(list, from, to);
+    list.splice(0, list.length, ...reordered);
     if (currentId !== undefined) {
       const ci = list.findIndex((e) => e.exerciseId === currentId);
       if (ci >= 0) w.currentIndex = ci;
@@ -239,6 +242,25 @@ export async function moveExercise(workoutId: string, from: number, to: number):
     const order = new Map(list.map((e, i) => [e.exerciseId, i]));
     const sets = await db.sets.where('workoutId').equals(workoutId).toArray();
     await db.sets.bulkPut(sets.map((s) => ({ ...s, exerciseOrder: order.get(s.exerciseId) ?? s.exerciseOrder })));
+  });
+}
+
+/** Joins exercise `index` with the next one into a superset / circuit (max 3). Returns false when not possible. */
+export async function linkExercises(workoutId: string, index: number): Promise<boolean> {
+  let ok = false;
+  await mutateWorkout(workoutId, (w) => {
+    const next = w.exercises ? linkItems(w.exercises, index) : null;
+    if (next) {
+      w.exercises = next;
+      ok = true;
+    }
+  });
+  return ok;
+}
+
+export async function unlinkExercise(workoutId: string, index: number): Promise<void> {
+  await mutateWorkout(workoutId, (w) => {
+    if (w.exercises) w.exercises = unlinkItems(w.exercises, index);
   });
 }
 
@@ -386,7 +408,19 @@ export async function completeSet(setId: string, now = Date.now()): Promise<void
     if (!w) return;
     const ex = w.exercises?.find((e) => e.exerciseId === set.exerciseId);
     const rest = ex?.restSec ?? (await getSettings()).defaultRestSec;
-    if (rest > 0) {
+    let inRound = false;
+    if (w.exercises && ex?.group) {
+      const index = w.exercises.indexOf(ex);
+      const all = await db.sets.where('workoutId').equals(set.workoutId).toArray();
+      const remaining = w.exercises.map(
+        (e) => all.filter((s) => s.exerciseId === e.exerciseId && s.completedAt === undefined).length,
+      );
+      inRound = !nextInRound(w.exercises, remaining, index).endOfRound;
+    }
+    if (inRound) {
+      w.restEndsAt = undefined;
+      w.restTotalSec = undefined;
+    } else if (rest > 0) {
       w.restEndsAt = now + rest * 1000;
       w.restTotalSec = rest;
     } else {

@@ -2,8 +2,10 @@ import LZString from 'lz-string';
 import { db } from './db';
 import { QR_MAX_URL, bad, isStrArray, CORRUPTED, shareUrl } from './planShare';
 import type { Exercise, Measure } from './types';
+import type { DeltHead, Delts } from './deltHeads';
 
 const MEASURES: Measure[] = ['reps', 'time', 'distance', 'timeDistance'];
+const HEADS: DeltHead[] = ['front', 'side', 'rear'];
 
 export const EXERCISES_ROUTE = '/cwiczenia/import';
 export const MAX_SHARED_EXERCISES = 50;
@@ -16,14 +18,27 @@ export interface SharedCustomExercise {
   equipment: string | null;
   category: string;
   measure?: Measure;
+  delts?: Delts;
 }
 
 /** Type marker 'x' tells it apart from a plan payload (which has no `t`). */
 interface Payload {
   v: 1;
   t: 'x';
-  /** The 6th item (measure) is omitted for rep exercises, so old readers and links still work. */
-  x: ([string, string[], string[], string | null, string] | [string, string[], string[], string | null, string, Measure])[];
+  /** The 6th item (measure) is omitted for rep exercises, the 7th (delts) when there are none, so old readers and links still work. */
+  x: ([string, string[], string[], string | null, string] | [string, string[], string[], string | null, string, Measure] | [string, string[], string[], string | null, string, Measure, Delts])[];
+}
+
+const parseHeads = (v: unknown): DeltHead[] =>
+  Array.isArray(v) ? [...new Set(v.filter((h): h is DeltHead => HEADS.includes(h as DeltHead)))] : [];
+
+/** Optional heads of a shared custom exercise; garbage or empty = none. */
+function parseDelts(raw: unknown): Delts | undefined {
+  if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) return undefined;
+  const o = raw as Record<string, unknown>;
+  const primary = parseHeads(o.primary);
+  const secondary = parseHeads(o.secondary).filter((h) => !primary.includes(h));
+  return primary.length + secondary.length > 0 ? { primary, secondary } : undefined;
 }
 
 export function encodeExercises(exercises: Exercise[]): string {
@@ -36,6 +51,8 @@ export function encodeExercises(exercises: Exercise[]): string {
     x: exercises.map((e) => {
       const base: [string, string[], string[], string | null, string] = [e.name, e.primaryMuscles, e.secondaryMuscles, e.equipment, e.category];
       const measure = e.measureOverride ?? e.measure;
+      // Only custom exercises carry their heads in a link (built-in ones are classified from the catalogue).
+      if (e.custom && e.delts) return [...base, measure ?? 'reps', e.delts];
       return measure && measure !== 'reps' ? [...base, measure] : base;
     }),
   };
@@ -53,13 +70,14 @@ export function decodeExercises(data: string): SharedCustomExercise[] {
     if (o.x.length < 1 || o.x.length > MAX_SHARED_EXERCISES) bad();
     const clip = (a: string[]) => a.slice(0, 10).map((s) => s.slice(0, 40));
     return o.x.map((raw: unknown) => {
-      if (!Array.isArray(raw) || (raw.length !== 5 && raw.length !== 6)) bad();
-      const [rawName, primary, secondary, equipment, category, rawMeasure] = raw as unknown[];
+      if (!Array.isArray(raw) || (raw.length < 5 || raw.length > 7)) bad();
+      const [rawName, primary, secondary, equipment, category, rawMeasure, rawDelts] = raw as unknown[];
       if (typeof rawName !== 'string' || !isStrArray(primary) || !isStrArray(secondary)) bad();
       if (equipment !== null && typeof equipment !== 'string') bad();
       if (typeof category !== 'string') bad();
       const name = rawName.trim().slice(0, 100).trim();
       if (!name) bad();
+      const delts = parseDelts(rawDelts);
       return {
         name,
         primaryMuscles: clip(primary),
@@ -69,6 +87,7 @@ export function decodeExercises(data: string): SharedCustomExercise[] {
         ...(typeof rawMeasure === 'string' && MEASURES.includes(rawMeasure as Measure) && rawMeasure !== 'reps'
           ? { measure: rawMeasure as Measure }
           : {}),
+        ...(delts ? { delts } : {}),
       };
     });
   } catch {
@@ -113,6 +132,7 @@ export async function importSharedExercises(
         images: [],
         custom: true,
         ...(it.measure ? { measure: it.measure } : {}),
+        ...(it.delts ? { delts: it.delts } : {}),
       });
       added++;
     }

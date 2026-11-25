@@ -392,8 +392,8 @@ describe('dodatkowe ćwiczenia (wersja 4 bazy)', () => {
 
     await seedExercises();
 
-    expect(EXERCISE_DB_VERSION).toBe(5);
-    expect((await db.settings.get('app'))?.exerciseDbVersion).toBe(5);
+    expect(EXERCISE_DB_VERSION).toBe(6);
+    expect((await db.settings.get('app'))?.exerciseDbVersion).toBe(6);
     const fly = (await db.exercises.get('Butterfly'))!;
     expect(fly.weightStep).toBe(5);
     expect(fly.measureOverride).toBe('time'); // the user's choice survives the reseed
@@ -554,3 +554,52 @@ describe('rodzaj ćwiczenia (measure)', () => {
 function fromDbForTest(name: string) {
   return { id: name, name, primaryMuscles: ['chest'], secondaryMuscles: [], equipment: 'machine', category: 'strength', instructions: [], images: [], custom: false };
 }
+
+describe('głowy barków (wersja 6)', () => {
+  it('użytkownik z wersją 5: dane użytkownika bez zmian, wersja 6, Side_Lateral_Raise ma głowę boczną, własne ćwiczenia bez głów', async () => {
+    const { updateSettings } = await import('./settings');
+    await seedExercises();
+    const custom = await createCustomExercise({ name: 'Moje boczne', primaryMuscles: ['shoulders'], secondaryMuscles: [], equipment: null });
+    const w: Workout = { id: 'w1', name: 'Barki', startedAt: 1, endedAt: 2, source: 'app' };
+    const sets: WorkoutSet[] = [
+      { id: 's1', workoutId: 'w1', exerciseId: 'Side_Lateral_Raise', exerciseOrder: 0, setOrder: 0, weight: 8, reps: 12, warmup: false, completedAt: 1 },
+      { id: 's2', workoutId: 'w1', exerciseId: custom.id, exerciseOrder: 1, setOrder: 0, weight: 5, reps: 10, warmup: false, completedAt: 2 },
+    ];
+    const plan: Plan = {
+      id: 'p1',
+      name: 'Plan',
+      startedAt: '2026-11-01',
+      days: [{ id: 'd1', name: 'Barki', items: [{ exerciseId: 'Side_Lateral_Raise', sets: 3, warmupSets: 0, repsMin: 10, repsMax: 15, restSec: 60 }] }],
+    };
+    await db.workouts.put(w);
+    await db.sets.bulkPut(sets);
+    await db.plans.put(plan);
+    await db.notes.put({ exerciseId: 'Side_Lateral_Raise', text: 'lekko', updatedAt: 5 });
+    // The old catalogue: version 5, no heads, a weight step the user chose.
+    const old = (await db.exercises.get('Side_Lateral_Raise'))!;
+    delete old.delts;
+    await db.exercises.put({ ...old, weightStep: 1 });
+    await updateSettings({ exerciseDbVersion: 5 });
+    const before = {
+      workouts: await db.workouts.toArray(),
+      sets: await db.sets.toArray(),
+      plans: await db.plans.toArray(),
+      notes: await db.notes.toArray(),
+      custom: await db.exercises.get(custom.id),
+    };
+
+    await seedExercises();
+
+    expect(await db.workouts.toArray()).toEqual(before.workouts);
+    expect(await db.sets.toArray()).toEqual(before.sets);
+    expect(await db.plans.toArray()).toEqual(before.plans);
+    expect(await db.notes.toArray()).toEqual(before.notes);
+    expect(await db.exercises.get(custom.id)).toEqual(before.custom);
+    expect((await db.exercises.get(custom.id))?.delts).toBeUndefined();
+    expect((await db.settings.get('app'))?.exerciseDbVersion).toBe(6);
+    const side = (await db.exercises.get('Side_Lateral_Raise'))!;
+    expect(side.delts?.primary).toEqual(['side']);
+    expect(side.weightStep).toBe(1);
+    expect((await db.exercises.get('Barbell_Squat'))?.delts).toBeUndefined();
+  });
+});

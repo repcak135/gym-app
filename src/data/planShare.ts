@@ -1,6 +1,7 @@
 import LZString from 'lz-string';
 import { db } from './db';
 import { getSettings, updateSettings } from './settings';
+import { groupsOf, normalizeGroups } from './supersets';
 import type { Exercise, Plan, PlanItem } from './types';
 
 export const SHARE_ROUTE = '/plan';
@@ -8,7 +9,15 @@ export const QR_MAX_URL = 1800;
 
 export const CORRUPTED = 'Link jest uszkodzony';
 
-type PayloadItem = [number, number, number, number, number, number];
+/** Optional 7th element: group index within the day (g), time target (s) and distance target (m). */
+interface PayloadItemExtra {
+  g?: number;
+  s?: number;
+  m?: number;
+}
+type PayloadItem =
+  | [number, number, number, number, number, number]
+  | [number, number, number, number, number, number, PayloadItemExtra];
 type PayloadExercise = [string, string] | [string, string, string[], string[], string | null];
 interface Payload {
   v: 1;
@@ -37,7 +46,7 @@ export function encodePlan(plan: Plan, exercises: Map<string, Exercise>): string
   const indexOf = new Map<string, number>();
   const d: [string, PayloadItem[]][] = plan.days.map((day) => [
     day.name,
-    day.items.map((it) => {
+    day.items.map((it, itemIndex) => {
       let idx = indexOf.get(it.exerciseId);
       if (idx === undefined) {
         const ex = exercises.get(it.exerciseId);
@@ -50,7 +59,15 @@ export function encodePlan(plan: Plan, exercises: Map<string, Exercise>): string
             : [it.exerciseId, name],
         );
       }
-      return [idx, it.sets, it.warmupSets, it.repsMin, it.repsMax, it.restSec];
+      const extra: PayloadItemExtra = {};
+      const grp = groupsOf(day.items).findIndex((g) => itemIndex >= g.start && itemIndex <= g.end);
+      if (grp >= 0) extra.g = grp + 1;
+      if (it.targetSec) extra.s = it.targetSec;
+      if (it.targetM) extra.m = it.targetM;
+      const base: [number, number, number, number, number, number] = [
+        idx, it.sets, it.warmupSets, it.repsMin, it.repsMax, it.restSec,
+      ];
+      return Object.keys(extra).length ? [...base, extra] : base;
     }),
   ]);
   const payload: Payload = { v: 1, n: plan.name, d, e };
@@ -110,8 +127,16 @@ export function decodePlan(data: string): SharedPlan {
       const [rawName, rawItems] = rawDay as unknown[];
       if (typeof rawName !== 'string' || !Array.isArray(rawItems)) bad();
       const items = rawItems.map((rawItem: unknown) => {
-        if (!Array.isArray(rawItem) || rawItem.length !== 6) bad();
-        const [idx, sets, warmupSets, rMin, rMax, restSec] = rawItem as unknown[];
+        if (!Array.isArray(rawItem) || (rawItem.length !== 6 && rawItem.length !== 7)) bad();
+        const [idx, sets, warmupSets, rMin, rMax, restSec, rawExtra] = rawItem as unknown[];
+        const extra: { group?: string; targetSec?: number; targetM?: number } = {};
+        if (rawExtra !== undefined) {
+          if (typeof rawExtra !== 'object' || rawExtra === null || Array.isArray(rawExtra)) bad();
+          const x = rawExtra as Record<string, unknown>;
+          if (typeof x.g === 'number' && Number.isFinite(x.g) && x.g > 0) extra.group = `g${Math.min(99, Math.round(x.g))}`;
+          if (typeof x.s === 'number' && Number.isFinite(x.s) && x.s > 0) extra.targetSec = num(x.s, 1, 100000);
+          if (typeof x.m === 'number' && Number.isFinite(x.m) && x.m > 0) extra.targetM = num(x.m, 1, 100000);
+        }
         if (typeof idx !== 'number' || !Number.isInteger(idx) || idx < 0 || idx >= exercises.length) bad();
         let repsMin = num(rMin, 1, 100);
         let repsMax = num(rMax, 1, 100);
@@ -123,9 +148,22 @@ export function decodePlan(data: string): SharedPlan {
           repsMin,
           repsMax,
           restSec: num(restSec, 0, 900),
+          ...extra,
         };
       });
-      return { name: rawName.trim().slice(0, 60).trim() || `Dzień ${i + 1}`, items };
+      // A group of one item, or more than 3, is meaningless: drop it.
+      const normalized = normalizeGroups(items);
+      const sizes = new Map<string, number>();
+      for (const it of normalized) if (it.group) sizes.set(it.group, (sizes.get(it.group) ?? 0) + 1);
+      const clean = normalized.map((it) => {
+        if (it.group && (sizes.get(it.group) ?? 0) > 3) {
+          const { group: _g, ...rest } = it;
+          void _g;
+          return rest;
+        }
+        return it;
+      });
+      return { name: rawName.trim().slice(0, 60).trim() || `Dzień ${i + 1}`, items: clean };
     });
     return { name, days, exercises };
   } catch {
@@ -231,6 +269,9 @@ export async function importSharedPlan(sp: SharedPlan): Promise<Plan> {
           repsMin: it.repsMin,
           repsMax: it.repsMax,
           restSec: it.restSec,
+          ...(it.targetSec ? { targetSec: it.targetSec } : {}),
+          ...(it.targetM ? { targetM: it.targetM } : {}),
+          ...(it.group ? { group: it.group } : {}),
         })),
       })),
     };
