@@ -11,6 +11,13 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.4',
+    date: '2026-11-25',
+    items: [
+      'W „Co nowego” strzałkami (albo przesunięciem palcem) obejrzysz też, co dodaliśmy w poprzednich wersjach.',
+    ],
+  },
+  {
     version: '0.9.3',
     date: '2026-11-25',
     items: [

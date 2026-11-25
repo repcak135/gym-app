@@ -125,6 +125,14 @@ test('Co nowego: raz po aktualizacji, potem z Ustawień', async ({ page }) => {
   await page.getByRole('button', { name: 'Co nowego' }).click();
   const all = page.getByRole('dialog', { name: 'Co nowego' });
   await expect(all.getByRole('region', { name: `Wersja ${VERSION}` })).toBeVisible();
+  // Arrows browse older versions and back.
+  await expect(all.getByRole('button', { name: 'Nowsza wersja' })).toBeDisabled();
+  await all.getByRole('button', { name: 'Starsza wersja' }).click();
+  await expect(all.getByRole('region', { name: `Wersja ${VERSION}` })).toHaveCount(0);
+  await expect(all.getByRole('region', { name: /^Wersja 0\.9\.\d+$/ })).toBeVisible();
+  await expect(all.getByText(/^2 \/ \d+$/)).toBeVisible();
+  await all.getByRole('button', { name: 'Nowsza wersja' }).click();
+  await expect(all.getByRole('region', { name: `Wersja ${VERSION}` })).toBeVisible();
   await all.getByRole('button', { name: 'Super, zamknij' }).click();
   await expect(all).toHaveCount(0);
 });

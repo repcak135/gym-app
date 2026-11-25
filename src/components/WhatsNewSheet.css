@@ -37,3 +37,40 @@
 }
 
 .whats-new__items li::marker { color: var(--accent); }
+
+.whats-new__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+
+.whats-new__arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 44px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.whats-new__arrow:disabled { opacity: 0.35; }
+
+.whats-new__pos { font-size: 0.85rem; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+.whats-new__badge {
+  margin-left: var(--space-2);
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #111;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
