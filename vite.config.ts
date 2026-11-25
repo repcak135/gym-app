@@ -16,10 +16,10 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: 'auto',
-      includeAssets: ['icon.svg', 'apple-touch-icon-180x180.png'],
+      includeAssets: ['favicon.ico', 'apple-touch-icon-180x180.png'],
       manifest: {
-        name: 'Gym',
-        short_name: 'Gym',
+        name: 'Banana Gym',
+        short_name: 'Banana Gym',
         lang: 'pl',
         description: 'Dziennik treningowy',
         display: 'standalone',

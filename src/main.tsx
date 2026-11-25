@@ -7,6 +7,9 @@ import App from './App.tsx'
 import { requestPersistentStorage } from './data/storage'
 import { seedExercises } from './data/exercises'
 import { listenForInstallPrompt } from './data/installGuide'
+import { applyTheme } from './theme/themes'
+
+applyTheme()
 
 void requestPersistentStorage()
 void seedExercises()

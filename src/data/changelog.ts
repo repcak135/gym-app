@@ -11,6 +11,15 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.5',
+    date: '2026-11-25',
+    items: [
+      'Nowa nazwa: Banana Gym i nowa ikona — banan wyciskający sztangę na ławce.',
+      'Motywy kolorów (Ustawienia › Wygląd): domyślnie bananowy żółty, do wyboru też pomarańczowy, niebieski, fioletowy i różowy. Wybór działa tylko na tym telefonie.',
+      'iPhone: zainstalowana aplikacja zachowuje starą nazwę i ikonę, dopóki nie usuniesz jej z ekranu i nie dodasz ponownie. Uwaga: usunięcie aplikacji kasuje jej dane! Najpierw zrób kopię (Ustawienia › Kopia zapasowa), potem usuń ikonę, dodaj aplikację ponownie z Safari i wczytaj kopię.',
+    ],
+  },
+  {
     version: '0.9.4',
     date: '2026-11-25',
     items: [

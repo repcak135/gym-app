@@ -18,6 +18,7 @@ import type { AfterExerciseDone, AppSettings } from '../data/types';
 import DeleteDataSheet, { type DeleteMode } from '../components/DeleteDataSheet';
 import { countUserData, deleteAllUserData, deleteImportedHistory, type UserDataCounts } from '../data/wipe';
 import { setsLabel, workoutsLabel } from '../data/plural';
+import { THEMES, getTheme, setTheme, type ThemeId } from '../theme/themes';
 import './PlansPage.css';
 import './SettingsPage.css';
 
@@ -43,6 +44,7 @@ export default function SettingsPage() {
   const [del, setDel] = useState<{ mode: DeleteMode; counts: UserDataCounts } | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [deleted, setDeleted] = useState<string | null>(null);
+  const [theme, setThemeState] = useState<ThemeId>(getTheme);
 
   const askDelete = async (mode: DeleteMode) => {
     setDeleted(null);
@@ -212,6 +214,31 @@ export default function SettingsPage() {
                 name="after-exercise-done"
                 checked={settings.afterExerciseDone === value}
                 onChange={() => void updateSettings({ afterExerciseDone: value })}
+              />
+            </label>
+          ))}
+        </div>
+      </section>
+
+      <section className="settings-group" aria-labelledby="set-theme">
+        <h2 id="set-theme" className="settings-group__title">Wygląd</h2>
+        <p className="settings-group__hint">Kolor przycisków i wyróżnień. Ustawienie tylko na tym telefonie.</p>
+        <div role="radiogroup" aria-labelledby="set-theme">
+          {THEMES.map((t) => (
+            <label key={t.id} className="settings-row settings-radio">
+              <span className="settings-row__label settings-theme">
+                <span className="settings-theme__swatch" style={{ background: t.accent }} aria-hidden="true" />
+                {t.label}
+              </span>
+              <input
+                type="radio"
+                name="theme"
+                aria-label={t.label}
+                checked={theme === t.id}
+                onChange={() => {
+                  setTheme(t.id);
+                  setThemeState(t.id);
+                }}
               />
             </label>
           ))}

@@ -1,4 +1,4 @@
-# Gym
+# Banana Gym
 
 Private gym tracker for the phone: an installable web app (PWA) that keeps all data on the device.
 Live at https://repcak135.github.io/gym-app/.

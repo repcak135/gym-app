@@ -8,6 +8,7 @@ test('manifest jest poprawny', async ({ page }) => {
   const response = await page.request.get(manifestHref!);
   const manifest = await response.json();
 
+  expect(manifest.name).toBe('Banana Gym');
   expect(manifest.display).toBe('standalone');
   expect(manifest.lang).toBe('pl');
   expect(manifest.icons.some((icon: { sizes: string }) => icon.sizes === '512x512')).toBe(true);

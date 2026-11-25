@@ -11,10 +11,11 @@
   --text:       #eceef2;
   --text-muted: #8a93a3;
 
-  /* Actions: warm orange for primary actions, mint green for completed sets */
-  --accent:        #ff7a45;
-  --accent-soft:   rgba(255, 122, 69, 0.16);
-  --on-accent:     #1a0d07;
+  /* Actions: accent (banana yellow by default, see themes below) for primary actions,
+     mint green for completed sets */
+  --accent:        #ffd23f;
+  --accent-soft:   rgba(255, 210, 63, 0.16);
+  --on-accent:     #1a1405;
   --success:       #34d399;
   --success-soft:  rgba(52, 211, 153, 0.16);
   --danger:        #f25f5c;
@@ -31,4 +32,27 @@
   --space-4: 16px;
   --space-5: 24px;
   --space-6: 32px;
+}
+
+/* Colour themes (Ustawienia › Wygląd, src/theme/themes.ts). Only the accent changes; never green or
+   red, so --success and --danger stay distinct. */
+:root[data-theme='orange'] {
+  --accent:      #ff7a45;
+  --accent-soft: rgba(255, 122, 69, 0.16);
+  --on-accent:   #1a0d07;
+}
+:root[data-theme='blue'] {
+  --accent:      #5aa9ff;
+  --accent-soft: rgba(90, 169, 255, 0.16);
+  --on-accent:   #04111f;
+}
+:root[data-theme='violet'] {
+  --accent:      #a78bfa;
+  --accent-soft: rgba(167, 139, 250, 0.16);
+  --on-accent:   #140d24;
+}
+:root[data-theme='pink'] {
+  --accent:      #ff6fae;
+  --accent-soft: rgba(255, 111, 174, 0.16);
+  --on-accent:   #24060f;
 }

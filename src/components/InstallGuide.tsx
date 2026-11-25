@@ -52,7 +52,7 @@ export function InstallSteps() {
             <li>Dotknij <Key><Share size={16} /></Key> <strong>Udostępnij</strong> (na dole ekranu).</li>
             <li>Przewiń w dół i wybierz <Key><SquarePlus size={16} /></Key> <strong>Do ekranu początkowego</strong>.</li>
             <li>Zostaw włączone <strong>„Otwórz jako aplikację www”</strong> i dotknij <strong>Dodaj</strong>.</li>
-            <li>Uruchamiaj aplikację ikoną <strong>Gym</strong> z ekranu początkowego.</li>
+            <li>Uruchamiaj aplikację ikoną <strong>Banana Gym</strong> z ekranu początkowego.</li>
           </ol>
           <p className="install-note">
             {isOtherIosBrowser(ua) ? 'Używasz Chrome lub innej przeglądarki: ' : 'W Chrome na iPhonie: '}
@@ -72,7 +72,7 @@ export function InstallSteps() {
             <li>Otwórz tę stronę w <strong>Chrome</strong>.</li>
             <li>Dotknij menu <Key><EllipsisVertical size={16} /></Key> w prawym górnym rogu.</li>
             <li>Wybierz <strong>„Zainstaluj aplikację”</strong> (albo <strong>„Dodaj do ekranu głównego”</strong>) i potwierdź.</li>
-            <li>Uruchamiaj aplikację ikoną <strong>Gym</strong>.</li>
+            <li>Uruchamiaj aplikację ikoną <strong>Banana Gym</strong>.</li>
           </ol>
         </>
       )}

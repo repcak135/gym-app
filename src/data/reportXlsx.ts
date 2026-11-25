@@ -83,7 +83,7 @@ function durationText(sec: number): string {
 
 export async function buildWorkbook(data: ReportData): Promise<ExcelJS.Workbook> {
   const wb = new ExcelJS.Workbook();
-  wb.creator = 'Gym app';
+  wb.creator = 'Banana Gym';
   wb.created = new Date();
 
   // Podsumowanie

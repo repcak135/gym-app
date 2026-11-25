@@ -1,7 +1,7 @@
 {
   "name": "gym-app",
   "private": true,
-  "version": "0.9.4",
+  "version": "0.9.5",
   "license": "AGPL-3.0-only",
   "type": "module",
   "scripts": {
@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "icons": "pwa-assets-generator"
+    "icons": "node scripts/make-icons.mjs"
   },
   "dependencies": {
     "dexie": "^4.4.7",
