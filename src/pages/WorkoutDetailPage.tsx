@@ -8,7 +8,7 @@ import { getWorkoutDetail, workoutDurationSec } from '../data/history';
 import { removeWorkoutUndoable } from '../data/undoable';
 import { showUndo } from '../undo';
 import { getSettings } from '../data/settings';
-import { formatClock, formatKg } from '../data/progression';
+import { formatClock, formatSetLine } from '../data/progression';
 import { rirToRpeLabel } from '../data/difficulty';
 import type { WorkoutSet } from '../data/types';
 import ConfirmSheet from '../components/ConfirmSheet';
@@ -82,7 +82,7 @@ export default function WorkoutDetailPage() {
             </Link>
             <ul className="wd-sets">
               {g.sets.map((s, i) => {
-                const text = `${formatKg(s.weight)} kg × ${s.reps} powt.`;
+                const text = formatSetLine(s);
                 // Same wording as the exercise history: "Rozgrzewka · RPE 8".
                 const meta = [s.warmup ? 'Rozgrzewka' : null, s.rir !== undefined ? rirToRpeLabel(s.rir) : null]
                   .filter(Boolean)

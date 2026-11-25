@@ -281,6 +281,41 @@ export async function addSet(workoutId: string, index: number): Promise<void> {
   });
 }
 
+/**
+ * Replaces the not-yet-done warm-ups of one exercise with the given ramp. Order becomes:
+ * completed warm-ups, new warm-ups, working sets.
+ */
+export async function replaceWarmups(
+  workoutId: string,
+  exerciseId: string,
+  ramp: { weight: number; reps: number }[],
+): Promise<void> {
+  await db.transaction('rw', db.workouts, db.sets, async () => {
+    const w = await db.workouts.get(workoutId);
+    const index = w?.exercises?.findIndex((e) => e.exerciseId === exerciseId) ?? -1;
+    if (!w || index < 0) throw new Error('Nie znaleziono ćwiczenia');
+    const sets = (await db.sets.where({ exerciseId, workoutId }).toArray()).sort(byOrder);
+    const stale = sets.filter((s) => s.warmup && s.completedAt === undefined);
+    const doneWarmups = sets.filter((s) => s.warmup && s.completedAt !== undefined);
+    const working = sets.filter((s) => !s.warmup);
+    await db.sets.bulkDelete(stale.map((s) => s.id));
+    const fresh: WorkoutSet[] = ramp.map((r) => ({
+      id: crypto.randomUUID(),
+      workoutId,
+      exerciseId,
+      exerciseOrder: index,
+      setOrder: 0,
+      weight: r.weight,
+      reps: r.reps,
+      warmup: true,
+    }));
+    const ordered = [...doneWarmups, ...fresh, ...working];
+    await db.sets.bulkPut(ordered.map((s, i) => ({ ...s, setOrder: i })));
+    w.exercises![index].warmupSets = doneWarmups.length + ramp.length;
+    await db.workouts.put(w);
+  });
+}
+
 /** Keeps WorkoutExercise.sets / warmupSets equal to the sets the user chose to keep. */
 async function adjustCounts(workoutId: string, exerciseId: string, dWorking: number, dWarmup: number): Promise<void> {
   const w = await db.workouts.get(workoutId);

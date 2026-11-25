@@ -1,5 +1,5 @@
 import { weekProgress, weekStartOf } from './motivation';
-import { computeRecords, workingSets, type ExerciseRecords } from './records';
+import { computeRecords, countedSets, workingSets, type ExerciseRecords } from './records';
 import type { StatsInput } from './stats';
 import { findNewRecords, isFinished } from './workouts';
 import type { Workout, WorkoutSet } from './types';
@@ -64,7 +64,7 @@ export function computeBadges(input: StatsInput, goal: number, now: number): Bad
   for (const { workout, sets } of finishedChronological(input)) {
     totals.workouts++;
     const work = workingSets(sets);
-    totals.sets += work.length;
+    totals.sets += countedSets(sets).length;
     for (const s of work) totals.heaviest = Math.max(totals.heaviest, s.weight);
 
     const week = weekStartOf(workout.startedAt);

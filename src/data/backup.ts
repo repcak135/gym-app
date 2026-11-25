@@ -2,7 +2,7 @@ import { db } from './db';
 import { DEFAULT_SETTINGS, getSettings, migrateSound, updateSettings } from './settings';
 import { APP_VERSION } from '../version';
 import type {
-  AppSettings, BodyEntry, Exercise, ExerciseAlias, ExerciseNote, Plan, Workout, WorkoutSet,
+  AppSettings, BodyEntry, Exercise, ExerciseAlias, ExerciseNote, Measure, Plan, Workout, WorkoutSet,
 } from './types';
 
 /** Bump when the file layout changes; add the upgrade step to `migrate`. */
@@ -17,6 +17,7 @@ export interface ExerciseOverride {
   id: string;
   weightStep?: number;
   barWeight?: number;
+  measureOverride?: Measure;
 }
 
 /** Settings that travel with the data (device-only fields stay on the device). */
@@ -54,7 +55,7 @@ const DEVICE_ONLY = new Set(['key', 'exerciseDbVersion', 'lastBackupAt', 'backup
 export async function createBackup(now = Date.now()): Promise<BackupFile> {
   return db.transaction('r', [db.plans, db.workouts, db.sets, db.notes, db.aliases, db.body, db.exercises, db.settings], async () => {
     const exercises = await db.exercises
-      .filter((e) => e.custom || e.weightStep !== undefined || e.barWeight !== undefined)
+      .filter((e) => e.custom || e.weightStep !== undefined || e.barWeight !== undefined || e.measureOverride !== undefined)
       .toArray();
     const settings = await getSettings();
     const kept: Record<string, unknown> = {};
@@ -78,6 +79,7 @@ export async function createBackup(now = Date.now()): Promise<BackupFile> {
             id: e.id,
             ...(e.weightStep !== undefined && { weightStep: e.weightStep }),
             ...(e.barWeight !== undefined && { barWeight: e.barWeight }),
+            ...(e.measureOverride !== undefined && { measureOverride: e.measureOverride }),
           })),
         settings: kept as BackupSettings,
       },
@@ -211,8 +213,8 @@ export async function restoreBackup(f: BackupFile): Promise<void> {
     await Promise.all([db.plans.clear(), db.workouts.clear(), db.sets.clear(), db.notes.clear(), db.aliases.clear(), db.body.clear()]);
     await db.exercises.filter((e) => e.custom).delete();
     await db.exercises
-      .filter((e) => e.weightStep !== undefined || e.barWeight !== undefined)
-      .modify((e) => { delete e.weightStep; delete e.barWeight; });
+      .filter((e) => e.weightStep !== undefined || e.barWeight !== undefined || e.measureOverride !== undefined)
+      .modify((e) => { delete e.weightStep; delete e.barWeight; delete e.measureOverride; });
 
     await db.plans.bulkAdd(d.plans);
     await db.workouts.bulkAdd(d.workouts);
@@ -225,6 +227,7 @@ export async function restoreBackup(f: BackupFile): Promise<void> {
       const patch: Partial<Exercise> = {};
       if (o.weightStep !== undefined) patch.weightStep = o.weightStep;
       if (o.barWeight !== undefined) patch.barWeight = o.barWeight;
+      if (o.measureOverride !== undefined) patch.measureOverride = o.measureOverride;
       await db.exercises.update(o.id, patch);
     }
     const settings: AppSettings = migrateSound({

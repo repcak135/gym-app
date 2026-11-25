@@ -9,10 +9,21 @@ import ExerciseHistorySection from '../components/ExerciseHistorySection';
 import ConfirmSheet from '../components/ConfirmSheet';
 import NoteEditor from '../components/NoteEditor';
 import { ExerciseChips, ExerciseInstructions, ExercisePhotos, ExerciseTips } from '../components/ExerciseHowTo';
+import { MEASURE_OPTIONS, measureOf } from '../data/measure';
+import type { Exercise, Measure } from '../data/types';
 import { removeCustomExerciseUndoable } from '../data/undoable';
 import { showUndo } from '../undo';
 import './ExerciseDetailPage.css';
 import '../components/Sheet.css';
+
+/** Built-in exercise: the choice is kept as measureOverride; picking the built-in default clears it. */
+async function saveMeasure(exercise: Exercise, value: Measure): Promise<void> {
+  if (value === (exercise.measure ?? 'reps')) {
+    await db.exercises.update(exercise.id, { measureOverride: undefined });
+  } else {
+    await db.exercises.update(exercise.id, { measureOverride: value });
+  }
+}
 
 export default function ExerciseDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -77,6 +88,22 @@ export default function ExerciseDetailPage() {
       <ExercisePhotos exercise={exercise} />
       <ExerciseChips exercise={exercise} />
       <ExerciseTips exerciseId={exercise.id} />
+
+      {!exercise.custom && (
+        <section className="detail-section">
+          <label className="detail-section-title" htmlFor="ex-measure">Rodzaj ćwiczenia</label>
+          <select
+            id="ex-measure"
+            className="detail-select"
+            value={measureOf(exercise)}
+            onChange={(e) => void saveMeasure(exercise, e.target.value as Measure)}
+          >
+            {MEASURE_OPTIONS.map((o) => (
+              <option key={o.value} value={o.value}>{o.label}</option>
+            ))}
+          </select>
+        </section>
+      )}
 
       <RecordsSection exerciseId={exercise.id} />
 

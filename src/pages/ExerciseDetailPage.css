@@ -295,3 +295,16 @@
   color: var(--text-muted);
   font-size: 1rem;
 }
+
+/* Measure select (built-in exercises) */
+.detail-select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 1rem;
+  font-family: inherit;
+}

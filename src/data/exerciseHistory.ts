@@ -24,6 +24,8 @@ export interface HistoryRow {
   n: number;
   weight: number;
   reps: number;
+  durationSec?: number;
+  distanceM?: number;
   warmup: boolean;
   /** "RPE 8" when the set has a difficulty. */
   rpe?: string;
@@ -68,6 +70,8 @@ export function historySessions(history: { workout: Workout; sets: WorkoutSet[] 
       n: i + 1,
       weight: s.weight,
       reps: s.reps,
+      ...(s.durationSec !== undefined && { durationSec: s.durationSec }),
+      ...(s.distanceM !== undefined && { distanceM: s.distanceM }),
       warmup: s.warmup,
       rpe: s.rir !== undefined ? rirToRpeLabel(s.rir) : undefined,
       record: recordIds.get(workout.id)?.has(s.id) ?? false,

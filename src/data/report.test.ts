@@ -171,6 +171,22 @@ describe('buildReport', () => {
     expect(e.body).toEqual([]);
   });
 
+  it('time and distance sets count as sets and carry duration / distance', () => {
+    const w = wk(d(2026, 11, 5, 10));
+    const sets = [
+      st(w, 'bench', { weight: 60 }),
+      st(w, 'plank', { weight: 0, reps: 0, durationSec: 75, exerciseOrder: 1 }),
+      st(w, 'walk', { weight: 25, reps: 0, distanceM: 40, exerciseOrder: 2 }),
+    ];
+    const rep = buildReport({ workouts: [w], sets, exercises, body: [] }, RANGE);
+    expect(rep.summary.workingSets).toBe(3);
+    expect(rep.summary.volume).toBe(300);
+    const plank = rep.sets.find((x) => x.durationSec === 75)!;
+    expect(plank.distanceM).toBeUndefined();
+    expect(rep.sets.find((x) => x.distanceM === 40)!.durationSec).toBeUndefined();
+    expect(rep.sets[0].durationSec).toBeUndefined();
+  });
+
   it('ignores unfinished workouts', () => {
     const w = wk(d(2026, 11, 5, 10), { endedAt: undefined });
     const input: ReportInput = { workouts: [w], sets: [st(w, 'bench')], exercises, body: [] };

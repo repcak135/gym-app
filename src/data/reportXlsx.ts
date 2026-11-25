@@ -2,6 +2,7 @@ import ExcelJS from 'exceljs';
 import { BODY_METRICS } from './body';
 import type { ReportData } from './report';
 import { rirToRpeLabel } from './difficulty';
+import { formatDuration } from './measure';
 
 // Workbook for the coach report. Loaded with dynamic import() so ExcelJS stays out of the main bundle.
 
@@ -9,7 +10,7 @@ export const SHEETS = ['Podsumowanie', 'Treningi', 'Serie', 'Progres ćwiczeń',
 
 export const HEADERS: Record<'Treningi' | 'Serie' | 'Progres ćwiczeń', string[]> = {
   Treningi: ['Data', 'Dzień', 'Czas (min)', 'Ćwiczenia', 'Serie robocze', 'Objętość (kg)'],
-  Serie: ['Data', 'Trening', 'Ćwiczenie', 'Seria', 'Ciężar (kg)', 'Powtórzenia', 'RPE', 'Rozgrzewka'],
+  Serie: ['Data', 'Trening', 'Ćwiczenie', 'Seria', 'Ciężar (kg)', 'Powtórzenia', 'Czas', 'Dystans (m)', 'RPE', 'Rozgrzewka'],
   'Progres ćwiczeń': [
     'Ćwiczenie',
     'Serie robocze',
@@ -134,10 +135,10 @@ export async function buildWorkbook(data: ReportData): Promise<ExcelJS.Workbook>
     wb,
     'Serie',
     HEADERS.Serie,
-    [14, 24, 32, 8, 12, 13, 8, 12],
+    [14, 24, 32, 8, 12, 13, 9, 12, 8, 12],
     [DATE_FMT, undefined, undefined, undefined, KG_FMT],
     data.sets.map((x) => [
-      dateFromMs(x.date), x.workout, x.exercise, x.set, x.weight, x.reps, x.rir !== undefined ? rirToRpeLabel(x.rir).replace(/^RPE /, '') : undefined, x.warmup ? 'Tak' : 'Nie',
+      dateFromMs(x.date), x.workout, x.exercise, x.set, x.weight, x.reps, x.durationSec !== undefined ? formatDuration(x.durationSec) : undefined, x.distanceM, x.rir !== undefined ? rirToRpeLabel(x.rir).replace(/^RPE /, '') : undefined, x.warmup ? 'Tak' : 'Nie',
     ]),
   );
 

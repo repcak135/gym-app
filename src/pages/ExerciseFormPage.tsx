@@ -14,6 +14,8 @@ import {
   muscleLabel,
   equipmentLabel,
 } from '../data/exerciseLabels';
+import { MEASURE_OPTIONS } from '../data/measure';
+import type { Measure } from '../data/types';
 import './ExerciseFormPage.css';
 
 export default function ExerciseFormPage() {
@@ -26,6 +28,7 @@ export default function ExerciseFormPage() {
   const [primaryMuscles, setPrimaryMuscles] = useState<string[]>([]);
   const [secondaryMuscles, setSecondaryMuscles] = useState<string[]>([]);
   const [equipment, setEquipment] = useState<string | null>(null);
+  const [measure, setMeasure] = useState<Measure>('reps');
   const [noteText, setNoteText] = useState('');
   const [error, setError] = useState<string | null>(null);
 
@@ -40,6 +43,7 @@ export default function ExerciseFormPage() {
         setPrimaryMuscles([...ex.primaryMuscles]);
         setSecondaryMuscles([...ex.secondaryMuscles]);
         setEquipment(ex.equipment);
+        setMeasure(ex.measure ?? 'reps');
       }
       setNoteText(note?.text ?? '');
     });
@@ -60,7 +64,7 @@ export default function ExerciseFormPage() {
     e.preventDefault();
     setError(null);
     try {
-      const input = { name, primaryMuscles, secondaryMuscles, equipment };
+      const input = { name, primaryMuscles, secondaryMuscles, equipment, measure };
       if (isEdit && exerciseId) {
         await updateCustomExercise(exerciseId, input);
         // save note too
@@ -171,6 +175,21 @@ export default function ExerciseFormPage() {
               </button>
             ))}
           </div>
+        </div>
+
+        {/* Measure */}
+        <div className="form-field">
+          <label className="form-label" htmlFor="ex-measure">Rodzaj ćwiczenia</label>
+          <select
+            id="ex-measure"
+            className="form-input"
+            value={measure}
+            onChange={(e) => setMeasure(e.target.value as Measure)}
+          >
+            {MEASURE_OPTIONS.map((o) => (
+              <option key={o.value} value={o.value}>{o.label}</option>
+            ))}
+          </select>
         </div>
 
         {/* Note */}

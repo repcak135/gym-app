@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { db } from './db';
-import { deleteWorkout, getExerciseRecords, getWorkoutDetail, listFinishedWorkouts, workoutDays } from './history';
+import { deleteWorkout, getExerciseRecords, getTimeDistanceRecords, getWorkoutDetail, listFinishedWorkouts, workoutDays } from './history';
 import { computeRecords } from './records';
 import { summarizeWorkout } from './workouts';
 import type { Workout, WorkoutSet } from './types';
@@ -37,6 +37,21 @@ describe('records', () => {
       { weight: 65, reps: 6, at: day(3) },
       { weight: 60, reps: 12, at: day(3) },
     ]);
+  });
+
+  it('longest time and distance come from completed working sets with duration / distance', async () => {
+    const w1 = await workout(day(1), [['plank', 0, 0], ['plank', 0, 0], ['plank', 0, 0, true], ['walk', 25, 0]]);
+    await db.sets.update(`${w1.id}-s0`, { durationSec: 60 });
+    await db.sets.update(`${w1.id}-s1`, { durationSec: 90 });
+    await db.sets.update(`${w1.id}-s2`, { durationSec: 300 }); // warm-up: ignored
+    await db.sets.update(`${w1.id}-s3`, { distanceM: 40 });
+    const w2 = await workout(day(3), [['plank', 0, 0], ['plank', 0, 0]]);
+    await db.sets.update(`${w2.id}-s0`, { durationSec: 80 });
+    await db.sets.update(`${w2.id}-s1`, { durationSec: 0 }); // 0 s: ignored
+    expect(await getTimeDistanceRecords('plank')).toEqual({ longestTime: { sec: 90, at: day(1) } });
+    expect(await getTimeDistanceRecords('walk')).toEqual({ longestDistance: { m: 40, at: day(1) } });
+    // weighted walk has 0 reps: no weight / 1RM records, so the rep records stay empty
+    expect(await getExerciseRecords('walk')).toBeNull();
   });
 
   it('null when only warm-ups or nothing', async () => {

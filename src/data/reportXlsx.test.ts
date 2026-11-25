@@ -25,6 +25,7 @@ const DATA: ReportData = {
   sets: [
     { date: d(2026, 11, 3, 0, 5), workout: 'Push', exercise: 'Wyciskanie', set: 1, weight: 40, reps: 10, warmup: true },
     { date: d(2026, 11, 3, 0, 5), workout: 'Push', exercise: 'Wyciskanie', set: 2, weight: 62.5, reps: 5, rir: 2, warmup: false },
+    { date: d(2026, 11, 3, 0, 5), workout: 'Push', exercise: 'Deska', set: 1, weight: 0, reps: 0, durationSec: 75, distanceM: 40, warmup: false },
   ],
   progress: [
     { exercise: 'Wyciskanie', workingSets: 3, startWeight: 62.5, endWeight: 65, startE1rm: 72.9, endE1rm: 75.8 },
@@ -92,10 +93,14 @@ describe('buildWorkbook', () => {
     expect(t.getCell(6).numFmt).toBe('#,##0');
     expect(wb.getWorksheet('Treningi')!.getRow(3).getCell(3).value).toBeNull();
     const sets = wb.getWorksheet('Serie')!;
-    expect(sets.getRow(2).getCell(8).value).toBe('Tak');
-    expect(sets.getRow(3).getCell(8).value).toBe('Nie');
-    expect(sets.getRow(2).getCell(7).value).toBeNull();
-    expect(sets.getRow(3).getCell(7).value).toBe('8');
+    expect(sets.getRow(2).getCell(10).value).toBe('Tak');
+    expect(sets.getRow(3).getCell(10).value).toBe('Nie');
+    expect(sets.getRow(2).getCell(9).value).toBeNull();
+    expect(sets.getRow(3).getCell(9).value).toBe('8');
+    expect(sets.getRow(3).getCell(7).value).toBeNull();
+    expect(sets.getRow(3).getCell(8).value).toBeNull();
+    expect(sets.getRow(4).getCell(7).value).toBe('1:15');
+    expect(sets.getRow(4).getCell(8).value).toBe(40);
     expect(sets.getRow(3).getCell(5).numFmt).toBe('0.0');
     const prog = wb.getWorksheet('Progres ćwiczeń')!.getRow(2);
     expect(prog.getCell(5).value).toBe(2.5);

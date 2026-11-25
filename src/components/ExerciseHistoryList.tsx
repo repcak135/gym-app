@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Trophy } from 'lucide-react';
 import { formatSessionDate, historySessions } from '../data/exerciseHistory';
-import { formatKg } from '../data/progression';
+import { formatSetLine } from '../data/progression';
 import type { Workout, WorkoutSet } from '../data/types';
 import './ExerciseHistoryList.css';
 
@@ -37,7 +37,7 @@ export default function ExerciseHistoryList({
                     <span className="xhist__n" aria-hidden="true">{r.n}</span>
                     <span className="xhist__body">
                       <span className="xhist__main">
-                        {formatKg(r.weight)} kg × {r.reps} powt.
+                        {formatSetLine(r)}
                         {r.record && (
                           <Trophy size={15} className="xhist__trophy" aria-label="rekord" role="img" />
                         )}

@@ -1,5 +1,5 @@
 import { db } from './db';
-import { computeRecords, type ExerciseRecords } from './records';
+import { computeRecords, computeTimeDistanceRecords, type ExerciseRecords, type TimeDistanceRecords } from './records';
 import { getExerciseHistory, getWorkoutSets, isFinished } from './workouts';
 import type { Workout, WorkoutSet } from './types';
 
@@ -75,6 +75,11 @@ export async function deleteWorkout(id: string): Promise<void> {
     await db.sets.where('workoutId').equals(id).delete();
     await db.workouts.delete(id);
   });
+}
+
+/** Longest time / distance of an exercise; works for exercises without any rep sets. */
+export async function getTimeDistanceRecords(exerciseId: string): Promise<TimeDistanceRecords> {
+  return computeTimeDistanceRecords(await getExerciseHistory(exerciseId));
 }
 
 export async function getExerciseRecords(exerciseId: string): Promise<ExerciseRecords | null> {

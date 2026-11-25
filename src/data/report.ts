@@ -2,7 +2,7 @@ import { BODY_METRICS, entryValues } from './body';
 import { db } from './db';
 import { workoutDurationSec } from './history';
 import { epley1RM } from './progression';
-import { workingSets } from './records';
+import { countedSets, workingSets } from './records';
 import { periodRange } from './stats';
 import { isFinished } from './workouts';
 import type { BodyEntry, BodyMetric, Workout, WorkoutSet } from './types';
@@ -111,6 +111,8 @@ export interface ReportData {
     set: number;
     weight: number;
     reps: number;
+    durationSec?: number;
+    distanceM?: number;
     rir?: number;
     warmup: boolean;
   }[];
@@ -173,7 +175,7 @@ export function buildReport(input: ReportInput, range: ReportRange): ReportData 
       timed++;
       totalSec += dur;
     }
-    workingCount += work.length;
+    workingCount += countedSets(sets).length;
     volume += wVol;
 
     const ids: string[] = [];
@@ -192,6 +194,8 @@ export function buildReport(input: ReportInput, range: ReportRange): ReportData 
         warmup: s.warmup,
       };
       if (s.rir !== undefined) row.rir = s.rir;
+      if ((s.durationSec ?? 0) > 0) row.durationSec = s.durationSec;
+      if ((s.distanceM ?? 0) > 0) row.distanceM = s.distanceM;
       setRows.push(row);
     }
 
@@ -199,7 +203,7 @@ export function buildReport(input: ReportInput, range: ReportRange): ReportData 
       date: w.startedAt,
       name: w.name,
       exercises: ids.map(name).join(', '),
-      workingSets: work.length,
+      workingSets: countedSets(sets).length,
       volume: round1(wVol),
     };
     if (dur !== undefined) row.durationMin = Math.round(dur / 60);

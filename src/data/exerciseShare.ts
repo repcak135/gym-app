@@ -1,7 +1,9 @@
 import LZString from 'lz-string';
 import { db } from './db';
 import { QR_MAX_URL, bad, isStrArray, CORRUPTED, shareUrl } from './planShare';
-import type { Exercise } from './types';
+import type { Exercise, Measure } from './types';
+
+const MEASURES: Measure[] = ['reps', 'time', 'distance', 'timeDistance'];
 
 export const EXERCISES_ROUTE = '/cwiczenia/import';
 export const MAX_SHARED_EXERCISES = 50;
@@ -13,13 +15,15 @@ export interface SharedCustomExercise {
   secondaryMuscles: string[];
   equipment: string | null;
   category: string;
+  measure?: Measure;
 }
 
 /** Type marker 'x' tells it apart from a plan payload (which has no `t`). */
 interface Payload {
   v: 1;
   t: 'x';
-  x: [string, string[], string[], string | null, string][];
+  /** The 6th item (measure) is omitted for rep exercises, so old readers and links still work. */
+  x: ([string, string[], string[], string | null, string] | [string, string[], string[], string | null, string, Measure])[];
 }
 
 export function encodeExercises(exercises: Exercise[]): string {
@@ -29,7 +33,11 @@ export function encodeExercises(exercises: Exercise[]): string {
   const payload: Payload = {
     v: 1,
     t: 'x',
-    x: exercises.map((e) => [e.name, e.primaryMuscles, e.secondaryMuscles, e.equipment, e.category]),
+    x: exercises.map((e) => {
+      const base: [string, string[], string[], string | null, string] = [e.name, e.primaryMuscles, e.secondaryMuscles, e.equipment, e.category];
+      const measure = e.measureOverride ?? e.measure;
+      return measure && measure !== 'reps' ? [...base, measure] : base;
+    }),
   };
   return LZString.compressToEncodedURIComponent(JSON.stringify(payload));
 }
@@ -45,8 +53,8 @@ export function decodeExercises(data: string): SharedCustomExercise[] {
     if (o.x.length < 1 || o.x.length > MAX_SHARED_EXERCISES) bad();
     const clip = (a: string[]) => a.slice(0, 10).map((s) => s.slice(0, 40));
     return o.x.map((raw: unknown) => {
-      if (!Array.isArray(raw) || raw.length !== 5) bad();
-      const [rawName, primary, secondary, equipment, category] = raw as unknown[];
+      if (!Array.isArray(raw) || (raw.length !== 5 && raw.length !== 6)) bad();
+      const [rawName, primary, secondary, equipment, category, rawMeasure] = raw as unknown[];
       if (typeof rawName !== 'string' || !isStrArray(primary) || !isStrArray(secondary)) bad();
       if (equipment !== null && typeof equipment !== 'string') bad();
       if (typeof category !== 'string') bad();
@@ -58,6 +66,9 @@ export function decodeExercises(data: string): SharedCustomExercise[] {
         secondaryMuscles: clip(secondary),
         equipment: equipment === null ? null : equipment.slice(0, 40),
         category: category.slice(0, 40) || 'strength',
+        ...(typeof rawMeasure === 'string' && MEASURES.includes(rawMeasure as Measure) && rawMeasure !== 'reps'
+          ? { measure: rawMeasure as Measure }
+          : {}),
       };
     });
   } catch {
@@ -101,6 +112,7 @@ export async function importSharedExercises(
         instructions: [],
         images: [],
         custom: true,
+        ...(it.measure ? { measure: it.measure } : {}),
       });
       added++;
     }

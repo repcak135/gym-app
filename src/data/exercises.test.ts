@@ -383,7 +383,8 @@ describe('dodatkowe ćwiczenia (wersja 4 bazy)', () => {
     const { db } = await import('./db');
     const { updateSettings } = await import('./settings');
     const { EXTRA_EXERCISES, EXERCISE_DB_VERSION } = await import('./exercises');
-    await db.exercises.put({ ...fromDbForTest('Butterfly'), weightStep: 5 });
+    await db.exercises.put({ ...fromDbForTest('Butterfly'), weightStep: 5, measureOverride: 'time' });
+    await db.exercises.put({ ...fromDbForTest('Plank'), measure: undefined });
     await db.exercises.put({ id: 'custom-1', name: 'Wiosło Krzywe', primaryMuscles: [], secondaryMuscles: [], equipment: null, category: 'strength', instructions: [], images: [], custom: true });
     await db.notes.put({ exerciseId: 'Butterfly', text: 'siedzenie 4', updatedAt: 1 });
     await db.sets.put({ id: 's1', workoutId: 'w1', exerciseId: 'Butterfly', exerciseOrder: 0, setOrder: 0, weight: 40, reps: 10, warmup: false, completedAt: 1 });
@@ -391,10 +392,13 @@ describe('dodatkowe ćwiczenia (wersja 4 bazy)', () => {
 
     await seedExercises();
 
-    expect(EXERCISE_DB_VERSION).toBe(4);
-    expect((await db.settings.get('app'))?.exerciseDbVersion).toBe(4);
+    expect(EXERCISE_DB_VERSION).toBe(5);
+    expect((await db.settings.get('app'))?.exerciseDbVersion).toBe(5);
     const fly = (await db.exercises.get('Butterfly'))!;
     expect(fly.weightStep).toBe(5);
+    expect(fly.measureOverride).toBe('time'); // the user's choice survives the reseed
+    expect(fly.measure).toBeUndefined();
+    expect((await db.exercises.get('Plank'))?.measure).toBe('time'); // built-in default from exercise-measure.json
     expect(fly.aka).toContain('Pec Deck');
     expect(await db.exercises.get('custom-1')).toBeDefined();
     expect((await db.notes.get('Butterfly'))?.text).toBe('siedzenie 4');
@@ -520,6 +524,30 @@ describe('katalog openGym', () => {
     expect(filterExercises(list, { query: 'wiosłowanie maszyna' }).map((e) => e.id)).toEqual(['a']);
     expect(filterExercises(list, { query: 'seated row' }).map((e) => e.id)).toEqual(['a']);
     expect(filterExercises(list, { query: 'pec deck' }).map((e) => e.id)).toEqual(['b']);
+  });
+});
+
+describe('rodzaj ćwiczenia (measure)', () => {
+  it('custom exercise keeps measure on create and update; reps is stored as absent', async () => {
+    const { updateCustomExercise } = await import('./exercises');
+    const input = { name: 'Deska boczna', primaryMuscles: ['abdominals'], secondaryMuscles: [], equipment: null };
+    const created = await createCustomExercise({ ...input, measure: 'time' });
+    expect((await db.exercises.get(created.id))?.measure).toBe('time');
+    await updateCustomExercise(created.id, { ...input, measure: 'distance' });
+    expect((await db.exercises.get(created.id))?.measure).toBe('distance');
+    await updateCustomExercise(created.id, { ...input, measure: 'reps' });
+    expect((await db.exercises.get(created.id))?.measure).toBeUndefined();
+    expect((await createCustomExercise({ ...input, name: 'Zwykłe' })).measure).toBeUndefined();
+  });
+
+  it('built-in measure comes from exercise-measure.json', async () => {
+    const { fromDb } = await import('./exercises');
+    const m = (await import('./exercise-measure.json')).default;
+    const raw = (id: string) => ({ ...fromDbForTest(id), force: null, level: '', mechanic: null });
+    expect(fromDb(raw('Plank')).measure).toBe('time');
+    expect(fromDb(raw(m.distance[0])).measure).toBe('distance');
+    expect(fromDb(raw(m.timeDistance[0])).measure).toBe('timeDistance');
+    expect(fromDb(raw('Barbell_Curl')).measure).toBeUndefined();
   });
 });
 

@@ -435,6 +435,8 @@ export default function WorkoutPage() {
                 lastSets={lastSets[it.exerciseId] ?? []}
                 note={notes[i]?.text}
                 step={ex?.weightStep ?? settings.defaultWeightStep}
+                barWeight={settings.barWeight}
+                plates={settings.plates}
                 effort={settings.effortTarget}
                 stagnating={isStagnating(recent[it.exerciseId] ?? [])}
                 showRir={settings.showRir}

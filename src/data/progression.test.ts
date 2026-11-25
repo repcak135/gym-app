@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   epley1RM, suggestProgression, progressionText, buildPrefill, parseWeight,
-  formatKg, restRemainingSec, formatClock, workingVolume,
+  formatKg, restRemainingSec, formatClock, workingVolume, formatSetShort, formatSetLine,
 } from './progression'
 
 describe('epley1RM', () => {
@@ -141,5 +141,23 @@ describe('suggestProgression: rep range from the plan item', () => {
   it('mixed weights 35×8, 35×6, 30×5 (6–8) → no increase, same 35 kg, reps target', () => {
     expect(suggestProgression([{ weight: 35, reps: 8 }, { weight: 35, reps: 6 }, { weight: 30, reps: 5 }], 6, 8, 2.5))
       .toEqual({ kind: 'reps', weight: 35, reps: 7 })
+  })
+})
+
+describe('formatSetShort: time and distance sets', () => {
+  it('reps sets keep the old format', () => {
+    expect(formatSetShort({ weight: 30, reps: 10 })).toBe('30×10')
+    expect(formatSetShort({ weight: 30, reps: 10, rir: 2 })).toBe('30×10 (RPE 8)')
+  })
+  it('time and distance', () => {
+    expect(formatSetShort({ weight: 20, reps: 0, durationSec: 45 })).toBe('20 kg · 0:45')
+    expect(formatSetShort({ weight: 0, reps: 0, durationSec: 45 })).toBe('0:45')
+    expect(formatSetShort({ weight: 0, reps: 0, distanceM: 40 })).toBe('40 m')
+    expect(formatSetShort({ weight: 25, reps: 0, distanceM: 40 })).toBe('25 kg · 40 m')
+    expect(formatSetShort({ weight: 0, reps: 0, durationSec: 1500, distanceM: 5000 })).toBe('25:00 · 5 km')
+  })
+  it('formatSetLine', () => {
+    expect(formatSetLine({ weight: 30, reps: 10 })).toBe('30 kg × 10 powt.')
+    expect(formatSetLine({ weight: 0, reps: 0, durationSec: 90 })).toBe('1:30')
   })
 })

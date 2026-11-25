@@ -113,6 +113,27 @@ describe('computeStats', () => {
   });
 });
 
+describe('time and distance sets', () => {
+  it('count as working sets, warm-ups and unfinished ones do not', () => {
+    const w = wk(d(2026, 11, 16, 10));
+    const r = computeStats(
+      {
+        workouts: [w],
+        sets: [
+          set(w, 'bench', { reps: 0, weight: 0, durationSec: 60 }),
+          set(w, 'bench', { reps: 0, weight: 20, distanceM: 40 }),
+          set(w, 'bench', { reps: 0, weight: 0, durationSec: 60, warmup: true }),
+          set(w, 'bench', { reps: 0, weight: 0, durationSec: 60, completedAt: undefined }),
+          set(w, 'bench', { reps: 0, weight: 0 }),
+        ],
+        muscles,
+      },
+      periodRange('week', 0, NOW),
+    );
+    expect(r.workingSets).toBe(2);
+  });
+});
+
 describe('daysSinceTrained', () => {
   it('whole calendar days, primary only, untrained absent', () => {
     const w = wk(d(2026, 11, 15, 23)); // 3 calendar days before NOW even though < 3*24h

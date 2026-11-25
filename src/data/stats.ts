@@ -1,7 +1,7 @@
 import { db } from './db';
 import { workoutDurationSec } from './history';
 import { bodyParts, MUSCLE_GROUPS, muscleGroup, type BodyPart, type MuscleGroup } from './muscleMap';
-import { workingSets } from './records';
+import { countedSets } from './records';
 import { weekStartOf } from './motivation';
 import { isFinished } from './workouts';
 import type { Workout, WorkoutSet } from './types';
@@ -110,7 +110,7 @@ export function computeStats(input: StatsInput, range: PeriodRange): PeriodStats
     }
   }
 
-  const sets = workingSets(input.sets.filter((s) => ids.has(s.workoutId)));
+  const sets = countedSets(input.sets.filter((s) => ids.has(s.workoutId)));
   const primary = emptyGroups();
   const secondary = emptyGroups();
   const byBody: Partial<Record<BodyPart, number>> = {};
@@ -145,7 +145,7 @@ export function computeStats(input: StatsInput, range: PeriodRange): PeriodStats
 export function daysSinceTrained(input: StatsInput, now: number): Partial<Record<BodyPart, number>> {
   const finished = new Set(input.workouts.filter(isFinished).map((w) => w.id));
   const last = new Map<BodyPart, number>();
-  for (const s of workingSets(input.sets.filter((x) => finished.has(x.workoutId)))) {
+  for (const s of countedSets(input.sets.filter((x) => finished.has(x.workoutId)))) {
     const m = input.muscles.get(s.exerciseId);
     if (!m) continue;
     const at = s.completedAt as number;

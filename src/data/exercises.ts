@@ -4,14 +4,23 @@ import type { Exercise } from './types';
 import tips from './tips-pl.json';
 import extra from './exercises-extra.json';
 import akaData from './exercise-aka.json';
+import measureData from './exercise-measure.json';
+import type { Measure } from './types';
 
 // 2: built-in extra exercises (machines, cables, Smith) and other names for matching the import.
 // 3: openGym catalogue text (AGPL-3.0): ~4200 more exercises, Polish names.
 // 4: duplicates merged (scripts/dedupe-exercises.ts); user data on removed ids moves to the kept exercise.
-export const EXERCISE_DB_VERSION = 4;
+// 5: exercise measure (time / distance / cardio) from exercise-measure.json; the user's choice is kept.
+export const EXERCISE_DB_VERSION = 5;
 
 type AkaEntry = { aka?: string[]; similar?: string[]; maybe?: string[] };
 const AKA = akaData as Record<string, AkaEntry>;
+
+const MEASURE_BY_ID = new Map<string, Measure>([
+  ...measureData.time.map((id): [string, Measure] => [id, 'time']),
+  ...measureData.distance.map((id): [string, Measure] => [id, 'distance']),
+  ...measureData.timeDistance.map((id): [string, Measure] => [id, 'timeDistance']),
+]);
 
 /** Our own exercises missing from free-exercise-db: Polish instructions and tips, no photos. */
 export const EXTRA_EXERCISES = extra as (RawExercise & { tips: string[] })[];
@@ -55,6 +64,8 @@ export function fromDb(raw: RawExercise): Exercise {
     ...(raw.namePl ? { namePl: raw.namePl } : {}),
     ...AKA[raw.name],
   };
+  const measure = MEASURE_BY_ID.get(raw.id);
+  if (measure) ex.measure = measure;
   if (raw.mergedNames?.length) ex.aka = [...new Set([...(ex.aka ?? []), ...raw.mergedNames])];
   return ex;
 }
@@ -133,6 +144,7 @@ export async function seedExercises(
     const old = existing.get(ex.id);
     if (old?.weightStep !== undefined) ex.weightStep = old.weightStep;
     if (old?.barWeight !== undefined) ex.barWeight = old.barWeight;
+    if (old?.measureOverride !== undefined) ex.measureOverride = old.measureOverride;
     return ex;
   });
   await db.exercises.bulkPut(mapped);
@@ -248,6 +260,7 @@ export type CustomExerciseInput = {
   primaryMuscles: string[];
   secondaryMuscles: string[];
   equipment: string | null;
+  measure?: Measure;
 };
 
 export async function createCustomExercise(
@@ -267,6 +280,7 @@ export async function createCustomExercise(
     instructions: [],
     images: [],
     custom: true,
+    ...(input.measure && input.measure !== 'reps' ? { measure: input.measure } : {}),
   };
 
   await db.exercises.put(exercise);
@@ -290,6 +304,8 @@ export async function updateCustomExercise(
     secondaryMuscles: input.secondaryMuscles,
     equipment: input.equipment,
   };
+  if (input.measure && input.measure !== 'reps') updated.measure = input.measure;
+  else delete updated.measure;
 
   await db.exercises.put(updated);
 }

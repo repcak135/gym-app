@@ -394,3 +394,29 @@ test('ustawienia: cel wysiłku „Z zapasem” zapisuje się po przeładowaniu',
   await page.reload();
   await expect(page.getByRole('radio', { name: 'Z zapasem — 2–3 w zapasie' })).toBeChecked();
 });
+
+test('generator rozgrzewki: 100 kg na sztandze daje R1–R4 przed serią 1', async ({ page }) => {
+  await page.goto('/#/');
+  await page.getByRole('button', { name: 'Pusty trening' }).click();
+  await page.getByRole('button', { name: 'Dodaj ćwiczenie' }).click();
+  await pickExercise(page, 'Dodaj ćwiczenia', 'barbell bench press', BENCH);
+  await page.getByRole('button', { name: 'Gotowe (1)' }).click();
+
+  const bench = panel(page, BENCH);
+  await bench.getByLabel('Ciężar').fill('100');
+  await bench.getByRole('button', { name: 'Rozgrzewka', exact: true }).click();
+
+  const sheet = page.getByRole('dialog', { name: 'Rozgrzewka przed 100 kg' });
+  await expect(sheet.getByRole('listitem')).toHaveCount(4);
+  await expect(sheet.getByRole('listitem').first()).toContainText('20 kg × 10');
+  await sheet.getByRole('button', { name: 'Dodaj rozgrzewkę' }).click();
+  await expect(sheet).toHaveCount(0);
+
+  const rows = bench.getByRole('list', { name: 'Serie' }).getByRole('listitem');
+  await expect(rows).toHaveCount(7);
+  await expect(rows.nth(0)).toContainText('R1');
+  await expect(rows.nth(0)).toContainText('20 kg × 10');
+  await expect(rows.nth(3)).toContainText('R4');
+  await expect(rows.nth(3)).toContainText('80 kg × 3');
+  await expect(rows.nth(4)).toHaveText(/^1/);
+});

@@ -218,3 +218,19 @@ test('powrót z karty ćwiczenia: ta sama wyszukiwarka, wczytane wiersze i miejs
   const yAfter = await page.evaluate(() => window.scrollY);
   expect(Math.abs(yAfter - yBefore)).toBeLessThan(50);
 });
+
+test('karta ćwiczenia: rodzaj ćwiczenia (deska = czas) i zmiana wyboru', async ({ page }) => {
+  await page.goto('/#/cwiczenia/Plank');
+  const select = page.getByLabel('Rodzaj ćwiczenia');
+  await expect(select).toHaveValue('time', { timeout: 15_000 });
+  await select.selectOption('reps');
+  await expect(select).toHaveValue('reps');
+  await page.waitForTimeout(300); // let the write finish before reloading
+  await page.reload();
+  await expect(page.getByLabel('Rodzaj ćwiczenia')).toHaveValue('reps');
+  await page.getByLabel('Rodzaj ćwiczenia').selectOption('time'); // back to the default clears the override
+  await expect(page.getByLabel('Rodzaj ćwiczenia')).toHaveValue('time');
+  await page.waitForTimeout(300);
+  await page.reload();
+  await expect(page.getByLabel('Rodzaj ćwiczenia')).toHaveValue('time');
+});

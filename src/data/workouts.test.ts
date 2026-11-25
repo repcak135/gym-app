@@ -23,6 +23,7 @@ import {
   getLastSets,
   applyWeight,
   scaleWorkingWeights,
+  replaceWarmups,
 } from './workouts';
 
 beforeEach(async () => {
@@ -215,6 +216,49 @@ describe('scaleWorkingWeights', () => {
     await completeSet(sets[0].id);
     await scaleWorkingWeights(w.id, 'bench', 2.5);
     expect((await getWorkoutSets(w.id)).map((s) => s.weight)).toEqual([60, 52.5, 52.5]);
+  });
+});
+
+describe('replaceWarmups', () => {
+  it('keeps completed warm-ups and working sets, puts the ramp between them', async () => {
+    const { plan, day } = await planDay();
+    const w = await startWorkout({ planId: plan.id, dayId: day.id });
+    // bench: 1 warm-up + 3 working; add a second warm-up and complete the first one
+    const before = (await getWorkoutSets(w.id)).filter((s) => s.exerciseId === 'bench');
+    await completeSet(before[0].id);
+    await updateSet(before[1].id, { warmup: true });
+    const working = (await getWorkoutSets(w.id)).filter((s) => s.exerciseId === 'bench' && !s.warmup);
+    for (const s of working) await updateSet(s.id, { weight: 100 });
+
+    await replaceWarmups(w.id, 'bench', [
+      { weight: 20, reps: 10 },
+      { weight: 60, reps: 5 },
+    ]);
+
+    const bench = (await getWorkoutSets(w.id)).filter((s) => s.exerciseId === 'bench');
+    expect(bench.map((s) => [s.warmup, s.weight])).toEqual([
+      [true, before[0].weight],
+      [true, 20],
+      [true, 60],
+      [false, 100],
+      [false, 100],
+    ]);
+    expect(bench.map((s) => s.setOrder)).toEqual([0, 1, 2, 3, 4]);
+    expect(bench[0].completedAt).toBeDefined();
+    expect(bench.every((s) => s.exerciseOrder === 0)).toBe(true);
+    const row = (await getWorkoutSets(w.id)).filter((s) => s.exerciseId === 'row');
+    expect(row.length).toBeGreaterThan(0);
+    const saved = await db.workouts.get(w.id);
+    expect(saved!.exercises![0].warmupSets).toBe(3);
+  });
+
+  it('an empty ramp just removes the not-done warm-ups', async () => {
+    const { plan, day } = await planDay();
+    const w = await startWorkout({ planId: plan.id, dayId: day.id });
+    await replaceWarmups(w.id, 'bench', []);
+    const bench = (await getWorkoutSets(w.id)).filter((s) => s.exerciseId === 'bench');
+    expect(bench.some((s) => s.warmup)).toBe(false);
+    expect((await db.workouts.get(w.id))!.exercises![0].warmupSets).toBe(0);
   });
 });
 

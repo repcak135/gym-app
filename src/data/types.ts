@@ -2,6 +2,9 @@ import type { EffortTarget } from './setTargets';
 
 export type Id = string; // crypto.randomUUID()
 
+/** What a set of an exercise records: reps (default), a held time, a distance, or both (cardio). */
+export type Measure = 'reps' | 'time' | 'distance' | 'timeDistance';
+
 export interface Exercise {
   id: Id;
   name: string;
@@ -15,6 +18,10 @@ export interface Exercise {
   custom: boolean;
   weightStep?: number;
   barWeight?: number;
+  /** Built-in default from exercise-measure.json, or the choice on a custom exercise; undefined = reps. */
+  measure?: Measure;
+  /** The user's choice on a built-in exercise; kept on reseed. */
+  measureOverride?: Measure;
   /** Polish name (openGym catalogue); shown under the English name and searchable. */
   namePl?: string;
   /** Other names of the same exercise (old apps, gyms); the import matches them exactly. */
@@ -38,6 +45,9 @@ export interface PlanItem {
   repsMin: number;
   repsMax: number;
   restSec: number;
+  /** Targets for time / distance exercises (reps fields stay as they are). */
+  targetSec?: number;
+  targetM?: number;
 }
 
 export interface PlanDay {
@@ -61,6 +71,8 @@ export interface WorkoutExercise {
   repsMin: number;
   repsMax: number;
   restSec: number;
+  targetSec?: number;
+  targetM?: number;
 }
 
 export interface Workout {
@@ -91,6 +103,10 @@ export interface WorkoutSet {
   completedAt?: number;
   /** Reps in reserve, 0–5 (5 = 5+); optional, advanced option. Unindexed, no schema change. */
   rir?: number;
+  /** Time exercises (plank, cardio): seconds held / done. Unindexed, no schema change. */
+  durationSec?: number;
+  /** Distance exercises (farmer's walk, cardio): metres. */
+  distanceM?: number;
 }
 
 export type MeasureKey =

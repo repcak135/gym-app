@@ -1,4 +1,5 @@
 import { rirToRpeLabel } from './difficulty'
+import { formatDistance, formatDuration } from './measure'
 
 export type SetValue ={ weight: number; reps: number }
 type FullSet = SetValue & { warmup: boolean }
@@ -80,8 +81,24 @@ export function formatRir(rir: number): string {
 }
 
 /** "30×10" or "30×10 (RPE 9)". */
-export function formatSetShort(s: SetValue & { rir?: number }): string {
-  return `${formatKg(s.weight)}×${s.reps}${s.rir !== undefined ? ` (${rirToRpeLabel(s.rir)})` : ''}`
+/** Long form of a set for history lists: "30 kg × 10 powt." or, for time / distance sets, "20 kg · 0:45". */
+export function formatSetLine(s: SetValue & { durationSec?: number; distanceM?: number }): string {
+  if ((s.durationSec ?? 0) > 0 || (s.distanceM ?? 0) > 0) return formatSetShort(s)
+  return `${formatKg(s.weight)} kg × ${s.reps} powt.`
+}
+
+export function formatSetShort(s: SetValue & { rir?: number; durationSec?: number; distanceM?: number }): string {
+  const rir = s.rir !== undefined ? ` (${rirToRpeLabel(s.rir)})` : ''
+  const sec = s.durationSec ?? 0
+  const m = s.distanceM ?? 0
+  if (sec > 0 || m > 0) {
+    const parts: string[] = []
+    if (s.weight > 0) parts.push(`${formatKg(s.weight)} kg`)
+    if (sec > 0) parts.push(formatDuration(sec))
+    if (m > 0) parts.push(formatDistance(m, sec > 0 ? 'timeDistance' : 'distance'))
+    return parts.join(' · ') + rir
+  }
+  return `${formatKg(s.weight)}×${s.reps}${rir}`
 }
 
 export function parseWeight(text: string): number | null {

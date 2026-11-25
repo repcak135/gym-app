@@ -12,6 +12,7 @@ import {
   addSet,
   completeSet,
   removeSet,
+  replaceWarmups,
   scaleWorkingWeights,
   uncompleteSet,
   updateSet,
@@ -19,6 +20,8 @@ import {
 import { unlockAudio } from '../../audio/beep';
 import { haptic } from '../../haptics';
 import type { InfoTab } from './ExerciseInfoSheet';
+import WarmupSheet from './WarmupSheet';
+import { warmupRamp } from '../../data/warmup';
 
 interface Props {
   workoutId: string;
@@ -30,6 +33,9 @@ interface Props {
   lastSets: WorkoutSet[];
   note?: string;
   step: number;
+  /** Default bar weight and available plates (Ustawienia), for the warm-up generator. */
+  barWeight: number;
+  plates: number[];
   showRir: boolean;
   /** How hard the owner wants to train (Ustawienia). */
   effort: EffortTarget;
@@ -106,6 +112,8 @@ export default function ExercisePanel({
   lastSets,
   note,
   step,
+  barWeight,
+  plates,
   showRir,
   effort,
   stagnating,
@@ -117,6 +125,7 @@ export default function ExercisePanel({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [calcOpen, setCalcOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
+  const [warmupOpen, setWarmupOpen] = useState(false);
   const [diffSetId, setDiffSetId] = useState<string | null>(null);
   const pendingDone = useRef(false);
   const diffSet = sets.find((s) => s.id === diffSetId);
@@ -147,6 +156,14 @@ export default function ExercisePanel({
     !deloaded && selected && selected.completedAt === undefined && selectedWorkingIndex >= 0
       ? targets[selectedWorkingIndex]?.text
       : undefined;
+  const firstWork = workingSets[0]?.weight ?? 0;
+  const isBarbell = exercise?.equipment === 'barbell' || exercise?.equipment === 'e-z curl bar';
+  const ramp = warmupRamp({
+    work: firstWork,
+    bar: isBarbell ? (exercise?.barWeight ?? barWeight) : null,
+    plates,
+    step,
+  });
   const showStagnation = stagnating && (deloaded || !workingSets.some((s) => s.completedAt !== undefined));
 
   const complete = async (set: WorkoutSet) => {
@@ -356,6 +373,11 @@ export default function ExercisePanel({
             <button type="button" onClick={() => void addSet(workoutId, index).then(() => setSelectedId(null))}>
               + Seria
             </button>
+            {firstWork > 0 && (
+              <button type="button" onClick={() => setWarmupOpen(true)}>
+                Rozgrzewka
+              </button>
+            )}
             <button
               type="button"
               onClick={() => {
@@ -371,6 +393,15 @@ export default function ExercisePanel({
         <button type="button" className="set-editor__complete" onClick={() => void addSet(workoutId, index)}>
           + Dodaj serię
         </button>
+      )}
+      {warmupOpen && (
+        <WarmupSheet
+          work={firstWork}
+          ramp={ramp}
+          replaces={sets.some((s) => s.warmup && s.completedAt === undefined)}
+          onAdd={() => void replaceWarmups(workoutId, item.exerciseId, ramp).then(() => { setWarmupOpen(false); setSelectedId(null); })}
+          onClose={() => setWarmupOpen(false)}
+        />
       )}
       {helpOpen && <ProgressionHelpSheet onClose={() => setHelpOpen(false)} />}
       {diffSet && <DifficultySheet set={diffSet} onClose={closeDifficulty} />}

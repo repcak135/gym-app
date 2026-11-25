@@ -20,8 +20,8 @@ const builtIn = (id: string, extra: Partial<Exercise> = {}): Exercise => ({
 async function seedEverything() {
   await db.exercises.bulkPut([
     builtIn('Bench_Press', { barWeight: 15, weightStep: 1.25 }),
-    builtIn('Squat'),
-    { ...builtIn('custom-1'), name: 'Wiosło Krzywe', custom: true, primaryMuscles: [] },
+    builtIn('Squat', { measureOverride: 'time' }),
+    { ...builtIn('custom-1'), name: 'Wiosło Krzywe', custom: true, primaryMuscles: [], measure: 'distance' },
   ]);
   await db.plans.add({
     id: 'p1', name: 'PPL', startedAt: '2026-11-01',
@@ -34,6 +34,7 @@ async function seedEverything() {
   await db.sets.bulkAdd([
     { id: 's1', workoutId: 'w1', exerciseId: 'Bench_Press', exerciseOrder: 0, setOrder: 0, weight: 80, reps: 8, warmup: false, completedAt: 1500, rir: 2 },
     { id: 's2', workoutId: 'w2', exerciseId: 'custom-1', exerciseOrder: 0, setOrder: 0, weight: 40.5, reps: 10, warmup: false },
+    { id: 's3', workoutId: 'w1', exerciseId: 'Squat', exerciseOrder: 1, setOrder: 0, weight: 20, reps: 0, warmup: false, completedAt: 1600, durationSec: 45, distanceM: 40 },
   ]);
   await db.notes.add({ exerciseId: 'Bench_Press', text: 'łokcie 45°', updatedAt: 7 });
   await db.aliases.add({ sourceName: 'Wiosło Krzywe', exerciseId: 'custom-1' });
@@ -62,19 +63,26 @@ describe('backup', () => {
     expect(file.formatVersion).toBe(BACKUP_FORMAT_VERSION);
     expect(file.appVersion).toMatch(/\d+\.\d+\.\d+/);
     expect(file.data.customExercises.map((e) => e.id)).toEqual(['custom-1']);
-    expect(file.data.exerciseOverrides).toEqual([{ id: 'Bench_Press', weightStep: 1.25, barWeight: 15 }]);
+    expect(file.data.exerciseOverrides).toEqual([
+      { id: 'Bench_Press', weightStep: 1.25, barWeight: 15 },
+      { id: 'Squat', measureOverride: 'time' },
+    ]);
+    expect(file.data.customExercises[0].measure).toBe('distance');
     expect(file.data.settings).not.toHaveProperty('exerciseDbVersion');
 
     // wipe and change things, then restore from the JSON text
     await Promise.all([db.plans.clear(), db.workouts.clear(), db.sets.clear(), db.notes.clear(), db.aliases.clear(), db.body.clear()]);
     await db.exercises.delete('custom-1');
     await db.exercises.update('Bench_Press', { barWeight: 25 });
-    await db.exercises.update('Squat', { weightStep: 5 });
+    await db.exercises.update('Squat', { weightStep: 5, measureOverride: 'distance' });
     await db.workouts.add({ id: 'wX', name: 'Nowy', startedAt: 9, source: 'app' });
     await updateSettings({ plates: [25], showRir: false });
 
     await restoreBackup(parseBackup(JSON.stringify(file)));
     expect(await dump()).toEqual(before);
+    const timed = await db.sets.get('s3');
+    expect(timed).toMatchObject({ durationSec: 45, distanceM: 40 });
+    expect((await db.exercises.get('Squat'))?.measureOverride).toBe('time');
     const s = await getSettings();
     expect(s).toEqual({ ...settingsBefore, lastBackupAt: 123456 });
     expect(s.exerciseDbVersion).toBe(4);
@@ -83,7 +91,7 @@ describe('backup', () => {
   it('summary counts', async () => {
     await seedEverything();
     const sum = summarizeBackup(await createBackup(5));
-    expect(sum).toMatchObject({ plans: 1, workouts: 2, sets: 2, measurements: 1, customExercises: 1, exportedAt: 5 });
+    expect(sum).toMatchObject({ plans: 1, workouts: 2, sets: 3, measurements: 1, customExercises: 1, exportedAt: 5 });
   });
 
   it('file name uses the local date', () => {
@@ -103,7 +111,7 @@ describe('backup', () => {
     expect(parsed.data.exerciseOverrides).toEqual([]);
     await restoreBackup(parsed);
     expect(await db.body.count()).toBe(0);
-    expect(await db.sets.count()).toBe(2);
+    expect(await db.sets.count()).toBe(3);
     expect((await getSettings()).plates).toEqual([25, 20, 15, 10, 5, 2.5, 1.25]);
   });
 

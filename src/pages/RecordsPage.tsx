@@ -7,6 +7,7 @@ import { computeBadges, exerciseBests } from '../data/badges';
 import { clampGoal } from '../data/motivation';
 import { getSettings } from '../data/settings';
 import { loadStatsInput } from '../data/stats';
+import { formatDistance, formatDuration } from '../data/measure';
 import { formatKg } from '../data/progression';
 import Segmented from '../components/stats/Segmented';
 import { formatDay } from './planFormat';
@@ -105,6 +106,18 @@ export default function RecordsPage() {
                     1RM: {formatKg(b.records.e1rm.value)} kg
                     <small> · {formatDay(b.records.e1rm.at)}</small>
                   </span>
+                  {b.records.longestTime && (
+                    <span>
+                      Najdłużej: {formatDuration(b.records.longestTime.sec)}
+                      <small> · {formatDay(b.records.longestTime.at)}</small>
+                    </span>
+                  )}
+                  {b.records.longestDistance && (
+                    <span>
+                      Najdalej: {formatDistance(b.records.longestDistance.m, 'timeDistance')}
+                      <small> · {formatDay(b.records.longestDistance.at)}</small>
+                    </span>
+                  )}
                 </span>
                 <ChevronRight size={18} aria-hidden="true" />
               </Link>

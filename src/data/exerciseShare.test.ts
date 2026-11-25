@@ -34,6 +34,21 @@ function ex(name: string, extra: Partial<Exercise> = {}): Exercise {
 const enc = (o: unknown) => LZString.compressToEncodedURIComponent(JSON.stringify(o));
 
 describe('exercise payload', () => {
+  it('carries measure of a custom exercise; old links without it still decode', async () => {
+    const data = encodeExercises([ex('Deska', { measure: 'time' }), ex('Fly')]);
+    const back = decodeExercises(data);
+    expect(back[0].measure).toBe('time');
+    expect(back[1].measure).toBeUndefined();
+    const old = enc({ v: 1, t: 'x', x: [['Stary', ['chest'], [], null, 'strength']] });
+    expect(decodeExercises(old)).toEqual([
+      { name: 'Stary', primaryMuscles: ['chest'], secondaryMuscles: [], equipment: null, category: 'strength' },
+    ]);
+    const junk = enc({ v: 1, t: 'x', x: [['X', [], [], null, 'strength', 'bogus']] });
+    expect(decodeExercises(junk)[0].measure).toBeUndefined();
+    await importSharedExercises(back);
+    expect((await db.exercises.filter((e) => e.name === 'Deska').first())?.measure).toBe('time');
+  });
+
   it('round-trips without the id, note or instructions', () => {
     const data = encodeExercises([ex('Fly'), ex('Row', { primaryMuscles: ['lats'], equipment: null })]);
     expect(decodeExercises(data)).toEqual([
