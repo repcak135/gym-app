@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Plus, MoreHorizontal, Link2, ScanLine } from 'lucide-react';
+import { Plus, MoreHorizontal, Link2, ScanLine, LayoutTemplate } from 'lucide-react';
 
 import { db } from '../data/db';
 import { createPlan, renamePlan, copyPlan, setActivePlan } from '../data/plans';
@@ -93,6 +93,14 @@ export default function PlansPage() {
       <button
         type="button"
         className="plan-btn plan-btn--block plans-from-link"
+        onClick={() => navigate('/plany/szablony')}
+      >
+        <LayoutTemplate size={18} aria-hidden="true" />
+        Dodaj z szablonu
+      </button>
+      <button
+        type="button"
+        className="plan-btn plan-btn--block plans-from-link plans-from-link--next"
         onClick={() => setModal({ kind: 'paste' })}
       >
         <Link2 size={18} aria-hidden="true" />

@@ -9,6 +9,7 @@ import { db } from './data/db';
 import { setHapticsEnabled } from './haptics';
 import StartPage from './pages/StartPage';
 import PlansPage from './pages/PlansPage';
+import PlanTemplatesPage from './pages/PlanTemplatesPage';
 import PlanDetailPage from './pages/PlanDetailPage';
 import PlanDayPage from './pages/PlanDayPage';
 import PlanSharePage from './pages/PlanSharePage';
@@ -99,6 +100,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<StartPage />} />
           <Route path="/plany" element={<PlansPage />} />
+          <Route path="/plany/szablony" element={<PlanTemplatesPage />} />
           <Route path="/plany/:planId" element={<PlanDetailPage />} />
           <Route path="/plany/:planId/dni/:dayId" element={<PlanDayPage />} />
           <Route path="/plany/:planId/wyslij" element={<PlanSharePage />} />
