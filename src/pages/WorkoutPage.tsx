@@ -507,6 +507,7 @@ export default function WorkoutPage() {
                 onConfirmRemoveSet={(set) => setSheet({ kind: 'remove-set', set })}
                 onSetCompleted={(i, done) => void onSetCompleted(i, done)}
                 groupChip={groupChipOf(i)}
+                groupRestSec={groupAt(items, i) ? items[groupAt(items, i)!.end]?.restSec : undefined}
               />
               {i === items.length - 1 && (
                 <button type="button" className="workout-add" onClick={() => setSheet({ kind: 'add' })}>

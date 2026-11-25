@@ -11,8 +11,8 @@ export interface DifficultyLevel {
 }
 
 export const DIFFICULTY_LEVELS: DifficultyLevel[] = [
-  { rpe: '10', rir: 0, label: 'Maksymalny wysiłek', description: 'Nie zrobiłbyś już ani jednego powtórzenia', spoken: 'brak powtórzeń w zapasie', color: '#e5484d' },
-  { rpe: '9', rir: 1, label: 'Bardzo ciężko', description: 'Dałbyś radę jeszcze 1 powtórzenie', spoken: '1 powtórzenie w zapasie', color: 'var(--accent)' },
+  { rpe: '10', rir: 0, label: 'Maksymalny wysiłek', description: 'Nie ma już szans na ani jedno powtórzenie', spoken: 'brak powtórzeń w zapasie', color: '#e5484d' },
+  { rpe: '9', rir: 1, label: 'Bardzo ciężko', description: 'W zapasie jeszcze 1 powtórzenie', spoken: '1 powtórzenie w zapasie', color: 'var(--accent)' },
   { rpe: '8', rir: 2, label: 'Ciężko', description: 'Jeszcze 2 powtórzenia w zapasie', spoken: '2 powtórzenia w zapasie', color: '#f5d90a' },
   { rpe: '7', rir: 3, label: 'Dość ciężko', description: 'Jeszcze 3 powtórzenia w zapasie', spoken: '3 powtórzenia w zapasie', color: 'var(--success)' },
   { rpe: '5–6', rir: 4, label: 'Średnio', description: 'Jeszcze 4–6 powtórzeń w zapasie', spoken: '4–6 powtórzeń w zapasie', color: '#3e8ef7' },

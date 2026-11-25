@@ -124,7 +124,7 @@ export default function ImportPage() {
         </p>
         <section className="pfh-card pfh-card__cta" aria-labelledby="imp-plan-cta">
           <h2 id="imp-plan-cta" className="settings-group__title">Odtwórz plan z historii?</h2>
-          <p className="muted">Możemy zbudować dni planu z Twoich ostatnich treningów. Sam wybierasz, które.</p>
+          <p className="muted">Możemy zbudować dni planu z Twoich ostatnich treningów. Możesz wybrać, które.</p>
           <Link to="/ustawienia/plan-z-historii" className="plan-btn plan-btn--block">Odtwórz plan z historii</Link>
         </section>
         <Link to="/historia" className="plan-btn plan-btn--primary plan-btn--block">Pokaż historię</Link>

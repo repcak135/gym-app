@@ -14,7 +14,7 @@ import { classifyDelts, deltHeadsOf, type DeltHead, type Delts } from './deltHea
 // 4: duplicates merged (scripts/dedupe-exercises.ts); user data on removed ids moves to the kept exercise.
 // 5: exercise measure (time / distance / cardio) from exercise-measure.json; the user's choice is kept.
 // 6: deltoid heads (przód / bok / tył) from deltHeads.ts for built-in exercises.
-export const EXERCISE_DB_VERSION = 6;
+export const EXERCISE_DB_VERSION = 7;
 
 type AkaEntry = { aka?: string[]; similar?: string[]; maybe?: string[] };
 const AKA = akaData as Record<string, AkaEntry>;

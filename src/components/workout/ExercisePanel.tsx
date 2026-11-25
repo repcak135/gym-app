@@ -55,6 +55,8 @@ interface Props {
   onSetCompleted?: (index: number, exerciseDone: boolean) => void;
   /** Superset / circuit chip above the name, e.g. "Superseria 1/2 · dalej: Wiosłowanie". */
   groupChip?: string;
+  /** Rest after the round (restSec of the group's last item); set only for grouped items. */
+  groupRestSec?: number;
 }
 
 function targetLine(item: WorkoutExercise, measure: Measure): string {
@@ -174,6 +176,7 @@ export default function ExercisePanel({
   onConfirmRemoveSet,
   onSetCompleted,
   groupChip,
+  groupRestSec,
 }: Props) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [calcOpen, setCalcOpen] = useState(false);
@@ -471,7 +474,7 @@ export default function ExercisePanel({
             </button>
             {isReps && firstWork > 0 && (
               <button type="button" onClick={() => setWarmupOpen(true)}>
-                Rozgrzewka
+                Dobierz rozgrzewkę
               </button>
             )}
             <button
@@ -492,7 +495,7 @@ export default function ExercisePanel({
       {groupChip && <p className="ex-panel__group">{groupChip}</p>}
       <h2 className="ex-panel__name">{exercise?.name ?? 'Nieznane ćwiczenie'}</h2>
       <p className="ex-panel__target">
-        {targetLine(item, measure)} · przerwa {formatRest(item.restSec)}
+        {targetLine(item, measure)} · {groupRestSec !== undefined ? `przerwa po rundzie ${formatRest(groupRestSec)}` : `przerwa ${formatRest(item.restSec)}`}
       </p>
 
       <div className="ex-panel__info">

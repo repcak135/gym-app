@@ -258,7 +258,7 @@ export default function SettingsPage() {
       <section className="settings-group" aria-labelledby="set-adv">
         <h2 id="set-adv" className="settings-group__title">Zaawansowane</h2>
         <p className="settings-group__hint">
-          Ocena trudności: przy każdej serii pojawi się przycisk „Trudność” z listą RPE (ile powtórzeń jeszcze dałbyś radę zrobić). Pole jest opcjonalne.
+          Ocena trudności: przy każdej serii pojawi się przycisk „Trudność” z listą RPE (ile powtórzeń zostało jeszcze w zapasie). Pole jest opcjonalne.
         </p>
         <ToggleRow
           label="Ocena trudności serii (RPE/RIR)"

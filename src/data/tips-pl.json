@@ -313,5 +313,2807 @@
     "Łokcie pod barkami, ciało w jednej linii.",
     "Napnij pośladki i brzuch, nie opuszczaj bioder.",
     "Lepiej kilka krótszych serii z dobrą pozycją niż jedna długa z zapadniętymi lędźwiami."
+  ],
+  "3_4_Sit-Up": [
+    "Stopy zablokuj, kolana ugięte; unoś tułów zaokrąglonymi plecami, nie szarp szyi rękami.",
+    "Dłonie przy skroniach lub skrzyżowane na klatce, łokcie szeroko i nieruchomo.",
+    "Nie opadaj do podłogi całkiem; zatrzymaj się na ok. 3/4 drogi, żeby brzuch cały czas pracował.",
+    "Wydychaj powietrze przy unoszeniu, opuszczaj powoli bez luzu."
+  ],
+  "Ab_Crunch_Machine": [
+    "Ustaw siedzisko tak, by oś maszyny była na wysokości brzucha, i zacznij od lekkiego ciężaru.",
+    "Zwijaj tułów, przybliżając żebra do miednicy; nie ciągnij ramionami ani nie odpychaj się nogami.",
+    "Wydychaj powietrze na skurczu i zrób krótką pauzę.",
+    "Wracaj powoli, nie kładź ciężarów na stosie między powtórzeniami."
+  ],
+  "Advanced_Kettlebell_Windmill": [
+    "Wzrok kieruj na kettlebell w górze, ramię z ciężarem trzymaj pionowo i zablokowane w łokciu.",
+    "Ruch wychodzi z bioder: wypychaj pośladek w stronę ciężaru, plecy proste, kolana prawie wyprostowane.",
+    "Wolną rękę zsuwaj po nodze, nie opieraj się na niej i nie zaokrąglaj pleców.",
+    "Zacznij z lekkim ciężarem lub bez, bo ruch wymaga dużej ruchomości bioder i barku."
+  ],
+  "Air_Bike": [
+    "Dolny odcinek pleców dociśnięty do maty przez całą serię, głowa i barki lekko uniesione.",
+    "Nie ciągnij głowy rękami za szyję; dłonie tylko lekko przy skroniach.",
+    "Łokieć dotyka przeciwnego kolana przez skręt tułowia, nie przez machanie łokciami.",
+    "Pedałuj wolno i pod kontrolą; szybkość kosztem techniki zabiera pracę brzuchowi."
+  ],
+  "Alternate_Hammer_Curl": [
+    "Łokcie przyklejone do boków, nadgarstki w neutralnej pozycji, kciuki do góry.",
+    "Nie bujaj tułowiem; jeśli musisz, ciężar jest za duży.",
+    "Opuszczaj hantel do pełnego wyprostu ramienia, ale bez zawieszania się na barkach.",
+    "Pracuj naprzemiennie i w spokojnym tempie, bez rozpędu."
+  ],
+  "Alternate_Heel_Touchers": [
+    "Łopatki lekko oderwane od podłogi, lędźwia dociśnięte, szyja długa.",
+    "Skłon w bok rób przez skurcz mięśni skośnych brzucha, nie przez zrzucanie ramienia w dół.",
+    "Ruch jest krótki, dłoń sięga pięty, nie musisz siadać.",
+    "Wydychaj powietrze na skurczu i nie przerywaj napięcia między stronami."
+  ],
+  "Alternate_Incline_Dumbbell_Curl": [
+    "Plecy oparte o ławkę, ramiona zwisają za linią tułowia, co mocno rozciąga bicepsy.",
+    "Łokieć nie wędruje do przodu; rusza się tylko przedramię.",
+    "Podczas uginania obracaj dłoń do góry, aż do pełnego skurczu.",
+    "Opuszczaj do pełnego wyprostu, nie skracaj dolnej fazy."
+  ],
+  "Alternating_Cable_Shoulder_Press": [
+    "Stań stabilnie, napnij brzuch i pośladki, żeby nie wyginać pleców przy wyciskaniu.",
+    "Wyciskaj w górę po prostej linii, nad głową, nie przed twarzą.",
+    "Druga ręka zostaje w pozycji startowej, tułów nie skręca się w stronę ciężaru.",
+    "Wracaj powoli, trzymając napięcie na linach."
+  ],
+  "Alternating_Deltoid_Raise": [
+    "Łokcie lekko ugięte i stałe, hantle unoś do wysokości barków, nie wyżej.",
+    "Nie bujaj tułowiem; jeśli musisz się odchylać, zmniejsz ciężar.",
+    "Barki trzymaj nisko, z dala od uszu.",
+    "Opuszczaj powoli, dwa razy dłużej niż trwa unoszenie."
+  ],
+  "Alternating_Floor_Press": [
+    "Łopatki ściągnięte i oparte o podłogę, nadgarstki sztywno nad przedramionami.",
+    "Opuszczaj kettlebell, aż łokieć lekko dotknie podłogi; nie odbijaj się od niej.",
+    "Łokieć pod kątem ok. 45° od tułowia, nie rozkładaj go na boki.",
+    "Drugą rękę trzymaj stabilnie w górze, pracuj naprzemiennie bez skręcania tułowia."
+  ],
+  "Alternating_Hang_Clean": [
+    "Zacznij od odchylenia bioder do tyłu z prostymi plecami, ciężar ma lecieć z bioder, nie z ramienia.",
+    "Ciągnij kettlebell blisko ciała, a na górze szybko podłóż pod niego przedramię, bez uderzania w nadgarstek.",
+    "Łokieć trzymaj blisko tułowia i wyprostuj biodra do końca.",
+    "Zacznij od lekkiego ciężaru, żeby wyćwiczyć tor ruchu."
+  ],
+  "Alternating_Kettlebell_Press": [
+    "Kettlebell opiera się na przedramieniu przy barku, nadgarstek prosty, nie zgięty do tyłu.",
+    "Wyciskaj pionowo nad barkiem, żebrami nie wypychaj do przodu.",
+    "Napnij pośladki i brzuch, żeby plecy nie wyginały się w łuk.",
+    "Druga ręka zostaje w pozycji przy barku, pracuj naprzemiennie bez przerw."
+  ],
+  "Alternating_Kettlebell_Row": [
+    "Plecy proste, biodra odsunięte do tyłu, wzrok kieruj przed siebie na podłogę.",
+    "Ciągnij łokciem do biodra, a nie do góry; najpierw ściągnij łopatkę.",
+    "Nie skręcaj tułowia przy wiosłowaniu; druga ręka mocno trzyma kettlebell na podłodze.",
+    "Odstawiaj ciężar kontrolowanie, nie rzucaj go o podłogę."
+  ],
+  "Anti-Gravity_Press": [
+    "Leżysz twarzą w dół, szyja w przedłużeniu pleców, nie unoś głowy.",
+    "Ramiona trzymaj równolegle do podłogi, nie opuszczaj łokci.",
+    "Wyciskaj sztangę do przodu bez bujania tułowiem i zacznij od bardzo lekkiego ciężaru.",
+    "Wracaj powoli i nie opieraj ciężaru na klatce piersiowej."
+  ],
+  "Arnold_Dumbbell_Press": [
+    "Zacznij z hantlami przy klatce, dłonie skierowane do siebie, łokcie pod nimi.",
+    "Rotację dłoni rób płynnie podczas wyciskania, nie szarp na początku ruchu.",
+    "Plecy oparte o oparcie, nie odginaj lędźwi, żeby wycisnąć więcej.",
+    "Wracaj tą samą drogą i kontroluj hantle, nie zrzucaj ich na barki."
+  ],
+  "Around_The_Worlds": [
+    "Ramiona lekko ugięte w łokciach i sztywne przez cały ruch, jak przy rozpiętkach.",
+    "Zataczaj półkole nisko, nie unoś hantli wyżej niż poziom ławki, jeśli czujesz ból w barkach.",
+    "Zacznij od lekkiego ciężaru, bo to ćwiczenie izolujące z dużą dźwignią.",
+    "Łopatki ściągnięte i oparte o ławkę, nie wyginaj lędźwi."
+  ],
+  "Barbell_Ab_Rollout": [
+    "Zaokrąglij lekko plecy, napnij brzuch i pośladki, nie pozwól lędźwiom opadać w dół.",
+    "Wyjeżdżaj tylko tak daleko, jak pozwala kontrola; zacznij od krótkiego zakresu.",
+    "Ręce prowadź pionowo nad sztangą, wracaj ruchem brzucha, a nie ciągnięciem ramionami.",
+    "Wydychaj powietrze przy powrocie i nie wyginaj pleców w dole."
+  ],
+  "Barbell_Curls_Lying_Against_An_Incline": [
+    "Klatką leż na ławce skośnej, ramiona zwisają pionowo, łokcie nie wędrują do przodu.",
+    "Nie odrywaj piersi od ławki i nie bujaj tułowiem.",
+    "Uginaj do pełnego skurczu bicepsa, nie przesuwaj łokci do góry.",
+    "Opuszczaj do pełnego wyprostu i zatrzymaj się chwilę w dole."
+  ],
+  "Barbell_Guillotine_Bench_Press": [
+    "To ćwiczenie ryzykowne, więc używaj lekkiego ciężaru i poproś o asekurację.",
+    "Opuszczaj sztangę nad górną część klatki, nie na szyję; zatrzymaj ją kilka centymetrów wyżej.",
+    "Łokcie szeroko, ale nie zrzucaj ich za linię barków.",
+    "Wyciskaj powoli, bez bujania i bez odbijania sztangi."
+  ],
+  "Barbell_Hack_Squat": [
+    "Sztanga trzymana z tyłu przy udach, piersi do przodu, plecy proste.",
+    "Schodź w dół, aż uda będą równoległe, kolana kieruj w linii stóp.",
+    "Stopy bliżej siebie i pięty na podłodze, ciężar na całych stopach.",
+    "Nie zaokrąglaj pleców, zacznij od lekkiego obciążenia."
+  ],
+  "Barbell_Incline_Shoulder_Raise": [
+    "Ramiona proste, ruch wychodzi tylko z łopatek, nie z łokci.",
+    "Wypchnij barki do góry bez zginania łokci i wróć powoli.",
+    "Hamuj ruch w dole, zamiast opadać na łopatki.",
+    "Ciężar dobierz tak, by nie unosić miednicy z ławki."
+  ],
+  "Barbell_Lunge": [
+    "Sztanga stabilnie na plecach, brzuch napięty, wzrok przed siebie.",
+    "Wykrok na tyle długi, żeby przednie kolano nad stopą nie uciekało do środka.",
+    "Tułów pionowo, tylne kolano zbliżaj do podłogi bez uderzania.",
+    "Odpychaj się całą stopą, najbardziej piętą, i wracaj bez przechylania ciała."
+  ],
+  "Barbell_Rear_Delt_Row": [
+    "Tułów prawie równoległy do podłogi, plecy proste, nie podnoś ich w trakcie serii.",
+    "Łokcie prowadź szeroko na boki, na wysokości barków, nie wzdłuż tułowia.",
+    "Uważaj, żeby nie włączać bicepsów; ręce są tylko hakami.",
+    "Ciągnij sztangę do górnej części klatki, stosując lekki ciężar."
+  ],
+  "Barbell_Rollout_from_Bench": [
+    "Klęcz na ławce z pewnym oparciem kolan, brzuch napięty, plecy lekko zaokrąglone.",
+    "Wyjeżdżaj tak daleko, jak możesz kontrolować, bez zapadania lędźwi.",
+    "Ręce proste i ruch z barków, wracaj, ściągając brzuch, nie ciągnąc rękami.",
+    "Wydychaj powietrze przy powrocie i zacznij od lekkiej sztangi."
+  ],
+  "Barbell_Seated_Calf_Raise": [
+    "Sztanga leży na udach nad kolanami, owiń ją gąbką, żeby nie raniła.",
+    "Pięty opuszczaj głęboko, żeby łydki się rozciągnęły, i unoś je jak najwyżej.",
+    "Zrób krótką pauzę w górze i w dole, bez odbijania.",
+    "Ruch wykonuj wolno, bo to mały zakres i łatwo go zepsuć rozpędem."
+  ],
+  "Barbell_Shoulder_Press": [
+    "Chwyt nieco szerszy niż barki, przedramiona pionowo w dole ruchu.",
+    "Siedzisz z plecami przy oparciu; nie odginaj lędźwi, napnij brzuch i pośladki.",
+    "Sztangę opuszczaj do linii brody lub górnej części klatki i wyciskaj prosto w górę.",
+    "Głowę lekko cofnij, żeby sztanga przeszła przed twarzą, a w górze wróć pod nią."
+  ],
+  "Barbell_Shrug_Behind_The_Back": [
+    "Sztangę trzymaj za plecami na wyprostowanych rękach, klatką lekko do przodu.",
+    "Unoś barki prosto w górę, ku uszom, bez obracania ich ani zginania łokci.",
+    "Zrób pauzę na górze i opuszczaj powoli.",
+    "Nie wyciągaj głowy do przodu, zacznij od mniejszego ciężaru."
+  ],
+  "Barbell_Side_Bend": [
+    "Sztanga stabilnie na plecach, nogi na szerokość barków, brzuch napięty.",
+    "Pochylaj się tylko w bok, bez skrętu ani pochylenia do przodu.",
+    "Używaj lekkiego ciężaru; ciężka sztanga zrobi z tego ruch bioder.",
+    "Wróć do pionu i nie wychylaj się na drugą stronę."
+  ],
+  "Barbell_Side_Split_Squat": [
+    "Stopa nogi roboczej lekko na zewnątrz, kolano zawsze w linii palców.",
+    "Schodź w bok biodrami do tyłu, druga noga prosta lub tylko lekko ugięta.",
+    "Plecy proste, klatka do przodu; sztanga nieruchomo na plecach.",
+    "Pięta pracującej nogi cały czas na podłodze, ćwicz powoli i zacznij lekko."
+  ],
+  "Barbell_Step_Ups": [
+    "Wybierz skrzynię na wysokości kolana lub niższą, tak by nie trzeba było odpychać się drugą nogą.",
+    "Pracuj nogą na podwyższeniu, odpychaj się piętą i nie pomagaj sobie nogą z tyłu.",
+    "Tułów prosto, sztanga stabilnie na plecach, kolano nie ucieka do środka.",
+    "Schodź powoli, kontrolując tempo, i dopiero wtedy zmieniaj nogę."
+  ],
+  "Barbell_Walking_Lunge": [
+    "Krok na tyle długi, żeby przednie podudzie było prawie pionowo, tułów prosto.",
+    "Tylne kolano zbliżaj do podłogi, ale go o nią nie uderzaj.",
+    "Odpychaj się całą stopą i nie przechylaj miednicy na boki.",
+    "Zacznij z lekką sztangą, żeby utrzymać równowagę."
+  ],
+  "Bench_Dips": [
+    "Ramiona trzymaj pod barkami, plecy blisko ławki, łokcie do tyłu, a nie na boki.",
+    "Schodź tak, żeby łokcie były zgięte do ok. 90°; głębiej tylko, jeśli barki nie bolą.",
+    "Barki nie wędrują do uszu ani do przodu, klatka pozostaje otwarta.",
+    "Dla ułatwienia ugnij kolana, dla trudności wyprostuj nogi i dołóż ciężar."
+  ],
+  "Bent-Arm_Barbell_Pullover": [
+    "Ramiona lekko ugięte i w tej samej pozycji w całym ruchu, to nie wyciskanie.",
+    "Opuszczaj sztangę łukiem za głowę, aż poczujesz rozciągnięcie klatki i mięśni najszerszych.",
+    "Lędźwie dociśnięte do ławki, nie wyginaj pleców w łuk.",
+    "Wracaj po tym samym łuku, wydychając powietrze, i używaj lekkiego ciężaru."
+  ],
+  "Bent-Arm_Dumbbell_Pullover": [
+    "Przedramiona tylko lekko ugięte, ruch wychodzi z barków, nie z łokci.",
+    "Opuszczaj hantel łukiem za głowę, aż poczujesz rozciągnięcie klatki.",
+    "Biodra nisko, plecy proste, nie wyginaj lędźwi, żeby sięgnąć dalej.",
+    "Trzymaj hantel obiema dłońmi mocno, żeby nie zsunął się na twarz."
+  ],
+  "Bent-Knee_Hip_Raise": [
+    "Lędźwie dociśnięte do maty, ręce wzdłuż ciała, ale nie odpychaj się nimi.",
+    "Unoś biodra, zwijając miednicę, a nie machając nogami.",
+    "Kolana prowadź nad klatkę, bez zrzucania ich za głowę.",
+    "Wydychaj powietrze na skurczu i opuszczaj biodra powoli."
+  ],
+  "Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench": [
+    "Czoło oparte o ławkę, plecy proste, szyja w przedłużeniu kręgosłupa.",
+    "Ramiona lekko ugięte w łokciach, unoś hantle na boki, nie do tyłu.",
+    "Dłonie do siebie, łokcie prowadzą ruch, a nadgarstki pozostają luźne.",
+    "Zacznij od lekkich hantli, bo tylne aktony są małe, i unikaj bujania."
+  ],
+  "Bent_Over_Low-Pulley_Side_Lateral": [
+    "Pochyl się tak, żeby tułów był prawie równoległy do podłogi, plecy proste.",
+    "Rękę prowadź łukiem na bok, a nie do tyłu, łokieć lekko ugięty i stały.",
+    "Wolną ręką mocno podeprzyj się o udo, żeby nie bujać ciałem.",
+    "Zatrzymaj się na wysokości barków i opuszczaj powoli."
+  ],
+  "Bent_Over_One-Arm_Long_Bar_Row": [
+    "Plecy proste, tułów prawie równoległy do podłogi, kolana lekko ugięte.",
+    "Ciągnij łokciem blisko ciała, aż ciężar dotknie dolnej części klatki.",
+    "Nie obracaj tułowia ani nie szarp; pracuje tylko ramię i plecy.",
+    "Zatrzymaj się na szczycie na chwilę, ściągając łopatkę."
+  ],
+  "Bent_Over_Two-Arm_Long_Bar_Row": [
+    "Plecy proste, biodra odsunięte do tyłu, kolana lekko ugięte, głowa w przedłużeniu pleców.",
+    "Ciągnij łokcie blisko ciała i ściągaj łopatki, aż ciężar dotknie klatki.",
+    "Nie podnoś tułowia przy ciągnięciu, nie pomagaj sobie rozpędem.",
+    "Zbyt ciężkie obciążenie kończy się zaokrągleniem pleców, więc zacznij lżej."
+  ],
+  "Bent_Over_Two-Dumbbell_Row": [
+    "Plecy proste, biodra do tyłu, tułów prawie równolegle do podłogi, wzrok kilka metrów przed sobą.",
+    "Hantle ciągnij do boków dolnej części klatki, łokcie blisko ciała.",
+    "Ściągaj łopatki na szczycie i zatrzymaj się na chwilę.",
+    "Nie bujaj tułowiem i nie wstrzymuj oddechu przy opuszczaniu."
+  ],
+  "Bent_Over_Two-Dumbbell_Row_With_Palms_In": [
+    "Chwyt neutralny, dłonie do siebie, a łokcie prowadź blisko tułowia.",
+    "Plecy proste, tułów prawie równoległy do podłogi, kolana lekko ugięte.",
+    "Ciągnij hantle w stronę bioder, ściągając łopatki, a nie unosząc barków.",
+    "Nie szarp; opuszczaj powoli do pełnego wyprostu ramion."
+  ],
+  "Body-Up": [
+    "Ciało w jednej linii od głowy do pięt, brzuch i pośladki napięte, biodra nie opadają.",
+    "Prostuj ramiona, wypychając się dłońmi z podłogi, a nie wypychając pośladków.",
+    "Łokcie rób blisko tułowia, nie rozkładaj ich na boki.",
+    "Opuszczaj się powoli do przedramion, nie zrzucaj ciężaru ciała."
+  ],
+  "Body_Tricep_Press": [
+    "Chwyt na szerokość barków, ciało wyprostowane i napięte jak deska.",
+    "Łokcie prowadź do przodu i blisko, tak żeby się nie rozjeżdżały.",
+    "Schodź czołem lub głową ponad sztangę i wypychaj się rękami do pełnego wyprostu.",
+    "Im bliżej stóp do sztangi, tym łatwiej, więc cofaj je stopniowo."
+  ],
+  "Bodyweight_Flyes": [
+    "Ciało proste jak w pompce, brzuch napięty, nie wypychaj bioder w górę ani nie zapadaj lędźwi.",
+    "Rozjeżdżaj sztangi powoli, z lekko ugiętymi łokciami, tylko tak daleko, jak możesz kontrolować.",
+    "To bardzo trudne dla barków; zacznij od krótkiego zakresu i nie schodź do podłogi.",
+    "Wracaj, ściągając dłonie do siebie siłą klatki."
+  ],
+  "Bodyweight_Squat": [
+    "Stopy na szerokość barków lub nieco szerzej, palce lekko na zewnątrz.",
+    "Kolana prowadź w linii palców, nie pozwól im zapadać do środka.",
+    "Zaczynaj ruch od odsunięcia bioder do tyłu, klatka lekko do przodu.",
+    "Pięty cały czas na podłodze, schodź tak głęboko, jak pozwala ruchomość."
+  ],
+  "Bosu_Ball_Cable_Crunch_With_Side_Bends": [
+    "Plecami oprzyj się o piłkę, stopy szeroko na podłodze, ruch zaczyna się w brzuchu.",
+    "Zwijaj tułów, przybliżając żebra do miednicy, nie ciągnij linek ramionami.",
+    "Skręt lub skłon rób wolno, bez szarpania, nie ciągnij głowy do przodu.",
+    "Zacznij od lekkiego obciążenia, bo niestabilne podłoże utrudnia kontrolę."
+  ],
+  "Bottoms-Up_Clean_From_The_Hang_Position": [
+    "Kettlebell trzymaj dnem do góry, nadgarstek prosty, mocno zaciśnięta dłoń.",
+    "Ciągnij blisko ciała, wyprostowanymi biodrami, a nie samym ramieniem.",
+    "Łokieć trzymaj blisko żeber, a ciężar zatrzymaj przy barku.",
+    "Zacznij z lekkim ciężarem, bo trudno kontrolować równowagę dzwona."
+  ],
+  "Bottoms_Up": [
+    "Plecy na macie, nogi proste, ruch zaczyna się od zwinięcia miednicy.",
+    "Unoś biodra, zwijając dolny odcinek pleców, a nie machając nogami.",
+    "Nogi kieruj do góry, nad biodra, i opuszczaj powoli.",
+    "Wydychaj powietrze na skurczu i nie odbijaj się od podłogi."
+  ],
+  "Bradford_Rocky_Presses": [
+    "Chwyt szerszy niż barki, sztanga ciągle w ruchu między tyłem głowy a czołem.",
+    "Nie wyprostowuj łokci do końca, utrzymuj stałe napięcie w barkach.",
+    "Używaj lekkiego ciężaru, bo ten ruch mocno obciąża barki.",
+    "Głowę lekko pochylaj, żeby sztanga przechodziła przed twarzą."
+  ],
+  "Butt-Ups": [
+    "Zacznij na przedramionach, ciało proste, brzuch napięty, nie opuszczaj bioder.",
+    "Unoś biodra do góry, zwijając miednicę i ściągając żebra do bioder.",
+    "Wydychaj powietrze na skurczu, plecy lekko zaokrąglone.",
+    "Opuszczaj powoli, nie pozwól lędźwiom opaść w dół."
+  ],
+  "Butt_Lift_Bridge": [
+    "Stopy na szerokość bioder, pięty blisko pośladków, odpychaj się piętami.",
+    "Unoś biodra, aż ciało utworzy prostą linię od kolan do ramion; nie wyginaj lędźwi.",
+    "Ściśnij pośladki na górze i zrób krótką pauzę.",
+    "Kolana trzymaj w linii stóp, nie pozwól im uciekać do środka."
+  ],
+  "Cable_Chest_Press": [
+    "Łopatki ściągnięte i opuszczone, klatka lekko do przodu, plecy opierają się o oparcie.",
+    "Łokcie ok. 45° od tułowia, dłonie na wysokości środka klatki.",
+    "Wypychaj do przodu, aż ramiona się wyprostują, ale nie zablokuj łokci siłą.",
+    "Wracaj powoli, trzymając napięcie na linkach, nie dopuszczaj do rzucenia ciężaru."
+  ],
+  "Cable_Crossover": [
+    "Stań w wykroku, tułów lekko pochylony, łokcie lekko ugięte w stałym kącie.",
+    "Dłonie schodzą łukiem na dół i do środka, łącząc się przed biodrami.",
+    "Ściśnij klatkę na końcu ruchu i zatrzymaj na chwilę.",
+    "Wracaj powoli do poziomu klatki, nie pozwól linkom ciągnąć barków do tyłu."
+  ],
+  "Cable_Deadlifts": [
+    "Plecy proste, biodra do tyłu, ciężar blisko nóg, wzrok przed siebie.",
+    "Odpychaj się piętami, prostuj biodra i kolana jednocześnie.",
+    "Na górze nie odchylaj się do tyłu, tylko mocno ściśnij pośladki.",
+    "Zacznij od lekkiego ciężaru, aż nauczysz się odsuwać biodra."
+  ],
+  "Cable_Hammer_Curls_-_Rope_Attachment": [
+    "Łokcie przyklejone do boków, kciuki skierowane do góry przez cały ruch.",
+    "Rozchylaj linę na szczycie, żeby mocniej spiąć bicepsy.",
+    "Tułów nie rusza się; jeśli się bujasz, zmniejsz ciężar.",
+    "Opuszczaj powoli, nie pozwól stosowi ciężarów opaść."
+  ],
+  "Cable_Hip_Adduction": [
+    "Trzymaj się mocno maszyny, tułów prosto, nie przechylaj się w stronę ciężaru.",
+    "Nogę prowadź przed drugą nogą, ku środkowi, powoli i z pełną kontrolą.",
+    "Noga stojąca lekko ugięta i stabilna, miednica nie skręca się.",
+    "Stos nie opada, a rozciągnięcie w skrajnym położeniu bez szarpania."
+  ],
+  "Cable_Incline_Pushdown": [
+    "Ramiona proste, ruch wychodzi z barków, a łokcie pozostają prawie wyprostowane.",
+    "Ściągaj drążek łukiem w stronę ud, napinając mięśnie najszersze.",
+    "Brzuch napięty, nie odrywaj pleców od ławki.",
+    "Wracaj powoli do położenia nad głową i wydychaj powietrze przy ściąganiu."
+  ],
+  "Cable_Incline_Triceps_Extension": [
+    "Łokcie wąsko, blisko głowy i prawie nieruchomo; pracują tylko przedramiona.",
+    "Prostuj ramiona do pełnego wyprostu i ściśnij triceps na chwilę.",
+    "Nie pozwól łokciom wędrować na boki lub do tyłu.",
+    "Wracaj powoli, kontrolując ciężar przez cały zakres."
+  ],
+  "Cable_Internal_Rotation": [
+    "Łokieć przyklejony do boku, zgięty pod kątem 90°, nie oddalaj go od tułowia.",
+    "Obracaj ramię tylko w stawie barkowym, przedramię prowadź przed brzuch.",
+    "Użyj bardzo lekkiego ciężaru; to mały mięsień stabilizujący bark.",
+    "Wracaj powoli, bez szarpania, i trzymaj nadgarstek prosto."
+  ],
+  "Cable_Iron_Cross": [
+    "Stań stabilnie, klatka lekko do przodu, ramiona na boki w kształt litery T.",
+    "Łokcie lekko ugięte i stałe, dłonie ściągaj w dół i do przodu, a nie wyginaj nadgarstków.",
+    "Zatrzymaj skurcz klatki na dole i nie odchylaj się do tyłu.",
+    "Zacznij od lekkiego ciężaru, bo ruch mocno obciąża barki."
+  ],
+  "Cable_Judo_Flip": [
+    "Stań szeroko, napnij brzuch i obracaj tułów, a nie samymi rękami.",
+    "Przenosź ciężar ciała z nogi na nogę, a linę ciągnij po skosie w dół.",
+    "Wydychaj powietrze przy skręcie i nie wyginaj pleców.",
+    "Ruch ma być płynny, a nie szarpany; zacznij od lekkiego ciężaru."
+  ],
+  "Cable_Lying_Triceps_Extension": [
+    "Leżysz na ławce, ramiona prostopadle do tułowia, łokcie wąsko i nieruchomo.",
+    "Opuszczaj drążek w stronę czoła lub za głowę, nie rozkładaj łokci.",
+    "Prostuj ramiona do pełnego wyprostu i ściśnij triceps.",
+    "Poproś o podanie drążka, nie rzucaj ciężaru na twarz."
+  ],
+  "Cable_One_Arm_Tricep_Extension": [
+    "Łokieć przy żebrach, stały i nieruchomy; ruch odbywa się tylko w stawie łokciowym.",
+    "Prostuj ramię do pełnego wyprostu i ściśnij triceps na chwilę.",
+    "Tułów prosto, bez kołysania; stań w lekkim wykroku dla stabilności.",
+    "Wracaj powoli do kąta poniżej 90° i trzymaj nadgarstek prosto."
+  ],
+  "Cable_Preacher_Curl": [
+    "Ramiona oparte całą długością o poduszkę, klatka dociśnięta do ławki.",
+    "Uginaj bez odrywania łokci od podkładki i nie odchylaj się do tyłu.",
+    "Opuszczaj do prawie pełnego wyprostu, ale nie rozluźniaj bicepsa całkowicie.",
+    "Kontroluj ciężar w dolnej fazie, bo tam najłatwiej o przeciążenie łokcia."
+  ],
+  "Cable_Rear_Delt_Fly": [
+    "Ramiona lekko ugięte, krzyżuj linki i prowadź je na boki, bez cofania łokci za linię tułowia.",
+    "Barki trzymaj nisko, nie unoś ich do uszu.",
+    "Tułów prosty i nieruchomy, nie odchylaj się.",
+    "Zatrzymaj skurcz tylnych aktonów na chwilę i wracaj powoli."
+  ],
+  "Cable_Reverse_Crunch": [
+    "Lędźwie dociśnięte do maty, ręce trzymają się za głowę lub podłoża.",
+    "Unoś biodra, zwijając miednicę ku klatce, nie ciągnij nogami z rozpędu.",
+    "Kolana prowadź do klatki i wracaj powoli, nie opuszczaj stopów na podłogę.",
+    "Wydychaj powietrze przy skurczu i utrzymaj napięcie w dolnej fazie."
+  ],
+  "Cable_Rope_Rear-Delt_Rows": [
+    "Plecy proste, biodra z tyłu, ciągnij linę do górnej części klatki lub twarzy.",
+    "Łokcie prowadź szeroko i wysoko, na wysokości barków, nie przy tułowiu.",
+    "Rozdziel końcówki liny na końcu ruchu, ściskając łopatki.",
+    "Używaj lekkiego ciężaru, bo tylne aktony szybko tracą kontrolę."
+  ],
+  "Cable_Russian_Twists": [
+    "Biodra uniesione, ciało proste od głowy do kolan, brzuch napięty.",
+    "Ramiona proste, obracaj tułów, a nie samymi rękami.",
+    "Wzrok podążaj za dłońmi, nie obracaj samej głowy.",
+    "Obracaj się wolno, w kontrolowanym zakresie, nie pozwól piłce uciec."
+  ],
+  "Cable_Seated_Crunch": [
+    "Liny trzymaj przy barkach, a biodra nieruchomo na ławce.",
+    "Zwijaj tułów, zbliżając łokcie do bioder, nie ciągnij ciężaru ramionami.",
+    "Wydychaj powietrze przy skurczu i nie pochylaj się całym ciałem do przodu.",
+    "Wracaj powoli, nie odchylaj się za mocno w tył."
+  ],
+  "Cable_Shoulder_Press": [
+    "Stań stabilnie, brzuch i pośladki napięte, żeby nie wyginać lędźwi.",
+    "Wyciskaj pionowo nad głowę, nie przed twarzą, i zatrzymaj się na chwilę na górze.",
+    "Dłonie nad łokciami, ramiona nie rozjeżdżają się na boki.",
+    "Opuszczaj wolno do poziomu barków, trzymając napięcie na linkach."
+  ],
+  "Cable_Shrugs": [
+    "Ramiona wyprostowane, unoś barki prosto w górę, ku uszom.",
+    "Nie obracaj barków i nie zginaj łokci, trapezy pracują na górze.",
+    "Zrób pauzę na szczycie i opuszczaj wolno.",
+    "Stań blisko wyciągu i trzymaj głowę prosto."
+  ],
+  "Cable_Wrist_Curl": [
+    "Przedramiona oparte o uda, nadgarstki zwisają poza kolanami.",
+    "Ruszaj samymi nadgarstkami, bez podnoszenia przedramion z ud.",
+    "Opuszczaj sztangę nisko, aż poczujesz rozciągnięcie, i unoś do pełnego skurczu.",
+    "Użyj lekkiego ciężaru i powolnego tempa, bo przedramiona szybko się męczą."
+  ],
+  "Calf-Machine_Shoulder_Shrug": [
+    "Podkładki ustaw na barkach, tułów prosto, ramiona wyprostowane po bokach.",
+    "Unoś barki prosto w górę, nie obracaj nimi ani nie kołysz tułowia.",
+    "Zatrzymaj skurcz trapezów na chwilę i opuszczaj powoli.",
+    "Nie wyciągaj głowy do przodu i nie pomagaj sobie nogami."
+  ],
+  "Calf_Press": [
+    "Stopy przednią częścią na platformie, pięty swobodnie poza krawędzią.",
+    "Opuszczaj pięty głęboko, żeby łydki się rozciągnęły, i wypychaj do pełnego skurczu.",
+    "Kolana prawie proste i nieruchome; ruch tylko w stawach skokowych.",
+    "Zatrzymaj się na górze i w dole, nie odbijaj się."
+  ],
+  "Calf_Press_On_The_Leg_Press_Machine": [
+    "Odblokuj zabezpieczenia, ale zostaw je blisko; wypchnij platformę bez blokowania kolan.",
+    "Tylko przednia część stopy na platformie, pięty poza krawędzią.",
+    "Kolana prawie proste i nieruchome przez całą serię.",
+    "Opuszczaj pięty głęboko i zatrzymaj skurcz na górze."
+  ],
+  "Calf_Raise_On_A_Dumbbell": [
+    "Przytrzymaj się czegoś stabilnego i stawaj środkiem stopy na uchwycie hantla.",
+    "Unoś się na palce i zrób pauzę, aż poczujesz pełny skurcz łydki.",
+    "Opuszczaj się powoli, żeby łydka się rozciągnęła, bez spadania.",
+    "Hantel potrafi się przetoczyć, więc ćwicz uważnie i bez pośpiechu."
+  ],
+  "Car_Drivers": [
+    "Talerz trzymaj na wysokości klatki, ramiona wyprostowane, brzuch napięty.",
+    "Obracaj tarczą jak kierownicą, a tułów pozostaje nieruchomy.",
+    "Nie wyginaj pleców i nie wypychaj bioder; ruch ma wychodzić z ramion.",
+    "Zacznij od lekkiego talerza, bo ramiona szybko się męczą."
+  ],
+  "Chair_Squat": [
+    "Stopy ustaw przed sztangą, plecy trzymaj wzdłuż oparcia, wzrok prosto.",
+    "Zejdź do kąta poniżej 90° w kolanach, kolana prowadź w linii stóp.",
+    "Nie odrywaj pleców od oparcia ani nie zaokrąglaj dolnego odcinka.",
+    "Odpychaj się całą stopą i prostuj nogi bez blokowania kolan."
+  ],
+  "Clean_and_Press": [
+    "Zacznij z prostymi plecami, sztanga blisko goleni, barki nad sztangą lub tuż przed nią.",
+    "Pierwsze ciągnięcie rób nogami, a potem silnie wyprostuj biodra i wzrusz barkami.",
+    "Łokcie szybko obróć pod sztangę, a wejście pod ciężar zrób miękko, w lekkim przysiadzie.",
+    "Zacznij od lekkiego ciężaru i ćwicz ruch z gryfem, bo technika jest złożona."
+  ],
+  "Clock_Push-Up": [
+    "Ciało proste, brzuch napięty, dłonie nieco szerzej niż barki.",
+    "Zejdź kontrolowanie, a potem dynamicznie się odepchnij i przesuń ręce o krok w bok.",
+    "Lądując na rękach, zamortyzuj ruch ugiętymi łokciami.",
+    "Ćwiczenie plyometryczne, więc zacznij od wersji bez skoku, jeśli nadgarstki bolą."
+  ],
+  "Close-Grip_Dumbbell_Press": [
+    "Leżysz poprzecznie na ławce, barki oparte, biodra nisko, nogi stabilnie.",
+    "Hantel trzymaj obiema dłońmi przy jednym końcu, łokcie wąsko blisko ciała.",
+    "Opuszczaj do klatki powoli i wyciskaj siłą tricepsów.",
+    "Poproś o asekurację i upewnij się, że tarcze są solidnie zablokowane."
+  ],
+  "Close-Grip_EZ-Bar_Curl_with_Band": [
+    "Stań stopą na gumie, łokcie przy bokach, wąski chwyt na wewnętrznych uchwytach łamanej sztangi.",
+    "Guma narasta pod koniec ruchu, więc kontroluj szczyt skurczu.",
+    "Nie bujaj tułowiem; ruszają się tylko przedramiona.",
+    "Opuszczaj powoli, nie pozwól gumie szarpnąć ramionami."
+  ],
+  "Close-Grip_EZ-Bar_Press": [
+    "Chwyt wąski, mniej więcej na szerokość barków, nie węższy, dla zdrowia nadgarstków.",
+    "Łokcie blisko tułowia, nie rozkładaj ich na boki.",
+    "Opuszczaj sztangę na dolną część klatki i wyciskaj siłą tricepsów.",
+    "Łopatki ściągnięte, stopy mocno na podłodze, a tempo spokojne."
+  ],
+  "Close-Grip_EZ_Bar_Curl": [
+    "Wąski chwyt na wewnętrznym uchwycie, łokcie blisko ciała i nieruchome.",
+    "Nie bujaj tułowiem ani nie odchylaj się do tyłu.",
+    "Zatrzymaj skurcz na szczycie, a opuszczaj powoli do pełnego wyprostu.",
+    "Nadgarstki trzymaj prosto, a barki nisko, bez unoszenia ich do przodu."
+  ],
+  "Close-Grip_Push-Up_off_of_a_Dumbbell": [
+    "Dłonie na hantlu postawionym pionowo, ciało proste, brzuch i pośladki napięte.",
+    "Łokcie blisko tułowia, nie rozkładaj ich na boki.",
+    "Zejdź klatką do hantla, a potem wypchnij się tricepsami.",
+    "Nie pozwól biodrom opaść ani wystawać w górę; trzymaj ciało w jednej linii."
+  ],
+  "Close-Grip_Standing_Barbell_Curl": [
+    "Chwyt na szerokość kilku centymetrów, nadgarstki w linii z przedramionami, nie zginaj ich.",
+    "Łokcie przyklejone do boków i nieruchome, pracują tylko przedramiona.",
+    "Nie bujaj tułowiem; jeśli musisz, ciężar jest za duży.",
+    "W górze zatrzymaj na chwilę i napnij biceps, w dół schodź wolno, około 2–3 sekund.",
+    "Wydychaj powietrze przy zginaniu, wdychaj przy opuszczaniu."
+  ],
+  "Cocoons": [
+    "Dolny odcinek pleców dociśnij do podłogi, zanim zaczniesz ruch.",
+    "Kolana i klatkę zbliżaj do siebie jednocześnie, napinając brzuch, a nie rzucając nogami.",
+    "Opuszczaj nogi i ręce wolno, bez opadania na podłogę.",
+    "Nie szarp głową do przodu, szyja jest rozluźniona.",
+    "Oddychaj rytmicznie: wydech przy zwijaniu, wdech przy rozprostowaniu."
+  ],
+  "Concentration_Curls": [
+    "Tył ramienia oprzyj mocno o wewnętrzną stronę uda i nie odrywaj go w trakcie serii.",
+    "Tułów trzymaj stabilnie, bez odchylania się do tyłu przy podnoszeniu.",
+    "W górze lekko skręć nadgarstek, żeby mały palec był wyżej niż kciuk.",
+    "Opuszczaj hantel wolno i do pełnego wyprostu łokcia.",
+    "Wybierz ciężar, przy którym nie pomagasz sobie barkiem."
+  ],
+  "Cross-Body_Crunch": [
+    "Dłonie luźno przy głowie, nie ciągnij nimi za kark.",
+    "Prowadź ruch barkiem w stronę przeciwnego kolana, a nie samym łokciem.",
+    "Druga noga jest odciążona, ale kontroluj ją, żeby nie machać.",
+    "Dolne plecy zostają przy podłodze, ruch wychodzi z brzucha.",
+    "Pracuj powoli, w górze zrób krótką pauzę i zmień stronę."
+  ],
+  "Cross_Body_Hammer_Curl": [
+    "Chwyt młotkowy, kciuk skierowany w górę przez cały ruch, bez skręcania nadgarstka.",
+    "Łokieć trzymaj przy tułowiu, a hantel prowadź w stronę przeciwnego barku.",
+    "Stój prosto, nie bujaj biodrami ani nie odchylaj pleców.",
+    "Opuszczaj tą samą drogą, wolno, bez opadania ramienia.",
+    "Ten wariant mocno angażuje mięsień ramienny i przedramię, więc ciężar dobierz rozsądnie."
+  ],
+  "Crunch_-_Hands_Overhead": [
+    "Ręce trzymaj w jednej linii z głową i karkiem, nie rzucaj nimi do przodu.",
+    "Dolne plecy zostają na podłodze, od ziemi odrywasz tylko łopatki.",
+    "Zwijaj się powoli, w górze zatrzymaj napięcie na sekundę.",
+    "Wzrok kieruj w sufit, żeby nie zginać szyi do klatki.",
+    "Nie używaj rozpędu, tylko pracę brzucha."
+  ],
+  "Crunch_-_Legs_On_Exercise_Ball": [
+    "Dociśnij dolny odcinek pleców do podłogi i utrzymaj ten docisk w całej serii.",
+    "Stopy trzymaj stabilnie na piłce, nie pozwalaj jej uciekać na boki.",
+    "Dłonie lekko przy głowie, bez splatania palców na karku.",
+    "Odrywaj tylko łopatki, nie podciągaj się całym tułowiem.",
+    "Wydychaj powietrze w górze i opuszczaj się wolno."
+  ],
+  "Crunches": [
+    "Dolne plecy zostają na podłodze, ruch to zwinięcie górnej części tułowia, nie siadanie.",
+    "Łokcie trzymaj szeroko, a dłonie lekko przy głowie, bez ciągnięcia za kark.",
+    "Wydychaj powietrze przy zwijaniu i napnij brzuch w górze na sekundę.",
+    "Nie używaj rozpędu, ruch ma być powolny i kontrolowany.",
+    "Wzrok kieruj w górę, między brodą a klatką zostaw miejsce na pięść."
+  ],
+  "Cuban_Press": [
+    "Użyj lekkich hantli, to ćwiczenie na stabilizację barku, a nie na ciężar.",
+    "Łokcie trzymaj na wysokości barków, nie opuszczaj ich przy rotacji.",
+    "Rotację rób wolno i czysto, bez pomocy tułowiem.",
+    "Wyciskaj w górę dopiero z przedramionami ustawionymi pionowo.",
+    "Nie odchylaj pleców, brzuch i pośladki napięte."
+  ],
+  "Dead_Bug": [
+    "Dolne plecy dociśnij do podłogi i nie pozwól im się odkleić, to sedno ćwiczenia.",
+    "Wyciągaj przeciwną rękę i nogę powoli, tylko tak daleko, jak utrzymasz plecy przy ziemi.",
+    "Żebra trzymaj opuszczone, nie wypychaj klatki do góry.",
+    "Oddychaj spokojnie: wydech przy wyprostowaniu, wdech przy powrocie.",
+    "Jeśli plecy się odrywają, skróć zakres ruchu."
+  ],
+  "Decline_Close-Grip_Bench_To_Skull_Crusher": [
+    "Nogi pewnie zablokuj pod wałkami, a sztangę zdejmuj z asekuracją.",
+    "Chwyt trochę węższy niż barki, łokcie blisko tułowia i nie rozjeżdżaj ich na boki.",
+    "Płynnie połącz oba ruchy, ale sztangę prowadź tak, żeby nie lądowała na twarzy.",
+    "Nadgarstki w linii z przedramionami, bez zginania ich do tyłu.",
+    "Dobierz ciężar niewielki, to wariant na triceps, nie na rekord."
+  ],
+  "Decline_Crunch": [
+    "Stopy dobrze zablokuj pod wałkami, a plecy dociśnij do ławki.",
+    "Zwijaj górę tułowia, nie siadaj, odrywaj tylko łopatki.",
+    "Dłonie przy głowie, bez ciągnięcia za kark.",
+    "Na dole nie opadaj bezwładnie, kontroluj każdy centymetr.",
+    "Wydech w górze, w szczycie krótkie spięcie brzucha."
+  ],
+  "Decline_Dumbbell_Bench_Press": [
+    "Stopy zablokuj pod wałkami, a hantle wprowadzaj na pozycję pomagając sobie kolanami.",
+    "Przedramiona trzymaj pionowo do podłogi przez cały ruch.",
+    "Łokcie około 45–60° od tułowia, nie rozkładaj ich szeroko.",
+    "Opuszczaj hantle na dolną część klatki, wolno i z kontrolą.",
+    "Ławka maksymalnie 15–30° w dół, bardziej stroma nie daje korzyści."
+  ],
+  "Decline_Dumbbell_Flyes": [
+    "Łokcie lekko ugięte i w stałej pozycji, ruch odbywa się w barkach.",
+    "Opuszczaj hantle łukiem na boki tylko do wyraźnego rozciągnięcia klatki, nie niżej.",
+    "Ciężar dobierz mały, ten ruch jest podatny na przeciążenie barków.",
+    "Wracaj tym samym łukiem, myśląc o przytulaniu beczki.",
+    "Łopatki ściągnięte i stopy zablokowane pod wałkami."
+  ],
+  "Decline_Dumbbell_Triceps_Extension": [
+    "Ramiona pionowo nad klatką, łokcie skierowane do przodu i blisko siebie.",
+    "Ruszają się tylko przedramiona, ramiona pozostają nieruchome.",
+    "Opuszczaj hantle do wysokości uszu, wolno i z kontrolą.",
+    "Nie odginaj nadgarstków, trzymaj je prosto.",
+    "Dobierz niewielki ciężar, bo hantle opadają blisko głowy."
+  ],
+  "Decline_EZ_Bar_Triceps_Extension": [
+    "Łokcie wskazują do góry i nie rozchodzą się na boki.",
+    "Sztangę opuszczaj łukiem w stronę czoła lub tuż za głowę, bez uderzania.",
+    "Poproś o asekurację przy zdejmowaniu i odkładaniu sztangi.",
+    "Ramiona nieruchome, pracuje wyłącznie staw łokciowy.",
+    "Zachowaj powolne tempo, bez rzucania ciężaru w górę."
+  ],
+  "Decline_Oblique_Crunch": [
+    "Nogi zablokuj pod wałkami, a tułów unieś do kąta około 35–45°.",
+    "Skręcaj się od żeber w stronę przeciwnego kolana, nie tylko ruszaj łokciem.",
+    "Ruch wolny, bez bujania, a w górze zatrzymaj napięcie na sekundę.",
+    "Druga dłoń na udzie, nie ciągnij głowy.",
+    "Zmieniaj strony równo, ta sama liczba powtórzeń."
+  ],
+  "Decline_Reverse_Crunch": [
+    "Trzymaj się mocno górnej części ławki i nie pozwól ciału zsuwać się w dół.",
+    "Unieś biodra, zwijając miednicę ku klatce, a nie machając nogami.",
+    "Kolana przyciągaj do klatki, w górze zatrzymaj napięcie na sekundę.",
+    "Opuszczaj nogi wolno, do poziomu równolegle do podłogi, bez odbijania.",
+    "Wydychaj powietrze przy unoszeniu bioder."
+  ],
+  "Decline_Smith_Press": [
+    "Ustaw ławkę tak, aby sztanga schodziła na dolną część klatki.",
+    "Chwyt trochę szerszy niż barki, a łokcie pod kątem około 45–60° do tułowia.",
+    "Zablokuj stopy i ściągnij łopatki, pozostaw je w tej pozycji przez cały ruch.",
+    "Pamiętaj o zaczepieniu sztangi na bezpiecznikach po serii.",
+    "Nie wyprostowuj łokci gwałtownie, w górze zachowaj kontrolę."
+  ],
+  "Dip_Machine": [
+    "Plecy oprzyj o siedzisko, a ramiona opuść i trzymaj z dala od uszu.",
+    "Łokcie blisko tułowia, bo to one przenoszą pracę na triceps.",
+    "Wyprost prawie do końca, ale bez agresywnego blokowania łokci.",
+    "Opuszczaj uchwyty wolno, kontrolując ciężar do kąta około 90° w łokciu.",
+    "Nadgarstki prosto, nie zginaj ich pod ciężarem."
+  ],
+  "Double_Kettlebell_Alternating_Hang_Clean": [
+    "Zaczynaj od wypchnięcia bioder do tyłu, jak w martwym ciągu, plecy proste.",
+    "Siła pochodzi z bioder, nie z ramion, ramiona tylko kierują ciężar.",
+    "Kettlebell prowadź blisko ciała i obracaj go wokół ręki, żeby nie uderzał w przedramię.",
+    "Przy lądowaniu łokieć blisko żeber, nadgarstek prosty.",
+    "Zachowaj rytm: jeden kettlebell w górze, drugi dołem, bez pośpiechu."
+  ],
+  "Double_Kettlebell_Jerk": [
+    "Ugnij kolana krótko, z tułowiem pionowo, nie pochylaj się do przodu.",
+    "Wybij się z pięt i dołącz wypchnięcie rąk dopiero po wyprostowaniu nóg.",
+    "W górze wejdź pod ciężar z lekko ugiętymi kolanami i zablokowanymi łokciami.",
+    "Żebra trzymaj opuszczone, bez nadmiernego wygięcia lędźwi.",
+    "Obniżaj kettlebelle kontrolowanie do barków, amortyzując nogami."
+  ],
+  "Double_Kettlebell_Push_Press": [
+    "Dip jest krótki i pionowy, kolana lekko ugięte, a pięty na podłodze.",
+    "Wybij się nogami i dopiero potem dociśnij ciężar rękami.",
+    "Kettlebelle trzymaj blisko ciała, a przedramiona pionowo.",
+    "Zablokuj łokcie nad głową, głowa lekko do przodu i w jednej linii z tułowiem.",
+    "Napnij brzuch i pośladki, nie przeginaj lędźwi."
+  ],
+  "Double_Kettlebell_Windmill": [
+    "Wzrok trzymaj na kettlebellu nad głową, a ramię blokuj pionowo.",
+    "Ruch zaczyna się od wypchnięcia biodra na bok, nie od zgięcia kręgosłupa.",
+    "Nogę po stronie ciężaru zostaw prostą lub lekko ugiętą, plecy proste.",
+    "Sięgaj dolną ręką wzdłuż nogi, tylko tak nisko, jak pozwala ruchomość bioder.",
+    "Zacznij od lżejszych ciężarów, to ćwiczenie techniczne i wymagające mobilności."
+  ],
+  "Drag_Curl": [
+    "Sztangę prowadź po tułowiu, łokcie cofaj do tyłu, zamiast je przesuwać do przodu.",
+    "Barki trzymaj nisko i nieruchomo, nie podnoś ich do uszu.",
+    "Ruch jest krótszy niż w zwykłych uginaniach, więc dobierz mniejszy ciężar.",
+    "Tułów prosty, bez bujania biodrami.",
+    "Opuszczaj sztangę wolno tą samą drogą, zachowując kontakt z ciałem."
+  ],
+  "Dumbbell_Alternate_Bicep_Curl": [
+    "Łokcie przy tułowiu i nieruchome, nie wysuwaj ich do przodu.",
+    "Obracaj nadgarstek w trakcie unoszenia, aby dłoń na górze była skierowana do barku.",
+    "Drugą ręką nie zaczynaj, dopóki pierwsza nie wróci do dołu.",
+    "Stój prosto, bez bujania i odchylania pleców.",
+    "Opuszczaj hantel wolno do pełnego wyprostu łokcia."
+  ],
+  "Dumbbell_Bench_Press_with_Neutral_Grip": [
+    "Łopatki ściągnięte i dociśnięte do ławki, stopy pewnie na podłodze.",
+    "Chwyt neutralny, hantle równolegle, a łokcie blisko tułowia, około 45°.",
+    "Opuszczaj do poziomu klatki z kontrolą, bez odbijania.",
+    "W górze nie stukaj hantlami, zatrzymaj je nad barkami.",
+    "Ten chwyt jest zwykle łagodniejszy dla barków, ale nie zwalnia z kontroli."
+  ],
+  "Dumbbell_Clean": [
+    "Zaczynaj od pozycji jak w martwym ciągu: plecy proste, biodra z tyłu.",
+    "Wybicie pochodzi z wyprostu bioder, ramiona są jak liny i nie ciągną ciężaru.",
+    "Hantle trzymaj blisko ciała i wchodź pod nie szybko, łokcie do przodu.",
+    "Lądowanie w lekkim przysiadzie, hantle na barkach, tułów pionowo.",
+    "Opuszczaj hantle wolno, kontrolowanie, bez rzucania na podłogę."
+  ],
+  "Dumbbell_Incline_Row": [
+    "Klatkę oprzyj o ławkę, szyja w przedłużeniu kręgosłupa.",
+    "Zacznij od ściągnięcia łopatek, dopiero potem uginaj łokcie.",
+    "Łokcie prowadź blisko tułowia, hantle ciągnij do bioder, nie do barków.",
+    "W górze zrób krótką pauzę, bez odbijania klatką od ławki.",
+    "Opuszczaj wolno do pełnego rozciągnięcia, bez luzu w barkach."
+  ],
+  "Dumbbell_Incline_Shoulder_Raise": [
+    "Łokcie wyprostowane, hantle nad barkami, a dłonie skierowane do przodu.",
+    "Ruch to wypchnięcie łopatek do góry, odrywasz barki od ławki bez zginania łokci.",
+    "Nie odchylaj się, plecy nadal oparte o ławkę.",
+    "Zakres jest krótki, więc dobierz ciężar kontrolowany i pracuj powoli.",
+    "Wydychaj powietrze przy podnoszeniu."
+  ],
+  "Dumbbell_Lying_One-Arm_Rear_Lateral_Raise": [
+    "Ławkę ustaw pod kątem około 15°, a klatkę oprzyj stabilnie.",
+    "Ramię unoś bokiem do wysokości barku, łokieć lekko ugięty i stały.",
+    "Prowadź ruch łokciem, a nie nadgarstkiem.",
+    "Nie podrzucaj ciężaru, hantel ma być lekki.",
+    "W górze zatrzymaj napięcie tylnego aktonu na sekundę."
+  ],
+  "Dumbbell_Lying_Pronation": [
+    "Ramię trzymaj nieruchomo, równolegle do podłogi, łokieć zgięty pod kątem 90°.",
+    "Ruch to wyłącznie obrót przedramienia, nie podnoś całego ramienia.",
+    "Użyj bardzo lekkiego ciężaru, to ćwiczenie małych mięśni przedramienia.",
+    "Wykonuj ruch wolno i płynnie, bez szarpania nadgarstka.",
+    "Zatrzymaj się na chwilę w końcowej pozycji i wróć kontrolowanie."
+  ],
+  "Dumbbell_Lying_Rear_Lateral_Raise": [
+    "Ławka pod kątem około 15°, klatka oparta, głowa w neutralnej pozycji.",
+    "Łokcie lekko ugięte i niezmienne, prowadź ruch łokciami, nie dłońmi.",
+    "Unoś hantle do wysokości barków i nie wyżej, bez bujania.",
+    "Na górze ściągnij łopatki i zatrzymaj napięcie na sekundę.",
+    "Użyj lekkiego ciężaru, tylny akton jest mały i szybko się męczy."
+  ],
+  "Dumbbell_Lying_Supination": [
+    "Ramię oprzyj o tułów, nieruchome, łokieć zgięty pod kątem 90°.",
+    "Obracaj tylko przedramię, bez pomocy barku i nadgarstka na siłę.",
+    "Wybierz lekki hantel, ruch ma być czysty.",
+    "Zatrzymaj się na górze na sekundę i wróć wolno.",
+    "Nie rozluźniaj dłoni, trzymaj hantel pewnie w całym ruchu."
+  ],
+  "Dumbbell_One-Arm_Shoulder_Press": [
+    "Napnij brzuch i pośladki, żeby nie wyginać pleców w stronę ciężaru.",
+    "Przedramię trzymaj pionowo, a hantel prowadź nad barkiem.",
+    "Wyciskaj do pełnego wyprostu łokcia, bez wzruszania barkiem do ucha.",
+    "Opuszczaj do wysokości barku lub nieco niżej, wolno.",
+    "Wydychaj powietrze przy wyciskaniu."
+  ],
+  "Dumbbell_One-Arm_Triceps_Extension": [
+    "Ramię trzymaj pionowo tuż przy głowie, łokieć wskazuje do góry.",
+    "Opuszczaj hantel za głowę tylko ruchem przedramienia, ramię stoi w miejscu.",
+    "Napnij brzuch i nie wyginaj lędźwi przy pracy w górze.",
+    "Drugą ręką możesz podeprzeć ramię, żeby ułatwić stabilizację.",
+    "Wyprost do końca, w górze napnij triceps na chwilę."
+  ],
+  "Dumbbell_One-Arm_Upright_Row": [
+    "Hantel prowadź blisko tułowia, łokieć zawsze wyżej niż nadgarstek.",
+    "Unoś do wysokości klatki lub brody, zależnie od komfortu barku.",
+    "Stój prosto, bez bujania i szarpania.",
+    "Barków nie podciągaj do uszu, napnij mięsień naramienny.",
+    "Opuszczaj wolno, kontrolując hantel."
+  ],
+  "Dumbbell_Prone_Incline_Curl": [
+    "Klatkę oprzyj o ławkę, szyja neutralnie, bez unoszenia głowy.",
+    "Łokcie trzymaj nieruchomo, ramiona opuszczone pionowo.",
+    "Nie bujaj ciałem, ławka ma Cię stabilizować.",
+    "W górze zatrzymaj napięcie na sekundę, w dół wolno do pełnego wyprostu.",
+    "Zacznij od lekkiego ciężaru, bo rozciągnięcie bicepsa jest tu duże."
+  ],
+  "Dumbbell_Raise": [
+    "Łokcie lekko ugięte i niezmienne, prowadź ruch łokciami.",
+    "Unoś do wysokości barków lub trochę wyżej, nie wyżej niż do brody.",
+    "Nie kołysz tułowiem ani nie szarp, jeśli musisz, ciężar jest za duży.",
+    "Barki nie unoszą się do uszu, trzymaj je nisko.",
+    "Opuszczaj wolno, w dole nie rozluźniaj napięcia."
+  ],
+  "Dumbbell_Rear_Lunge": [
+    "Tułów prosto, wzrok przed siebie, brzuch napięty.",
+    "Krok do tyłu tak długi, żeby przednia piszczel była mniej więcej pionowo.",
+    "Ciężar trzymaj na przedniej nodze, tylna tylko pomaga w równowadze.",
+    "Tylne kolano opuszczaj kontrolowanie, tuż nad podłogę, bez uderzania.",
+    "Wypchnij się piętą przedniej nogi i wróć do pozycji wyjściowej."
+  ],
+  "Dumbbell_Scaption": [
+    "Użyj bardzo lekkich hantli, to korekcyjne ćwiczenie na łopatki.",
+    "Ramiona unoś w płaszczyźnie około 30° przed ciałem, kciuki w górę.",
+    "Zatrzymaj się na wysokości barków, nie wyżej.",
+    "Nie unoś barków do uszu, łopatki opuszczone.",
+    "Ruch wolny, w obie strony, bez szarpania."
+  ],
+  "Dumbbell_Seated_One-Leg_Calf_Raise": [
+    "Przód stopy oprzyj na podwyższeniu, pięta swobodnie poniżej.",
+    "Hantel połóż na udzie tuż nad kolanem i przytrzymaj go ręką.",
+    "Opuszczaj piętę do pełnego rozciągnięcia, potem unoś wysoko na palce.",
+    "W górze zatrzymaj napięcie na sekundę, bez odbijania.",
+    "W siadzie pracuje głównie mięsień płaszczkowaty, więc rób więcej powtórzeń."
+  ],
+  "Dumbbell_Shrug": [
+    "Unoś barki prosto w górę do uszu, nie kręć nimi dookoła.",
+    "Ręce wyprostowane, nie pomagaj sobie uginaniem łokci.",
+    "W górze zatrzymaj napięcie na sekundę.",
+    "Głowa prosto, szyja rozluźniona, bez wysuwania podbródka.",
+    "Opuszczaj wolno do pełnego rozciągnięcia."
+  ],
+  "Dumbbell_Side_Bend": [
+    "Rób skłon prosto w bok, bez pochylania do przodu ani do tyłu.",
+    "Hantel prowadź wzdłuż nogi, a drugą rękę trzymaj przy ciele lub głowie.",
+    "Używaj umiarkowanego ciężaru, zbyt duży zamienia ruch w szarpanie kręgosłupa.",
+    "Wróć do pionu powoli, ściągając brzuch po stronie ciężaru.",
+    "Miednica pozostaje nieruchoma."
+  ],
+  "Dumbbell_Squat": [
+    "Stopy na szerokość barków, palce lekko na zewnątrz, kolana kierowane zgodnie z palcami.",
+    "Klatka wysoko, plecy proste, hantle przy bokach.",
+    "Schodź do poziomu równoległego ud lub głębiej, zależnie od mobilności.",
+    "Nie zapadaj kolan do środka, wypychaj je na zewnątrz.",
+    "Wstawaj, dociskając podłogę całą stopą, z naciskiem na piętę i śródstopie."
+  ],
+  "Dumbbell_Squat_To_A_Bench": [
+    "Ławkę ustaw tak, by dotykać jej tylko pośladkami, a nie siadać na niej ciężko.",
+    "Biodra cofaj do tyłu, kolana prowadź zgodnie z palcami.",
+    "Dotknij lekko ławki i od razu wstawaj, bez odpoczynku na niej.",
+    "Plecy proste, klatka do przodu, wzrok przed siebie.",
+    "Wysokość ławki dostosuj do swojej mobilności."
+  ],
+  "Dumbbell_Step_Ups": [
+    "Całą stopę postaw na podwyższeniu, ciężar utrzymuj na nodze z góry.",
+    "Wchodź piętą, a nie odbijaj się nogą z dołu.",
+    "Tułów prosto, bez pochylania do przodu.",
+    "Schodź wolno, kontrolując ruch, bez opadania.",
+    "Wysokość podwyższenia taka, aby kolano nie przekraczało kąta około 90°."
+  ],
+  "Dumbbell_Tricep_Extension_-Pronated_Grip": [
+    "Łokcie trzymaj skierowane w stronę sufitu i blisko siebie.",
+    "Ruch odbywa się tylko w łokciach, ramiona nieruchome.",
+    "Hantle opuszczaj do wysokości uszu, wolno i z kontrolą.",
+    "Dobierz mniejszy ciężar niż na wyciskanie, hantle schodzą blisko głowy.",
+    "Nadgarstki w linii z przedramionami."
+  ],
+  "EZ-Bar_Skullcrusher": [
+    "Ramiona pionowo lub lekko odchylone do tyłu, łokcie blisko siebie.",
+    "Opuszczaj sztangę do czoła lub tuż za głowę, bez uderzania.",
+    "Ruch odbywa się wyłącznie w łokciach, barki nieruchome.",
+    "Poproś o asekurację przy cięższych seriach.",
+    "Wydychaj powietrze przy prostowaniu, wolne tempo."
+  ],
+  "Elbow_to_Knee": [
+    "Nie ciągnij głowy rękami, dłonie tylko lekko trzymają ją z tyłu.",
+    "Prowadź ruch barkiem do przeciwnego kolana, nie samym łokciem.",
+    "Dolne plecy zostają na podłodze.",
+    "Zwijaj się powoli i zatrzymaj napięcie w górze.",
+    "Zmień stronę po pełnej serii, utrzymuj równą liczbę powtórzeń."
+  ],
+  "Elevated_Back_Lunge": [
+    "Sztangę mocno ściśnij na plecach, łopatki ściągnięte.",
+    "Krok do tyłu z podwyższenia kontroluj, patrz przed siebie.",
+    "Przednia noga robi większość pracy, ciężar na całej stopie.",
+    "Tułów prosto, kolano nie zapada się do środka.",
+    "Zacznij od małego ciężaru, bo zakres ruchu jest większy niż normalnie."
+  ],
+  "Elevated_Cable_Rows": [
+    "Plecy proste, klatka wysoko, bez zaokrąglania pleców.",
+    "Zacznij ruch od ściągnięcia łopatek, potem uginaj łokcie.",
+    "Łokcie prowadź blisko tułowia, uchwyt ciągnij do brzucha.",
+    "Nie bujaj tułowiem do tyłu, ciężar ma być kontrolowany.",
+    "Wracaj wolno z pełnym wyprostem ramion, bez odpuszczania łopatek."
+  ],
+  "Extended_Range_One-Arm_Kettlebell_Floor_Press": [
+    "Łopatkę po stronie ćwiczącej trzymaj ściągniętą i dociśniętą do podłogi.",
+    "Łokieć nie powinien rozchodzić się na boki, trzymaj go około 45°.",
+    "Zacznij od lekkiego kettlebella, ruch jest szerszy i bardziej wymagający.",
+    "Nadgarstek prosto, kettlebell stabilnie nad barkiem.",
+    "Opuszczaj do lekkiego dotknięcia podłogi, nie opadaj na nią."
+  ],
+  "External_Rotation": [
+    "Użyj bardzo lekkiego hantla, to ćwiczenie na stożek rotatorów.",
+    "Łokieć przyciśnij do boku i nie odrywaj go podczas ruchu.",
+    "Obracaj tylko przedramię, tułów pozostaje nieruchomy.",
+    "Ruch wolny i płynny, bez szarpania.",
+    "Wracaj kontrolowanie, bez opuszczania ciężaru siłą grawitacji."
+  ],
+  "External_Rotation_with_Cable": [
+    "Łokieć przyciśnij do boku, możesz włożyć pod niego zwinięty ręcznik.",
+    "Obracaj tylko przedramię, tułów stoi nieruchomo.",
+    "Ciężar niewielki, to mięśnie stabilizujące bark.",
+    "Ruch wolny, płynny, w obie strony.",
+    "Wracaj kontrolowanie, nie pozwól kablowi szarpać ręki."
+  ],
+  "Finger_Curls": [
+    "Używaj lekkiego ciężaru, aby nie przeciążać palców i nadgarstków.",
+    "Pozwól sztandze stoczyć się do końców palców, a potem zwiń dłoń z powrotem.",
+    "Przedramiona oprzyj, tylko palce i nadgarstki pracują.",
+    "Rób dużo powtórzeń, powoli.",
+    "Zatrzymaj napięcie w górze na sekundę."
+  ],
+  "Flat_Bench_Leg_Pull-In": [
+    "Chwyć ławkę lub podłóż dłonie pod pośladki, plecy dociśnij do ławki.",
+    "Przyciągaj kolana do klatki, zwijając miednicę, nie tylko zginając nogi.",
+    "Nie opuszczaj nóg poniżej poziomu ławki, jeśli dolne plecy się wyginają.",
+    "Wydychaj powietrze przy przyciąganiu.",
+    "Wracaj wolno, bez odbijania."
+  ],
+  "Flat_Bench_Lying_Leg_Raise": [
+    "Dolne plecy dociśnij do ławki i nie pozwól im się wyginać.",
+    "Nogi prawie proste, unoś je do pionu lub tak wysoko, jak kontrolujesz plecy.",
+    "Nie bujaj nogami, ruch ma być płynny.",
+    "Opuszczaj wolno, zatrzymaj nogi tuż nad ławką.",
+    "Jeśli dolne plecy się odrywają, zegnij kolana."
+  ],
+  "Flexor_Incline_Dumbbell_Curls": [
+    "Ławka pod kątem około 45°, plecy i głowa oparte.",
+    "Łokcie niezmienne, nie przesuwaj ich do przodu.",
+    "Unoś oba hantle jednocześnie, bez skręcania nadgarstków.",
+    "Opuszczaj do pełnego rozciągnięcia, bez bujania.",
+    "Zacznij od lekkiego ciężaru, bo rozciągnięcie jest duże."
+  ],
+  "Flutter_Kicks": [
+    "Brzuch napięty, nogi lekko uniesione i proste, nie unoś ich wysoko.",
+    "Dolne plecy trzymaj blisko podłoża lub ławki.",
+    "Ruch krótki, naprzemienny, bez szarpania.",
+    "Oddychaj spokojnie, nie wstrzymuj powietrza.",
+    "Gdy plecy się wyginają, zmniejsz zakres ruchu."
+  ],
+  "Freehand_Jump_Squat": [
+    "Lądowanie miękkie, na całą stopę, kolana ugięte i skierowane zgodnie z palcami.",
+    "Schodź do poziomu równoległego ud, zanim wyskoczysz.",
+    "Klatka wysoko, plecy proste, ręce możesz trzymać na klatce lub swobodnie.",
+    "Nie zapadaj kolan do środka przy lądowaniu.",
+    "Rób krótkie serie, technika spada razem ze zmęczeniem."
+  ],
+  "Frog_Sit-Ups": [
+    "Dolne plecy dociśnij do podłogi, a stopy złącz w kształcie rombu.",
+    "Zwijaj górną część ciała powoli, nie szarp głową.",
+    "Kolana trzymaj blisko podłogi i nie unoś ich razem z tułowiem.",
+    "Ręce skrzyżowane na klatce, nie ciągnij za kark.",
+    "Wracaj kontrolowanie, bez opadania."
+  ],
+  "Front_Cable_Raise": [
+    "Łokieć lekko ugięty, dłoń skierowana w dół lub w stronę ciała.",
+    "Unoś do wysokości barku lub nieco wyżej, bez szarpania.",
+    "Tułów nieruchomy, bez odchylania się do tyłu.",
+    "Opuszczaj wolno, w dole nie rozluźniaj napięcia kabla.",
+    "Wydychaj powietrze przy unoszeniu."
+  ],
+  "Front_Incline_Dumbbell_Raise": [
+    "Głowę i plecy oprzyj o ławkę, nie odrywaj ich w trakcie serii.",
+    "Ramiona proste lub lekko ugięte, unoś je do wysokości barków lub trochę wyżej.",
+    "Nie bujaj, jeśli musisz, zmniejsz ciężar.",
+    "Opuszczaj wolno, w dole nie opieraj hantli na udach.",
+    "Możesz zmieniać kąt ławki, aby zmienić akcent ćwiczenia."
+  ],
+  "Front_Raise_And_Pullover": [
+    "Ramiona prawie proste, łokcie lekko ugięte, ciężar mały.",
+    "Prowadź sztangę szerokim łukiem nad głowę, żeby nie uderzyć się w twarz.",
+    "Plecy pozostają na ławce, dolny odcinek nie wygina się.",
+    "Zakres ruchu dostosuj do mobilności barków.",
+    "Wdech przy unoszeniu, wydech przy powrocie."
+  ],
+  "Front_Squat_Clean_Grip": [
+    "Łokcie wysoko, tuż przed sobą, sztanga leży na barkach, nie na dłoniach.",
+    "Plecy proste i tułów pionowo, kolana wypychaj na zewnątrz.",
+    "Schodź tak głęboko, jak pozwala mobilność, bez zaokrąglania pleców.",
+    "Wstawaj, dociskając pięty i środek stopy, łokcie nie opadają.",
+    "Wymaga mobilności nadgarstków i barków, zacznij od lżejszego ciężaru."
+  ],
+  "Front_Squats_With_Two_Kettlebells": [
+    "Kettlebelle trzymaj mocno na barkach, łokcie blisko ciała.",
+    "Tułów pionowo, klatka wysoko, wzrok przed siebie.",
+    "Kolana wypychaj na zewnątrz, w dole zrób krótką pauzę.",
+    "Wstawaj, dociskając pięty, bez pochylania do przodu.",
+    "Zacznij od lekkiego ciężaru, kettlebelle mogą obijać nadgarstki."
+  ],
+  "Front_Two-Dumbbell_Raise": [
+    "Łokcie lekko ugięte, dłonie skierowane w dół.",
+    "Unoś hantle do wysokości barków lub trochę wyżej, bez szarpania.",
+    "Tułów nieruchomy, nie odchylaj się do tyłu.",
+    "Opuszczaj wolno, kontrolując ciężar.",
+    "Wydychaj powietrze przy unoszeniu, wdychaj przy opuszczaniu."
+  ],
+  "Full_Range-Of-Motion_Lat_Pulldown": [
+    "Klatka wysoko, lekki łuk w dolnych plecach, nie odchylaj się mocno do tyłu.",
+    "Ciągnij łokcie w dół i do bioder, ściągając łopatki.",
+    "Obracaj dłonie płynnie w trakcie ruchu, bez szarpania.",
+    "Ruch ma kształt łuku, wracaj wolno do pełnego rozciągnięcia.",
+    "Nie ciągnij samymi rękami, najpierw zainicjuj ruch łopatkami."
+  ],
+  "Glute_Kickback": [
+    "Plecy proste, brzuch napięty, nie wyginaj lędźwi w górze.",
+    "Unoś nogę, napinając pośladek, nie machając nią.",
+    "W górze zatrzymaj napięcie pośladka na sekundę.",
+    "Miednica nieruchoma, nie obracaj biodra na bok.",
+    "Opuszczaj wolno, bez dotykania kolanem podłogi."
+  ],
+  "Goblet_Squat": [
+    "Kettlebell trzymaj przy klatce, łokcie skierowane w dół, plecy proste.",
+    "Stopy nieco szerzej niż barki, palce lekko na zewnątrz.",
+    "W dole wypychaj kolana łokciami na zewnątrz i zrób krótką pauzę.",
+    "Klatka wysoko, tułów pionowo, pięty na podłodze.",
+    "Wstawaj, dociskając podłogę całą stopą."
+  ],
+  "Gorilla_Chin_Crunch": [
+    "Zwisaj stabilnie, ściągnij łopatki, nie bujaj ciałem.",
+    "Podciągaj się i jednocześnie przyciągaj kolana do klatki.",
+    "Kontroluj ruch w obie strony, bez kołysania.",
+    "Wydychaj powietrze przy podciąganiu.",
+    "Zaczynaj od krótszych serii, ćwiczenie wymaga siły chwytu."
+  ],
+  "Hammer_Grip_Incline_DB_Bench_Press": [
+    "Ławka na około 30°, łopatki ściągnięte i dociśnięte do oparcia.",
+    "Chwyt młotkowy, hantle równolegle, a łokcie około 45–60° od tułowia.",
+    "Opuszczaj do poziomu górnej części klatki, wolno i z kontrolą.",
+    "W górze nie stukaj hantlami, zatrzymaj je nad barkami.",
+    "Wydychaj powietrze przy wyciskaniu."
+  ],
+  "High_Cable_Curls": [
+    "Ramiona równolegle do podłogi, łokcie na wysokości barków, stabilne.",
+    "Zginaj tylko przedramiona, przyciągając uchwyty do uszu.",
+    "Łokcie nie opadają, nie przesuwaj ich do przodu.",
+    "W górze zatrzymaj napięcie bicepsu na sekundę.",
+    "Wracaj wolno, bez zwisania na kablu."
+  ],
+  "Hyperextensions_With_No_Hyperextension_Bench": [
+    "Plecy proste przez cały ruch, nie zaokrąglaj ich na dole.",
+    "Unoś tułów tylko do linii prostej z nogami, nie wyginaj lędźwi do tyłu.",
+    "Poproś partnera o przytrzymanie nóg lub zabezpiecz je inaczej.",
+    "Rób ruch wolno, bez bujania.",
+    "Wydychaj powietrze przy unoszeniu."
+  ],
+  "Incline_Barbell_Triceps_Extension": [
+    "Łokcie blisko głowy i nie rozjeżdżają się na boki.",
+    "Opuszczaj sztangę łukiem za głowę, tylko przedramionami.",
+    "Ramiona nieruchome, nie opuszczaj ich razem z ciężarem.",
+    "Poproś o asekurację przy cięższych seriach.",
+    "Wydychaj powietrze przy prostowaniu."
+  ],
+  "Incline_Bench_Pull": [
+    "Klatkę oprzyj o ławkę pod kątem około 30°, szyja neutralnie.",
+    "Ściągnij łopatki przed uginaniem łokci.",
+    "Łokcie prowadź w stronę, w którą chcesz akcentować pracę pleców.",
+    "Nie bujaj tułowiem, klatka pozostaje przy ławce.",
+    "W górze zrób krótką pauzę i opuszczaj wolno."
+  ],
+  "Incline_Cable_Chest_Press": [
+    "Łopatki ściągnięte i dociśnięte do oparcia, klatka wysoko.",
+    "Łokcie około 45° od tułowia, nie rozkładaj ich szeroko.",
+    "Wyciskaj prosto przed siebie, w pełnym wyproście zatrzymaj napięcie.",
+    "Wracaj wolno, utrzymując napięcie na linkach.",
+    "Wydychaj powietrze przy wyciskaniu."
+  ],
+  "Incline_Cable_Flye": [
+    "Łokcie lekko ugięte i niezmienne, ruch odbywa się w barkach.",
+    "Opuszczaj ramiona szerokim łukiem aż do rozciągnięcia klatki, nie niżej.",
+    "Ławka na około 30–45°, łopatki ściągnięte.",
+    "Dłonie łącz nad klatką, wyobrażając sobie przytulanie.",
+    "Ciężar niewielki, kontroluj ruch w obie strony."
+  ],
+  "Incline_Dumbbell_Bench_With_Palms_Facing_In": [
+    "Ławka na około 30°, łopatki ściągnięte i dociśnięte do oparcia.",
+    "Chwyt neutralny, łokcie około 45–60° od tułowia.",
+    "Opuszczaj hantle wolno do poziomu górnej klatki.",
+    "W górze nie stukaj hantlami, zatrzymaj je nad barkami.",
+    "Stopy mocno na podłodze, wydychaj powietrze przy wyciskaniu."
+  ],
+  "Incline_Dumbbell_Flyes_-_With_A_Twist": [
+    "Ławka maksymalnie około 30°, łopatki ściągnięte.",
+    "Łokcie lekko ugięte i niezmienne, ruch odbywa się w barkach.",
+    "Obracaj nadgarstki płynnie wraz z opuszczaniem, bez szarpania.",
+    "Opuszczaj do rozciągnięcia klatki, nie niżej, i wracaj tym samym łukiem.",
+    "Ciężar niewielki, to ćwiczenie izolowane."
+  ],
+  "Incline_Hammer_Curls": [
+    "Plecy oprzyj o ławkę, stopy razem lub stabilnie na podłodze.",
+    "Chwyt młotkowy, kciuki skierowane w górę przez cały ruch.",
+    "Łokcie nieruchome, zginasz tylko przedramiona.",
+    "Na dole pełne rozciągnięcie, w górze pauza.",
+    "Opuszczaj wolno, bez bujania."
+  ],
+  "Incline_Inner_Biceps_Curl": [
+    "Łokcie trzymaj nieruchomo, nie przesuwaj ich do przodu.",
+    "Unoś hantle bokiem do wysokości barków, tak jak w pozie na bicepsy.",
+    "Nadgarstki prosto, bez zginania.",
+    "W górze zatrzymaj napięcie na sekundę.",
+    "Opuszczaj tą samą drogą, wolno."
+  ],
+  "Incline_Push-Up": [
+    "Ciało w linii prostej od głowy do pięt, brzuch i pośladki napięte.",
+    "Dłonie na szerokość nieco większą niż barki, łokcie około 45° od tułowia.",
+    "Opuszczaj klatkę do krawędzi podwyższenia, bez opadania bioder.",
+    "Wypychaj, aż ramiona będą wyprostowane, bez zapadania łopatek.",
+    "Im niższe podwyższenie, tym trudniejsze ćwiczenie."
+  ],
+  "Incline_Push-Up_Close-Grip": [
+    "Dłonie blisko siebie na drążku, łokcie blisko tułowia.",
+    "Ciało w linii prostej, brzuch i pośladki napięte.",
+    "Opuszczaj klatkę do drążka, wolno i z kontrolą.",
+    "Wypychaj do pełnego wyprostu łokci, bez zapadania łopatek.",
+    "Im niższy drążek, tym większa trudność."
+  ],
+  "Incline_Push-Up_Medium": [
+    "Ciało w jednej linii od głowy do pięt, brzuch napięty, pośladki nie uciekają w górę ani nie zapadają się.",
+    "Dłonie pod barkami lub minimalnie szerzej, łokcie ok. 45° od tułowia, nie rozkładaj ich na boki.",
+    "Opuszczaj klatkę do podwyższenia pod kontrolą, bez zapadania się w barkach.",
+    "Im niższe podwyższenie, tym trudniejszy ruch; zacznij od wyższego i obniżaj z czasem.",
+    "Wydech przy wypychaniu, wdech przy schodzeniu w dół."
+  ],
+  "Incline_Push-Up_Reverse_Grip": [
+    "Dłonie podchwytem, kciuki na zewnątrz; zacznij od lekkiego zakresu, bo nadgarstki pracują w nietypowej pozycji.",
+    "Łokcie trzymaj blisko tułowia, to ćwiczenie mocniej angażuje górną klatkę i biceps.",
+    "Ciało proste jak deska, brzuch i pośladki napięte przez cały ruch.",
+    "Schodź powoli, aż klatka dotknie podwyższenia lub zbliży się do niego.",
+    "Jeśli czujesz ból w nadgarstkach lub łokciach, wróć do zwykłego chwytu."
+  ],
+  "Incline_Push-Up_Wide": [
+    "Dłonie szerzej niż barki, ale nie więcej niż ok. 1,5 szerokości barków, żeby nie przeciążać stawów.",
+    "Ciało w jednej linii, brzuch napięty, głowa w przedłużeniu kręgosłupa.",
+    "Schodź klatką do podwyższenia, łokcie idą lekko w tył i na boki, nie prosto w bok.",
+    "Na górze nie wyprostowuj łokci na siłę, łopatki rozsuń lekko na boki.",
+    "Kontroluj tempo; nie opadaj bezwładnie na podwyższenie."
+  ],
+  "Iron_Cross": [
+    "Użyj lekkich hantli; to ćwiczenie izolowane, a nie ciężkie.",
+    "Stój stabilnie, brzuch napięty, plecy proste, klatka lekko wypchnięta.",
+    "Unoś ramiona bokiem do wysokości barków z lekko ugiętymi łokciami, bez bujania tułowiem.",
+    "W górze zatrzymaj ruch na chwilę, w dół schodź powoli, dłużej niż w górę.",
+    "Nie podnoś barków do uszu; trzymaj je opuszczone i ściągnięte."
+  ],
+  "Isometric_Neck_Exercise_-_Front_And_Back": [
+    "Głowa w pozycji neutralnej, wzrok prosto, bez wychylania szyi w żadną stronę.",
+    "Napinaj stopniowo przez 2–3 sekundy, nie szarp; głowa ma zostać w miejscu.",
+    "Oddychaj spokojnie przez cały czas napięcia, nie wstrzymuj powietrza.",
+    "Zacznij od małej siły; nacisk zwiększaj ostrożnie, w komfortowym zakresie.",
+    "Barki opuszczone i rozluźnione, nie unoś ich do uszu."
+  ],
+  "Isometric_Neck_Exercise_-_Sides": [
+    "Dłoń oprzyj na skroni, głowa prosto, wzrok przed siebie.",
+    "Dociskaj głowę do dłoni stopniowo, bez ruchu szyi; napięcie narasta powoli.",
+    "Oddychaj normalnie, nie wstrzymuj powietrza.",
+    "Barki opuszczone i rozluźnione, nie przechylaj tułowia w stronę nacisku.",
+    "Wykonaj obie strony tyle samo razy i z podobną siłą."
+  ],
+  "Isometric_Wipers": [
+    "Ciało w jednej linii jak w pompce, brzuch i pośladki napięte, biodra nie opadają.",
+    "Przenoś ciężar na jedną stronę powoli, zginając łokieć po tej stronie; druga ręka zostaje prosta.",
+    "Dłonie nieco szerzej niż barki, kontroluj tempo; to ćwiczenie ma być płynne, bez szarpania.",
+    "Wracaj do środka siłą klatki i ramienia, nie odpychaj się mocno stopami.",
+    "Jeśli jest za ciężko, oprzyj dłonie na ławce lub podwyższeniu."
+  ],
+  "JM_Press": [
+    "Chwyt na szerokość barków lub nieco węższy, łokcie skierowane do przodu, nie rozchylaj ich na boki.",
+    "Sztanga schodzi w stronę brody lub górnej klatki, łokcie lekko się przesuwają do tyłu, a przedramiona są prawie pionowo.",
+    "Zacznij od lekkiego ciężaru; to połączenie wyciskania wąskiego i francuskiego.",
+    "Łopatki ściągnięte, stopy w podłodze, pośladki na ławce.",
+    "Asekuracja jest zalecana, bo sztanga schodzi blisko twarzy."
+  ],
+  "Jackknife_Sit-Up": [
+    "Wydech przy podnoszeniu tułowia i nóg jednocześnie, pozostaw dolny odcinek pleców blisko podłoża na starcie.",
+    "Ruch ma wyjść z brzucha, nie z rozmachu rąk; napnij brzuch przed każdym powtórzeniem.",
+    "Nogi proste i razem, ręce wyciągnięte w stronę stóp, ciało układa się w literę V.",
+    "Opuszczaj się powoli, bez uderzenia plecami o matę.",
+    "Jeśli odrywasz od podłogi dolne plecy zbyt mocno, zegnij kolana i skróć zakres."
+  ],
+  "Janda_Sit-Up": [
+    "Przed ruchem mocno napnij pośladki i tył ud; to ma ograniczyć pracę zginaczy bioder.",
+    "Unoś tułów wolno, w 3–6 sekund, bez szarpania; zwijaj kręgosłup po kolei.",
+    "Stopy płasko na podłodze, nie podwijaj ich i nie zaczepiaj o nic.",
+    "Ręce skrzyżowane na klatce, nie ciągnij głowy za kark.",
+    "Wracaj powoli, kontrolując opuszczanie tak samo jak wznoszenie."
+  ],
+  "Jefferson_Squats": [
+    "Rozpocznij od bardzo lekkiego ciężaru; ćwiczenie jest asymetryczne i wymaga równowagi.",
+    "Stopy ustaw w linii ze sztangą, jedna przed, druga za; kolana kieruj zgodnie z palcami stóp.",
+    "Plecy proste, klatka do przodu, nie skręcaj tułowia.",
+    "Chwyt mieszany, ciało dokładnie na środku sztangi.",
+    "Pamiętaj o zamianie stron nóg i chwytu w kolejnych seriach."
+  ],
+  "Kettlebell_Arnold_Press": [
+    "Zaczynaj z kettlebellem przy barku, dłoń skierowana do ciebie, łokieć pod nadgarstkiem.",
+    "Obracaj nadgarstek podczas wyciskania płynnie, tak aby w górze dłoń patrzyła przed siebie.",
+    "Brzuch i pośladki napięte; nie wyginaj dolnych pleców do tyłu.",
+    "W górze łokieć prosty, ale nie przeprostowany, bark nie unosi się do ucha.",
+    "Opuszczaj powoli tą samą drogą z obrotem dłoni do siebie."
+  ],
+  "Kettlebell_Dead_Clean": [
+    "Zaczynaj z martwego punktu, każde powtórzenie od podłogi, bez rozbujania.",
+    "Biodra odsuwasz do tyłu, plecy płaskie, wzrok przed siebie.",
+    "Kettlebell prowadź blisko ciała, nie ciągnij go rękami; ruch wychodzi z wyprostu bioder.",
+    "Na górze ręka owija się wokół kettlebella, aby go złapać, bez uderzenia w przedramię.",
+    "Opuszczaj z powrotem z zawiasem w biodrach, nie zaokrąglaj pleców."
+  ],
+  "Kettlebell_Figure_8": [
+    "Szeroka postawa, zawias w biodrach, plecy proste i napięte przez cały czas.",
+    "Przekładaj kettlebell pod nogą w kształcie ósemki, bez zaokrąglania pleców.",
+    "Wzrok przed siebie, kark w przedłużeniu kręgosłupa.",
+    "Ruch kontrolowany, nie rozbujaj ciężaru; ciężki dzwon psuje technikę.",
+    "Dłonie zmieniają się płynnie, a kolana lekko ugięte."
+  ],
+  "Kettlebell_Halo": [
+    "Trzymaj kettlebell dnem do góry za rączkę, łokcie blisko głowy, brzuch napięty.",
+    "Okrążaj głowę blisko ciała, nie odchylaj się do tyłu i nie wypychaj żeber.",
+    "Pośladki napięte, stopy na szerokość bioder, tułów prosto.",
+    "Zacznij od lekkiego ciężaru; kettlebell przy twarzy wymaga kontroli.",
+    "Wykonaj tyle samo okrążeń w obu kierunkach."
+  ],
+  "Kettlebell_Halo_With_Overhead_Extension": [
+    "Okrążaj głowę blisko ciała, żebra opuszczone, brzuch napięty, nie wyginaj pleców.",
+    "Za głową zatrzymaj się i dopiero wtedy prostuj łokcie; ramiona blisko uszu.",
+    "Łokcie nie rozjeżdżają się na boki podczas prostowania.",
+    "Dobierz lekki ciężar; ćwiczenie łączy ruchomość barków z pracą tricepsa.",
+    "Opuszczaj kettlebell za głowę powoli i z kontrolą."
+  ],
+  "Kettlebell_Hang_Clean": [
+    "Zacznij od zawisu między nogami, zawias w biodrach, plecy płaskie, wzrok przed siebie.",
+    "Ruch zaczyna się od mocnego wyprostu bioder, nie od ciągnięcia rękami.",
+    "Kettlebell prowadź blisko ciała po krótkim torze, żeby nie uderzył w przedramię.",
+    "Na górze wyłap dzwon w pozycji rack, łokieć blisko żeber.",
+    "Opuszczaj do zawisu płynnie, biodra do tyłu, bez zaokrąglania pleców."
+  ],
+  "Kettlebell_One-Legged_Deadlift": [
+    "Noga stojąca lekko ugięta; biodra wędrują do tyłu, a wolna noga unosi się w przedłużeniu tułowia.",
+    "Plecy proste, miednica równolegle do podłogi, nie otwieraj jej na bok.",
+    "Trzymaj kettlebell po stronie nogi stojącej lub przeciwnej; druga opcja daje lepszą równowagę.",
+    "Wzrok kilka kroków przed sobą, nie patrz na stopy.",
+    "Wracaj dociskając stopę do podłogi i prostując biodro; pośladek pracuje na górze."
+  ],
+  "Kettlebell_Overhead_Triceps_Extension": [
+    "Obiema rękami trzymaj kettlebell za rogi; ramiona pionowo, blisko głowy.",
+    "Łokcie wskazują do przodu i nie rozchylaj ich na boki.",
+    "Opuszczaj dzwon za głowę tylko w zakresie, który pozwala mobilność barków.",
+    "Brzuch napięty, nie wyginaj dolnych pleców do tyłu.",
+    "Prostuj łokcie do końca, ale bez mocnego przeprostu."
+  ],
+  "Kettlebell_Pass_Between_The_Legs": [
+    "Szeroka lub wygodna postawa, plecy płaskie, biodra odsunięte do tyłu.",
+    "Przekładaj kettlebell w kształcie litery W, bez zaokrąglania pleców.",
+    "Ruch kontrolowany; nie rozbujaj ciężaru, żeby nie szarpał kręgosłupa.",
+    "Wzrok przed siebie, kolana lekko ugięte.",
+    "Wybierz taki ciężar, który pozwala na płynny ruch bez gubienia pozycji."
+  ],
+  "Kettlebell_Pirate_Ships": [
+    "Szeroka postawa, lekko ugięte kolana, brzuch napięty.",
+    "Ręce wyprostowane, kettlebell trzymaj obiema dłońmi przed sobą.",
+    "Obracaj tułów w obie strony, kettlebell unosi się do wysokości głowy, nie szarp.",
+    "Biodra i tułów pracują razem; nie zginaj łokci.",
+    "Zacznij od małego zakresu i lekkiego ciężaru."
+  ],
+  "Kettlebell_Seated_Press": [
+    "Siedź prosto, plecy w naturalnym wygięciu, brzuch napięty.",
+    "Kettlebell przy barku, łokieć pod nadgarstkiem, nadgarstek prosty.",
+    "Wyciskaj w górę i lekko w tył do linii uszu, nie odchylaj tułowia.",
+    "W górze łopatka lekko się unosi, ale bark nie wchodzi w ucho.",
+    "Opuszczaj powoli do barku, bez uderzenia dzwonem w ramię."
+  ],
+  "Kettlebell_Seesaw_Press": [
+    "Obydwa kettlebelle przy barkach, łokcie blisko ciała, brzuch napięty.",
+    "Wyciskaj naprzemiennie, jak huśtawka; drugi dzwon opuszczaj w tym samym czasie.",
+    "Nie wyginaj pleców i nie odchylaj tułowia na bok.",
+    "Pośladki i uda napięte dla stabilności, stopy mocno w podłodze.",
+    "Zrób tyle samo powtórzeń na każdą stronę."
+  ],
+  "Kettlebell_Sumo_High_Pull": [
+    "Szeroka postawa, stopy lekko na zewnątrz, plecy płaskie, klatka do przodu.",
+    "Wypychaj biodra do przodu i dopiero wtedy ciągnij dzwon; ruch wychodzi z nóg i bioder.",
+    "Łokcie unoszą się wysoko ponad nadgarstki, kettlebell blisko ciała do wysokości klatki.",
+    "Nie ciągnij samymi rękami i nie unoś barków pod uszy.",
+    "Opuszczaj kontrolowanie, wracając biodrami do tyłu."
+  ],
+  "Kettlebell_Thruster": [
+    "Dwa kettlebelle w pozycji rack, łokcie blisko ciała, klatka do przodu.",
+    "Przysiad z prostymi plecami, kolana w linii ze stopami, schodź tak głęboko, jak pozwala technika.",
+    "Wstając, wykorzystaj moment z nóg do wypchnięcia dzwonów nad głowę.",
+    "Na górze ramiona proste, brzuch napięty, nie wyginaj dolnych pleców.",
+    "Dobierz ciężar tak, aby nie tracić stabilności; zacznij lekko."
+  ],
+  "Kettlebell_Turkish_Get-Up_Lunge_style": [
+    "Kettlebell przez cały ruch wyprostowany nad barkiem, wzrok na dzwonie.",
+    "Nadgarstek prosty, łokieć nie zgina się pod ciężarem.",
+    "Zaczynaj od lekkiego ciężaru, a nawet bez niego; nauka kroków jest ważniejsza niż siła.",
+    "Przejście do wykroku wykonaj płynnie, kolano tylnej nogi nie uderza w podłogę.",
+    "Wracaj tą samą drogą, wolno i kontrolowanie, krok po kroku."
+  ],
+  "Kettlebell_Turkish_Get-Up_Squat_style": [
+    "Kettlebell przez cały ruch wyprostowany nad barkiem, wzrok na dzwonie.",
+    "Zaczynaj od lekkiego ciężaru, a nawet bez niego; liczy się poprawna kolejność kroków.",
+    "Przejście do przysiadu wykonaj płynnie, stopy szeroko, pięty w podłodze.",
+    "Nadgarstek prosty, łokieć nie zgina się pod ciężarem.",
+    "Wracaj tą samą drogą, wolno, krok po kroku."
+  ],
+  "Kettlebell_Windmill": [
+    "Kettlebell nad głową ze wzrokiem na nim, ramię proste i mocno w barku.",
+    "Biodro wypychaj w stronę ręki z ciężarem, nogi proste lub lekko ugięte; ruch to zawias w biodrach, a nie skłon boczny.",
+    "Stopy skręcone na zewnątrz ok. 45°, wolna ręka sunie wzdłuż nogi w dół.",
+    "Plecy proste, nie zaokrąglaj ich, schodź tak nisko, jak pozwala ruchomość.",
+    "Wracaj powoli dociskając stopy do podłogi; zacznij od lekkiego ciężaru."
+  ],
+  "Kneeling_Cable_Crunch_With_Alternating_Oblique_Twists": [
+    "Liny trzymaj przy uszach, dłonie nie schodzą w trakcie ruchu.",
+    "Zwijaj tułów w dół z brzucha, a nie z bioder; miednica nie ucieka do tyłu.",
+    "Na dole delikatnie skręć tułów raz w jedną, raz w drugą stronę.",
+    "Wydech przy zwijaniu, wdech przy powrocie.",
+    "Nie ciągnij rękami i nie siadaj pośladkami na pięty."
+  ],
+  "Kneeling_Cable_Triceps_Extension": [
+    "Ramiona oparte na ławce, łokcie nieruchomo w jednym miejscu.",
+    "Prostuj łokcie w całości, ruch wykonują tylko przedramiona.",
+    "Zrób pauzę w pełnym wyproście, napnij triceps.",
+    "Wracaj powoli, nie puszczaj ciężaru swobodnie.",
+    "Głowa i kark rozluźnione, bez unoszenia barków."
+  ],
+  "Kneeling_High_Pulley_Row": [
+    "Klęcz prosto, brzuch napięty, nie odchylaj się do tyłu przy ciągnięciu.",
+    "Zaczynaj od ściągnięcia łopatek, potem zginaj łokcie.",
+    "Przyciągaj linę do górnej części klatki, łokcie na boki.",
+    "W końcowej fazie zatrzymaj na chwilę i ściśnij łopatki.",
+    "Wracaj powoli, aż ramiona wyprostują się, a łopatki rozejdą się."
+  ],
+  "Kneeling_Single-Arm_High_Pulley_Row": [
+    "Klęcz stabilnie, tułów prosto, bez skręcania w stronę ręki z uchwytem.",
+    "Zacznij od opuszczenia łopatki, następnie ciągnij łokieć w dół i do boku.",
+    "Obróć nadgarstek w trakcie ruchu, żeby na końcu dłoń patrzyła do ciebie.",
+    "Zatrzymaj się na chwilę w końcowej pozycji i wracaj powoli.",
+    "Dobierz ciężar, przy którym nie bujasz tułowiem."
+  ],
+  "Landmine_180s": [
+    "Szeroka postawa, stopy stabilnie, kolana lekko ugięte, ręce proste.",
+    "Obracaj tułów i biodra razem, ruch prowadzi miednica, a nie same ramiona.",
+    "Brzuch napięty, klatka do przodu, nie wyginaj dolnych pleców.",
+    "Zacznij od lekkiego obciążenia i małego łuku, potem zwiększaj zakres.",
+    "Zatrzymaj sztangę kontrolowanie na końcu łuku, nie pozwalaj, aby ona sama cię pociągnęła."
+  ],
+  "Landmine_Linear_Jammer": [
+    "Sztanga przy barkach, łokcie przed sobą, ciało w pozycji atletycznej.",
+    "Zrób wyraźny półprzysiad z odsuniętymi biodrami, plecy proste.",
+    "Wstając, prostuj biodra, kolana i kostki jednocześnie, dopiero potem ręce.",
+    "Ruch ma być dynamiczny, ale pod kontrolą; nie wyginaj dolnych pleców.",
+    "Nie blokuj łokci gwałtownie; zatrzymaj sztangę przed pełnym przeprostem."
+  ],
+  "Leg-Over_Floor_Press": [
+    "Noga po stronie ręki z ciężarem przełożona nad drugą nogą, miednica stabilna.",
+    "Kettlebell nad barkiem, nadgarstek prosty, łokieć skierowany na bok pod kątem ok. 45°.",
+    "Opuszczaj do dotknięcia łokciem podłogi i zatrzymaj na chwilę, bez odbijania.",
+    "Wolna ręka leży na podłodze dla stabilności.",
+    "Dolne plecy nie odrywają się od podłogi."
+  ],
+  "Leg_Lift": [
+    "Stań stabilnie, trzymaj się rękami, plecy proste, brzuch napięty.",
+    "Unoś nogę do tyłu z pośladka, bez wyginania dolnych pleców.",
+    "Nie zamachuj się; ruch płynny i kontrolowany, z krótką pauzą na górze.",
+    "Biodra ustawione frontem do przodu, nie obracaj miednicy.",
+    "Wydech przy unoszeniu, wdech przy opuszczaniu."
+  ],
+  "Leg_Pull-In": [
+    "Dolne plecy dociśnięte do maty przez cały ruch, brzuch napięty.",
+    "Przyciągaj kolana do klatki z brzucha, bez pomocy rąk.",
+    "Zatrzymaj się na chwilę na górze, ściśnij brzuch.",
+    "Wracaj powoli, nie opuszczaj nóg na matę, żeby napięcie nie znikało.",
+    "Wydech przy podciąganiu, wdech przy wracaniu."
+  ],
+  "Leverage_Chest_Press": [
+    "Ustaw siedzenie tak, aby uchwyty były na wysokości środka klatki.",
+    "Łopatki ściągnięte i oparte o oparcie, klatka wypchnięta.",
+    "Wyciskaj do przodu bez blokowania łokci na siłę.",
+    "Wracaj powoli, z kontrolą; nie opuszczaj ciężaru całkowicie na stos.",
+    "Nie odrywaj pleców od oparcia i nie unoś barków."
+  ],
+  "Leverage_Deadlift": [
+    "Stań na środku maszyny, uchwyć rączki, plecy proste, klatka do przodu.",
+    "Obniż biodra, wzrok przed siebie, kark w przedłużeniu pleców.",
+    "Wstawaj, dociskając stopy do podłogi, i prostuj biodra oraz kolana jednocześnie.",
+    "Ramiona proste, to nogi i biodra wykonują pracę.",
+    "Nie zaokrąglaj pleców na dole; wstrzymaj oddech na czas wstawania."
+  ],
+  "Leverage_Decline_Chest_Press": [
+    "Siedzenie ustaw tak, aby uchwyty były przy dolnej części klatki.",
+    "Łopatki ściągnięte, klatka do przodu, głowa oparta.",
+    "Wyciskaj płynnie i nie blokuj łokci siłą na górze.",
+    "Wracaj powoli, nie opuszczaj ciężaru na stos między powtórzeniami.",
+    "Barki opuszczone, nie unoś ich do uszu."
+  ],
+  "Leverage_High_Row": [
+    "Ustaw siedzenie tak, aby uchwyty były tuż nad zasięgiem, a kolana dobrze zablokowane.",
+    "Zacznij od ściągnięcia łopatek, potem zginaj łokcie.",
+    "Przyciągaj uchwyty do tułowia, ściskając łopatki.",
+    "Nie odchylaj tułowia do tyłu, ruch ma pracować w plecach.",
+    "Wracaj powoli i nie puszczaj całkiem ciężaru."
+  ],
+  "Leverage_Incline_Chest_Press": [
+    "Siedzenie ustaw tak, aby uchwyty były przy górnej części klatki.",
+    "Łopatki ściągnięte, klatka do przodu, plecy oparte.",
+    "Wyciskaj do przodu i lekko w górę, bez blokowania łokci na siłę.",
+    "Wracaj powoli, nie opuszczaj ciężaru na stos.",
+    "Barki opuszczone, nie unoś ich do uszu."
+  ],
+  "Leverage_Iso_Row": [
+    "Ustaw siedzenie tak, aby uchwyty były na wysokości klatki piersiowej.",
+    "Klatkę oprzyj o pad, plecy proste, nie odchylaj się.",
+    "Zacznij ruch od łopatek, następnie ciągnij łokcie do tyłu.",
+    "Zatrzymaj się na chwilę na końcu, ściskając łopatki.",
+    "Wracaj powoli do pełnego rozciągnięcia, bez puszczania ciężaru."
+  ],
+  "Leverage_Shoulder_Press": [
+    "Ustaw siedzenie tak, aby uchwyty były na wysokości barków.",
+    "Plecy oparte, brzuch napięty, nie wyginaj dolnych pleców.",
+    "Wyciskaj w górę, łokcie nieco przed linią tułowia.",
+    "Nie blokuj łokci siłą i nie unoś barków do uszu.",
+    "Wracaj powoli do poziomu barków, bez opuszczania ciężaru na stos."
+  ],
+  "Leverage_Shrug": [
+    "Stań stabilnie, ramiona proste, trzymaj uchwyty blisko ciała.",
+    "Unoś barki prosto w górę, w stronę uszu, bez obracania ich do przodu.",
+    "Zatrzymaj się na górze na sekundę, ściśnij mięśnie czworoboczne.",
+    "Nie zginaj łokci i nie ciągnij rękami.",
+    "Opuszczaj powoli; głowa prosto, nie wysuwaj jej do przodu."
+  ],
+  "Low_Cable_Crossover": [
+    "Pochyl lekko tułów do przodu, jedna noga wysunięta dla stabilności.",
+    "Łokcie lekko ugięte i niezmiennie ustawione przez cały ruch.",
+    "Prowadź dłonie łukiem w górę i do środka, aż spotkają się przed klatką.",
+    "Na górze ściśnij klatkę, zatrzymaj na sekundę.",
+    "Wracaj powoli, nie pozwól, aby stos pociągnął ramiona do tyłu."
+  ],
+  "Low_Cable_Triceps_Extension": [
+    "Ramiona pionowo, łokcie blisko siebie i nieruchome przez cały ruch.",
+    "Prostuj tylko przedramiona, aż ramiona będą wyprostowane.",
+    "Na górze ściśnij triceps i zatrzymaj na sekundę.",
+    "Wracaj powoli, nie pozwalaj łokciom uciekać na boki.",
+    "Wydech przy prostowaniu, wdech przy opuszczaniu."
+  ],
+  "Low_Pulley_Row_To_Neck": [
+    "Siedź prosto, plecy nieruchome, kolana lekko ugięte.",
+    "Ciągnij linę do szyi z łokciami wysoko i na bok, ponad linią tułowia.",
+    "Nie odchylaj się do tyłu, ruch ma pracować w tylnych aktonach i górze pleców.",
+    "Zatrzymaj się na chwilę na końcu ruchu, ściśnij łopatki.",
+    "Wracaj powoli, ciężar nie powinien szarpać tułowia."
+  ],
+  "Lunge_Pass_Through": [
+    "Tułów prosto, krok do przodu na tyle długi, żeby kolano nie wychodziło za bardzo przed stopę.",
+    "Tylne kolano opuszczaj prawie do podłogi, nie uderzaj nim.",
+    "Przekładaj kettlebell pod przednią nogą w momencie najniższego punktu.",
+    "Pięta przedniej stopy dociska do podłogi, wstawaj nią do góry.",
+    "Zrób tyle samo powtórzeń na każdą nogę."
+  ],
+  "Lunge_Sprint": [
+    "Zacznij od lekkiego ciężaru i opanuj zwykłe wykroki w suwnicy.",
+    "Tułów prosto, tylne kolano opada prawie do podłogi.",
+    "Wybij się dynamicznie, zamień nogi w powietrzu i miękko wyląduj.",
+    "Przy lądowaniu kolana lekko ugięte, stopy stabilnie.",
+    "To ćwiczenie dynamiczne; przerywaj, gdy tracisz technikę."
+  ],
+  "Lying_Cable_Curl": [
+    "Leż stabilnie, stopy oparte o ramę maszyny, plecy płasko.",
+    "Łokcie przy tułowiu i nieruchome, ruch wykonują tylko przedramiona.",
+    "Unoś drążek do klatki, ściskając biceps, i zatrzymaj sekundę.",
+    "Opuszczaj powoli, nie puszczaj ciężaru.",
+    "Wydech przy uginaniu, wdech przy opuszczaniu."
+  ],
+  "Lying_Cambered_Barbell_Row": [
+    "Połóż się na ławce klatką do dołu, głowa w przedłużeniu kręgosłupa.",
+    "Chwyt nachwytem szerzej niż barki, łopatki zaczynają ruch.",
+    "Do klatki ciągniesz górę pleców, do brzucha szerokie plecy.",
+    "Zatrzymaj sztangę na sekundę na górze, ściskając łopatki.",
+    "Nie unoś klatki z ławki i nie szarp ciężaru."
+  ],
+  "Lying_Close-Grip_Bar_Curl_On_High_Pulley": [
+    "Połóż się na plecach, głowa przy końcu ławki, ramiona pionowo nad barkami.",
+    "Łokcie blisko siebie i nieruchome, ruch wykonują tylko przedramiona.",
+    "Uginaj w stronę czoła, ściskaj biceps na górze.",
+    "Wracaj powoli, kontrolując ciężar.",
+    "Wydech przy uginaniu, wdech przy prostowaniu."
+  ],
+  "Lying_Close-Grip_Barbell_Triceps_Extension_Behind_The_Head": [
+    "Chwyt na szerokość barków, łokcie blisko siebie, nie rozchylaj ich.",
+    "Ramiona nieruchome, ruch wykonują tylko przedramiona.",
+    "Opuszczaj sztangę za głowę powoli, do pionu przedramion.",
+    "Użyj łamanego gryfu, jeśli nadgarstki się męczą.",
+    "Poproś o asekurację przy większym ciężarze; sztanga schodzi blisko głowy."
+  ],
+  "Lying_Close-Grip_Barbell_Triceps_Press_To_Chin": [
+    "Chwyt na szerokość barków lub wąskie wewnętrzne uchwyty gryfu łamanego.",
+    "Łokcie blisko siebie i nieruchome przez cały ruch.",
+    "Opuszczaj sztangę łukiem do brody, delikatnie dotykając, bez odbijania.",
+    "Na górze ściśnij triceps na sekundę.",
+    "Używaj ciężaru z asekuracją, bo sztanga jest blisko twarzy."
+  ],
+  "Lying_Dumbbell_Tricep_Extension": [
+    "Hantle nad klatką, łokcie skierowane do przodu i blisko siebie.",
+    "Ramiona nieruchome, ruch wykonują tylko przedramiona.",
+    "Opuszczaj hantle powoli, aż znajdą się przy uszach.",
+    "Prostuj do pełnego wyprostu i ściśnij triceps.",
+    "Zacznij od lekkich hantli; ciężar blisko głowy wymaga kontroli."
+  ],
+  "Lying_High_Bench_Barbell_Curl": [
+    "Połóż się na wysokiej ławce klatką do dołu, sztanga zwisa pionowo.",
+    "Łokcie przy tułowiu, ramiona nieruchome, ruch tylko w przedramionach.",
+    "Unoś sztangę bez bujania, ściskając biceps na górze.",
+    "Opuszczaj powoli, do pełnego wyprostu łokci.",
+    "Wydech przy uginaniu, wdech przy opuszczaniu."
+  ],
+  "Lying_Machine_Squat": [
+    "Plecy i głowa oparte o maszynę, barki pod padami.",
+    "Stopy na szerokość barków, palce lekko na zewnątrz, kolana w kierunku palców.",
+    "Dociskaj całą stopę, nie unoś pięt.",
+    "Nie blokuj kolan na górze, zatrzymaj tuż przed pełnym wyprostem.",
+    "Schodź do głębokości, w której plecy nie odrywają się od oparcia."
+  ],
+  "Lying_One-Arm_Lateral_Raise": [
+    "Połóż się klatką do ławki, wolną ręką trzymaj się dla stabilności.",
+    "Ramię lekko ugięte w łokciu, unoś bokiem do wysokości barku.",
+    "Nie bujaj tułowiem, ruch wykonuje ramię.",
+    "Zatrzymaj na sekundę na górze, ściskając bark.",
+    "Opuszczaj wolno, bez opadania hantla."
+  ],
+  "Lying_Rear_Delt_Raise": [
+    "Połóż się klatką do ławki, głowa w przedłużeniu kręgosłupa.",
+    "Ramiona lekko ugięte w łokciach, unoś na boki do wysokości barków.",
+    "Prowadź ruch łokciami, nie nadgarstkami; nie unoś barków do uszu.",
+    "Zatrzymaj na sekundę na górze, ściskając łopatki.",
+    "Opuszczaj powoli, użyj lekkich hantli."
+  ],
+  "Lying_Supine_Dumbbell_Curl": [
+    "Leż na ławce, ramiona opuszczone do tyłu i nieruchome.",
+    "Łokcie blisko tułowia, ruch wykonują tylko przedramiona.",
+    "Obracaj nadgarstki podczas uginania, aż dłonie patrzą w górę.",
+    "Ściśnij biceps na górze przez sekundę.",
+    "Opuszczaj powoli, bez opadania hantli."
+  ],
+  "Lying_T-Bar_Row": [
+    "Klatka oparta o pad, górna część klatki przy jego krawędzi.",
+    "Uchwyt dobierz do celu: nachwyt dla górnych pleców, neutralny dla szerokich.",
+    "Ciągnij łokcie blisko tułowia, ściskaj łopatki na końcu ruchu.",
+    "Nie unoś klatki z podkładki i nie szarp ciężaru.",
+    "Opuszczaj powoli do pełnego rozciągnięcia."
+  ],
+  "Machine_Bicep_Curl": [
+    "Ustaw siedzenie tak, aby ramiona leżały na padzie, a łokcie były na wysokości osi maszyny.",
+    "Uginaj przedramiona, nie unoś barków i nie odchylaj tułowia.",
+    "Ściśnij biceps na górze na sekundę.",
+    "Opuszczaj powoli, nie puszczaj ciężaru na stos.",
+    "Wydech przy uginaniu, wdech przy opuszczaniu."
+  ],
+  "Machine_Preacher_Curls": [
+    "Ramiona całą długością na padzie, klatka przy podporze, łokcie blisko siebie.",
+    "Uginaj bez bujania, ruch wykonują tylko przedramiona.",
+    "Ściśnij biceps na górze przez sekundę.",
+    "Opuszczaj powoli do prawie pełnego wyprostu, nie przeprostowuj łokci.",
+    "Nie odrywaj ramion od pada przy zmęczeniu."
+  ],
+  "Machine_Triceps_Extension": [
+    "Ustaw siedzenie tak, aby łokcie były na wysokości osi maszyny.",
+    "Ramiona oparte na padach, nie odrywaj ich w trakcie ruchu.",
+    "Prostuj łokcie do końca i ściśnij triceps na sekundę.",
+    "Wracaj powoli, nie puszczaj ciężaru na stos.",
+    "Barki opuszczone, nie unoś ich do uszu."
+  ],
+  "Middle_Back_Shrug": [
+    "Połóż się klatką na ławce skośnej, ramiona zwisają pionowo.",
+    "Ściągaj łopatki do siebie, bez zginania łokci.",
+    "Zatrzymaj na sekundę w pełnym ściągnięciu.",
+    "Użyj lekkich hantli; ruch jest krótki i wymaga czucia mięśnia.",
+    "Wracaj powoli do pełnego rozciągnięcia, wydech przy ściąganiu."
+  ],
+  "Narrow_Stance_Hack_Squats": [
+    "Plecy i barki na padach, głowa prosto, stopy blisko siebie.",
+    "Zrób przysiad do wygodnego zakresu, kolana w kierunku palców stóp.",
+    "Dociskaj całą stopę, pięty nie odrywają się od platformy.",
+    "Nie blokuj kolan na górze, zatrzymaj tuż przed pełnym wyprostem.",
+    "Wąska postawa mocniej angażuje przód ud, zacznij od mniejszego ciężaru."
+  ],
+  "Narrow_Stance_Leg_Press": [
+    "Stopy blisko siebie na platformie, palce lekko na zewnątrz.",
+    "Plecy i pośladki przyklejone do oparcia, nie odrywaj miednicy na dole.",
+    "Schodź do kąta ok. 90° w kolanach, kontrolując ruch.",
+    "Wypychaj piętami i przodem stopy, bez blokowania kolan na górze.",
+    "Wąska postawa mocniej angażuje przód ud; zacznij od lżejszego ciężaru."
+  ],
+  "Narrow_Stance_Squats": [
+    "Sztanga na mięśniach czworobocznych, łokcie w dół, klatka do przodu.",
+    "Stopy blisko siebie, palce lekko na zewnątrz, kolana zgodnie z palcami.",
+    "Schodź prosto w dół, plecy proste, wzrok przed siebie.",
+    "Wstawaj, dociskając całą stopę do podłogi, pięty nie odrywają się.",
+    "Przysiadaj w klatce z zabezpieczeniami; wąska postawa zwiększa wymagania równowagi."
+  ],
+  "Natural_Glute_Ham_Raise": [
+    "Kostki pod wałkami, kolana na pad, tułów prosto.",
+    "Schodź powoli, napinając tył ud, aż kolana będą prawie proste.",
+    "Plecy proste, nie wyginaj dolnych pleców i trzymaj miednicę stabilnie.",
+    "Wracaj siłą tylnej części ud; w razie potrzeby pomóż sobie rękami lub gumą.",
+    "To ćwiczenie jest trudne, zacznij od krótkiego zakresu."
+  ],
+  "Neck_Press": [
+    "Użyj lekkiego ciężaru; ten wariant obciąża bark i wymaga dobrej techniki.",
+    "Opuszczaj sztangę powoli do dolnej części szyi lub górnej klatki, bez zatrzymywania na stałe.",
+    "Łokcie lekko w bok, łopatki ściągnięte, pośladki na ławce.",
+    "Wyciskaj do pełnego wyprostu, ściskając klatkę, i zwolnij przy opuszczaniu.",
+    "Poproś o asekurację; sztanga schodzi blisko szyi."
+  ],
+  "Oblique_Crunches": [
+    "Dolne plecy dociśnięte do podłogi, nogi uniesione i ugięte.",
+    "Ręka przy głowie, nie ciągnij szyi, ruch wychodzi z brzucha.",
+    "Unieś bark, skręcając tułów w stronę przeciwnego kolana.",
+    "Zatrzymaj na sekundę, napnij skośne.",
+    "Opuszczaj powoli; wydech przy skręcaniu."
+  ],
+  "Oblique_Crunches_-_On_The_Floor": [
+    "Leż na boku z kolanami lekko ugiętymi, nogi jedna na drugiej.",
+    "Ręka za głową, nie ciągnij szyi, łokieć do góry.",
+    "Unieś tułów w bok, napinając skośne mięśnie brzucha.",
+    "Zatrzymaj na sekundę na górze, wracaj powoli.",
+    "Wydech przy unoszeniu, wdech przy opuszczaniu."
+  ],
+  "One-Arm_Flat_Bench_Dumbbell_Flye": [
+    "Wolna ręka trzyma ławkę, łopatka ściągnięta po stronie pracy.",
+    "Ramię lekko ugięte w łokciu, nie prostuj go ani nie zginaj w trakcie.",
+    "Opuszczaj hantel szerokim łukiem, aż poczujesz rozciągnięcie klatki.",
+    "Wracaj tym samym łukiem, ściskając klatkę.",
+    "Użyj lekkiego ciężaru, nie schodź poniżej poziomu klatki."
+  ],
+  "One-Arm_High-Pulley_Cable_Side_Bends": [
+    "Stopy na szerokość bioder, wolna ręka na biodrze.",
+    "Ruch wykonuj bokiem tułowia, nie obracaj go do przodu.",
+    "Zginaj się w bok powoli, bez bujania i bez pomocy bioder.",
+    "Wracaj, napinając skośne po stronie rozciągniętej.",
+    "Zrób tyle samo powtórzeń na obie strony."
+  ],
+  "One-Arm_Incline_Lateral_Raise": [
+    "Połóż się bokiem na ławce skośnej, bark oparty o pad.",
+    "Ramię lekko ugięte, unoś hantel prosto w górę, bez bujania.",
+    "Zatrzymaj na sekundę na górze, ściskając bark.",
+    "Opuszczaj wolno przez ciało do pozycji wyjściowej.",
+    "Użyj lekkiego hantla; ruch jest izolowany."
+  ],
+  "One-Arm_Kettlebell_Clean": [
+    "Zawias w biodrach, plecy płaskie, wzrok przed siebie.",
+    "Dzwon ciągnij biodrami, nie rękami; prowadź go blisko ciała.",
+    "Na górze obróć nadgarstek, aby wyłapać dzwon przy klatce.",
+    "Nie pozwól, żeby uderzył w przedramię; trzymaj łokieć przy żebrach.",
+    "Opuszczaj do zawisu płynnie, biodra do tyłu."
+  ],
+  "One-Arm_Kettlebell_Clean_and_Jerk": [
+    "Najpierw opanuj zarzut, potem dodaj wyrzut; zacznij lekko.",
+    "Dzwon w pozycji rack przy klatce, łokieć przy żebrach, brzuch napięty.",
+    "Zrób płytkie ugięcie kolan, tułów prosto, i mocno wypchnij biodra.",
+    "Wyrzuć dzwon nad głowę siłą nóg, ramię prosto na górze.",
+    "Opuszczaj do pozycji rack i na zawis, kontrolując ruch."
+  ],
+  "One-Arm_Kettlebell_Floor_Press": [
+    "Ramię oparte na podłodze, łokieć pod kątem ok. 45° do tułowia.",
+    "Wyciskaj prosto w górę, nadgarstek prosty.",
+    "Opuszczaj do dotknięcia łokciem podłogi, bez odbijania.",
+    "Stopy płasko, brzuch napięty, dolne plecy stabilne.",
+    "Barki opuszczone, nie unoś ich do uszu."
+  ],
+  "One-Arm_Kettlebell_Jerk": [
+    "Dzwon w pozycji rack, łokieć przy żebrach, brzuch napięty.",
+    "Zrób płytkie ugięcie kolan, tułów prosto.",
+    "Wypchnij biodra i nogi, aby uzyskać siłę do wypchnięcia dzwonu.",
+    "Wejdź pod ciężar, ramię prosto, i dopiero wtedy się wyprostuj.",
+    "Opuszczaj kontrolowanie do pozycji rack."
+  ],
+  "One-Arm_Kettlebell_Military_Press_To_The_Side": [
+    "Dzwon przy barku, łokieć przy żebrach, nadgarstek prosty.",
+    "Wyciskaj w górę i lekko w bok, wzrok na dzwonie.",
+    "Napnij brzuch, pośladki i najszerszy grzbietu; nie odchylaj tułowia.",
+    "Na górze ramię prosto przy uchu, bez przeprostu.",
+    "Opuszczaj powoli do barku."
+  ],
+  "One-Arm_Kettlebell_Para_Press": [
+    "Dzwon przy barku, łokieć odsunięty na bok.",
+    "Wyciskaj w górę i na zewnątrz, nadgarstek prosty.",
+    "Napnij brzuch, pośladki i najszerszy grzbietu; nie odchylaj tułowia.",
+    "Opuszczaj powoli do barku, bez uderzenia dzwonem w ramię.",
+    "Zacznij od lekkiego ciężaru."
+  ],
+  "One-Arm_Kettlebell_Push_Press": [
+    "Dzwon w pozycji rack, łokieć przy żebrach, brzuch napięty.",
+    "Zrób płytkie ugięcie kolan, tułów prosto, pięty w podłodze.",
+    "Wypchnij nogi i biodra, aby pomóc rękom wycisnąć dzwon.",
+    "Na górze ramię prosto przy uchu, bez przeprostu łokcia.",
+    "Opuszczaj powoli do barku i przygotuj się do kolejnego ugięcia."
+  ],
+  "One-Arm_Kettlebell_Row": [
+    "Zawias w biodrach, plecy płaskie, kolana lekko ugięte, wzrok przed siebie.",
+    "Zacznij ruch od ściągnięcia łopatki, następnie zginaj łokieć.",
+    "Ciągnij dzwon do brzucha, łokieć blisko tułowia.",
+    "Nie skręcaj tułowia i nie bujaj ciężarem.",
+    "Opuszczaj powoli do pełnego rozciągnięcia."
+  ],
+  "One-Arm_Kettlebell_Split_Jerk": [
+    "Dzwon w pozycji rack, łokieć przy żebrach, brzuch napięty.",
+    "Zrób płytkie ugięcie kolan, tułów prosto.",
+    "Wypchnij nogi i biodra, a następnie rozstaw nogi w nożyce pod dzwonem.",
+    "Ramię prosto na górze, kolano przedniej nogi nad stopą.",
+    "Zbierz nogi do pozycji stojącej i opuszczaj dzwon kontrolowanie."
+  ],
+  "One-Arm_Kettlebell_Swings": [
+    "To ruch bioder jak w martwym ciągu, nie przysiad; biodra cofnij daleko, a kolana tylko lekko ugnij.",
+    "Kettlebell wyrzucaj siłą pośladków i bioder, ręka tylko prowadzi ciężar.",
+    "Plecy proste, wzrok przed siebie; w górze ciało stoi wyprostowane, bez wychylania się w tył.",
+    "Kettlebell kończy ruch na wysokości klatki lub barków, nie unoś go nad głowę siłą ramienia.",
+    "Zamach zaczynaj od cofnięcia kettla między uda, wysoko pod pachy."
+  ],
+  "One-Arm_Long_Bar_Row": [
+    "Plecy proste, klatka do przodu, biodra cofnięte; nie zaokrąglaj dolnego odcinka.",
+    "Ciągnij łokieć do biodra, nie do sufitu, i ściągaj łopatkę na końcu ruchu.",
+    "Tułów stabilny, bez rotowania i odbijania ciężaru z nóg.",
+    "Opuszczaj sztangę wolno do pełnego wyprostu ramienia, z rozciągnięciem łopatki.",
+    "Wolną ręką oprzyj się o udo lub kolano, żeby odciążyć plecy."
+  ],
+  "One-Arm_Open_Palm_Kettlebell_Clean": [
+    "Ruch zaczyna się od bioder, jak w swingu; ramię nie podciąga ciężaru.",
+    "Kettlebell prowadź blisko ciała, żeby nie uderzał w przedramię i nadgarstek.",
+    "Dłoń otwarta, kettlebell ląduje miękko na całej dłoni, a nie na samym nadgarstku.",
+    "Zacznij od lekkiego ciężaru, bo technika łapania wymaga wyczucia."
+  ],
+  "One-Arm_Side_Laterals": [
+    "Tułów nieruchomy, bez bujania; wolną ręką mocno trzymaj się stabilnego punktu.",
+    "Łokieć lekko ugięty i nieco wyżej niż nadgarstek, jakbyś wylewał wodę ze szklanki.",
+    "Unoś do wysokości barku i nie wyżej, żeby nie włączać kapturów.",
+    "Opuszczaj wolno, 2–3 sekundy, bez opadania ciężaru.",
+    "Weź lżejszy hantel, niż myślisz; boczne aktony źle znoszą oszukiwanie."
+  ],
+  "One-Legged_Cable_Kickback": [
+    "Trzymaj się ramy maszyny, tułów lekko pochylony i spięty.",
+    "Odkopuj nogę łukiem do tyłu siłą pośladka, bez wyginania odcinka lędźwiowego.",
+    "Na szczycie zatrzymaj ruch na sekundę i ściśnij pośladek.",
+    "Biodra ustaw równo, nie obracaj miednicy na bok.",
+    "Wracaj powoli, hamując ciężar zamiast pozwalać, żeby wyciąg szarpał nogę."
+  ],
+  "One_Arm_Dumbbell_Bench_Press": [
+    "Łopatka po stronie pracującej ściągnięta; leż stabilnie, nie zjeżdżaj z ławki w bok.",
+    "Napnij brzuch i mocno zapieraj stopy, żeby tułów się nie skręcał.",
+    "Hantel schodzi na wysokość klatki, łokieć ok. 45° od tułowia.",
+    "Wolną rękę trzymaj z boku, bez podpierania hantla, chyba że to konieczne.",
+    "Wyciskaj nad barkiem, nie nad środkiem klatki."
+  ],
+  "One_Arm_Dumbbell_Preacher_Curl": [
+    "Ramię oprzyj całą długością o modlitewnik, pachą dociśnij do górnej krawędzi.",
+    "Opuszczaj do prawie pełnego wyprostu, ale nie przeprostowuj łokcia.",
+    "Nie odrywaj ramienia od oparcia i nie unoś barku do uszu.",
+    "Na górze ściśnij biceps i zatrzymaj się na sekundę, dolną fazę rób 2–3 sekundy.",
+    "Jeśli ciężar szarpie w dole, zmniejsz go, bo to wrażliwy moment dla łokcia."
+  ],
+  "One_Arm_Floor_Press": [
+    "Łopatki ściągnięte, kolana ugięte, stopy mocno na podłodze.",
+    "Łokieć zatrzymaj na podłodze na sekundę, bez odbijania, i dopiero wtedy wypychaj.",
+    "Łokieć trzymaj ok. 45° od tułowia; chwyt neutralny dobrze to ułatwia.",
+    "Wolną rękę połóż z boku, nie pomagaj sobie nią.",
+    "Tułów nie skręca się, wyciskaj do pełnego wyprostu nad barkiem."
+  ],
+  "One_Arm_Lat_Pulldown": [
+    "Dociśnij uda podkładką i usiądź prosto, lekko odchylony do tyłu.",
+    "Ciągnij łokieć w dół do boku, nie zginaj nadgarstka ani nie szarp całym ciałem.",
+    "Na dole ściągnij łopatkę i ściśnij najszerszy grzbietu.",
+    "Wracaj powoli, z pełnym rozciągnięciem lata, ale bez odpuszczania napięcia.",
+    "Tułów nie skręca się w stronę ciągniętej ręki."
+  ],
+  "One_Arm_Pronated_Dumbbell_Triceps_Extension": [
+    "Ramię ustaw prostopadle do tułowia i nie ruszaj nim, pracuje tylko przedramię.",
+    "Wolną ręką podeprzyj ramię pod łokciem dla stabilności.",
+    "Hantel opuszczaj w stronę głowy lub bark, kontrolując, bez uderzania o czoło.",
+    "Łokieć trzymaj skierowany w sufit, nie pozwalaj mu uciekać na boki.",
+    "Na górze wyprostuj ramię i napnij triceps, nie odrzucaj hantla siłą."
+  ],
+  "One_Arm_Supinated_Dumbbell_Triceps_Extension": [
+    "Ramię ustaw prostopadle do tułowia i nie ruszaj nim, pracuje tylko przedramię.",
+    "Wolną ręką podeprzyj ramię pod łokciem dla stabilności.",
+    "Hantel opuszczaj powoli w stronę barku lub głowy, z pełną kontrolą.",
+    "Łokieć nie ucieka na boki ani do przodu; przy podchwycie nadgarstek trzymaj prosto.",
+    "Zacznij od lekkiego hantla, bo łokieć jest tu mocno obciążony."
+  ],
+  "Overhead_Cable_Curl": [
+    "Ramiona ustaw równolegle do podłogi i trzymaj je w tej linii przez cały ruch.",
+    "Zginaj tylko w łokciach, dłonie mają trafić nad głowę, blisko uszu.",
+    "Ściśnij biceps w szczycie na sekundę i wracaj powoli.",
+    "Stój prosto w środku bramy, bez odchylania tułowia do tyłu.",
+    "Wyrównaj ciężar po obu stronach, bo każda strona musi pracować tak samo."
+  ],
+  "Pallof_Press": [
+    "Ustaw się bokiem do wyciągu, stopy na szerokość bioder, kolana lekko ugięte.",
+    "Wyciskaj linkę przed siebie i nie pozwalaj, żeby wyciąg skręcał tułów.",
+    "Brzuch i pośladki napięte, barki opuszczone, biodra patrzą prosto.",
+    "Zatrzymaj ręce wyprostowane na 2–3 sekundy, to właśnie tu pracuje core.",
+    "Oddychaj spokojnie i nie zwiększaj ciężaru kosztem skręcania tułowia."
+  ],
+  "Pallof_Press_With_Rotation": [
+    "Stopy na szerokość bioder, kolana lekko ugięte, ustaw się bokiem do wyciągu.",
+    "Rotację rób w tułowiu, nie w samych rękach, i miednicę trzymaj stabilnie.",
+    "Ruch wolny i kontrolowany; nie pozwalaj, żeby ciężar sam cię skręcał.",
+    "Wzrok podążaj za dłońmi, plecy proste, bez wyginania w lędźwiach.",
+    "Wykonaj tyle samo powtórzeń na obie strony."
+  ],
+  "Palms-Down_Dumbbell_Wrist_Curl_Over_A_Bench": [
+    "Przedramiona całą długością oparte o ławkę, tylko nadgarstki zwisają poza krawędź.",
+    "Pracują tylko nadgarstki; nie unoś przedramion ani nie podbijaj ruchu łokciami.",
+    "Opuszczaj hantle powoli do pełnego rozciągnięcia, nie zbyt nisko, żeby nie wypuścić ich z dłoni.",
+    "Weź lekkie hantle i rób więcej powtórzeń, 12–20, bo przedramiona mają dużo włókien wytrzymałościowych.",
+    "Wydech przy unoszeniu, na górze krótkie napięcie."
+  ],
+  "Palms-Down_Wrist_Curl_Over_A_Bench": [
+    "Przedramiona całą długością oparte o ławkę, tylko nadgarstki zwisają poza krawędź.",
+    "Pracują tylko nadgarstki; łokcie i przedramiona stoją w miejscu.",
+    "Chwyt nachwytem na szerokość barków, sztanga niezbyt ciężka.",
+    "Opuszczaj wolno do pełnego rozciągnięcia, nie pozwalaj sztandze zsunąć się z dłoni.",
+    "Rób więcej powtórzeń, ok. 12–20, i kontroluj tempo."
+  ],
+  "Palms-Up_Barbell_Wrist_Curl_Over_A_Bench": [
+    "Przedramiona całą długością oparte o ławkę, nadgarstki poza krawędzią.",
+    "Pracują tylko nadgarstki; nie podrywaj przedramion ani nie pomagaj sobie tułowiem.",
+    "Chwyt podchwytem na szerokość barków, ciężar lekki do umiarkowanego.",
+    "Opuść sztangę wolno, pozwól jej lekko stoczyć się na palce, i podnieś ruchem nadgarstków.",
+    "Ściśnij mocno przedramię na szczycie i oddychaj równo."
+  ],
+  "Palms-Up_Dumbbell_Wrist_Curl_Over_A_Bench": [
+    "Przedramiona całą długością oparte o ławkę, nadgarstki zwisają poza krawędzią.",
+    "Pracują tylko nadgarstki; łokcie nie odrywają się od ławki.",
+    "Opuszczaj hantle powoli do pełnego rozciągnięcia, z kontrolą palców.",
+    "Na górze ściśnij przedramię na sekundę, bez szarpania.",
+    "Dobierz lekkie hantle i rób 12–20 powtórzeń."
+  ],
+  "Plie_Dumbbell_Squat": [
+    "Stopy szeroko, palce na zewnątrz, kolana prowadź w linii stóp, nie zapadaj ich do środka.",
+    "Tułów prosty, hantel trzymaj nisko między nogami, ramiona rozluźnione.",
+    "Schodź pionowo w dół, jak w windzie, bez pochylania do przodu.",
+    "Wypychaj podłoże piętami i całą stopą, na górze zaciśnij pośladki.",
+    "Zejdź do równoległości ud lub niżej, jeśli pozwala na to mobilność bioder."
+  ],
+  "Power_Clean": [
+    "Sztanga nad środkiem stopy, plecy proste, klatka do przodu, łopatki ściągnięte.",
+    "Pierwszy ruch to wypchnięcie nogami; sztanga przy goleniach, ramiona proste.",
+    "Drugi ruch to mocny wyprost bioder i kolan, dopiero potem podciągnięcie łokci.",
+    "Sztanga cały czas blisko ciała, nie odrzucaj jej od siebie.",
+    "Łap sztangę na barkach z łokciami wysoko, w lekkim półprzysiadzie, i amortyzuj nogami."
+  ],
+  "Power_Partials": [
+    "Ramiona proste lub lekko ugięte, tułów nieruchomy, bez bujania.",
+    "Unoś hantle tylko do wysokości barków, w górnej części zakresu.",
+    "Mały palec trochę wyżej niż kciuk, jakbyś wylewał wodę.",
+    "Weź ciężar, który pozwala na kontrolę; to ćwiczenie na wytrzymałość, nie na ego.",
+    "Opuszczaj powoli i nie ściągaj barków do uszu."
+  ],
+  "Preacher_Hammer_Dumbbell_Curl": [
+    "Ramiona oprzyj całą długością o modlitewnik, pachy dociśnięte do krawędzi.",
+    "Chwyt młotkowy, nadgarstki sztywne; zginaj tylko w łokciach.",
+    "Opuszczaj aż do prawie pełnego wyprostu, bez przeprostu łokci.",
+    "Nie odbijaj hantli z dołu i nie unoś barków.",
+    "Na górze ściśnij na sekundę, dół rób 2–3 sekundy."
+  ],
+  "Pull_Through": [
+    "Plecy proste, biodra cofnij daleko do tyłu, kolana tylko lekko ugięte.",
+    "Ruch pochodzi z bioder, nie z ramion; ręce są tylko hakiem do liny.",
+    "Na górze mocno zaciśnij pośladki, ale nie wyginaj się do tyłu.",
+    "Lina przechodzi między nogami, ciężar czuj w tylnej taśmie ud i pośladkach.",
+    "Wzrok przed siebie, kark w linii kręgosłupa."
+  ],
+  "Push-Up_Wide": [
+    "Dłonie nieco szerzej niż barki, ciało proste od głowy do pięt, brzuch i pośladki napięte.",
+    "Łokcie prowadź ok. 45° od tułowia, nie rozkładaj ich na pełne 90°.",
+    "Schodź, aż klatka prawie dotknie podłogi, bez zapadania bioder.",
+    "Łopatki ściągnięte w dole, na górze wypchnij je do przodu.",
+    "Wydech przy wypychaniu, wdech przy schodzeniu."
+  ],
+  "Push-Ups_-_Close_Triceps_Position": [
+    "Dłonie pod klatką, wąsko; palce skierowane do przodu lub lekko do środka.",
+    "Łokcie blisko tułowia przez cały ruch, nie rozkładaj ich na boki.",
+    "Ciało proste jak deska, bez zapadania bioder i bez wypinania pośladków.",
+    "Schodź, aż klatka prawie dotknie dłoni, i mocno wypchnij.",
+    "Jeśli bolą nadgarstki, zmień kąt dłoni lub zrób pompki na pięściach."
+  ],
+  "Push-Ups_With_Feet_Elevated": [
+    "Stopy na ławce, ciało w jednej linii od głowy do pięt, brzuch i pośladki napięte.",
+    "Dłonie nieco szerzej niż barki; łokcie ok. 45° od tułowia.",
+    "Im wyższa podpórka, tym więcej pracują górna klatka i barki.",
+    "Schodź, aż klatka prawie dotknie podłogi, bez zapadania w lędźwiach.",
+    "Szyja neutralna, patrz lekko przed siebie, nie w podłogę."
+  ],
+  "Push_Up_to_Side_Plank": [
+    "Pompkę wykonaj poprawnie, z ciałem w linii, dopiero potem rotacja.",
+    "Przy rotacji przenieś ciężar na jedną rękę i obróć biodra oraz klatkę razem.",
+    "Wolną rękę wyprostuj pionowo w górę, wzrok podążaj za dłonią.",
+    "Stopy możesz ustawić szerzej, żeby było łatwiej utrzymać równowagę.",
+    "Wykonaj tyle samo powtórzeń na obie strony."
+  ],
+  "Pushups_Close_and_Wide_Hand_Positions": [
+    "Wąski chwyt kładzie nacisk na triceps, szeroki na klatkę; zmieniaj go świadomie.",
+    "Ciało proste, brzuch i pośladki napięte, biodra nie opadają.",
+    "Łokcie przy szerokim chwycie ok. 45° od tułowia, przy wąskim blisko ciała.",
+    "Schodź, aż klatka prawie dotknie podłogi, bez skracania zakresu.",
+    "Wydech przy wypychaniu, wdech przy schodzeniu."
+  ],
+  "Reverse_Barbell_Curl": [
+    "Chwyt nachwytem na szerokość barków, nadgarstki proste i mocne.",
+    "Łokcie przy tułowiu, nie przesuwaj ich do przodu.",
+    "Nie bujaj tułowiem; jeśli musisz, ciężar jest za duży.",
+    "Pracujesz tu mocno przedramionami, więc weź lżejszą sztangę niż w klasycznym uginaniu.",
+    "Opuszczaj powoli do pełnego wyprostu."
+  ],
+  "Reverse_Barbell_Preacher_Curls": [
+    "Ramiona całą długością oparte na modlitewniku, pachy dociśnięte do krawędzi.",
+    "Chwyt nachwytem, nadgarstki proste; sztanga łamana oszczędza przedramiona.",
+    "Opuszczaj do prawie pełnego wyprostu, ale nie przeprostowuj łokci.",
+    "Nie odrywaj łokci od oparcia i nie unoś barków.",
+    "Zacznij od lekkiego ciężaru, bo przedramiona męczą się szybko."
+  ],
+  "Reverse_Cable_Curl": [
+    "Chwyt nachwytem na szerokość barków, łokcie przy tułowiu.",
+    "Nadgarstki trzymaj prosto, nie pozwalaj im zawijać się w dół.",
+    "Stój pewnie, bez odchylania tułowia do tyłu.",
+    "Wyciąg utrzymuje napięcie w dole; opuszczaj powoli i nie odpuszczaj ciężaru.",
+    "Dobierz lżejszy ciężar, bo przedramiona mają tu dużo pracy."
+  ],
+  "Reverse_Crunch": [
+    "Lędźwia dociśnięte do podłogi, ręce płasko wzdłuż ciała.",
+    "Unoś biodra siłą brzucha, zwijając miednicę; nie machaj nogami.",
+    "Kolana przyciągaj do klatki, a w dół wracaj powoli, bez opadania.",
+    "Nie odrywaj całych pleców od podłogi, tylko dolny odcinek.",
+    "Wydech przy unoszeniu, wdech przy opuszczaniu."
+  ],
+  "Reverse_Flyes": [
+    "Klatką i brzuchem oprzyj się o ławkę, szyja neutralna.",
+    "Łokcie lekko ugięte i sztywne przez cały ruch, nie zamieniaj tego w wiosłowanie.",
+    "Unoś hantle bokiem do linii barków, ściągając łopatki.",
+    "Nie bujaj się i nie podrywaj ciężaru; weź lekkie hantle.",
+    "Na górze zatrzymaj na sekundę i opuszczaj powoli."
+  ],
+  "Reverse_Flyes_With_External_Rotation": [
+    "Ławka na ok. 30°, klatka oparta, szyja neutralna, stopy na palcach.",
+    "Łokcie lekko ugięte, unoś hantle łukiem na boki i obracaj dłonie ku górze.",
+    "Ściągnij łopatki na górze, bez unoszenia barków do uszu.",
+    "Użyj bardzo lekkiego ciężaru; to ćwiczenie dla tylnych aktonów i rotatorów.",
+    "Wracaj powoli, kontrolując cały ruch."
+  ],
+  "Reverse_Grip_Bent-Over_Rows": [
+    "Plecy proste, tułów prawie równolegle do podłogi, kolana lekko ugięte.",
+    "Chwyt podchwytem na szerokość barków, łokcie blisko tułowia.",
+    "Ciągnij sztangę w stronę pępka, ściskając łopatki na górze.",
+    "Tułów nie buja się, nie dźwigaj ciężaru biodrami.",
+    "Opuszczaj sztangę powoli do pełnego wyprostu ramion."
+  ],
+  "Reverse_Grip_Triceps_Pushdown": [
+    "Łokcie przyklejone do boków, tułów lekko pochylony i stabilny.",
+    "Prostuj ramiona do pełnego wyprostu i na dole ściśnij triceps.",
+    "Pracują tylko przedramiona; nie pomagaj sobie barkami.",
+    "Chwyt podchwytem na szerokość barków, nadgarstki proste.",
+    "Wracaj wolno, aż drążek dojdzie do wysokości klatki."
+  ],
+  "Reverse_Hyperextension": [
+    "Wyprost bioder wykonuj siłą pośladków i tylnej taśmy, nie zamachem.",
+    "Na górze zatrzymaj nogi w linii z tułowiem i nie przeprostowuj w lędźwiach.",
+    "Tułów trzymaj nieruchomo na podkładce, ręce mocno na uchwytach.",
+    "Opuszczaj nogi powoli, nie pozwalaj, żeby wahadło cię bujało.",
+    "Zacznij od lekkiego ciężaru, aby poczuć pracę pośladków."
+  ],
+  "Reverse_Triceps_Bench_Press": [
+    "Chwyt podchwytem na szerokość barków; łokcie blisko tułowia przez cały ruch.",
+    "Sztangę opuszczaj kontrolowanie na środek lub dolną część klatki.",
+    "Łopatki ściągnięte, pośladki na ławce, stopy mocno w podłodze.",
+    "Opuszczanie powinno trwać dłużej niż wyciskanie, ok. 2–3 sekundy.",
+    "Zacznij od lżejszej sztangi, bo podchwyt mocno obciąża nadgarstki."
+  ],
+  "Rocking_Standing_Calf_Raise": [
+    "Wchodź pod sztangę w stojakach, przyjmij stabilną pozycję i nie wypinaj kolan.",
+    "Unoś pięty do pełnego zakresu, z krótkim zatrzymaniem na górze.",
+    "Kolana lekko ugięte i nieruchome, praca idzie tylko ze stawów skokowych.",
+    "Patrz przed siebie, aby nie stracić równowagi.",
+    "Opuszczaj pięty do pełnego rozciągnięcia, bez odbijania."
+  ],
+  "Rope_Crunch": [
+    "Klęknij przed wyciągiem, linę trzymaj przy czole, ręce nieruchome.",
+    "Zwijaj kręgosłup, przybliżając żebra do bioder, nie ciągnij ramionami.",
+    "Biodra stabilne, nie siadaj na pięty podczas ruchu.",
+    "Na dole zatrzymaj napięcie brzucha i wracaj powoli.",
+    "Wydech przy zwijaniu, wdech przy powrocie."
+  ],
+  "Rope_Straight-Arm_Pulldown": [
+    "Ramiona proste lub minimalnie ugięte, tułów lekko pochylony i stabilny.",
+    "Ściągaj linę łukiem do ud siłą najszerszych, nie siłą rąk.",
+    "Na dole rozchyl końce liny i ściśnij łopatki.",
+    "Nie bujaj tułowiem; jeśli musisz, zmniejsz ciężar.",
+    "Wracaj powoli, zatrzymując napięcie w grzbiecie."
+  ],
+  "Russian_Twist": [
+    "Plecy proste, lekko odchylony tułów, brzuch napięty.",
+    "Skręcaj tułów razem z rękami, nie ruszaj tylko ramionami.",
+    "Wzrok podążaj za dłońmi, szyja luźna.",
+    "Stopy możesz oprzeć na podłodze lub unieść, to podnosi trudność.",
+    "Ruch kontrolowany, bez gwałtownego rzucania ciężaru z boku na bok."
+  ],
+  "Seated_Barbell_Military_Press": [
+    "Plecy oparte, brzuch napięty, nie wyginaj się w lędźwiach.",
+    "Sztanga schodzi do obojczyków, przedramiona pionowo pod nią.",
+    "Wyciskaj nad głowę, wypychając ramiona do pełnego wyprostu.",
+    "Chwyt nieco szerszy niż barki; łokcie lekko przed tułowiem.",
+    "Poproś o asekurację przy cięższych seriach."
+  ],
+  "Seated_Barbell_Twist": [
+    "Sztangę ułóż na karku, nie na szyi, plecy proste.",
+    "Skręcaj tułów powoli, biodra i nogi nieruchome.",
+    "Zakres rób tylko tak daleko, jak komfortowo; nie szarp.",
+    "Lekki ciężar wystarczy, bo to ruch kontrolowany, nie siłowy.",
+    "Wydech przy skręcie, wdech przy powrocie do środka."
+  ],
+  "Seated_Bent-Over_One-Arm_Dumbbell_Triceps_Extension": [
+    "Plecy proste, tułów prawie równolegle do podłogi, głowa w linii kręgosłupa.",
+    "Ramię trzymaj przy tułowiu, równolegle do podłogi; pracuje tylko przedramię.",
+    "Prostuj łokieć do pełnego wyprostu i ściśnij triceps na sekundę.",
+    "Nie bujaj hantlem; użyj lekkiego ciężaru.",
+    "Wracaj powoli, aż przedramię zrówna się z pionem."
+  ],
+  "Seated_Bent-Over_Rear_Delt_Raise": [
+    "Pochyl się z prostymi plecami, klatka blisko ud, szyja neutralna.",
+    "Łokcie lekko ugięte; unoś hantle łukiem na boki, nie do tyłu.",
+    "Ściągnij łopatki na górze i zatrzymaj na sekundę.",
+    "Nie bujaj tułowiem; weź lekkie hantle.",
+    "Opuszczaj powoli, bez opadania ciężaru."
+  ],
+  "Seated_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension": [
+    "Plecy proste, tułów prawie równolegle do podłogi, głowa w linii kręgosłupa.",
+    "Ramiona przy tułowiu, równolegle do podłogi; pracują tylko przedramiona.",
+    "Prostuj łokcie do pełnego wyprostu i ściśnij tricepsy na sekundę.",
+    "Nie bujaj hantlami; użyj lekkiego ciężaru.",
+    "Wracaj powoli, kontrolując cały ruch."
+  ],
+  "Seated_Cable_Shoulder_Press": [
+    "Siedź prosto, plecy oparte, brzuch napięty; nie wyginaj się w lędźwiach.",
+    "Łokcie lekko przed ciałem, chwyty na wysokości barków.",
+    "Wyciskaj nad głowę do prawie pełnego wyprostu, bez zderzania uchwytów.",
+    "Wyciąg trzyma napięcie w dole, więc nie odpuszczaj ciężaru na dole.",
+    "Barki trzymaj opuszczone, nie unoś ich do uszu."
+  ],
+  "Seated_Close-Grip_Concentration_Barbell_Curl": [
+    "Ramiona oprzyj o wewnętrzną stronę ud, plecy proste.",
+    "Chwyt podchwytem węższym niż barki, nadgarstki sztywne.",
+    "Zginaj tylko w łokciach; ramię nie odrywa się od uda.",
+    "Na górze ściśnij biceps, opuszczaj powoli do pełnego wyprostu.",
+    "Bez bujania tułowiem; jeśli musisz, ciężar jest za duży."
+  ],
+  "Seated_Dumbbell_Curl": [
+    "Plecy oparte, łokcie przy tułowiu, nie przesuwaj ich do przodu.",
+    "Obracaj nadgarstki, gdy hantle mijają uda, tak by dłonie skierowały się do góry.",
+    "Pracują tylko przedramiona; nie bujaj tułowiem.",
+    "Na górze ściśnij biceps, opuszczaj powoli do pełnego wyprostu.",
+    "Wydech przy podnoszeniu, wdech przy opuszczaniu."
+  ],
+  "Seated_Dumbbell_Inner_Biceps_Curl": [
+    "Plecy proste, łokcie przy tułowiu, nie odrywaj ich od boków.",
+    "Zaczynasz chwytem neutralnym i rozchylasz dłonie na zewnątrz w trakcie ruchu.",
+    "Hantle prowadź po linii zewnętrznych aktonów, nie krzyżuj ich przed klatką.",
+    "Na górze ściśnij biceps i opuszczaj wolno.",
+    "Bez bujania tułowiem i bez przesuwania łokci do przodu."
+  ],
+  "Seated_Dumbbell_Palms-Down_Wrist_Curl": [
+    "Przedramiona oparte na udach, nadgarstki zwisają poza kolana.",
+    "Pracują tylko nadgarstki; łokcie i przedramiona stoją w miejscu.",
+    "Opuszczaj hantle powoli do pełnego rozciągnięcia, z kontrolą palców.",
+    "Lekki ciężar i 12–20 powtórzeń; przedramiona lubią objętość.",
+    "Wydech przy unoszeniu, na górze krótkie napięcie."
+  ],
+  "Seated_Dumbbell_Palms-Up_Wrist_Curl": [
+    "Przedramiona oparte na udach, nadgarstki zwisają poza kolana.",
+    "Pracują tylko nadgarstki; łokcie nie odrywają się od ud.",
+    "Opuszczaj hantle powoli, pozwól im lekko zsunąć się na palce, i unoś ruchem nadgarstków.",
+    "Ściśnij przedramię na górze, bez szarpania.",
+    "Lekki ciężar i 12–20 powtórzeń."
+  ],
+  "Seated_Dumbbell_Press": [
+    "Oparcie lekko odchylone lub pionowe, plecy przy oparciu, brzuch napięty.",
+    "Hantle startują na wysokości barków, przedramiona pionowo.",
+    "Wyciskaj w górę lekko do środka, bez uderzania hantlami.",
+    "Nie wyginaj lędźwi i nie unoś barków do uszu.",
+    "Opuszczaj powoli, do poziomu uszu lub nieco niżej."
+  ],
+  "Seated_Flat_Bench_Leg_Pull-In": [
+    "Plecy proste, lekko odchylony tułów, ręce mocno trzymają ławkę.",
+    "Przyciągaj kolana do klatki, jednocześnie zbliżając tułów.",
+    "Nie opuszczaj nóg do podłogi; trzymaj je nad ziemią między powtórzeniami.",
+    "Wydech przy przyciąganiu, wdech przy prostowaniu.",
+    "Ruch kontrolowany, bez odbijania biodrami."
+  ],
+  "Seated_Leg_Tucks": [
+    "Plecy proste, lekko odchylony tułów, ręce mocno trzymają ławkę.",
+    "Przyciągaj kolana do klatki, jednocześnie zbliżając tułów.",
+    "Nie opuszczaj nóg do podłogi; trzymaj je nad ziemią między powtórzeniami.",
+    "Wydech przy przyciąganiu, wdech przy prostowaniu.",
+    "Ruch kontrolowany, bez odbijania biodrami."
+  ],
+  "Seated_One-Arm_Dumbbell_Palms-Down_Wrist_Curl": [
+    "Przedramię oprzyj na udzie, nadgarstek zwisa poza kolano.",
+    "Pracuje tylko nadgarstek; łokieć i przedramię stoją w miejscu.",
+    "Opuszczaj hantel powoli, aż do pełnego rozciągnięcia, z kontrolą palców.",
+    "Lekki ciężar, 12–20 powtórzeń.",
+    "Wydech przy unoszeniu, na górze krótkie napięcie."
+  ],
+  "Seated_One-Arm_Dumbbell_Palms-Up_Wrist_Curl": [
+    "Przedramię oprzyj na udzie, nadgarstek zwisa poza kolano.",
+    "Pracuje tylko nadgarstek; łokieć i przedramię stoją w miejscu.",
+    "Opuszczaj hantel powoli, pozwól mu lekko zsunąć się na palce, i unoś nadgarstkiem.",
+    "Lekki ciężar, 12–20 powtórzeń.",
+    "Na górze ściśnij przedramię, bez szarpania."
+  ],
+  "Seated_One-arm_Cable_Pulley_Rows": [
+    "Plecy proste, klatka do przodu, kolana lekko ugięte, stopy na podporze.",
+    "Ciągnij łokieć wzdłuż tułowia do biodra, nie do góry.",
+    "Na końcu ściągnij łopatkę i ściśnij mięśnie grzbietu.",
+    "Nie skręcaj tułowia i nie odchylaj się do tyłu.",
+    "Wracaj powoli do pełnego wyprostu, rozciągając łopatkę."
+  ],
+  "Seated_Palm-Up_Barbell_Wrist_Curl": [
+    "Przedramiona oparte na udach, nadgarstki zwisają poza kolana.",
+    "Pracują tylko nadgarstki; łokcie nie odrywają się od ud.",
+    "Chwyt podchwytem na szerokość barków; sztanga niezbyt ciężka.",
+    "Opuszczaj powoli, pozwól jej lekko zsunąć się na palce, i unoś nadgarstkami.",
+    "Wydech przy unoszeniu, 12–20 powtórzeń."
+  ],
+  "Seated_Palms-Down_Barbell_Wrist_Curl": [
+    "Przedramiona oparte na udach, nadgarstki zwisają poza kolana.",
+    "Pracują tylko nadgarstki; łokcie nie odrywają się od ud.",
+    "Chwyt nachwytem na szerokość barków; sztanga niezbyt ciężka.",
+    "Opuszczaj powoli, z kontrolą, i unoś nadgarstkami bez szarpania.",
+    "Wydech przy unoszeniu, 12–20 powtórzeń."
+  ],
+  "Seated_Side_Lateral_Raise": [
+    "Plecy proste, bez bujania; siedzenie eliminuje pomoc nóg.",
+    "Łokcie lekko ugięte i nieco wyżej niż nadgarstki, jakbyś wylewał wodę.",
+    "Unoś do poziomu barków, nie wyżej.",
+    "Opuszczaj powoli, 2–3 sekundy.",
+    "Weź lżejsze hantle i trzymaj technikę; boczne aktony nie lubią szarpania."
+  ],
+  "Seated_Triceps_Press": [
+    "Plecy oparte, brzuch napięty, ramiona skierowane pionowo w górę.",
+    "Łokcie trzymaj blisko głowy i nie rozchylaj ich na boki.",
+    "Hantel opuszczaj łukiem za głowę, aż przedramiona dotkną bicepsów, bez przeciążania łokci.",
+    "Prostuj do pełnego wyprostu i napnij triceps.",
+    "Ciężki hantel poproś o podanie, żeby oszczędzić łokcie."
+  ],
+  "Seated_Two-Arm_Palms-Up_Low-Pulley_Wrist_Curl": [
+    "Przedramiona oparte na udach, nadgarstki zwisają poza kolana.",
+    "Pracują tylko nadgarstki; łokcie nie odrywają się od ud.",
+    "Chwyt podchwytem na szerokość barków; wyciąg trzyma napięcie, więc nie odpuszczaj ciężaru w dole.",
+    "Opuszczaj powoli, unoś nadgarstkami i ściśnij przedramię na górze.",
+    "Lekki ciężar i 12–20 powtórzeń."
+  ],
+  "See-Saw_Press_Alternating_Side_Press": [
+    "Stój stabilnie, stopy na szerokość barków, brzuch napięty.",
+    "Wyciskaj jedną ręką, jednocześnie pochylając tułów w przeciwną stronę.",
+    "Druga ręka zostaje na barku; ruchy naprzemienne, kontrolowane.",
+    "Nie wyginaj lędźwi; ruch ma być w płaszczyźnie bocznej, bez skrętu.",
+    "Zacznij od lżejszych hantli i wykonaj tyle samo powtórzeń na obie strony."
+  ],
+  "Shotgun_Row": [
+    "Wykrok, tułów lekko pochylony, wolna ręka na udzie dla stabilności.",
+    "Ciągnij łokieć do tyłu i obracaj dłoń do góry, kończąc przy biodrze.",
+    "Na końcu ściągnij łopatkę i ściśnij najszerszy grzbietu.",
+    "Nie skręcaj tułowia i nie odchylaj się do tyłu.",
+    "Wracaj powoli do pełnego wyprostu ramienia."
+  ],
+  "Side_Bridge": [
+    "Łokieć pod barkiem, ciało w jednej linii od głowy do stóp, biodra wysoko.",
+    "Napnij brzuch i pośladki, nie pozwalaj biodrom opadać.",
+    "Miednica nie obraca się do przodu ani do tyłu.",
+    "Oddychaj spokojnie, nie wstrzymuj powietrza.",
+    "Utrzymuj pozycję 20–40 sekund i ćwicz obie strony po równo."
+  ],
+  "Side_Jackknife": [
+    "Leżysz na boku, ciało w jednej linii; unoś jednocześnie nogi i tułów.",
+    "Ruch pochodzi z bocznych mięśni brzucha, nie z rozmachu.",
+    "Wyprostowane nogi trzymaj razem, ręka za głową bez ciągnięcia za szyję.",
+    "Na górze zatrzymaj napięcie na sekundę i wracaj powoli.",
+    "Wykonaj tyle samo powtórzeń na obie strony."
+  ],
+  "Side_Laterals_to_Front_Raise": [
+    "Łokcie lekko ugięte, tułów nieruchomy; bez bujania.",
+    "Najpierw unieś hantle bokiem do wysokości barków, potem przesuń je łukiem do przodu.",
+    "Nie unoś ramion wyżej niż barki, wzrok przed siebie.",
+    "Weź lekkie hantle, bo ruch jest długi i męczący.",
+    "Opuszczaj wolno, z pełną kontrolą."
+  ],
+  "Single-Arm_Cable_Crossover": [
+    "Stań w wykroku, tułów lekko pochylony, klatka do przodu.",
+    "Łokieć lekko ugięty i sztywny; otwieraj rękę łukiem do poziomu barku.",
+    "Na końcu ściągnij ramię do linii środka ciała i ściśnij klatkę.",
+    "Nie skręcaj tułowia i nie pomagaj sobie bioder.",
+    "Wracaj powoli, kontrolując napięcie wyciągu."
+  ],
+  "Single-Arm_Linear_Jammer": [
+    "Stań w szerokim rozkroku, sztanga przy barku, łokieć pod nią.",
+    "Wyciskaj, prostując jednocześnie biodra i kolana, w skosie do przodu.",
+    "Napnij brzuch i pośladki, nie wyginaj się w lędźwiach.",
+    "Tułów obraca się lekko razem z ruchem, ale bez przeciążania pleców.",
+    "Zacznij od lekkiego ciężaru i ćwicz obie strony po równo."
+  ],
+  "Single-Arm_Push-Up": [
+    "Stopy szerzej niż w zwykłej pompce, brzuch i pośladki napięte.",
+    "Ręka pod barkiem, wolna ręka za plecami lub na biodrze.",
+    "Biodra nie obracają się, ciało pozostaje w jednej linii.",
+    "Schodź powoli, bez zapadania; zacznij od wersji ułatwionej, np. z ręką na podwyższeniu.",
+    "Wydech przy wypychaniu."
+  ],
+  "Single-Leg_Leg_Extension": [
+    "Ustaw oparcie tak, aby kolano było w osi maszyny, wałek tuż nad kostką.",
+    "Prostuj nogę do pełnego wyprostu i zatrzymaj na sekundę, napinając czworogłowy.",
+    "Opuszczaj powoli, 2–3 sekundy, bez opadania ciężaru.",
+    "Nie odrywaj pośladków od siedziska, wolna noga luźna.",
+    "Wybierz umiarkowany ciężar, bo kolano nie lubi szarpania."
+  ],
+  "Single_Dumbbell_Raise": [
+    "Stań w rozkroku, trzymaj hantel za górną część obiema rękami.",
+    "Ramiona proste lub minimalnie ugięte, ruch tylko w barkach.",
+    "Unoś hantel łukiem do wysokości głowy, nie wyżej.",
+    "Tułów i biodra nieruchome, brzuch napięty.",
+    "Opuszczaj powoli, bez bujania."
+  ],
+  "Single_Leg_Glute_Bridge": [
+    "Stopa mocno na podłodze, pięta blisko pośladka, druga noga przyciągnięta do klatki.",
+    "Wypychaj biodra piętą, aż ciało utworzy linię od kolana do barku.",
+    "Na górze zaciśnij pośladek i nie wyginaj się w lędźwiach.",
+    "Miednica ustawiona równo, nie opada na bok.",
+    "Opuszczaj biodra powoli, zatrzymując napięcie."
+  ],
+  "Sit-Up": [
+    "Stopy zablokowane, kolana ugięte, ręce lekko przy skroniach, nie ciągnij za szyję.",
+    "Zwijaj tułów od głowy w górę, a nie rzucaj się ramionami.",
+    "Wydech przy unoszeniu, wdech przy opuszczaniu.",
+    "Nie opadaj całym ciężarem na podłogę; kontroluj opuszczanie.",
+    "Brzuch napięty przez cały ruch, bez odbijania z pleców."
+  ],
+  "Smith_Incline_Shoulder_Raise": [
+    "Ławka lekko skośna, barki dokładnie pod sztangą, łopatki ściągnięte.",
+    "Chwyt na szerokość barków, nadgarstki sztywne i stabilne.",
+    "Wypychaj sztangę w górę, nie wyginaj lędźwi i nie odrywaj pośladków.",
+    "Na górze nie przeprostowuj łokci, zatrzymaj krótkie napięcie.",
+    "Opuszczaj powoli, z kontrolą."
+  ],
+  "Smith_Machine_Behind_the_Back_Shrug": [
+    "Sztanga za plecami na wysokości ud, plecy proste, wzrok przed siebie.",
+    "Unoś barki prosto w górę, nie obracaj nimi do tyłu ani do przodu.",
+    "Ramiona proste, nie zginaj łokci i nie pomagaj sobie ramionami.",
+    "Na górze zatrzymaj na sekundę i opuszczaj powoli.",
+    "Dobierz ciężar tak, aby ruch był pełny i kontrolowany."
+  ],
+  "Smith_Machine_Bench_Press": [
+    "Ustaw ławkę tak, aby sztanga schodziła na środek klatki, łopatki ściągnięte.",
+    "Chwyt nieco szerszy niż barki, przedramiona pionowo na dole.",
+    "Łokcie ok. 45–70° od tułowia, nie rozkładaj ich na boki.",
+    "Opuszczaj powoli, ok. 2–3 sekundy, a wypychaj dynamicznie.",
+    "Stopy mocno w podłodze, pośladki na ławce, nie wyginaj lędźwi."
+  ],
+  "Smith_Machine_Bent_Over_Row": [
+    "Plecy proste, tułów prawie równolegle do podłogi, kolana lekko ugięte.",
+    "Ciągnij sztangę w stronę brzucha, łokcie blisko tułowia.",
+    "Na górze ściśnij łopatki i zatrzymaj na sekundę.",
+    "Nie bujaj tułowiem i nie podrywaj ciężaru biodrami.",
+    "Opuszczaj powoli do pełnego wyprostu ramion."
+  ],
+  "Smith_Machine_Calf_Raise": [
+    "Postaw przedstopie na podwyższeniu, pięty swobodnie poniżej poziomu.",
+    "Kolana wyprostowane, ale nie zablokowane na siłę.",
+    "Unoś pięty do pełnego zakresu i zatrzymaj na sekundę na górze.",
+    "Opuszczaj powoli do pełnego rozciągnięcia, bez odbijania.",
+    "Stopy ustaw równolegle lub lekko na zewnątrz, nie zawijaj kostek."
+  ],
+  "Smith_Machine_Close-Grip_Bench_Press": [
+    "Chwyt na szerokość barków lub nieco węższy, nadgarstki sztywne.",
+    "Łokcie blisko tułowia przez cały ruch; one kierują pracę na triceps.",
+    "Sztanga schodzi na dolną część klatki, łopatki ściągnięte.",
+    "Opuszczaj powoli, 2–3 sekundy, a wypychaj do pełnego wyprostu.",
+    "Stopy mocno w podłodze, pośladki na ławce."
+  ],
+  "Smith_Machine_Decline_Press": [
+    "Ławka głową w dół, stopy pewnie zablokowane, łopatki ściągnięte.",
+    "Opuszczaj sztangę na dolną część klatki, łokcie ok. 45° od tułowia.",
+    "Zrób krótką pauzę na klatce, bez odbijania.",
+    "Wypychaj do pełnego wyprostu, nie przeprostowuj łokci.",
+    "Jeśli nie czujesz się pewnie głową w dół, zacznij od lżejszego ciężaru."
+  ],
+  "Smith_Machine_Hang_Power_Clean": [
+    "Sztanga przy kolanach, plecy proste, biodra cofnięte, ramiona proste.",
+    "Wybijaj się mocnym wyprostem bioder i kolan, ramiona zginają się dopiero na końcu.",
+    "Sztanga blisko ciała, nie odchylaj się do tyłu.",
+    "Zrotuj łokcie pod sztangę i amortyzuj nogami w lekkim półprzysiadzie.",
+    "Zacznij od lekkiego ciężaru, aby poczuć rytm ruchu."
+  ],
+  "Smith_Machine_Hip_Raise": [
+    "Leż na ławce, stopy skierowane w sufit, ręce mocno trzymają boki maszyny.",
+    "Unoś biodra, zwijając miednicę siłą brzucha, nie rozmachem nóg.",
+    "Kolana lekko ugięte; ruch kończysz, gdy biodra odrywają się od ławki.",
+    "Na górze zatrzymaj napięcie na sekundę i opuszczaj powoli.",
+    "Dobierz niewielki ciężar, bo zakres jest krótki, a ruch wymaga kontroli."
+  ],
+  "Smith_Machine_Incline_Bench_Press": [
+    "Ławka na 30–45°; ustaw ją tak, by drążek schodził na górę klatki, tuż pod obojczykami.",
+    "Łopatki ściągnięte i opuszczone, stopy mocno w podłodze, pośladki na ławce.",
+    "Łokcie prowadź ok. 45–70° od tułowia, nie rozkładaj ich szeroko na boki.",
+    "Opuszczaj drążek wolniej, niż go wypychasz, i nie odbijaj go od klatki."
+  ],
+  "Smith_Machine_Leg_Press": [
+    "Stopy na drążku na szerokość barków, plecy i miednica płasko na podłodze.",
+    "Opuszczaj kolana kontrolowanie, nie zwijaj miednicy i nie odrywaj jej od podłoża.",
+    "W górze nie blokuj kolan na sztywno, zostaw w nich lekkie ugięcie.",
+    "Ustaw zabezpieczenia tak, by w razie potrzeby łatwo je zwolnić obrotem nadgarstków."
+  ],
+  "Smith_Machine_One-Arm_Upright_Row": [
+    "Stań blisko drążka, wolną rękę oprzyj o biodro lub maszynę dla stabilności.",
+    "Łokieć prowadzi ruch na bok i w górę; nadgarstek nie wyprzedza łokcia.",
+    "Unoś do wysokości barku, nie wyżej, i nie skręcaj tułowia.",
+    "Opuszczaj powoli, bez wahania ciałem."
+  ],
+  "Smith_Machine_Overhead_Shoulder_Press": [
+    "Ławka z oparciem pionowo, drążek ustaw tak, by w dole dotykał okolic podbródka.",
+    "Przedramiona trzymaj pionowo przez cały ruch, nadgarstki w linii z przedramieniem.",
+    "Dolny odcinek pleców oparty, nie wyginaj go w łuk przy wypychaniu.",
+    "Wydychaj w trakcie wypychania i nie blokuj łokci mocno w górze."
+  ],
+  "Smith_Machine_Pistol_Squat": [
+    "Stopa pracującej nogi wysunięta przed drążek, żeby kolano nie uciekało za daleko do przodu.",
+    "Pięta cały czas przyklejona do podłogi, ciężar na całej stopie.",
+    "Schodź tylko tak głęboko, jak pozwala mobilność, bez zaokrąglania pleców.",
+    "Zacznij z małym zakresem i asekuracją; druga noga wyprostowana w przodzie, nie dotyka podłoża."
+  ],
+  "Smith_Machine_Reverse_Calf_Raises": [
+    "Pięty na podeście, przodostopie w powietrzu, stopy równolegle.",
+    "Unoś palce stóp w górę i napinaj przednią część łydek.",
+    "Kolana lekko ugięte i nieruchome; drążek służy tylko do równowagi.",
+    "Opuszczaj powoli, bez odbijania, i zatrzymaj się sekundę w górze."
+  ],
+  "Smith_Machine_Squat": [
+    "Stopy lekko przed drążkiem (ok. 15–30 cm), żeby plecy nie szły do przodu i kolana pracowały swobodnie.",
+    "Sztanga na mięśniach czworobocznych, klatka wypięta, wzrok prosto przed siebie.",
+    "Kolana prowadź w linii palców, nie pozwól im uciekać do środka.",
+    "Zejdź co najmniej do równoległości ud do podłogi, jeśli mobilność pozwala.",
+    "Wypychaj przez całą stopę, nie unoś pięt."
+  ],
+  "Smith_Machine_Stiff-Legged_Deadlift": [
+    "Kolana lekko ugięte i nieruchome, cały ruch wychodzi z odsunięcia bioder do tyłu.",
+    "Plecy proste, łopatki ściągnięte, drążek sunie blisko ud i goleni.",
+    "Schodź tylko do momentu, aż poczujesz rozciąganie tylnej części ud, bez zaokrąglania pleców.",
+    "Wracaj, wypychając biodra do przodu i zaciskając pośladki."
+  ],
+  "Smith_Machine_Upright_Row": [
+    "Chwyt na szerokość barków lub nieco szerzej, nie węziej, żeby oszczędzić nadgarstki.",
+    "Łokcie prowadzą ruch i są wyżej niż nadgarstki.",
+    "Unoś drążek blisko ciała do wysokości mostka lub podbródka, bez bujania tułowiem.",
+    "Jeśli barki protestują, zatrzymaj się niżej, na wysokości klatki."
+  ],
+  "Smith_Single-Leg_Split_Squat": [
+    "Przednia stopa wysunięta tak, by w dole piszczel pozostał prawie pionowo.",
+    "Tylna stopa na ławce, ale ciężar niesie głównie noga z przodu.",
+    "Tułów lekko pochylony do przodu, nie pozwól kolanu uciekać do środka.",
+    "Schodź powoli do równoległości uda lub niżej i wypychaj piętą oraz środkiem stopy."
+  ],
+  "Snatch_Pull": [
+    "Chwyt szeroki jak w rwaniu, sztanga nad środkiem stopy, biodra niżej niż barki.",
+    "Zacznij od wypchnięcia nóg, kąt pleców zachowaj do wysokości kolan.",
+    "Przy udach wybij biodra do przodu i wyprostuj kolana oraz kostki, ramiona nie zginają się.",
+    "Wzrusz barkami na końcu, ale nie zginaj łokci; sztanga ma być blisko ciała.",
+    "Opuszczaj kontrolowanie, nie zrzucaj sztangi z wysokości."
+  ],
+  "Spell_Caster": [
+    "Stań szeroko, kolana lekko ugięte, ramiona proste i na wysokości bioder.",
+    "Skręcaj tułów, nie same ręce; wzrok podąża za hantlami.",
+    "Ruch kontrolowany, bez szarpania, nie wyginaj się mocno w dolnym odcinku pleców.",
+    "Napnij brzuch i zachowaj stabilną miednicę."
+  ],
+  "Spider_Crawl": [
+    "Ciało w jednej linii, biodra nie opadają ani nie wędrują w górę.",
+    "Kolano unoś do łokcia po tej samej stronie, szeroko i z rotacją w biodrze.",
+    "Utrzymuj napięty brzuch i pośladki, łokcie lekko ugięte.",
+    "Nie przyspieszaj, bo zaczniesz bujać biodrami, a nie pracować brzuchem."
+  ],
+  "Spider_Curl": [
+    "Klatka oparta o ławkę, ramiona zwisają pionowo w dół, nie przesuwaj ich do przodu.",
+    "Podchwyt na szerokość barków lub odrobinę węziej, nadgarstki w linii z przedramieniem.",
+    "Uginaj tylko w łokciach, bez odrywania klatki od ławki.",
+    "W dole wyprostuj ramiona całkowicie, ale bez ciężaru wiszącego na łokciach.",
+    "Zatrzymaj sekundę w szczycie i opuszczaj wolno."
+  ],
+  "Squat_with_Plate_Movers": [
+    "Sztanga na plecach jak w normalnym przysiadzie, klatka wypięta, brzuch napięty.",
+    "Stopa na talerzu musi stać stabilnie, sprawdź to przed zdjęciem sztangi z stojaków.",
+    "Zejdź głęboko, kontrolując kolana, i wypychaj przez całą stopę.",
+    "Zaczynaj z lekkim ciężarem, bo nierówne podparcie wymaga dobrej równowagi."
+  ],
+  "Standing_Alternating_Dumbbell_Press": [
+    "Stopy na szerokość bioder, pośladki i brzuch napięte, bez wyginania pleców.",
+    "Wyciskaj jedną rękę, a druga czeka w dole; nie odchylaj się na bok.",
+    "Hantel wyciskaj w górę lekko do przodu, nad barkiem, nie przed głową.",
+    "Nadgarstki proste, wydychaj powietrze przy wyciskaniu."
+  ],
+  "Standing_Barbell_Calf_Raise": [
+    "Sztanga na plecach jak przy przysiadzie, tułów prosty, wzrok przed siebie.",
+    "Wspinaj się na palce do pełnego zakresu, zatrzymaj się na sekundę na górze.",
+    "Kolana lekko ugięte i nieruchome; ruch tylko w stawie skokowym.",
+    "Opuszczaj powoli, aż poczujesz rozciągnięcie łydek, bez odbijania.",
+    "Stopa podparta na podwyższeniu zwiększy zakres ruchu, ale wymaga stabilnego podestu."
+  ],
+  "Standing_Barbell_Press_Behind_Neck": [
+    "Rób to tylko z dobrą ruchomością barków; jeśli ją masz, schodź sztangą tylko do wysokości uszu.",
+    "Chwyt szerszy niż barki, przedramiona pionowo.",
+    "Głowa lekko wysunięta do przodu, nie uderzaj się sztangą w kark, kontroluj tor.",
+    "Brzuch i pośladki napięte, plecy nie wyginają się w łuk."
+  ],
+  "Standing_Bent-Over_One-Arm_Dumbbell_Triceps_Extension": [
+    "Tułów prawie równolegle do podłogi, plecy proste, wolna ręka oparta o ławkę lub kolano.",
+    "Ramię przyklejone do tułowia, równolegle do podłogi, i nie ruszasz nim w trakcie serii.",
+    "Pracuje tylko przedramię; wyprostuj łokieć do końca i napnij triceps.",
+    "Opuszczaj hantel powoli, nie szarp go do tyłu bez kontroli."
+  ],
+  "Standing_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension": [
+    "Pochyl tułów prawie do poziomu, plecy proste, głowa w przedłużeniu kręgosłupa.",
+    "Ramiona dociśnięte do tułowia i nieruchome, łokcie nie uciekają na boki.",
+    "Prostuj łokcie do końca, w szczycie zrób sekundę pauzy.",
+    "Dobierz lżejsze hantle niż do wyciskania, bo ruch jest krótki i izolowany."
+  ],
+  "Standing_Biceps_Cable_Curl": [
+    "Łokcie dociśnięte do boków, nie wysuwaj ich do przodu.",
+    "Nie odchylaj tułowia do tyłu, żeby pomóc sobie ruchem bioder.",
+    "Na górze dociśnij biceps, na dole nie rozluźniaj całkiem napięcia.",
+    "Opuszczaj sztangę wolno, trwa to dłużej niż unoszenie."
+  ],
+  "Standing_Bradford_Press": [
+    "Zaczynaj z umiarkowanym ciężarem, ruch przed i za głową jest ciężki dla barków.",
+    "Sztanga omija głowę po łuku, więc lekko wysuń głowę, nie pochylając pleców.",
+    "Opuszczaj tylko do wysokości ok. brody z tyłu, nie schodź niżej, jeśli barki protestują.",
+    "Brzuch i pośladki napięte, nie wyginaj się w łuk."
+  ],
+  "Standing_Cable_Chest_Press": [
+    "Stań w wykroku, jedna noga z przodu, tułów lekko pochylony, napięty brzuch.",
+    "Łopatki ściągnięte, łokcie na wysokości lub trochę niżej niż barki.",
+    "Prostuj ramiona do przodu, ściągając ręce do siebie, bez przesuwania barków do przodu.",
+    "Wracaj powoli, aż poczujesz rozciągnięcie klatki, ale bez nadmiernego odciągania ramion."
+  ],
+  "Standing_Cable_Lift": [
+    "Wyciąg ustaw nisko, stań bokiem, stopy na szerokość barków lub szerzej.",
+    "Ruch prowadzi tułów i biodra, ramiona są proste i tylko przenoszą ruch.",
+    "Obracaj miednicę i tułów razem w stronę ruchu, a tylna stopa lekko się obraca.",
+    "Nie wyginaj się w dolnym odcinku pleców na górze, napnij brzuch.",
+    "Wracaj powoli, nie pozwalaj ciężarkom zderzać się na stosie."
+  ],
+  "Standing_Cable_Wood_Chop": [
+    "Stań bokiem do wyciągu, nogi lekko ugięte, brzuch napięty.",
+    "Ruch zaczyna się w tułowiu i biodrach, ramiona są proste i tylko go przenoszą.",
+    "Obracaj tułów i miednicę razem, tylna stopa lekko się obraca.",
+    "Ciągnij po przekątnej od góry do przeciwległego kolana, nie opuszczaj głowy.",
+    "Wracaj powoli, nie daj się ściągnąć ciężarowi."
+  ],
+  "Standing_Concentration_Curl": [
+    "Pochyl się z prostymi plecami, ramię zwisa pionowo, łokieć lekko pod barkiem.",
+    "Wolną ręką oprzyj się o udo lub kolano, żeby ustabilizować tułów.",
+    "Uginaj bez bujania ramieniem, pracuje tylko przedramię.",
+    "Na górze dociśnij biceps i skręć lekko nadgarstek na zewnątrz.",
+    "Opuszczaj wolno do pełnego wyprostu."
+  ],
+  "Standing_Dumbbell_Calf_Raise": [
+    "Przodostopie na podwyższeniu, pięta swobodnie poniżej poziomu, hantle po bokach.",
+    "Wspinaj się wysoko na palce i zatrzymaj się sekundę w górze.",
+    "Kolana wyprostowane, ale nie zablokowane na sztywno, tułów prosto.",
+    "Opuszczaj wolno, aż poczujesz rozciągnięcie łydki.",
+    "Jedną ręką możesz trzymać się czegoś stabilnego dla równowagi."
+  ],
+  "Standing_Dumbbell_Press": [
+    "Stopy na szerokość bioder, brzuch i pośladki napięte, bez wyginania lędźwi.",
+    "Przedramiona pionowo, hantle na wysokości uszu w dole.",
+    "Wyciskaj w górę i lekko do środka, ale nie stukaj hantlami o siebie.",
+    "Wydychaj w trakcie wypychania, nie odchylaj się do tyłu.",
+    "Głowę przesuń lekko do przodu, gdy hantle ją miną, żeby ruch był prosty."
+  ],
+  "Standing_Dumbbell_Reverse_Curl": [
+    "Chwyt nachwytem, nadgarstki proste i sztywne, nie zginaj ich w dół.",
+    "Łokcie przy tułowiu, nie wysuwaj ich do przodu.",
+    "Ruch tylko w łokciach, bez bujania tułowiem.",
+    "Dobierz lżejszy ciężar niż do zwykłego uginania, bo praca przedramion i ramienia jest wymagająca."
+  ],
+  "Standing_Dumbbell_Straight-Arm_Front_Delt_Raise_Above_Head": [
+    "Ramiona lekko ugięte w łokciach, hantle unosisz łukiem przed sobą.",
+    "Nie bujaj tułowiem i nie odchylaj się do tyłu; brzuch napięty.",
+    "W górze zatrzymaj się nad głową bez wyginania lędźwi i bez zadzierania barków do uszu.",
+    "Jeśli czujesz ucisk w barku, ogranicz zakres do wysokości oczu.",
+    "Opuszczaj tą samą drogą, wolniej niż unosisz."
+  ],
+  "Standing_Dumbbell_Triceps_Extension": [
+    "Hantel trzymaj oburącz za górną część, ramiona blisko głowy.",
+    "Łokcie wskazują sufit i nie rozchodzą się na boki.",
+    "Opuszczaj hantel za głowę, aż poczujesz rozciągnięcie tricepsa, plecy nie wyginają się.",
+    "Prostuj, napinając triceps, pracuje tylko przedramię.",
+    "Brzuch i pośladki napięte, żeby nie wyginać pleców."
+  ],
+  "Standing_Dumbbell_Upright_Row": [
+    "Chwyt nieco węższy niż barki, hantle blisko ciała.",
+    "Łokcie prowadzą ruch w górę i na boki, są wyżej niż nadgarstki.",
+    "Unoś tylko do wysokości klatki lub dolnej części brody, nie zadzieraj barków do uszu.",
+    "Nie bujaj tułowiem, kontroluj ruch w dół."
+  ],
+  "Standing_Front_Barbell_Raise_Over_Head": [
+    "Chwyt nachwytem, węziej niż barki, ramiona lekko ugięte.",
+    "Unoś sztangę prostym łukiem przed sobą, nie bujaj tułowiem.",
+    "W górze nie wyginaj lędźwi i nie zadzieraj barków do uszu.",
+    "Jeśli bolą barki, kończ ruch na wysokości oczu.",
+    "Opuszczaj wolno, napinając brzuch."
+  ],
+  "Standing_Inner-Biceps_Curl": [
+    "Zacznij chwytem neutralnym, w trakcie unoszenia skręcaj nadgarstek do podchwytu.",
+    "Łokcie przy tułowiu, nie wysuwaj ich do przodu.",
+    "Przedramię prowadź w linii zewnętrznej części barku.",
+    "Nie bujaj tułowiem, opuszczaj wolno, kontrolując ciężar."
+  ],
+  "Standing_Leg_Curl": [
+    "Ustaw oś maszyny na wysokości kolana, wałek na tylnej części łydki tuż nad piętą.",
+    "Tułów lekko pochylony i ustabilizowany, biodra nie uciekają.",
+    "Zginaj kolano płynnie bez szarpania, noga stojąca zablokowana.",
+    "W szczycie napnij tylną część uda, opuszczaj powoli."
+  ],
+  "Standing_Low-Pulley_Deltoid_Raise": [
+    "Ramię unoś w bok lub ukośnie, łokieć lekko ugięty, bez szarpania.",
+    "Kończ na wysokości barku; wyżej zaczynają pracować kaptury.",
+    "Tułów prosto, nie przechylaj się w stronę przeciwną do pracującej ręki.",
+    "Opuszczaj powoli, nie pozwalaj, by ciężar cię ściągnął."
+  ],
+  "Standing_Low-Pulley_One-Arm_Triceps_Extension": [
+    "Stań plecami do wyciągu, ramię pionowo przy głowie, drugą ręką podeprzyj łokieć.",
+    "Łokieć nie ucieka na bok ani do przodu, pracuje tylko przedramię.",
+    "Prostuj aż do pełnego wyprostu i napnij triceps w szczycie.",
+    "Brzuch napięty, nie wyginaj lędźwi, opuszczaj powoli."
+  ],
+  "Standing_One-Arm_Cable_Curl": [
+    "Łokieć przy tułowiu, nieruchomy, ramię pionowo.",
+    "Wolną ręką możesz oprzeć się o biodro, ale tułów trzymaj prosto.",
+    "Zginaj do pełnego skrócenia bicepsu, nadgarstek w linii z przedramieniem.",
+    "Nie bujaj ciałem, opuszczaj powoli, aż do prawie pełnego wyprostu."
+  ],
+  "Standing_One-Arm_Dumbbell_Curl_Over_Incline_Bench": [
+    "Klatka oparta o górną część ławki, ramię zwisa pionowo przed oparciem.",
+    "Łokieć nieruchomy, pracuje tylko przedramię; nie odrywaj ramienia od oparcia.",
+    "Na górze dociśnij biceps, skręć nadgarstek lekko na zewnątrz.",
+    "Opuszczaj wolno do pełnego wyprostu, bez zawieszania się na łokciu."
+  ],
+  "Standing_One-Arm_Dumbbell_Triceps_Extension": [
+    "Ramię pionowo przy głowie, drugą ręką możesz podeprzeć łokieć dla stabilności.",
+    "Łokieć wskazuje sufit i nie ucieka na bok, pracuje tylko przedramię.",
+    "Opuszczaj hantel za głowę aż do rozciągnięcia tricepsa, bez wyginania pleców.",
+    "Prostuj do końca i napnij triceps; brzuch cały czas napięty."
+  ],
+  "Standing_Overhead_Barbell_Triceps_Extension": [
+    "Chwyt węższy niż barki, łokcie wskazują sufit i są blisko głowy.",
+    "Opuszczaj sztangę za głowę, plecy proste, bez wyginania lędźwi.",
+    "Używaj sztangi łamanej, jeśli nadgarstki cię bolą.",
+    "Brzuch i pośladki napięte, prostuj do pełnego zakresu, nie bujaj się."
+  ],
+  "Standing_Palm-In_One-Arm_Dumbbell_Press": [
+    "Chwyt neutralny, dłoń zwrócona do głowy przez cały ruch.",
+    "Drugą ręką trzymaj się stabilnego punktu, tułów prosto.",
+    "Wyciskaj nad barkiem, nie odchylaj się w bok ani do tyłu.",
+    "Nadgarstek prosty, wydychaj powietrze w trakcie wyciskania, opuszczaj powoli."
+  ],
+  "Standing_Palms-In_Dumbbell_Press": [
+    "Chwyt neutralny, dłonie zwrócone ku sobie przez cały ruch.",
+    "Łokcie lekko przed tułowiem, nie rozkładaj ich szeroko na boki.",
+    "Brzuch i pośladki napięte, nie odchylaj się do tyłu.",
+    "Wyciskaj nad głowę prostym torem, nie stukaj hantlami o siebie."
+  ],
+  "Standing_Palms-Up_Barbell_Behind_The_Back_Wrist_Curl": [
+    "Sztanga za plecami, chwyt do przodu, ramiona proste i nieruchome.",
+    "Rusza się tylko nadgarstek, nie zginaj łokci i nie bujaj się.",
+    "Opuszczaj sztangę wolno, aż otworzysz dłonie, ale nie wypuść jej z uchwytu.",
+    "Dobierz lekki ciężar i rób więcej powtórzeń, przedramiona szybko się męczą."
+  ],
+  "Standing_Rope_Crunch": [
+    "Lina na wyciągu przy głowie, ramiona nieruchome przy skroniach.",
+    "Zwijaj kręgosłup, przybliżając klatkę do bioder, a nie odginając się w biodrach.",
+    "Biodra stabilne, nie przysiadaj ani nie pociągaj ciężaru ramionami.",
+    "Wydychaj powietrze przy zwijaniu, wracaj powoli."
+  ],
+  "Standing_Towel_Triceps_Extension": [
+    "Łokcie blisko głowy, wskazują sufit i nie rozchodzą się na boki.",
+    "Partner stawia opór równomiernie, bez gwałtownego szarpania.",
+    "Pracuje tylko przedramię, ramiona pozostają nieruchome.",
+    "Brzuch napięty, nie wyginaj pleców, opuszczaj powoli."
+  ],
+  "Step-up_with_Knee_Raise": [
+    "Cała stopa na podwyższeniu, kolano nad kostką, nie pochylaj się za bardzo do przodu.",
+    "Wypychaj piętą i środkiem stopy, nie odpychaj się tylną nogą.",
+    "Kolano unoś wysoko, tułów prosto, brzuch napięty.",
+    "Schodź powoli i kontrolowanie, nie spadaj z podwyższenia."
+  ],
+  "Stiff-Legged_Barbell_Deadlift": [
+    "Kolana lekko ugięte i niezmienne, cały ruch wychodzi z odsunięcia bioder do tyłu.",
+    "Sztanga sunie blisko nóg, łopatki ściągnięte, plecy płaskie.",
+    "Schodź tylko tak nisko, jak pozwala rozciągnięcie tyłu uda, bez zaokrąglania pleców.",
+    "Wracaj, wypychając biodra do przodu i zaciskając pośladki.",
+    "Nie przeciągaj ruchu, w górze wyprostuj się bez wyginania w łuk."
+  ],
+  "Stiff_Leg_Barbell_Good_Morning": [
+    "Sztanga na plecach jak w przysiadzie, łopatki ściągnięte, kolana lekko ugięte.",
+    "Odsuwaj biodra do tyłu, tułów pochyla się z płaskimi plecami.",
+    "Schodź do poziomu lub tak nisko, jak pozwala rozciągnięcie tyłu uda.",
+    "Zacznij z bardzo lekkim ciężarem, bo to ruch obciążający lędźwie.",
+    "Wracaj, wypychając biodra do przodu, nie unosząc tułowia samymi plecami."
+  ],
+  "Straight-Arm_Dumbbell_Pullover": [
+    "Leż poprzecznie, biodra lekko opuszczone, łopatki ściągnięte i oparte na ławce.",
+    "Ramiona lekko ugięte, nie zmieniaj kąta w łokciach w trakcie ruchu.",
+    "Opuszczaj hantel za głowę tylko tak daleko, jak komfortowo pozwala ruchomość barków.",
+    "Wracaj nad klatkę łukiem, zaciskając klatkę i szeroki grzbietu.",
+    "Oddychaj głęboko w dół, wydychaj przy powrocie."
+  ],
+  "Straight_Bar_Bench_Mid_Rows": [
+    "Biodra odsunięte do tyłu, plecy proste, klatka wypięta.",
+    "Ciągnij łokciami do tyłu, ściągając łopatki, nie szarp tułowiem.",
+    "Sztanga dociera do brzucha lub dolnej części klatki.",
+    "Opuszczaj do pełnego wyprostu ramion, bez odbijania."
+  ],
+  "Straight_Raises_on_Incline_Bench": [
+    "Leż twarzą w dół na ławce skośnej, klatka oparta, szyja neutralnie.",
+    "Ramiona proste, unoś sztangę przed siebie w łuku do wysokości barków.",
+    "Nie bujaj tułowiem i nie unoś barków do uszu, ruch kontrolowany.",
+    "Dobierz lekki ciężar, bo to ruch izolowany na przednie i boczne barki."
+  ],
+  "Tate_Press": [
+    "Leż na ławce płaskiej, hantle nad klatką, łokcie rozstawione na boki.",
+    "Opuszczaj hantle do klatki tylko przez zginanie łokci, ramiona nie ruszają się.",
+    "Prostuj, wykorzystując triceps, nie wyciskaj jak klasyczną klatkę.",
+    "Dobierz lekki ciężar, bo ruch jest ciężki dla łokci.",
+    "Kontroluj opuszczanie i nie rzucaj hantlami o klatkę."
+  ],
+  "Thigh_Abductor": [
+    "Plecy oparte o oparcie, miednica stabilna, nie odrywaj pośladków od siedziska.",
+    "Rozchylaj nogi płynnie, bez szarpania, i nie odpychaj się tułowiem.",
+    "W szczycie zrób krótką pauzę i poczuj pracę pośladków.",
+    "Wracaj powoli, nie pozwól, by ciężar uderzył o stos."
+  ],
+  "Thigh_Adductor": [
+    "Plecy oparte o oparcie, miednica stabilna, nie odrywaj pośladków od siedziska.",
+    "Zbliżaj nogi płynnie, bez szarpania i bez bujania tułowiem.",
+    "W szczycie zrób krótką pauzę i poczuj pracę mięśni przywodzicieli.",
+    "Wracaj powoli, nie otwieraj nóg dalej niż pozwala komfortowy zakres.",
+    "Zacznij z lekkim ciężarem, bo to wrażliwa okolica."
+  ],
+  "Tricep_Dumbbell_Kickback": [
+    "Pochyl tułów prawie do poziomu, plecy proste, głowa w przedłużeniu kręgosłupa.",
+    "Ramię przyklejone do tułowia, równolegle do podłogi i nieruchome.",
+    "Prostuj łokieć do końca i zatrzymaj się w szczycie, napinając triceps.",
+    "Użyj lżejszego ciężaru i nie bujaj ramieniem, żeby wspomóc ruch."
+  ],
+  "Triceps_Overhead_Extension_with_Rope": [
+    "Stań tyłem do wyciągu, wykrok, tułów lekko pochylony, brzuch napięty.",
+    "Łokcie wskazują do przodu i blisko głowy, nie rozchodzą się na boki.",
+    "Prostuj ramiona nad głową i rozchyl linę na końcu ruchu.",
+    "Wracaj powoli, aż poczujesz rozciągnięcie tricepsa, ale bez wyginania pleców."
+  ],
+  "Triceps_Pushdown_-_V-Bar_Attachment": [
+    "Łokcie przyklejone do boków, nie ruszają się w trakcie serii.",
+    "Tułów lekko pochylony, nie opieraj się ciężarem na wyciągu.",
+    "Prostuj do pełnego wyprostu i napnij triceps na dole.",
+    "Wracaj powoli do wysokości klatki, nie pozwól, by drążek cię ściągnął."
+  ],
+  "Tuck_Crunch": [
+    "Plecy dolne dociśnięte do podłoża, nie wyginaj lędźwi.",
+    "Unoś barki i górną część pleców, nie szarp szyi rękami.",
+    "Wydychaj powietrze w szczycie i zwijaj brzuch, nie bujaj się.",
+    "Wracaj powoli i nie opuszczaj nóg zbyt nisko, jeśli lędźwie się odrywają."
+  ],
+  "Two-Arm_Dumbbell_Preacher_Curl": [
+    "Ramiona cały czas oparte o poduszkę, nie odrywaj łokci od ławki.",
+    "Opuszczaj hantle wolno aż do prawie pełnego wyprostu, ale bez wiszenia na łokciach.",
+    "Unoś bez bujania tułowiem, nadgarstki proste.",
+    "Na górze dociśnij biceps, opuszczaj dłużej niż unosisz."
+  ],
+  "Two-Arm_Kettlebell_Clean": [
+    "Odsuń biodra do tyłu jak w martwym ciągu, plecy proste, kettle między stopami.",
+    "Ruch zaczyna się od wypchnięcia bioder, nie od ciągnięcia ramionami.",
+    "Trzymaj kettle blisko ciała, przy końcu obróć nadgarstek i wejdź pod ciężar.",
+    "Kettle ląduje na przedramieniu, nie na nadgarstku, nie uderzaj nim w dłoń."
+  ],
+  "Two-Arm_Kettlebell_Jerk": [
+    "Zarzuć kettle na barki, łokcie przed ciałem, klatka wypięta, brzuch napięty.",
+    "Zrób krótki ugięty przysiad, a potem dynamicznie wyprostuj nogi.",
+    "Gdy kettle poleci w górę, szybko wejdź pod nie, uginając nogi.",
+    "Zablokuj łokcie na górze, potem wyprostuj nogi, nie wyciskaj siłą ramion.",
+    "Zacznij z lekkim ciężarem, aby opanować tor ruchu."
+  ],
+  "Two-Arm_Kettlebell_Military_Press": [
+    "Kettle w pozycji na barkach, łokcie blisko tułowia, nadgarstki proste.",
+    "Brzuch i pośladki napięte, nie odchylaj się do tyłu.",
+    "Wyciskaj prosto w górę, przesuń głowę lekko do przodu, gdy kettle ją miną.",
+    "Wydychaj powietrze podczas wyciskania i opuszczaj powoli do barków."
+  ],
+  "Two-Arm_Kettlebell_Row": [
+    "Odsuń biodra do tyłu, plecy proste, tułów prawie równolegle do podłogi.",
+    "Ciągnij łokcie do tyłu i ściągaj łopatki, nie szarp ciężarem.",
+    "Kettle prowadź blisko ciała, nie zaokrąglaj pleców.",
+    "Opuszczaj do pełnego wyprostu ramion, kontrolując ruch."
+  ],
+  "Underhand_Cable_Pulldowns": [
+    "Chwyt podchwytem, nieco węższy niż barki, wałki dociśnięte do ud.",
+    "Odchyl tułów lekko do tyłu i zachowaj to ustawienie przez całą serię.",
+    "Ściągaj łokcie w dół i do tyłu, drążek dociera do górnej części klatki.",
+    "Nie pomagaj sobie bujaniem tułowia, wracaj powoli do pełnego wyprostu ramion."
+  ],
+  "Upright_Barbell_Row": [
+    "Chwyt na szerokość barków lub nieco węższy; nie zacieśniaj go zbytnio, bo przeciążysz nadgarstki.",
+    "Łokcie prowadzą ruch i są wyżej niż nadgarstki.",
+    "Sztanga blisko ciała, unoś do wysokości klatki lub dolnej części brody.",
+    "Jeśli barki protestują, zatrzymaj się niżej, na wysokości mostka.",
+    "Nie bujaj tułowiem, opuszczaj wolno."
+  ],
+  "Upright_Cable_Row": [
+    "Chwyt na szerokość barków, drążek blisko ciała i wzdłuż tułowia.",
+    "Łokcie prowadzą ruch w górę i na boki, są wyżej niż nadgarstki.",
+    "Unoś do wysokości klatki lub dolnej części brody, nie zadzieraj barków do uszu.",
+    "Tułów prosto, nie bujaj, opuszczaj powoli."
+  ],
+  "V-Bar_Pulldown": [
+    "Wałki dociśnięte do ud, klatka wypięta, tułów lekko odchylony do tyłu.",
+    "Ściągaj łokcie w dół i do tyłu, nie ciągnij samymi rękami.",
+    "Uchwyt V dociera do górnej części klatki, ściągnij łopatki.",
+    "Wracaj powoli do pełnego wyprostu ramion, nie bujaj tułowiem."
+  ],
+  "V-Bar_Pullup": [
+    "Zacznij z pełnego zwisu, łopatki lekko ściągnięte w dół.",
+    "Ciągnij łokcie w dół i do bioder, klatka wędruje do uchwytu.",
+    "Nie bujaj nogami i nie odchylaj się; ciało w jednej linii.",
+    "Opuszczaj się powoli do pełnego wyprostu ramion."
+  ],
+  "Weighted_Jump_Squat": [
+    "Używaj lekkiej sztangi, nie ciężaru do maksymalnych powtórzeń.",
+    "Zejdź do ćwierć- lub półprzysiadu, plecy proste, klatka wypięta.",
+    "Wybij się dynamicznie, wyprostuj kostki, kolana i biodra.",
+    "Lądując, miękko ugnij kolana i od razu przyjmij ciężar, nie wpadaj w głęboki przysiad.",
+    "Rób serie z małą liczbą powtórzeń, żeby technika nie siadała."
+  ],
+  "Wide-Grip_Barbell_Bench_Press": [
+    "Chwyt szerszy niż barki, przedramiona w dole prawie pionowo.",
+    "Łopatki ściągnięte i opuszczone, stopy mocno w podłodze.",
+    "Opuszczaj sztangę na środek klatki, łokcie ok. 60–75° od tułowia.",
+    "Nie schodź zbyt nisko, jeśli czujesz ucisk w barkach, i kontroluj ruch."
+  ],
+  "Wide-Grip_Decline_Barbell_Bench_Press": [
+    "Nogi pewnie zablokowane pod wałkami, ławka lekko pod kątem głową w dół.",
+    "Chwyt szeroko, ale nie za bardzo, przedramiona w dole prawie pionowo.",
+    "Opuszczaj sztangę na dolną część klatki, łopatki ściągnięte.",
+    "Poproś o asekurację przy zdejmowaniu sztangi, pozycja jest mniej stabilna."
+  ],
+  "Wide-Grip_Decline_Barbell_Pullover": [
+    "Zacznij z lekkim ciężarem, ruch mocno obciąża barki.",
+    "Ramiona lekko ugięte i zachowują ten kąt przez cały ruch.",
+    "Opuszczaj sztangę za głowę tylko tak daleko, jak pozwala komfortowa ruchomość barków.",
+    "Wracaj łukiem nad klatkę, napinając klatkę i szeroki grzbietu.",
+    "Poproś partnera o pomoc przy podaniu sztangi."
+  ],
+  "Wide-Grip_Pulldown_Behind_The_Neck": [
+    "Rób ten ruch tylko z dobrą ruchomością barków, w przeciwnym razie ściągaj do klatki.",
+    "Pochyl głowę lekko do przodu, żeby drążek ominął kark.",
+    "Ściągaj do wysokości uszu, nie niżej, i nie szarp tułowiem.",
+    "Wracaj powoli do pełnego wyprostu ramion, ściągając łopatki."
+  ],
+  "Wide-Grip_Rear_Pull-Up": [
+    "Zacznij z pełnego zwisu, łopatki lekko ściągnięte w dół.",
+    "Ciągnij łokcie w dół i do boków, nie szarp nogami.",
+    "Rób ten wariant tylko z dobrą ruchomością barków, dalej ściągaj do wysokości uszu.",
+    "Głowę pochyl do przodu, żeby drążek ominął kark, i opuszczaj się powoli."
+  ],
+  "Wide-Grip_Standing_Barbell_Curl": [
+    "Chwyt szerszy niż barki angażuje głównie krótką głowę bicepsu.",
+    "Łokcie przy tułowiu, nie wysuwaj ich do przodu.",
+    "Nie bujaj tułowiem ani nie odchylaj się do tyłu, brzuch napięty.",
+    "Na górze dociśnij biceps, opuszczaj wolno do pełnego wyprostu."
+  ],
+  "Wide_Stance_Barbell_Squat": [
+    "Stopy szeroko, palce skierowane na zewnątrz ok. 30–45°.",
+    "Kolana prowadź w linii palców, nie pozwól im uciekać do środka.",
+    "Siadaj pionowo między nogami, tułów lekko pochylony, klatka wypięta.",
+    "Napnij brzuch, nabierz powietrza przed zejściem i zejdź do równoległości lub głębiej.",
+    "Wypychaj przez całą stopę, zaciskaj pośladki na wyjściu."
+  ],
+  "Wind_Sprints": [
+    "Rozgrzej się porządnie przed pierwszym sprintem.",
+    "Biegnij z lekkim pochyleniem do przodu, łokcie zgięte ok. 90°, ramiona pracują naprzemiennie.",
+    "Lądując na przodostopiu, szybko odbijaj, nie biegaj na piętach.",
+    "Rób krótkie odcinki z pełną przerwą na odpoczynek, żeby technika nie siadała."
+  ],
+  "Wrist_Rotations_with_Straight_Bar": [
+    "Przedramiona oparte na ławce, nadgarstki poza krawędzią.",
+    "Używaj bardzo lekkiego ciężaru, bo przedramiona szybko się męczą.",
+    "Obracaj nadgarstki powoli w obie strony, bez ruszania łokciami.",
+    "Rób powtórzenia w płynnym tempie i nie szarp ciężarem."
+  ],
+  "Zottman_Curl": [
+    "Unoś hantle podchwytem, na górze obróć nadgarstki do nachwytu.",
+    "Opuszczaj powoli w nachwycie, to ćwiczy przedramiona.",
+    "Łokcie przy tułowiu, nie bujaj tułowiem.",
+    "Używaj lżejszego ciężaru niż do zwykłego uginania, bo przedramiona są słabsze."
+  ],
+  "Zottman_Preacher_Curl": [
+    "Ramiona oparte o poduszkę, łokcie nie odrywają się od ławki.",
+    "Unoś w podchwycie, na górze obróć nadgarstki do nachwytu.",
+    "Opuszczaj powoli w nachwycie aż do prawie pełnego wyprostu, bez wiszenia na łokciach.",
+    "Dobierz lekki ciężar, bo przedramiona są słabsze od bicepsu."
   ]
 }

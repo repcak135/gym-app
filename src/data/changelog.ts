@@ -11,6 +11,17 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.8',
+    date: '2026-11-25',
+    items: [
+      'Polskie nazwy dla kolejnych 525 ćwiczeń — m.in. Wypychanie nóg na suwnicy, Face pull, Deska, Martwy ciąg sumo.',
+      'Wskazówki trenera (na karcie ćwiczenia) dla ponad 400 kolejnych ćwiczeń: ustawienie, zakres ruchu, najczęstsze błędy.',
+      'Superserie: przerwa jest jedna — po całej rundzie. W planie ustawiasz ją przy ostatnim ćwiczeniu superserii.',
+      'Przycisk generatora rozgrzewki nazywa się teraz „Dobierz rozgrzewkę”, żeby nie mylił się z polem „Rozgrzewka”.',
+      'Teksty w aplikacji są neutralne — bez form tylko męskich.',
+    ],
+  },
+  {
     version: '0.9.7',
     date: '2026-11-25',
     items: [

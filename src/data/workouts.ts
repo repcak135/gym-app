@@ -3,7 +3,7 @@ import { getSettings } from './settings';
 import { buildPrefill, epley1RM } from './progression';
 import { deloadWeight, setTargets, timeTargets } from './setTargets';
 import { measureOf } from './measure';
-import { linkItems, moveGrouped, nextInRound, normalizeGroups, removeGrouped, unlinkItems } from './supersets';
+import { groupAt, linkItems, moveGrouped, nextInRound, normalizeGroups, removeGrouped, unlinkItems } from './supersets';
 import type { Workout, WorkoutExercise, WorkoutSet } from './types';
 
 // Every function here is one short Dexie transaction, so closing the app at any
@@ -407,10 +407,13 @@ export async function completeSet(setId: string, now = Date.now()): Promise<void
     const w = await db.workouts.get(set.workoutId);
     if (!w) return;
     const ex = w.exercises?.find((e) => e.exerciseId === set.exerciseId);
-    const rest = ex?.restSec ?? (await getSettings()).defaultRestSec;
+    let rest = ex?.restSec ?? (await getSettings()).defaultRestSec;
     let inRound = false;
     if (w.exercises && ex?.group) {
       const index = w.exercises.indexOf(ex);
+      // One rest per round: it comes from the last exercise of the group.
+      const end = groupAt(w.exercises, index)?.end;
+      rest = (end !== undefined ? w.exercises[end]?.restSec : undefined) ?? rest;
       const all = await db.sets.where('workoutId').equals(set.workoutId).toArray();
       const remaining = w.exercises.map(
         (e) => all.filter((s) => s.exerciseId === e.exerciseId && s.completedAt === undefined).length,

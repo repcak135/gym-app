@@ -48,7 +48,7 @@ const fbwDescription = (extra: string): string[] => [
   'Jak często: 3 razy w tygodniu, z dniem odpoczynku pomiędzy (np. pon–śr–pt). Treningi A i B robisz na zmianę: w jednym tygodniu A-B-A, w kolejnym B-A-B. Aplikacja sama podpowie, który dzień jest następny.',
   'Na czym polega: każdy trening ćwiczy całe ciało. Najpierw trzy główne ćwiczenia po 5 serii po 5 powtórzeń, potem kilka mniejszych ćwiczeń po 3 serie.' +
     extra,
-  'Jak zacząć: pierwsze treningi zrób lekko — nawet z samym gryfem — i skup się na technice. Przed głównym ćwiczeniem użyj przycisku „Rozgrzewka”, a aplikacja zaproponuje lżejsze serie.',
+  'Jak zacząć: pierwsze treningi zrób lekko — nawet z samym gryfem — i skup się na technice. Przed głównym ćwiczeniem użyj przycisku „Dobierz rozgrzewkę”, a aplikacja zaproponuje lżejsze serie.',
   'Jak robić postępy: w głównych ćwiczeniach, gdy zrobisz wszystkie 5×5, następnym razem aplikacja zaproponuje trochę większy ciężar. W mniejszych ćwiczeniach najpierw dokładasz powtórzenia (do 10), potem ciężar. Gdy przez 3 treningi nic nie rośnie, zobaczysz propozycję, żeby zejść o ok. 10% i zbudować się od nowa.',
   'Wszystko możesz zmienić: po dodaniu to zwykły plan — zamienisz ćwiczenia, serie i przerwy.',
 ];

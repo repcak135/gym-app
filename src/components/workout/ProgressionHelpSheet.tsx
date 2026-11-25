@@ -20,8 +20,8 @@ export default function ProgressionHelpSheet({ onClose }: { onClose: () => void 
           </div>
         </div>
         <div className="sheet__body help-sheet__body">
-          <p>Każda seria ma swój własny cel. Aplikacja patrzy, ile zrobiłeś w tej samej serii ostatnim razem.</p>
-          <p>Jeśli zrobiłeś mniej niż górna granica zakresu powtórzeń — dorzuć jedno powtórzenie.</p>
+          <p>Każda seria ma swój własny cel. Aplikacja patrzy, ile powtórzeń wyszło w tej samej serii ostatnim razem.</p>
+          <p>Jeśli wyszło mniej niż górna granica zakresu powtórzeń — dorzuć jedno powtórzenie.</p>
           <p>Gdy seria dojdzie do górnej granicy — następnym razem weź trochę więcej kilogramów i zacznij od dołu zakresu.</p>
           <p>Kolejne serie zwykle mają mniej powtórzeń niż pierwsza — to normalne, każda rośnie we własnym tempie.</p>
           <p className="help-sheet__example-title">Przykład (zakres 8–12):</p>

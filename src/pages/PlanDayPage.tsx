@@ -163,7 +163,10 @@ function ItemCard({ planId, dayId, index, count, item, items, exercise }: ItemCa
     : [...REST_OPTIONS, item.restSec].sort((a, b) => a - b);
 
   const canLink = linkItems(items, index) !== null;
-  const grouped = groupAt(items, index) !== null;
+  const group = groupAt(items, index);
+  const grouped = group !== null;
+  const restHidden = group !== null && index < group.end;
+  const restLabel = grouped ? 'Przerwa po rundzie' : 'Przerwa';
 
   return (
     <section className="item-card" aria-label={name}>
@@ -187,19 +190,23 @@ function ItemCard({ planId, dayId, index, count, item, items, exercise }: ItemCa
           <TargetField item={item} measure={measure} onSave={patch} />
         )}
 
-        <div className="item-field">
-          <span className="item-field__label">Przerwa</span>
-          <select
-            className="item-input item-select"
-            aria-label="Przerwa"
-            value={item.restSec}
-            onChange={(e) => patch({ restSec: Number(e.target.value) })}
-          >
-            {restOptions.map((s) => (
-              <option key={s} value={s}>{formatRest(s)}</option>
-            ))}
-          </select>
-        </div>
+        {restHidden ? (
+          <p className="muted item-field item-field--wide">Przerwa po rundzie — ustaw przy ostatnim ćwiczeniu</p>
+        ) : (
+          <div className="item-field">
+            <span className="item-field__label">{restLabel}</span>
+            <select
+              className="item-input item-select"
+              aria-label={restLabel}
+              value={item.restSec}
+              onChange={(e) => patch({ restSec: Number(e.target.value) })}
+            >
+              {restOptions.map((s) => (
+                <option key={s} value={s}>{formatRest(s)}</option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
 
       <div className="item-card__actions">

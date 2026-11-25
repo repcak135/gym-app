@@ -41,7 +41,7 @@ test('deska z planu: czas, stoper, zaliczenie, podsumowanie', async ({ page }) =
   const plank = panel(page, 'Plank');
   await expect(plank.getByText(/3 × 0:30 · przerwa/)).toBeVisible();
   await expect(plank.getByLabel('Czas', { exact: true })).toHaveValue('0:30');
-  await expect(plank.getByRole('button', { name: 'Rozgrzewka' })).toHaveCount(0);
+  await expect(plank.getByRole('button', { name: 'Dobierz rozgrzewkę' })).toHaveCount(0);
 
   await plank.getByRole('button', { name: 'Start' }).click();
   await page.waitForTimeout(1500);

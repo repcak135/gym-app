@@ -392,8 +392,8 @@ describe('dodatkowe ćwiczenia (wersja 4 bazy)', () => {
 
     await seedExercises();
 
-    expect(EXERCISE_DB_VERSION).toBe(6);
-    expect((await db.settings.get('app'))?.exerciseDbVersion).toBe(6);
+    expect(EXERCISE_DB_VERSION).toBe(7);
+    expect((await db.settings.get('app'))?.exerciseDbVersion).toBe(EXERCISE_DB_VERSION);
     const fly = (await db.exercises.get('Butterfly'))!;
     expect(fly.weightStep).toBe(5);
     expect(fly.measureOverride).toBe('time'); // the user's choice survives the reseed
@@ -596,7 +596,7 @@ describe('głowy barków (wersja 6)', () => {
     expect(await db.notes.toArray()).toEqual(before.notes);
     expect(await db.exercises.get(custom.id)).toEqual(before.custom);
     expect((await db.exercises.get(custom.id))?.delts).toBeUndefined();
-    expect((await db.settings.get('app'))?.exerciseDbVersion).toBe(6);
+    expect((await db.settings.get('app'))?.exerciseDbVersion).toBe(EXERCISE_DB_VERSION);
     const side = (await db.exercises.get('Side_Lateral_Raise'))!;
     expect(side.delts?.primary).toEqual(['side']);
     expect(side.weightStep).toBe(1);

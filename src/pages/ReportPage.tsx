@@ -168,7 +168,7 @@ export default function ReportPage() {
       {status.kind === 'error' && <p className="report-error" role="alert">{status.message}</p>}
 
       <p className="bk-hint">
-        Plik powstaje na telefonie. Nic nie jest wysyłane, dopóki sam go nie udostępnisz
+        Plik powstaje na telefonie. Nic nie jest wysyłane, dopóki go nie udostępnisz
         (Messenger, mail, WhatsApp…).
       </p>
     </article>

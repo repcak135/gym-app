@@ -405,7 +405,7 @@ test('generator rozgrzewki: 100 kg na sztandze daje R1–R4 przed serią 1', asy
 
   const bench = panel(page, BENCH);
   await bench.getByLabel('Ciężar').fill('100');
-  await bench.getByRole('button', { name: 'Rozgrzewka', exact: true }).click();
+  await bench.getByRole('button', { name: 'Dobierz rozgrzewkę', exact: true }).click();
 
   const sheet = page.getByRole('dialog', { name: 'Rozgrzewka przed 100 kg' });
   await expect(sheet.getByRole('listitem')).toHaveCount(4);
