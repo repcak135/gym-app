@@ -212,6 +212,7 @@
   cursor: pointer;
 }
 
+.set-list > li > .set-editor { margin-top: 6px; }
 .set-list { list-style: none; margin: 0 0 var(--space-3); padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .set-row {
   display: flex;
@@ -506,6 +507,7 @@
 }
 .rest-end__title { font-size: 2.4rem; font-weight: 900; letter-spacing: -0.02em; text-align: center; }
 .rest-end__hint { font-size: 0.95rem; font-weight: 600; opacity: 0.75; }
+.rest-end__ago { font-size: 1.05rem; font-weight: 700; }
 @keyframes rest-pop { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
   .rest-end__flash, .rest-end__card, .rest-bar--ending { animation: none; }

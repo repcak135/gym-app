@@ -6,6 +6,7 @@ import extra from './exercises-extra.json';
 import akaData from './exercise-aka.json';
 import measureData from './exercise-measure.json';
 import type { Measure } from './types';
+import { SLANG } from './slang';
 import { classifyDelts, deltHeadsOf, type DeltHead, type Delts } from './deltHeads';
 
 // 2: built-in extra exercises (machines, cables, Smith) and other names for matching the import.
@@ -149,6 +150,7 @@ export async function seedExercises(
     if (old?.weightStep !== undefined) ex.weightStep = old.weightStep;
     if (old?.barWeight !== undefined) ex.barWeight = old.barWeight;
     if (old?.measureOverride !== undefined) ex.measureOverride = old.measureOverride;
+    if (old?.userNames?.length) ex.userNames = old.userNames;
     return ex;
   });
   await db.exercises.bulkPut(mapped);
@@ -165,35 +167,60 @@ export type ExerciseFilter = {
   equipment?: string | null;
 };
 
+/** Lowercase, no Polish diacritics, hyphens/underscores as spaces, single spaces. */
+export function normalizeName(s: string): string {
+  return s
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .replace(/ł/gi, 'l')
+    .replace(/[-_]/g, ' ')
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/** Other names a person may search by: the user's own first, then built-in gym slang. */
+export function searchNames(ex: Pick<Exercise, 'id' | 'userNames'>): string[] {
+  return [...(ex.userNames ?? []), ...(SLANG[ex.id] ?? [])];
+}
+
+const queryTokens = (query: string | undefined) =>
+  query !== undefined && query.trim() !== '' ? normalizeName(query).split(' ').filter(Boolean) : [];
+
+// Polish endings vary ("maszyna" / "maszynie"): long words match without their last two letters.
+const matches = (haystack: string, tokens: string[]) =>
+  tokens.every((t) => haystack.includes(t.length > 5 ? t.slice(0, -2) : t));
+
+/**
+ * The slang / user name that matched the query, when the exercise's own names did not
+ * (shown under the name in results), else null.
+ */
+export function matchedAlias(ex: Exercise, query: string | undefined): string | null {
+  const tokens = queryTokens(query);
+  if (tokens.length === 0) return null;
+  if (matches(normalizeName([ex.name, ex.namePl ?? '', ...(ex.aka ?? [])].join(' | ')), tokens)) return null;
+  return searchNames(ex).find((n) => matches(normalizeName(n), tokens)) ?? null;
+}
+
 export function filterExercises(
   list: Exercise[],
   f: ExerciseFilter,
 ): Exercise[] {
   const { query, muscle, equipment } = f;
-
-  // Normalize a string: replace hyphens/underscores with spaces, lowercase, collapse whitespace
-  const normalize = (s: string) =>
-    s
-      .normalize('NFD')
-      .replace(/\p{M}/gu, '')
-      .replace(/ł/gi, 'l')
-      .replace(/[-_]/g, ' ')
-      .toLowerCase()
-      .replace(/\s+/g, ' ')
-      .trim();
-
-  const tokens =
-    query !== undefined && query.trim() !== ''
-      ? normalize(query).split(' ').filter(Boolean)
-      : [];
+  const tokens = queryTokens(query);
+  const whole = tokens.join(' ');
+  // Exercises found by a slang / user name come first ("allahy" → Cable Crunch on top),
+  // an exact slang name ("francuz") before a longer one ("francuz stojąc").
+  const aliasRank = new Map<string, number>();
 
   return list
     .filter((ex) => {
       if (tokens.length > 0) {
-        // English name, Polish name and other names (e.g. "Pec Deck") all count.
-        const haystack = normalize([ex.name, ex.namePl ?? '', ...(ex.aka ?? [])].join(' | '));
-        // Polish endings vary ("maszyna" / "maszynie"): long words match without their last two letters.
-        if (!tokens.every((t) => haystack.includes(t.length > 5 ? t.slice(0, -2) : t))) return false;
+        // English name, Polish name, other names (e.g. "Pec Deck"), slang and the user's names all count.
+        const own = matches(normalizeName([ex.name, ex.namePl ?? '', ...(ex.aka ?? [])].join(' | ')), tokens);
+        const alt = searchNames(ex).map(normalizeName).filter((n) => matches(n, tokens));
+        if (!own && alt.length === 0) return false;
+        if (alt.length > 0) aliasRank.set(ex.id, alt.includes(whole) ? 2 : 1);
       }
       if (muscle != null && muscle.startsWith('shoulders:')) {
         if (!deltHeadsOf(ex, 'any').includes(muscle.slice('shoulders:'.length) as DeltHead)) return false;
@@ -209,7 +236,7 @@ export function filterExercises(
       }
       return true;
     })
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .sort((a, b) => (aliasRank.get(b.id) ?? 0) - (aliasRank.get(a.id) ?? 0) || a.name.localeCompare(b.name));
 }
 
 export async function getRecentExerciseIds(limit = 8): Promise<string[]> {
@@ -365,6 +392,18 @@ export async function deleteCustomExercise(
   });
 
   return { ok: true };
+}
+
+/** Saves the user's other names for an exercise (trimmed, no duplicates); none → the field is removed. */
+export async function setUserNames(id: string, names: string[]): Promise<void> {
+  const seen = new Set<string>();
+  const clean = names
+    .map((n) => n.trim().replace(/\s+/g, ' '))
+    .filter((n) => n !== '' && !seen.has(n.toLowerCase()) && !!seen.add(n.toLowerCase()));
+  await db.exercises.where('id').equals(id).modify((e) => {
+    if (clean.length > 0) e.userNames = clean;
+    else delete e.userNames;
+  });
 }
 
 export type InstructionsPl = Record<string, string[]>;

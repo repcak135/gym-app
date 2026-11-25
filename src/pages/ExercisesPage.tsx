@@ -15,6 +15,7 @@ import { showUndo } from '../undo';
 import SwipeRow from '../components/SwipeRow';
 import { saveListMemo, takeListMemo } from './exercisesListMemo';
 import './ExercisesPage.css';
+import '../components/ExercisePicker.css';
 
 const PAGE_SIZE = 60;
 const PARAM: Record<keyof FinderState, string> = { query: 'q', muscle: 'm', equipment: 's', scope: 't' };
@@ -143,6 +144,14 @@ export default function ExercisesPage() {
       {/* Result list */}
       <section aria-label="Lista ćwiczeń">
         <p className="exercises-count">{exercisesLabel(filtered.length)}</p>
+        {query.trim() && (
+          <Link to={`/cwiczenia/nowe?nazwa=${encodeURIComponent(query.trim())}`} className="picker__create">
+            <Plus size={20} aria-hidden="true" />
+            <span>
+              Utwórz własne ćwiczenie <small>„{query.trim()}”</small>
+            </span>
+          </Link>
+        )}
         {filtered.length === 0 && (
           <FinderEmpty
             state={finder}
@@ -159,7 +168,7 @@ export default function ExercisesPage() {
                 className="exercise-row"
                 aria-label={ex.name}
               >
-                <ExerciseRowContent exercise={ex} />
+                <ExerciseRowContent exercise={ex} query={query} />
               </Link>
             );
             if (scope !== 'moje' || !ex.custom) return row;

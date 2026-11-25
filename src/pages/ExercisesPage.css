@@ -277,6 +277,17 @@
   background: var(--bg);
 }
 
+.exercise-row__alias {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .exercise-row__pl {
   display: block;
   font-size: 0.85rem;

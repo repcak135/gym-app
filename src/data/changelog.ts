@@ -11,6 +11,18 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.6',
+    date: '2026-11-25',
+    items: [
+      'Wyszukiwarka zna siłowniany slang: „allahy”, „francuz”, „OHP”, „spiętki”, „wiosło”, „narciarz”, „żuraw” i wiele innych. Pod nazwą widać, która nazwa pasuje.',
+      'Własne nazwy: na karcie ćwiczenia w „Inne nazwy” dopiszesz, jak mówicie na nie na Twojej siłowni — wyszukiwarka też je znajdzie (są w kopii zapasowej).',
+      'Nie ma ćwiczenia? „Utwórz własne ćwiczenie” na górze wyników — także w trakcie treningu. Nazwa wpisze się z wyszukiwania, a nowe ćwiczenie od razu się doda.',
+      'W treningu edycja serii otwiera się zaraz pod serią, którą dotkniesz, a nie na dole listy.',
+      'Koniec przerwy przy wygaszonym ekranie: po powrocie do aplikacji zagra dźwięk i zobaczysz, ile minęło (np. „Przerwa skończyła się 0:45 temu”). Telefon usypia aplikację po wygaszeniu ekranu, więc najlepiej nie wyłączaj go na treningu.',
+      'Android: nowa opcja „Graj w tle (eksperymentalne)” w Ustawieniach › Koniec przerwy — dźwięk zagra też przy wygaszonym ekranie. Zużywa więcej baterii i może zatrzymać muzykę z innych aplikacji.',
+    ],
+  },
+  {
     version: '0.9.5',
     date: '2026-11-25',
     items: [

@@ -133,6 +133,26 @@ function NumberField({
   );
 }
 
+/**
+ * Smoothly scrolls the nearest vertical scroller (or the page) so `el` is fully visible,
+ * clear of the top bar and the rest bar. Only vertical: `scrollIntoView` would also move the
+ * horizontal exercise pager (e.g. back from a superset partner).
+ */
+function revealVertically(el: HTMLElement, top = 72, bottom = 120): void {
+  let scroller: HTMLElement | null = el.parentElement;
+  while (scroller && !(/(auto|scroll)/.test(getComputedStyle(scroller).overflowY) && scroller.scrollHeight > scroller.clientHeight)) {
+    scroller = scroller.parentElement;
+  }
+  const box = el.getBoundingClientRect();
+  const view = scroller ? scroller.getBoundingClientRect() : { top: 0, bottom: window.innerHeight };
+  let delta = 0;
+  if (box.top < view.top + top) delta = box.top - view.top - top;
+  else if (box.bottom > view.bottom - bottom) delta = Math.min(box.bottom - view.bottom + bottom, box.top - view.top - top);
+  if (delta === 0) return;
+  if (scroller) scroller.scrollBy({ top: delta, behavior: 'smooth' });
+  else window.scrollBy({ top: delta, behavior: 'smooth' });
+}
+
 export default function ExercisePanel({
   workoutId,
   index,
@@ -170,8 +190,19 @@ export default function ExercisePanel({
     const id = setTimeout(() => setJustDone(null), 500);
     return () => clearTimeout(id);
   }, [justDone]);
+  const editorRef = useRef<HTMLDivElement>(null);
+  // Set by a tap on a row or a completed set (not on first render): bring the editor into view.
+  const revealEditor = useRef(false);
   const selected =
     sets.find((s) => s.id === selectedId) ?? sets.find((s) => s.completedAt === undefined) ?? sets.at(-1);
+
+  useEffect(() => {
+    if (!revealEditor.current) return;
+    revealEditor.current = false;
+    // The whole set (its row + the editor), so the tapped row stays visible above the editor.
+    const li = editorRef.current?.closest('li');
+    if (li) revealVertically(li);
+  }, [selected?.id]);
 
   const lastWorking = lastSets.filter((s) => !s.warmup);
   const workingSets = sets.filter((s) => !s.warmup);
@@ -220,6 +251,7 @@ export default function ExercisePanel({
     await completeSet(set.id);
     haptic('tick');
     setJustDone(set.id);
+    revealEditor.current = true;
     setSelectedId(null); // move on to the next undone set
     const exerciseDone = sets.every((s) => s.id === set.id || s.completedAt !== undefined);
     if (askDifficulty && showRir) {
@@ -238,87 +270,9 @@ export default function ExercisePanel({
     }
   };
 
-  return (
-    <section className="ex-panel" aria-label={exercise?.name ?? 'Ćwiczenie'}>
-      {groupChip && <p className="ex-panel__group">{groupChip}</p>}
-      <h2 className="ex-panel__name">{exercise?.name ?? 'Nieznane ćwiczenie'}</h2>
-      <p className="ex-panel__target">
-        {targetLine(item, measure)} · przerwa {formatRest(item.restSec)}
-      </p>
-
-      <div className="ex-panel__info">
-        <button type="button" onClick={() => onInfo('opis')}>Opis</button>
-        <button type="button" onClick={() => onInfo('historia')}>Historia</button>
-        <button type="button" onClick={() => onInfo('notatki')}>Notatki</button>
-        <button type="button" onClick={() => onInfo('statystyki')}>Statystyki</button>
-      </div>
-
-      {note && (
-        <button type="button" className="ex-panel__note" onClick={() => onInfo('notatki')}>
-          {note}
-        </button>
-      )}
-
-      {lastWorking.length > 0 && (
-        <div className="ex-panel__hint">
-          <p className="ex-panel__last">
-            Ostatnio: {lastWorking.map(formatSetShort).join(', ')}
-          </p>
-        </div>
-      )}
-
-      {showStagnation && (
-        <div className="ex-panel__stagnation">
-          {deloaded ? (
-            <p>Ciężar zmniejszony o ok. 10% na ten trening</p>
-          ) : (
-            <>
-              <p>3 treningi bez postępu — rozważ zejście o ok. 10% i zbudowanie od nowa</p>
-              <button
-                type="button"
-                className="ex-panel__apply"
-                onClick={() => void scaleWorkingWeights(workoutId, item.exerciseId, step).then(() => setDeloaded(true))}
-              >
-                Zastosuj −10%
-              </button>
-            </>
-          )}
-        </div>
-      )}
-
-      <ol className="set-list" aria-label="Serie">
-        {sets.map((s) => {
-          const done = s.completedAt !== undefined;
-          const isSel = s.id === selected?.id;
-          return (
-            <li key={s.id}>
-              <button
-                type="button"
-                className={`set-row${done ? ' set-row--done' : ''}${done && s.id === justDone ? ' set-row--just-done' : ''}${isSel ? ' set-row--selected' : ''}${s.warmup ? ' set-row--warmup' : ''}`}
-                aria-current={isSel ? 'true' : undefined}
-                aria-label={`Seria ${setLabel(sets, s)}: ${isReps ? `${formatKg(s.weight)} kg × ${s.reps}` : timedText(s, measure)}${s.rir !== undefined ? `, ${rirToRpeLabel(s.rir)}` : ''}${done ? ', zaliczona' : ''}`}
-                onClick={() => setSelectedId(s.id)}
-              >
-                <span className="set-row__num">{setLabel(sets, s)}</span>
-                <span className="set-row__val">
-                  {isReps ? (
-                    <>
-                      {formatKg(s.weight)} <small>kg</small> × {s.reps}
-                    </>
-                  ) : (
-                    timedText(s, measure)
-                  )}
-                  {s.rir !== undefined && <small className="set-row__rir"> · {rirToRpeLabel(s.rir)}</small>}
-                </span>
-                <span className="set-row__check" aria-hidden="true">{done && <Check size={18} strokeWidth={3} />}</span>
-              </button>
-            </li>
-          );
-        })}
-      </ol>
-
-      {selected ? (
-        <div className={`set-editor${selected.completedAt !== undefined ? ' set-editor--done' : ''}`}>
+  // The open set's editor sits right under its row (one open at a time).
+  const editor = selected ? (
+        <div ref={editorRef} className={`set-editor${selected.completedAt !== undefined ? ' set-editor--done' : ''}`}>
           <p className="set-editor__title">
             {selected.warmup ? 'Rozgrzewka' : 'Seria'} {setLabel(sets, selected).replace('R', '')}
             {selected.completedAt !== undefined && <span className="set-editor__badge">zaliczona</span>}
@@ -526,7 +480,92 @@ export default function ExercisePanel({
             </button>
           </div>
         </div>
-      ) : (
+  ) : null;
+
+  return (
+    <section className="ex-panel" aria-label={exercise?.name ?? 'Ćwiczenie'}>
+      {groupChip && <p className="ex-panel__group">{groupChip}</p>}
+      <h2 className="ex-panel__name">{exercise?.name ?? 'Nieznane ćwiczenie'}</h2>
+      <p className="ex-panel__target">
+        {targetLine(item, measure)} · przerwa {formatRest(item.restSec)}
+      </p>
+
+      <div className="ex-panel__info">
+        <button type="button" onClick={() => onInfo('opis')}>Opis</button>
+        <button type="button" onClick={() => onInfo('historia')}>Historia</button>
+        <button type="button" onClick={() => onInfo('notatki')}>Notatki</button>
+        <button type="button" onClick={() => onInfo('statystyki')}>Statystyki</button>
+      </div>
+
+      {note && (
+        <button type="button" className="ex-panel__note" onClick={() => onInfo('notatki')}>
+          {note}
+        </button>
+      )}
+
+      {lastWorking.length > 0 && (
+        <div className="ex-panel__hint">
+          <p className="ex-panel__last">
+            Ostatnio: {lastWorking.map(formatSetShort).join(', ')}
+          </p>
+        </div>
+      )}
+
+      {showStagnation && (
+        <div className="ex-panel__stagnation">
+          {deloaded ? (
+            <p>Ciężar zmniejszony o ok. 10% na ten trening</p>
+          ) : (
+            <>
+              <p>3 treningi bez postępu — rozważ zejście o ok. 10% i zbudowanie od nowa</p>
+              <button
+                type="button"
+                className="ex-panel__apply"
+                onClick={() => void scaleWorkingWeights(workoutId, item.exerciseId, step).then(() => setDeloaded(true))}
+              >
+                Zastosuj −10%
+              </button>
+            </>
+          )}
+        </div>
+      )}
+
+      <ol className="set-list" aria-label="Serie">
+        {sets.map((s) => {
+          const done = s.completedAt !== undefined;
+          const isSel = s.id === selected?.id;
+          return (
+            <li key={s.id}>
+              <button
+                type="button"
+                className={`set-row${done ? ' set-row--done' : ''}${done && s.id === justDone ? ' set-row--just-done' : ''}${isSel ? ' set-row--selected' : ''}${s.warmup ? ' set-row--warmup' : ''}`}
+                aria-current={isSel ? 'true' : undefined}
+                aria-label={`Seria ${setLabel(sets, s)}: ${isReps ? `${formatKg(s.weight)} kg × ${s.reps}` : timedText(s, measure)}${s.rir !== undefined ? `, ${rirToRpeLabel(s.rir)}` : ''}${done ? ', zaliczona' : ''}`}
+                onClick={() => {
+                  revealEditor.current = true;
+                  setSelectedId(s.id);
+                }}
+              >
+                <span className="set-row__num">{setLabel(sets, s)}</span>
+                <span className="set-row__val">
+                  {isReps ? (
+                    <>
+                      {formatKg(s.weight)} <small>kg</small> × {s.reps}
+                    </>
+                  ) : (
+                    timedText(s, measure)
+                  )}
+                  {s.rir !== undefined && <small className="set-row__rir"> · {rirToRpeLabel(s.rir)}</small>}
+                </span>
+                <span className="set-row__check" aria-hidden="true">{done && <Check size={18} strokeWidth={3} />}</span>
+              </button>
+              {isSel && editor}
+            </li>
+          );
+        })}
+      </ol>
+
+      {!selected && (
         <button type="button" className="set-editor__complete" onClick={() => void addSet(workoutId, index)}>
           + Dodaj serię
         </button>

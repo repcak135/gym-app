@@ -27,6 +27,8 @@ export interface Exercise {
   namePl?: string;
   /** Other names of the same exercise (old apps, gyms); the import matches them exactly. */
   aka?: string[];
+  /** The user's own other names for this exercise (searchable); kept on reseed and in the backup. */
+  userNames?: string[];
   /** Names of a near-identical exercise: proposed and pre-selected on the import matching screen. */
   similar?: string[];
   /** Names that might mean this exercise: proposed but not pre-selected. */
@@ -160,6 +162,8 @@ export interface AppSettings {
   restTicks: boolean;
   /** End of rest: vibration (Android). */
   restVibration: boolean;
+  /** Android, experimental: play the rest as one audio file so the end sound plays with the screen off. */
+  restBackgroundAudio?: boolean;
   /** Advanced: show the RIR picker on each set. */
   showRir: boolean;
   /** With showRir on: open the difficulty sheet right after "Zalicz serię". */

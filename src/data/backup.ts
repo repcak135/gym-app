@@ -18,6 +18,7 @@ export interface ExerciseOverride {
   weightStep?: number;
   barWeight?: number;
   measureOverride?: Measure;
+  userNames?: string[];
 }
 
 /** Settings that travel with the data (device-only fields stay on the device). */
@@ -55,7 +56,7 @@ const DEVICE_ONLY = new Set(['key', 'exerciseDbVersion', 'lastBackupAt', 'backup
 export async function createBackup(now = Date.now()): Promise<BackupFile> {
   return db.transaction('r', [db.plans, db.workouts, db.sets, db.notes, db.aliases, db.body, db.exercises, db.settings], async () => {
     const exercises = await db.exercises
-      .filter((e) => e.custom || e.weightStep !== undefined || e.barWeight !== undefined || e.measureOverride !== undefined)
+      .filter((e) => e.custom || e.weightStep !== undefined || e.barWeight !== undefined || e.measureOverride !== undefined || !!e.userNames?.length)
       .toArray();
     const settings = await getSettings();
     const kept: Record<string, unknown> = {};
@@ -80,6 +81,7 @@ export async function createBackup(now = Date.now()): Promise<BackupFile> {
             ...(e.weightStep !== undefined && { weightStep: e.weightStep }),
             ...(e.barWeight !== undefined && { barWeight: e.barWeight }),
             ...(e.measureOverride !== undefined && { measureOverride: e.measureOverride }),
+            ...(e.userNames?.length && { userNames: e.userNames }),
           })),
         settings: kept as BackupSettings,
       },
@@ -213,8 +215,8 @@ export async function restoreBackup(f: BackupFile): Promise<void> {
     await Promise.all([db.plans.clear(), db.workouts.clear(), db.sets.clear(), db.notes.clear(), db.aliases.clear(), db.body.clear()]);
     await db.exercises.filter((e) => e.custom).delete();
     await db.exercises
-      .filter((e) => e.weightStep !== undefined || e.barWeight !== undefined || e.measureOverride !== undefined)
-      .modify((e) => { delete e.weightStep; delete e.barWeight; delete e.measureOverride; });
+      .filter((e) => e.weightStep !== undefined || e.barWeight !== undefined || e.measureOverride !== undefined || e.userNames !== undefined)
+      .modify((e) => { delete e.weightStep; delete e.barWeight; delete e.measureOverride; delete e.userNames; });
 
     await db.plans.bulkAdd(d.plans);
     await db.workouts.bulkAdd(d.workouts);
@@ -228,6 +230,7 @@ export async function restoreBackup(f: BackupFile): Promise<void> {
       if (o.weightStep !== undefined) patch.weightStep = o.weightStep;
       if (o.barWeight !== undefined) patch.barWeight = o.barWeight;
       if (o.measureOverride !== undefined) patch.measureOverride = o.measureOverride;
+      if (Array.isArray(o.userNames) && o.userNames.length) patch.userNames = o.userNames.filter((n) => typeof n === 'string');
       await db.exercises.update(o.id, patch);
     }
     const settings: AppSettings = migrateSound({

@@ -29,6 +29,7 @@ import { unlockAudio } from '../audio/beep';
 import { useWakeLock } from '../hooks/useWakeLock';
 import ExercisePanel from '../components/workout/ExercisePanel';
 import RestBar, { RestEndBanner } from '../components/workout/RestBar';
+import { isAndroid } from '../audio/backgroundRest';
 import ExerciseInfoSheet, { type InfoTab } from '../components/workout/ExerciseInfoSheet';
 import ExerciseThumb from '../components/ExerciseThumb';
 import { isExerciseDone, nextAfterExerciseDone, setsWord, type ExerciseProgress } from '../data/workoutFlow';
@@ -168,9 +169,10 @@ export default function WorkoutPage() {
     prevCount.current = items.length;
   }, [items.length, workout]);
 
-  const [banner, setBanner] = useState(false);
-  const onRestEnd = useCallback(() => setBanner(true), []);
-  const hideBanner = useCallback(() => setBanner(false), []);
+  // Rest-end banner: null = hidden, else how long ago the rest ended (0 = just now).
+  const [banner, setBanner] = useState<number | null>(null);
+  const onRestEnd = useCallback((lateMs: number) => setBanner(lateMs), []);
+  const hideBanner = useCallback(() => setBanner(null), []);
 
   const [sheet, setSheet] = useState<Sheet | null>(null);
   const close = () => setSheet(null);
@@ -523,9 +525,10 @@ export default function WorkoutPage() {
         preset={settings.restSoundPreset}
         ticks={settings.restTicks}
         vibration={settings.restVibration}
+        background={!!settings.restBackgroundAudio && isAndroid()}
         onEnd={onRestEnd}
       />
-      {banner && <RestEndBanner onDismiss={hideBanner} />}
+      {banner !== null && <RestEndBanner lateMs={banner} onDismiss={hideBanner} />}
 
       {sheet?.kind === 'menu' && (
         <ActionSheet

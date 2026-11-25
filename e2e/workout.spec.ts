@@ -183,7 +183,8 @@ test('koniec przerwy, gdy aplikacja była w tle: napis po powrocie; Pomiń nie p
   await page.clock.fastForward('05:00');
   await page.getByRole('link', { name: 'Wróć do treningu' }).click();
   await expect(page.getByRole('alert')).toContainText('Koniec przerwy!');
-  await page.clock.fastForward('00:06'); // dismisses itself
+  await expect(page.getByRole('alert')).toContainText(/Przerwa skończyła się 3:0\d temu/);
+  await page.clock.fastForward('00:09'); // dismisses itself
   await expect(page.getByRole('alert')).toHaveCount(0);
 
   // skipping the rest on purpose: no banner

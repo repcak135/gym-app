@@ -8,6 +8,7 @@ import RecordsSection from '../components/RecordsSection';
 import ExerciseHistorySection from '../components/ExerciseHistorySection';
 import ConfirmSheet from '../components/ConfirmSheet';
 import NoteEditor from '../components/NoteEditor';
+import OtherNames from '../components/OtherNames';
 import { ExerciseChips, ExerciseInstructions, ExercisePhotos, ExerciseTips } from '../components/ExerciseHowTo';
 import { MEASURE_OPTIONS, measureOf } from '../data/measure';
 import type { Exercise, Measure } from '../data/types';
@@ -88,6 +89,8 @@ export default function ExerciseDetailPage() {
       <ExercisePhotos exercise={exercise} />
       <ExerciseChips exercise={exercise} />
       <ExerciseTips exerciseId={exercise.id} />
+
+      <OtherNames exercise={exercise} />
 
       {!exercise.custom && (
         <section className="detail-section">

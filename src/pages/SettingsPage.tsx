@@ -8,6 +8,7 @@ import InstallGuideSheet from '../components/InstallGuide';
 import { CHANGELOG } from '../data/changelog';
 import { APP_VERSION } from '../version';
 import { REST_SOUND_PRESETS, presetHasSound, previewSound } from '../audio/beep';
+import { isAndroid, isIOS } from '../audio/backgroundRest';
 import { parseWeight } from '../data/progression';
 
 import { getSettings, updateSettings, WEIGHT_STEP_OPTIONS, BAR_WEIGHT_OPTIONS } from '../data/settings';
@@ -200,6 +201,15 @@ export default function SettingsPage() {
           checked={settings.restVibration}
           onChange={(v) => void updateSettings({ restVibration: v })}
         />
+        {isAndroid() && (
+          <ToggleRow
+            label="Graj w tle (eksperymentalne)"
+            checked={!!settings.restBackgroundAudio}
+            disabled={!presetHasSound(settings.restSoundPreset)}
+            onChange={(v) => void updateSettings({ restBackgroundAudio: v })}
+          />
+        )}
+        <RestLockNote background={!!settings.restBackgroundAudio} />
       </section>
 
       <section className="settings-group" aria-labelledby="set-after">
@@ -361,6 +371,27 @@ function SettingRow({ label, id, children }: { label: string; id: string; childr
       {children}
     </div>
   );
+}
+
+/** Why the end sound may be late with the screen off: different on Android and iPhone. */
+function RestLockNote({ background }: { background: boolean }) {
+  if (isAndroid()) {
+    return (
+      <p className="settings-group__hint settings-rest-lock">
+        {background
+          ? 'Graj w tle: przerwa gra jako cichy plik audio z dźwiękiem na końcu, więc zagra też przy wygaszonym ekranie. Zużywa więcej baterii i może zatrzymać muzykę z innych aplikacji (np. Spotify); wibracja przy wygaszonym ekranie nie działa.'
+          : 'Wygaszony ekran: Android usypia aplikację, więc dźwięk może zagrać dopiero po powrocie do niej. Na treningu aplikacja sama nie wygasza ekranu — nie wyłączaj go przyciskiem albo włącz „Graj w tle”.'}
+      </p>
+    );
+  }
+  if (isIOS()) {
+    return (
+      <p className="settings-group__hint settings-rest-lock">
+        Zablokowany telefon: iPhone usypia aplikację i dźwięk zagra dopiero po powrocie do niej. Na treningu aplikacja sama nie wygasza ekranu — nie blokuj go przyciskiem.
+      </p>
+    );
+  }
+  return null;
 }
 
 function ToggleRow({ label, checked, onChange, disabled }: { label: string; checked: boolean; onChange: (v: boolean) => void; disabled?: boolean }) {

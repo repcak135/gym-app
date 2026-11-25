@@ -1,12 +1,13 @@
 import { Fragment, useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Check, X } from 'lucide-react';
+import { Check, Plus, X } from 'lucide-react';
 
 import { db } from '../data/db';
 import type { Exercise } from '../data/types';
 import ExerciseFinder, { FinderEmpty } from './ExerciseFinder';
 import { EMPTY_FINDER, useExerciseFinder, type FinderState } from '../hooks/useExerciseFinder';
 import ExerciseRowContent from './ExerciseRow';
+import ExerciseForm from './ExerciseForm';
 import { useUsedIds } from '../hooks/useExerciseScope';
 import { rankForSwap, swapMuscles } from '../data/swapRank';
 import { muscleLabel } from '../data/exerciseLabels';
@@ -44,6 +45,8 @@ export default function ExercisePicker({
   const [finder, setFinder] = useState<FinderState>(EMPTY_FINDER);
   const [limit, setLimit] = useState(PAGE_SIZE);
   const [selected, setSelected] = useState<string[]>([]);
+  // "Utwórz własne ćwiczenie": the custom exercise form on top of the picker.
+  const [creating, setCreating] = useState(false);
   const existing = useMemo(() => new Set(existingIds), [existingIds]);
 
   const { filtered, recent, isFiltered } = useExerciseFinder(all, finder);
@@ -85,7 +88,7 @@ export default function ExercisePicker({
         disabled={inDay}
         onClick={() => toggle(ex.id)}
       >
-        <ExerciseRowContent exercise={ex} size={48} />
+        <ExerciseRowContent exercise={ex} size={48} query={finder.query} />
         {inDay ? (
           <span className="picker__in-day">{existingLabel}</span>
         ) : (
@@ -95,6 +98,16 @@ export default function ExercisePicker({
         )}
       </button>
     );
+  };
+
+  // A new exercise is picked straight away: single choice closes, otherwise it joins the selection.
+  const created = (id: string) => {
+    setCreating(false);
+    if (single) {
+      void Promise.resolve(onDone([id])).then(onClose);
+      return;
+    }
+    setSelected((s) => (s.includes(id) ? s : [...s, id]));
   };
 
   const done = async () => {
@@ -121,6 +134,13 @@ export default function ExercisePicker({
         <div className="picker__finder">
           <ExerciseFinder state={finder} onChange={changeFinder} />
         </div>
+        <button type="button" className="picker__create" onClick={() => setCreating(true)}>
+          <Plus size={20} aria-hidden="true" />
+          <span>
+            Utwórz własne ćwiczenie
+            {finder.query.trim() && <small> „{finder.query.trim()}”</small>}
+          </span>
+        </button>
         {all === undefined && <p className="picker__empty">Ładowanie…</p>}
         {all !== undefined && filtered.length === 0 && (
           <FinderEmpty state={finder} withAddHint={false} onReset={() => changeFinder({ query: '', muscle: null, equipment: null })} />
@@ -145,6 +165,20 @@ export default function ExercisePicker({
           </button>
         )}
       </div>
+
+      {creating && (
+        <div className="picker picker--form" role="dialog" aria-label="Nowe ćwiczenie" aria-modal="true">
+          <div className="picker__bar">
+            <button type="button" className="picker__close" aria-label="Wróć do listy" onClick={() => setCreating(false)}>
+              <X size={24} aria-hidden="true" />
+            </button>
+            <h2 className="picker__title">Nowe ćwiczenie</h2>
+          </div>
+          <div className="picker__list picker__form">
+            <ExerciseForm initialName={finder.query.trim()} onSaved={created} onCancel={() => setCreating(false)} />
+          </div>
+        </div>
+      )}
 
       {!single && <div className="picker__footer">
         <button type="button" className="plan-btn plan-btn--primary plan-btn--block" onClick={() => void done()}>
