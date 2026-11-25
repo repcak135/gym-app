@@ -143,7 +143,7 @@ test('zamiana ćwiczenia: najpierw ćwiczenia na ten sam mięsień, wyszukiwanie
   await page.getByRole('button', { name: `Zamień: ${REAR}` }).click();
   const swap = page.getByRole('dialog', { name: `Zamień: ${REAR}` });
   const titles = swap.locator('.exercises-section-title');
-  await expect(titles.first()).toHaveText('Podobne (barki)', { timeout: 15_000 });
+  await expect(titles.first()).toHaveText('Podobne (barki — tył)', { timeout: 15_000 });
   await expect(swap.getByText('Pozostałe', { exact: true })).toHaveCount(0); // beyond the first page
   // The first rows are shoulder exercises, the dumbbell ones first.
   const metas = await swap.locator('.picker__row .exercise-row__meta').allTextContents();

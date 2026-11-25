@@ -1,10 +1,10 @@
-import { muscleLabel, equipmentLabel } from '../data/exerciseLabels';
+import { exerciseMuscleLabels, equipmentLabel } from '../data/exerciseLabels';
 import type { Exercise } from '../data/types';
 import ExerciseThumb from './ExerciseThumb';
 
 /** Inside of an exercise list row (Ćwiczenia tab and picker): photo, name, Polish name, muscles · equipment. */
 export default function ExerciseRowContent({ exercise: ex, size = 56 }: { exercise: Exercise; size?: number }) {
-  const meta = [ex.primaryMuscles.map(muscleLabel).join(', '), equipmentLabel(ex.equipment)]
+  const meta = [exerciseMuscleLabels(ex, 'primary').join(', '), equipmentLabel(ex.equipment)]
     .filter(Boolean)
     .join(' · ');
   return (

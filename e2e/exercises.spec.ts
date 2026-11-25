@@ -234,3 +234,26 @@ test('karta ćwiczenia: rodzaj ćwiczenia (deska = czas) i zmiana wyboru', async
   await page.reload();
   await expect(page.getByLabel('Rodzaj ćwiczenia')).toHaveValue('time');
 });
+
+test('filtr Mięśnie → Barki → tył: Face Pull tak, boczne unoszenie nie', async ({ page }) => {
+  await page.goto('/#/cwiczenia');
+  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+
+  await page.getByRole('button', { name: 'Mięśnie' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Mięśnie' });
+  await expect(sheet.getByRole('option', { name: 'Barki', exact: true })).toBeVisible();
+  await sheet.getByRole('option', { name: 'tył', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Barki — tył' })).toBeVisible();
+
+  const search = page.getByPlaceholder('Szukaj ćwiczenia');
+  await search.fill('face pull');
+  await expect(page.getByRole('link', { name: 'Face Pull', exact: true })).toBeVisible();
+  await search.fill('side lateral raise');
+  await expect(page.getByRole('link', { name: 'Side Lateral Raise', exact: true })).toHaveCount(0);
+
+  // plain Barki still finds the side raise
+  await page.getByRole('button', { name: 'Wyczyść filtr: Mięśnie' }).click();
+  await page.getByRole('button', { name: 'Mięśnie' }).click();
+  await page.getByRole('dialog', { name: 'Mięśnie' }).getByRole('option', { name: 'Barki', exact: true }).click();
+  await expect(page.getByRole('link', { name: 'Side Lateral Raise', exact: true })).toBeVisible();
+});

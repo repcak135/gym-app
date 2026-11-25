@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { ChevronLeft, ChevronRight, FileSpreadsheet, Trophy } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight, FileSpreadsheet, Trophy } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 
 import {
@@ -10,10 +10,12 @@ import {
   periodRange,
   weeklyCounts,
   type Period,
+  type ShoulderHeadKey,
   type StatsInput,
 } from '../data/stats';
 import { isFinished } from '../data/workouts';
 import { MUSCLE_GROUPS } from '../data/muscleMap';
+import { DELT_LABEL } from '../data/deltHeads';
 import DonutChart from '../components/stats/DonutChart';
 import WeekBars from '../components/stats/WeekBars';
 import BodyMap from '../components/stats/BodyMap';
@@ -56,6 +58,13 @@ function Tile({ label, value, sub }: { label: string; value: string; sub?: strin
   );
 }
 
+const SHOULDER_HEAD_ROWS: [ShoulderHeadKey, string][] = [
+  ['front', DELT_LABEL.front],
+  ['side', DELT_LABEL.side],
+  ['rear', DELT_LABEL.rear],
+  ['unknown', 'nieokreślone'],
+];
+
 export default function StatsPage() {
   const [tab, setTab] = useState(lastTab);
   useEffect(() => {
@@ -96,6 +105,7 @@ function TrainingStats() {
   const input = useLiveQuery(() => loadStatsInput(), []);
   const [now] = useState(() => Date.now());
   const [view, setView] = useState(lastView);
+  const [shouldersOpen, setShouldersOpen] = useState(false);
   const [muscleMode, setMuscleMode] = useState<'primary' | 'secondary'>('primary');
   const [bodyMode, setBodyMode] = useState<'sets' | 'days'>('sets');
   const [selGroup, setSelGroup] = useState<string | null>(null);
@@ -228,6 +238,28 @@ function TrainingStats() {
                               <span className="legend__name">{s.label}</span>
                               <span className="legend__val">{s.value}</span>
                             </button>
+                            {s.key === 'barki' && (
+                              <button
+                                type="button"
+                                className="legend__expand"
+                                aria-expanded={shouldersOpen}
+                                aria-controls="st-shoulder-heads"
+                                aria-label="Barki — przód, bok, tył"
+                                onClick={() => setShouldersOpen((o) => !o)}
+                              >
+                                <ChevronDown size={18} aria-hidden="true" className={shouldersOpen ? 'legend__chev legend__chev--open' : 'legend__chev'} />
+                              </button>
+                            )}
+                            {s.key === 'barki' && shouldersOpen && (
+                              <ul id="st-shoulder-heads" className="legend legend--sub" aria-label="Barki wg fragmentu">
+                                {SHOULDER_HEAD_ROWS.map(([k, label]) => (
+                                  <li key={k} className="legend__row legend__row--sub">
+                                    <span className="legend__name">{label}</span>
+                                    <span className="legend__val">{stats.shoulderHeads[muscleMode][k]}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
                           </li>
                         ))}
                     </ul>

@@ -145,3 +145,49 @@ test('superseria: seria A -> pager na B bez przerwy, seria B -> przerwa i powró
   await page.getByRole('button', { name: 'Odłącz z superserii' }).click();
   await expect(panel(page, BENCH).getByText(/Superseria/)).toHaveCount(0);
 });
+
+async function addSideRaise(page: import('@playwright/test').Page) {
+  await page.goto('/#/');
+  await page.getByRole('button', { name: 'Pusty trening' }).click();
+  await page.getByRole('button', { name: 'Dodaj ćwiczenie' }).click();
+  const add = page.getByRole('dialog', { name: 'Dodaj ćwiczenia' });
+  await add.getByRole('searchbox', { name: 'Szukaj ćwiczenia' }).fill('side lateral raise');
+  await add.getByRole('button', { name: 'Side Lateral Raise', exact: true }).click({ timeout: 15_000 });
+  await page.getByRole('button', { name: 'Gotowe (1)' }).click();
+}
+
+test('zamiana Side Lateral Raise: wersje na bok przed Front Dumbbell Raise', async ({ page }) => {
+  await addSideRaise(page);
+  await page.getByRole('button', { name: 'Opcje treningu' }).click();
+  await page.getByRole('button', { name: 'Zamień: Side Lateral Raise' }).click();
+  const swap = page.getByRole('dialog', { name: 'Zamień: Side Lateral Raise' });
+  await expect(swap.locator('.exercises-section-title').first()).toHaveText('Podobne (barki — bok)', { timeout: 15_000 });
+  await swap.getByRole('searchbox', { name: 'Szukaj ćwiczenia' }).fill('raise');
+  for (let i = 0; i < 10 && (await swap.getByRole('button', { name: 'Front Dumbbell Raise', exact: true }).count()) === 0; i++) {
+    await swap.getByRole('button', { name: /Pokaż więcej/ }).click();
+  }
+  await expect(swap.getByRole('button', { name: 'Front Dumbbell Raise', exact: true })).toBeVisible();
+  const names = await swap.locator('.picker__row').evaluateAll((els) => els.map((e) => e.getAttribute('aria-label')));
+  expect(names.indexOf('Cable Seated Lateral Raise')).toBeGreaterThanOrEqual(0);
+  expect(names.indexOf('Cable Seated Lateral Raise')).toBeLessThan(names.indexOf('Front Dumbbell Raise'));
+});
+
+test('statystyki: Barki rozwija się na przód / bok / tył', async ({ page }) => {
+  await addSideRaise(page);
+  const region = page.getByRole('region', { name: 'Side Lateral Raise' });
+  await region.getByLabel('Ciężar').fill('8');
+  await region.getByLabel('Powtórzenia').fill('12');
+  await region.getByRole('button', { name: 'Zalicz serię' }).click();
+  await page.getByRole('button', { name: 'Zakończ' }).click();
+  await page.getByRole('dialog', { name: 'Zakończyć trening?' }).getByRole('button', { name: 'Zakończ trening' }).click();
+  await expect(page).toHaveURL(/#\/trening\/podsumowanie\//);
+
+  await page.goto('/#/statystyki');
+  const expand = page.getByRole('button', { name: 'Barki — przód, bok, tył' });
+  await expect(expand).toHaveAttribute('aria-expanded', 'false');
+  await expand.click();
+  await expect(expand).toHaveAttribute('aria-expanded', 'true');
+  const heads = page.getByRole('list', { name: 'Barki wg fragmentu' });
+  await expect(heads.getByRole('listitem').filter({ hasText: 'bok' })).toContainText('1');
+  await expect(heads.getByRole('listitem').filter({ hasText: 'przód' })).toContainText('0');
+});

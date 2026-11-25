@@ -1,5 +1,6 @@
 // Muscle vocabulary of all exercise sources (free-exercise-db words; x- extras and openGym
 // are mapped onto the same words) → chart groups and body silhouette parts.
+import type { DeltHead } from './deltHeads';
 
 export type MuscleGroup =
   | 'klatka'
@@ -101,4 +102,19 @@ export function muscleGroup(m: string): MuscleGroup | undefined {
 
 export function bodyParts(m: string): BodyPart[] {
   return MUSCLE_TO_BODY[m.trim().toLowerCase()] ?? [];
+}
+
+const HEAD_PART: Record<DeltHead, BodyPart> = { front: 'front-deltoids', side: 'front-deltoids', rear: 'back-deltoids' };
+
+/**
+ * Silhouette parts of a muscle list. With known deltoid heads (of the same role) "shoulders" lights only
+ * the matching deltoid parts; without heads it keeps lighting both.
+ */
+export function bodyPartsOf(muscles: string[], heads: DeltHead[] = []): BodyPart[] {
+  const out = new Set<BodyPart>();
+  for (const m of muscles) {
+    if (m.trim().toLowerCase() === 'shoulders' && heads.length > 0) for (const h of heads) out.add(HEAD_PART[h]);
+    else for (const p of bodyParts(m)) out.add(p);
+  }
+  return [...out];
 }

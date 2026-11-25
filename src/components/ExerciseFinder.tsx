@@ -1,7 +1,8 @@
 import { useState, type ReactNode } from 'react';
 import { ChevronDown, X } from 'lucide-react';
 
-import { MUSCLES, EQUIPMENT, muscleLabel, equipmentLabel } from '../data/exerciseLabels';
+import { MUSCLE_FILTER_OPTIONS, EQUIPMENT, muscleLabel, equipmentLabel } from '../data/exerciseLabels';
+import { DELT_LABEL, type DeltHead } from '../data/deltHeads';
 import { SCOPE_OPTIONS, emptyScopeText, type Scope } from '../hooks/useExerciseScope';
 import type { FinderState } from '../hooks/useExerciseFinder';
 import FilterSheet from './FilterSheet';
@@ -76,8 +77,8 @@ export default function ExerciseFinder({
       {openSheet === 'muscle' && (
         <FilterSheet
           title="Mięśnie"
-          options={MUSCLES as unknown as string[]}
-          labels={muscleLabel}
+          options={MUSCLE_FILTER_OPTIONS as string[]}
+          labels={(m) => (m.startsWith('shoulders:') ? DELT_LABEL[m.slice(10) as DeltHead] : muscleLabel(m))}
           value={state.muscle}
           onSelect={(muscle) => onChange({ muscle })}
           onClose={() => setOpenSheet(null)}

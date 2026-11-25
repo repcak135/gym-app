@@ -61,7 +61,7 @@ export default function FilterSheet({
                 type="button"
                 role="option"
                 aria-selected={active}
-                className={`sheet__option${active ? ' sheet__option--active' : ''}`}
+                className={`sheet__option${active ? ' sheet__option--active' : ''}${opt.includes(':') ? ' sheet__option--sub' : ''}`}
                 onClick={() => { onSelect(opt); onClose(); }}
               >
                 {labels(opt)}

@@ -145,3 +145,16 @@
   flex: 0 0 auto;
   padding: 0 var(--space-5);
 }
+
+.form-delts { border: none; padding: 0; margin: 0 0 var(--space-4); }
+.form-delt {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+}

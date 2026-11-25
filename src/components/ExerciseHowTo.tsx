@@ -8,7 +8,7 @@ import {
   pickInstructions,
   type InstructionsPl,
 } from '../data/exercises';
-import { muscleLabel, equipmentLabel, LEVEL_PL } from '../data/exerciseLabels';
+import { exerciseMuscleLabels, equipmentLabel, LEVEL_PL } from '../data/exerciseLabels';
 import type { Exercise } from '../data/types';
 import EquipmentIcon from './EquipmentIcon';
 import '../pages/ExerciseDetailPage.css';
@@ -113,11 +113,11 @@ export function ExerciseChips({ exercise }: { exercise: Exercise }) {
   const levelPl = exercise.level ? (LEVEL_PL[exercise.level] ?? exercise.level) : null;
   return (
     <div className="detail-chips">
-      {exercise.primaryMuscles.map((m) => (
-        <span key={m} className="chip chip--primary">{muscleLabel(m)}</span>
+      {exerciseMuscleLabels(exercise, 'primary').map((l) => (
+        <span key={l} className="chip chip--primary">{l}</span>
       ))}
-      {exercise.secondaryMuscles.map((m) => (
-        <span key={m} className="chip chip--secondary">{muscleLabel(m)}</span>
+      {exerciseMuscleLabels(exercise, 'secondary').map((l) => (
+        <span key={l} className="chip chip--secondary">{l}</span>
       ))}
       {exercise.equipment && <span className="chip chip--equip">{equipmentLabel(exercise.equipment)}</span>}
       {levelPl && <span className="chip chip--equip">{levelPl}</span>}

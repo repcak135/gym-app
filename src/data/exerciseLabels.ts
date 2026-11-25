@@ -1,3 +1,6 @@
+import { DELT_LABEL, deltChipLabel, deltHeadsOf, type DeltHead } from './deltHeads';
+import type { Exercise } from './types';
+
 export const MUSCLES: readonly string[] = [
   'abdominals',
   'abductors',
@@ -38,8 +41,30 @@ export const MUSCLE_PL: Record<string, string> = {
   triceps: 'Triceps',
 };
 
+/** Filter values for the deltoid heads, listed right after "shoulders" in the Mięśnie filter. */
+export const SHOULDER_HEAD_FILTERS = ['shoulders:front', 'shoulders:side', 'shoulders:rear'] as const;
+
+export const MUSCLE_FILTER_OPTIONS: readonly string[] = MUSCLES.flatMap((m) =>
+  m === 'shoulders' ? [m, ...SHOULDER_HEAD_FILTERS] : [m],
+);
+
 export function muscleLabel(m: string): string {
+  if (m.startsWith('shoulders:')) {
+    const head = m.slice('shoulders:'.length) as DeltHead;
+    if (head in DELT_LABEL) return deltChipLabel(head);
+  }
   return MUSCLE_PL[m] ?? m;
+}
+
+/** Labels of an exercise's muscles in a role; "Barki" becomes one "Barki — bok" per known head. */
+export function exerciseMuscleLabels(
+  ex: Pick<Exercise, 'primaryMuscles' | 'secondaryMuscles' | 'delts'>,
+  role: 'primary' | 'secondary',
+): string[] {
+  const heads = deltHeadsOf(ex, role);
+  return (role === 'primary' ? ex.primaryMuscles : ex.secondaryMuscles).flatMap((m) =>
+    m === 'shoulders' && heads.length > 0 ? heads.map(deltChipLabel) : [muscleLabel(m)],
+  );
 }
 
 export const EQUIPMENT: readonly string[] = [

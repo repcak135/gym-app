@@ -11,6 +11,14 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.3',
+    date: '2026-11-25',
+    items: [
+      'Barki podzielone na przód, bok i tył: w filtrze „Mięśnie”, przy zamianie ćwiczenia (najpierw ta sama część barku), w seriach na mięsień (rozwiń „Barki”) i na sylwetce.',
+      'Przy własnym ćwiczeniu na barki możesz zaznaczyć, którą część ćwiczy.',
+    ],
+  },
+  {
     version: '0.9.2',
     date: '2026-11-25',
     items: [

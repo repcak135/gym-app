@@ -6,7 +6,7 @@ import extra from './exercises-extra.json';
 import akaData from './exercise-aka.json';
 import measureData from './exercise-measure.json';
 import type { Measure } from './types';
-import { classifyDelts } from './deltHeads';
+import { classifyDelts, deltHeadsOf, type DeltHead, type Delts } from './deltHeads';
 
 // 2: built-in extra exercises (machines, cables, Smith) and other names for matching the import.
 // 3: openGym catalogue text (AGPL-3.0): ~4200 more exercises, Polish names.
@@ -195,7 +195,9 @@ export function filterExercises(
         // Polish endings vary ("maszyna" / "maszynie"): long words match without their last two letters.
         if (!tokens.every((t) => haystack.includes(t.length > 5 ? t.slice(0, -2) : t))) return false;
       }
-      if (muscle != null) {
+      if (muscle != null && muscle.startsWith('shoulders:')) {
+        if (!deltHeadsOf(ex, 'any').includes(muscle.slice('shoulders:'.length) as DeltHead)) return false;
+      } else if (muscle != null) {
         if (
           !ex.primaryMuscles.includes(muscle) &&
           !ex.secondaryMuscles.includes(muscle)
@@ -265,7 +267,18 @@ export type CustomExerciseInput = {
   secondaryMuscles: string[];
   equipment: string | null;
   measure?: Measure;
+  /** Chosen deltoid heads (only meaningful when Barki is chosen); none → no `delts`. */
+  deltHeads?: DeltHead[];
 };
+
+/** `delts` for a custom exercise: heads go to primary when Barki is primary there, else to secondary. */
+export function customDelts(input: CustomExerciseInput): Delts | undefined {
+  const heads = input.deltHeads ?? [];
+  if (heads.length === 0) return undefined;
+  if (input.primaryMuscles.includes('shoulders')) return { primary: heads, secondary: [] };
+  if (input.secondaryMuscles.includes('shoulders')) return { primary: [], secondary: heads };
+  return undefined;
+}
 
 export async function createCustomExercise(
   input: CustomExerciseInput,
@@ -285,6 +298,7 @@ export async function createCustomExercise(
     images: [],
     custom: true,
     ...(input.measure && input.measure !== 'reps' ? { measure: input.measure } : {}),
+    ...(customDelts(input) ? { delts: customDelts(input) } : {}),
   };
 
   await db.exercises.put(exercise);
@@ -310,6 +324,9 @@ export async function updateCustomExercise(
   };
   if (input.measure && input.measure !== 'reps') updated.measure = input.measure;
   else delete updated.measure;
+  const delts = customDelts(input);
+  if (delts) updated.delts = delts;
+  else delete updated.delts;
 
   await db.exercises.put(updated);
 }

@@ -14,6 +14,7 @@ import {
   muscleLabel,
   equipmentLabel,
 } from '../data/exerciseLabels';
+import { DELT_LABEL, deltHeadsOf, type DeltHead } from '../data/deltHeads';
 import { MEASURE_OPTIONS } from '../data/measure';
 import type { Measure } from '../data/types';
 import './ExerciseFormPage.css';
@@ -29,6 +30,7 @@ export default function ExerciseFormPage() {
   const [secondaryMuscles, setSecondaryMuscles] = useState<string[]>([]);
   const [equipment, setEquipment] = useState<string | null>(null);
   const [measure, setMeasure] = useState<Measure>('reps');
+  const [deltHeads, setDeltHeads] = useState<DeltHead[]>([]);
   const [noteText, setNoteText] = useState('');
   const [error, setError] = useState<string | null>(null);
 
@@ -44,6 +46,7 @@ export default function ExerciseFormPage() {
         setSecondaryMuscles([...ex.secondaryMuscles]);
         setEquipment(ex.equipment);
         setMeasure(ex.measure ?? 'reps');
+        setDeltHeads(deltHeadsOf(ex, 'any'));
       }
       setNoteText(note?.text ?? '');
     });
@@ -64,7 +67,7 @@ export default function ExerciseFormPage() {
     e.preventDefault();
     setError(null);
     try {
-      const input = { name, primaryMuscles, secondaryMuscles, equipment, measure };
+      const input = { name, primaryMuscles, secondaryMuscles, equipment, measure, deltHeads };
       if (isEdit && exerciseId) {
         await updateCustomExercise(exerciseId, input);
         // save note too
@@ -149,6 +152,27 @@ export default function ExerciseFormPage() {
             ))}
           </div>
         </div>
+
+        {/* Deltoid heads (optional, only when Barki is chosen) */}
+        {(primaryMuscles.includes('shoulders') || secondaryMuscles.includes('shoulders')) && (
+          <fieldset className="form-field form-delts">
+            <legend className="form-label">Który fragment barków? (opcjonalnie)</legend>
+            <div className="form-chips">
+              {(['front', 'side', 'rear'] as DeltHead[]).map((h) => (
+                <label key={h} className="form-delt">
+                  <input
+                    type="checkbox"
+                    checked={deltHeads.includes(h)}
+                    onChange={() =>
+                      setDeltHeads(deltHeads.includes(h) ? deltHeads.filter((x) => x !== h) : [...deltHeads, h])
+                    }
+                  />
+                  {DELT_LABEL[h]}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        )}
 
         {/* Equipment (single select) */}
         <div className="form-field">

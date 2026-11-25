@@ -213,3 +213,8 @@
 }
 
 .confirm-sheet__btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.sheet__option--sub {
+  padding-left: calc(var(--space-5) + var(--space-5));
+  font-size: 0.95rem;
+}

@@ -1,10 +1,11 @@
 import { db } from './db';
 import { workoutDurationSec } from './history';
-import { bodyParts, MUSCLE_GROUPS, muscleGroup, type BodyPart, type MuscleGroup } from './muscleMap';
+import { bodyPartsOf, MUSCLE_GROUPS, muscleGroup, type BodyPart, type MuscleGroup } from './muscleMap';
 import { countedSets } from './records';
 import { weekStartOf } from './motivation';
 import { isFinished } from './workouts';
 import type { Workout, WorkoutSet } from './types';
+import { deltHeadsOf, type DeltHead, type Delts } from './deltHeads';
 
 export type Period = 'week' | 'month' | 'year' | 'all';
 
@@ -18,7 +19,13 @@ export interface PeriodRange {
 export interface StatsInput {
   workouts: Workout[];
   sets: WorkoutSet[];
-  muscles: Map<string, { primary: string[]; secondary: string[] }>;
+  muscles: Map<string, { primary: string[]; secondary: string[]; delts?: Delts }>;
+}
+
+export type ShoulderHeadKey = DeltHead | 'unknown';
+
+function emptyHeads(): Record<ShoulderHeadKey, number> {
+  return { front: 0, side: 0, rear: 0, unknown: 0 };
 }
 
 export interface PeriodStats {
@@ -29,6 +36,8 @@ export interface PeriodStats {
   avgSec?: number;
   workingSets: number;
   byGroup: { primary: Record<MuscleGroup, number>; secondary: Record<MuscleGroup, number> };
+  /** Barki split by deltoid head ('unknown' = shoulder sets of exercises without heads); same rules as `byGroup`. */
+  shoulderHeads: { primary: Record<ShoulderHeadKey, number>; secondary: Record<ShoulderHeadKey, number> };
   unmappedSets: number;
   byBody: Partial<Record<BodyPart, number>>;
 }
@@ -88,10 +97,21 @@ function distinctGroups(muscles: string[]): Set<MuscleGroup> {
   return out;
 }
 
-function distinctParts(muscles: string[]): Set<BodyPart> {
-  const out = new Set<BodyPart>();
-  for (const m of muscles) for (const p of bodyParts(m)) out.add(p);
-  return out;
+function distinctParts(muscles: string[], heads: DeltHead[] = []): Set<BodyPart> {
+  return new Set(bodyPartsOf(muscles, heads));
+}
+
+/** One set counted once per deltoid head of the role ('unknown' when shoulders is listed but no heads are known). */
+function countHeads(
+  into: Record<ShoulderHeadKey, number>,
+  muscles: string[],
+  delts: Delts | undefined,
+  role: 'primary' | 'secondary',
+) {
+  if (!muscles.includes('shoulders')) return;
+  const heads = deltHeadsOf({ delts }, role);
+  if (heads.length === 0) into.unknown++;
+  for (const h of heads) into[h]++;
 }
 
 export function computeStats(input: StatsInput, range: PeriodRange): PeriodStats {
@@ -113,6 +133,7 @@ export function computeStats(input: StatsInput, range: PeriodRange): PeriodStats
   const sets = countedSets(input.sets.filter((s) => ids.has(s.workoutId)));
   const primary = emptyGroups();
   const secondary = emptyGroups();
+  const heads = { primary: emptyHeads(), secondary: emptyHeads() };
   const byBody: Partial<Record<BodyPart, number>> = {};
   let unmapped = 0;
 
@@ -122,9 +143,11 @@ export function computeStats(input: StatsInput, range: PeriodRange): PeriodStats
     if (!m) continue;
     for (const g of distinctGroups(m.primary)) primary[g]++;
     for (const g of distinctGroups(m.secondary)) secondary[g]++;
-    const pParts = distinctParts(m.primary);
+    countHeads(heads.primary, m.primary, m.delts, 'primary');
+    countHeads(heads.secondary, m.secondary, m.delts, 'secondary');
+    const pParts = distinctParts(m.primary, deltHeadsOf({ delts: m.delts }, 'primary'));
     for (const p of pParts) byBody[p] = (byBody[p] ?? 0) + 1;
-    for (const p of distinctParts(m.secondary)) {
+    for (const p of distinctParts(m.secondary, deltHeadsOf({ delts: m.delts }, 'secondary'))) {
       if (!pParts.has(p)) byBody[p] = (byBody[p] ?? 0) + 0.5;
     }
   }
@@ -137,6 +160,7 @@ export function computeStats(input: StatsInput, range: PeriodRange): PeriodStats
     avgSec: timed > 0 ? Math.round(totalSec / timed) : undefined,
     workingSets: sets.length,
     byGroup: { primary, secondary },
+    shoulderHeads: heads,
     unmappedSets: unmapped,
     byBody,
   };
@@ -149,7 +173,7 @@ export function daysSinceTrained(input: StatsInput, now: number): Partial<Record
     const m = input.muscles.get(s.exerciseId);
     if (!m) continue;
     const at = s.completedAt as number;
-    for (const p of distinctParts(m.primary)) {
+    for (const p of distinctParts(m.primary, deltHeadsOf({ delts: m.delts }, 'primary'))) {
       if ((last.get(p) ?? -Infinity) < at) last.set(p, at);
     }
   }
@@ -193,7 +217,7 @@ export async function loadStatsInput(): Promise<StatsInput> {
     db.exercises.toArray(),
   ]);
   const muscles = new Map(
-    exercises.map((e) => [e.id, { primary: e.primaryMuscles, secondary: e.secondaryMuscles }] as const),
+    exercises.map((e) => [e.id, { primary: e.primaryMuscles, secondary: e.secondaryMuscles, delts: e.delts }] as const),
   );
   return { workouts, sets, muscles };
 }

@@ -172,6 +172,49 @@
   font-weight: 700;
 }
 
+li:has(> .legend__expand) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+li:has(> .legend__expand) > .legend__row {
+  flex: 1;
+  width: auto;
+  min-width: 0;
+}
+
+.legend__expand {
+  flex: none;
+  width: 44px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 0;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.legend__chev {
+  transition: transform 0.15s;
+}
+
+.legend__chev--open {
+  transform: rotate(180deg);
+}
+
+.legend--sub {
+  flex-basis: 100%;
+  padding-left: calc(var(--space-2) + 10px + var(--space-2));
+}
+
+.legend__row--sub {
+  cursor: default;
+  color: var(--text-muted);
+}
+
 .weekbars__svg {
   display: block;
   width: 100%;
