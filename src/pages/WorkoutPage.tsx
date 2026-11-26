@@ -526,6 +526,7 @@ export default function WorkoutPage() {
         workoutId={workout.id}
         restEndsAt={workout.restEndsAt}
         restTotalSec={workout.restTotalSec}
+        restEndedAt={workout.restEndedAt}
         preset={settings.restSoundPreset}
         ticks={settings.restTicks}
         vibration={settings.restVibration}

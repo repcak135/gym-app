@@ -190,14 +190,19 @@ test('koniec przerwy, gdy aplikacja była w tle: napis po powrocie; Pomiń nie p
   await page.clock.fastForward('00:09'); // dismisses itself
   await expect(page.getByRole('alert')).toHaveCount(0);
   await expect(page.getByRole('timer', { name: 'Przerwa' })).toHaveCount(0);
+  // the bar stays as "Koniec przerwy +m:ss" until the next set (0.9.12)
+  await expect(page.getByRole('status', { name: 'Koniec przerwy' })).toContainText(/\+3:\d\d/);
   await page.getByRole('link', { name: 'Wróć do treningu' }).click();
   await expect(page.getByRole('alert')).toHaveCount(0); // already announced, not again
+  await expect(page.getByRole('status', { name: 'Koniec przerwy' })).toBeVisible();
 
   // skipping the rest on purpose: no banner
   await panel(page, BENCH).getByRole('button', { name: 'Zalicz serię' }).click();
+  await expect(page.getByRole('status', { name: 'Koniec przerwy' })).toHaveCount(0); // a new set clears it
   await page.getByRole('timer', { name: 'Przerwa' }).getByRole('button', { name: 'Pomiń' }).click();
   await page.clock.fastForward('03:00');
   await expect(page.getByRole('alert')).toHaveCount(0);
+  await expect(page.getByRole('status', { name: 'Koniec przerwy' })).toHaveCount(0); // skipped: no bar
 });
 
 test('ustawienia: cisza i wibracja końca przerwy można wyłączyć', async ({ page }) => {

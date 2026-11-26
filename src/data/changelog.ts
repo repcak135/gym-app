@@ -11,6 +11,13 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.12',
+    date: '2026-11-26',
+    items: [
+      'Po końcu przerwy pasek na dole zostaje: „Koniec przerwy +0:45” na zielono — widać, ile minęło. Znika przy następnej serii albo po „Zamknij”.',
+    ],
+  },
+  {
     version: '0.9.11',
     date: '2026-11-26',
     items: [

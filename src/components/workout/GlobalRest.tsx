@@ -28,12 +28,13 @@ export default function GlobalRest() {
   const settings = data?.settings;
   return (
     <>
-      {workout && settings && workout.restEndsAt !== undefined && (
+      {workout && settings && (workout.restEndsAt !== undefined || workout.restEndedAt !== undefined) && (
         <div className="rest-global">
           <RestBar
             workoutId={workout.id}
             restEndsAt={workout.restEndsAt}
             restTotalSec={workout.restTotalSec}
+            restEndedAt={workout.restEndedAt}
             preset={settings.restSoundPreset}
             ticks={settings.restTicks}
             vibration={settings.restVibration}

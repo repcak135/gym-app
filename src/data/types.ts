@@ -97,6 +97,8 @@ export interface Workout {
   currentIndex?: number;
   restEndsAt?: number;
   restTotalSec?: number;
+  /** When the last rest ran out (not skipped): a "Koniec przerwy" bar stays until the next set or a dismiss. */
+  restEndedAt?: number;
 }
 
 export interface WorkoutSet {

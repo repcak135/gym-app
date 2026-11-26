@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useNow } from '../../hooks/useNow';
 import { formatClock, restRemainingSec } from '../../data/progression';
-import { extendRest, skipRest } from '../../data/workouts';
+import { endRest, extendRest, skipRest } from '../../data/workouts';
 import {
   cancelScheduled,
   playAlarmNow,
@@ -18,6 +18,8 @@ interface RestBarProps {
   workoutId: string;
   restEndsAt?: number;
   restTotalSec?: number;
+  /** The last rest ran out at this time: the bar stays as "Koniec przerwy" until the next set. */
+  restEndedAt?: number;
   preset: RestSoundPreset;
   /** Soft 3-2-1 ticks (only with a sound preset). */
   ticks: boolean;
@@ -30,6 +32,8 @@ interface RestBarProps {
   onOpen?: () => void;
 }
 
+/** The "Koniec przerwy" bar hides itself after this long without a new set. */
+const ENDED_BAR_MAX_SEC = 30 * 60;
 /** A rest that ended more than this long ago is "late": the banner says how long ago. */
 const LATE_MS = 3000;
 /**
@@ -39,11 +43,12 @@ const LATE_MS = 3000;
 const RETURN_ALERT_MS = 15 * 60 * 1000;
 
 /** Rest countdown from the stored end time, so it is right after the app was in the background. */
-export default function RestBar({ workoutId, restEndsAt, restTotalSec, preset, ticks, vibration, background = false, onEnd, onOpen }: RestBarProps) {
+export default function RestBar({ workoutId, restEndsAt, restTotalSec, restEndedAt, preset, ticks, vibration, background = false, onEnd, onOpen }: RestBarProps) {
   const sound = presetHasSound(preset);
   const vibrate = vibration || preset === 'vibrate';
   const tickOn = ticks && sound;
-  const now = useNow(250, restEndsAt !== undefined);
+  const endedShown = restEndsAt === undefined && restEndedAt !== undefined;
+  const now = useNow(250, restEndsAt !== undefined || endedShown);
   const remaining = restRemainingSec(restEndsAt, now);
   const handled = useRef<number | undefined>(undefined);
   const ticked = useRef<string>('');
@@ -105,9 +110,36 @@ export default function RestBar({ workoutId, restEndsAt, restTotalSec, preset, t
       if (vibrate) vibrateRestEnd();
     }
     onEnd(late ? lateMs : 0);
-    void skipRest(workoutId);
+    void endRest(workoutId);
   }, [remaining, restEndsAt, sound, preset, vibrate, onEnd, workoutId]);
 
+  // After the rest ran out: keep the bar, counting up, until the next set or "Zamknij" (max 30 min).
+  if (endedShown && restEndedAt !== undefined) {
+    const since = Math.max(0, Math.floor((now - restEndedAt) / 1000));
+    if (since > ENDED_BAR_MAX_SEC) return null;
+    const info = (
+      <>
+        <span className="rest-bar__label">Koniec przerwy</span>
+        <span className="rest-bar__time rest-bar__time--ended">+{formatClock(since)}</span>
+      </>
+    );
+    return (
+      <div className="rest-bar rest-bar--ended" role="status" aria-label="Koniec przerwy">
+        <div className="rest-bar__row">
+          {onOpen ? (
+            <button type="button" className="rest-bar__open" onClick={onOpen} aria-label="Wróć do treningu">
+              {info}
+            </button>
+          ) : (
+            info
+          )}
+          <button type="button" className="rest-bar__btn" onClick={() => void skipRest(workoutId)}>
+            Zamknij
+          </button>
+        </div>
+      </div>
+    );
+  }
   if (restEndsAt === undefined || remaining <= 0) return null;
 
   const total = Math.max(restTotalSec ?? remaining, remaining);

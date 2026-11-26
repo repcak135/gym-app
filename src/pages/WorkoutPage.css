@@ -432,6 +432,8 @@
   text-align: left;
   cursor: pointer;
 }
+.rest-bar--ended { border-color: var(--success); }
+.rest-bar__time--ended { color: var(--success); }
 .rest-bar__track { height: 4px; background: var(--border); }
 .rest-bar__fill { height: 100%; background: var(--accent); transform-origin: left; transition: transform 1s linear; } /* ticks every 1 s: glide between them */
 .rest-bar__row { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4); }

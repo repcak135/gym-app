@@ -403,6 +403,7 @@ export async function completeSet(setId: string, now = Date.now()): Promise<void
       );
       inRound = !nextInRound(w.exercises, remaining, index).endOfRound;
     }
+    w.restEndedAt = undefined;
     if (inRound) {
       w.restEndsAt = undefined;
       w.restTotalSec = undefined;
@@ -436,6 +437,16 @@ export async function skipRest(workoutId: string): Promise<void> {
   await mutateWorkout(workoutId, (w) => {
     w.restEndsAt = undefined;
     w.restTotalSec = undefined;
+    w.restEndedAt = undefined;
+  });
+}
+
+/** The rest ran out on its own: clear it but remember when, for the "Koniec przerwy" bar. */
+export async function endRest(workoutId: string): Promise<void> {
+  await mutateWorkout(workoutId, (w) => {
+    if (w.restEndsAt !== undefined) w.restEndedAt = w.restEndsAt;
+    w.restEndsAt = undefined;
+    w.restTotalSec = undefined;
   });
 }
 
@@ -444,6 +455,7 @@ export async function extendRest(workoutId: string, sec: number, now = Date.now(
     const base = Math.max(w.restEndsAt ?? now, now);
     w.restEndsAt = base + sec * 1000;
     w.restTotalSec = (w.restTotalSec ?? 0) + sec;
+    w.restEndedAt = undefined;
   });
 }
 
