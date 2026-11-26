@@ -93,7 +93,9 @@ Lazy-loaded: ExcelJS (report), `qr-scanner`, and the openGym catalogue chunk. Th
 
 ## State (update on every release)
 
-- **Current version: 0.9.9** (2026-11-26), catalogue `EXERCISE_DB_VERSION` 8.
+- **Current version: 0.9.14** (2026-11-26), catalogue `EXERCISE_DB_VERSION` 8.
+- **0.9.10–0.9.14 (owner's gym feedback):** sets start as last time, the progression target is only a suggestion with a "Zastosuj" button (never auto-applied); iPhone audio uses the 'ambient' session and no audio at all when the preset is silent (it paused Spotify), 'playback' only with "Graj przy wyciszonym iPhonie"; `GlobalRest` shows the rest bar on every screen and a green "Koniec przerwy +m:ss" bar (`restEndedAt`) until the next set; `CrashScreen` + an index.html fallback replace blank screens; a 0-wide pager while hidden saved `currentIndex = NaN` and crashed the workout (guarded in 3 places).
+- **Lesson:** iPhone web apps cannot vibrate and cannot show a lock-screen timer (owner declined the Shortcuts workaround: too many taps).
 - **Exercise names (0.9.9):** a built-in exercise's `name` is Polish when one exists; the English original is in `nameEn` (shown smaller underneath, searchable, matched by the CSV import). Swapped in `fromDb` after delts/measure/aka, which key on the English name. e2e specs use the Polish names.
 - **Done:** plans, live workout, history, stats + body map, body measurements, backup/restore (including the theme), plan and exercise sharing (link/QR), Excel report, Gym Day CSV import, motivation (weekly goal, streak, badges, yearly calendar), per-set progression, supersets (one rest per round, set on the last item), timed and distance exercises, warm-up generator ("Dobierz rozgrzewkę"), templates, shoulder heads, colour themes, gym slang search, consistency audits, gender-neutral wording.
 - **Polish content:** every catalogue exercise has a Polish name and Polish instructions. Tips: 482 exercises (the popular strength ones). Olympic lifts use Polish terms: zarzut = clean, wybicie = jerk, rwanie = snatch, podrzut = clean and jerk.
