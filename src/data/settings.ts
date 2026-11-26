@@ -16,6 +16,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   restTicks: true,
   restVibration: true,
   restBackgroundAudio: false,
+  restSoundBreaksSilent: false,
   showRir: false,
   askDifficultyAfterSet: false,
   afterExerciseDone: 'next',

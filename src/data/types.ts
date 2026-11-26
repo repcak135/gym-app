@@ -164,6 +164,8 @@ export interface AppSettings {
   restVibration: boolean;
   /** Android, experimental: play the rest as one audio file so the end sound plays with the screen off. */
   restBackgroundAudio?: boolean;
+  /** iPhone: end-of-rest sound also with the ring/silent switch on — this pauses music from other apps. */
+  restSoundBreaksSilent?: boolean;
   /** Advanced: show the RIR picker on each set. */
   showRir: boolean;
   /** With showRir on: open the difficulty sheet right after "Zalicz serię". */

@@ -11,6 +11,15 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.10',
+    date: '2026-11-26',
+    items: [
+      'Trening nic nie zmienia sam: na start każda seria ma dokładnie to samo, co ostatnio.',
+      'Podpowiedź progresji jest tylko propozycją — przycisk „Zastosuj” obok niej wpisze ją do serii, jeśli chcesz.',
+      'iPhone: aplikacja nie zatrzymuje już muzyki (np. Spotify) — ani po powrocie do niej, ani na koniec przerwy. Dźwięk na moment ją ścisza. Kto woli dźwięk mimo wyciszonego telefonu: Ustawienia › Koniec przerwy › „Graj przy wyciszonym iPhonie” (wtedy muzyka się zatrzyma).',
+    ],
+  },
+  {
     version: '0.9.9',
     date: '2026-11-26',
     items: [

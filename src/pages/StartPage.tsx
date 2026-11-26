@@ -37,7 +37,7 @@ function ActiveWorkoutCard({ workout }: { workout: Workout }) {
     <section className="start-card start-card--live" aria-label="Trwa trening">
       <p className="start-label">Trwa trening · {formatClock((now - workout.startedAt) / 1000)}</p>
       <p className="start-day">{workout.name}</p>
-      <Link to="/trening" className="start-btn" onClick={unlockAudio}>Wróć do treningu</Link>
+      <Link to="/trening" className="start-btn" onClick={() => unlockAudio()}>Wróć do treningu</Link>
     </section>
   );
 }

@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { db } from './db';
 import { updateSettings } from './settings';
+import { setTargets, timeTargets } from './setTargets';
 import { createPlan, addDay, addItems, updateItem, getLastPlanDayId } from './plans';
 import {
   getActiveWorkout,
@@ -77,12 +78,12 @@ describe('startWorkout', () => {
     await doWorkout(plan.id, day.id, 35, 10, 1_000_000);
     const w = await startWorkout({ planId: plan.id, dayId: day.id });
     const bench = (await getWorkoutSets(w.id)).filter((s) => s.exerciseId === 'bench' && !s.warmup);
-    // Per-set targets: 10 reps (below 12) -> +1 rep at the same weight.
-    expect(bench.map((s) => [s.weight, s.reps])).toEqual([[35, 11], [35, 11], [35, 11]]);
+    // Prefill repeats exactly what was done last time; the target is only a hint in the editor.
+    expect(bench.map((s) => [s.weight, s.reps])).toEqual([[35, 10], [35, 10], [35, 10]]);
     expect(await getLastPlanDayId(plan.id)).toBe(day.id);
   });
 
-  it('prefills a target per set: top of the range moves up, other sets add a rep', async () => {
+  it('prefills each set with the last-time weight and reps; the target is computed separately', async () => {
     const { plan, day } = await planDay();
     await updateItem(plan.id, day.id, 0, { warmupSets: 0, sets: 2 });
     const first = await startWorkout({ planId: plan.id, dayId: day.id });
@@ -95,7 +96,10 @@ describe('startWorkout', () => {
     await finishWorkout(first.id, 1_003_000);
     const next = await startWorkout({ planId: plan.id, dayId: day.id });
     const bench = (await getWorkoutSets(next.id)).filter((s) => s.exerciseId === 'bench' && !s.warmup);
-    expect(bench.map((s) => [s.weight, s.reps])).toEqual([[32.5, 8], [30, 11]]);
+    expect(bench.map((s) => [s.weight, s.reps])).toEqual([[30, 12], [30, 10]]);
+    // The progression target (shown as a hint + "Zastosuj") is still per set.
+    const t = setTargets({ lastWorking: [{ weight: 30, reps: 12 }, { weight: 30, reps: 10 }], count: 2, repsMin: 8, repsMax: 12, step: 2.5, effort: 'close' });
+    expect(t.map((x) => [x.weight, x.reps])).toEqual([[32.5, 8], [30, 11]]);
   });
 });
 
@@ -108,29 +112,35 @@ describe('rep range and progression prefill', () => {
     return { plan, day };
   }
 
-  it('heavy lift 6–8: range comes from the plan item; all at 8 → next prefilled +2,5 kg × 6', async () => {
+  it('heavy lift 6–8: range comes from the plan item; prefill repeats 100 × 8, target is +2,5 kg × 6', async () => {
     const { plan, day } = await dayWithRange(6, 8);
     await doWorkout(plan.id, day.id, 100, 8, 1_000_000);
     const w = await startWorkout({ planId: plan.id, dayId: day.id });
     expect(w.exercises?.[0]).toMatchObject({ repsMin: 6, repsMax: 8 });
     const sets = await getWorkoutSets(w.id);
-    expect(sets.map((s) => [s.weight, s.reps])).toEqual([[102.5, 6], [102.5, 6], [102.5, 6]]);
+    expect(sets.map((s) => [s.weight, s.reps])).toEqual([[100, 8], [100, 8], [100, 8]]);
+    const t = setTargets({ lastWorking: [{ weight: 100, reps: 8 }], count: 1, repsMin: 6, repsMax: 8, step: 2.5, effort: 'close' });
+    expect([t[0].weight, t[0].reps]).toEqual([102.5, 6]);
   });
 
-  it('isolation 10–12: 10 reps is not the top → same weight, +1 rep per set', async () => {
+  it('isolation 10–12: prefill repeats 20 × 10; target is the same weight, +1 rep', async () => {
     const { plan, day } = await dayWithRange(10, 12);
     await doWorkout(plan.id, day.id, 20, 10, 1_000_000);
     const w = await startWorkout({ planId: plan.id, dayId: day.id });
     expect(w.exercises?.[0]).toMatchObject({ repsMin: 10, repsMax: 12 });
-    expect((await getWorkoutSets(w.id)).map((s) => [s.weight, s.reps])).toEqual([[20, 11], [20, 11], [20, 11]]);
+    expect((await getWorkoutSets(w.id)).map((s) => [s.weight, s.reps])).toEqual([[20, 10], [20, 10], [20, 10]]);
+    const t = setTargets({ lastWorking: [{ weight: 20, reps: 10 }], count: 1, repsMin: 10, repsMax: 12, step: 2.5, effort: 'close' });
+    expect([t[0].weight, t[0].reps]).toEqual([20, 11]);
   });
 
-  it('exercise step overrides the settings step', async () => {
+  it('exercise weightStep is used for the target; prefill stays at last time', async () => {
     const { plan, day } = await dayWithRange(6, 8);
     await db.exercises.put({ id: 'lift', name: 'Lift', primaryMuscles: [], secondaryMuscles: [], equipment: null, category: 'strength', instructions: [], images: [], custom: true, weightStep: 1 });
     await doWorkout(plan.id, day.id, 40, 8, 1_000_000);
     const w = await startWorkout({ planId: plan.id, dayId: day.id });
-    expect((await getWorkoutSets(w.id))[0]).toMatchObject({ weight: 41, reps: 6 });
+    expect((await getWorkoutSets(w.id))[0]).toMatchObject({ weight: 40, reps: 8 });
+    const t = setTargets({ lastWorking: [{ weight: 40, reps: 8 }], count: 1, repsMin: 6, repsMax: 8, step: 1, effort: 'close' });
+    expect([t[0].weight, t[0].reps]).toEqual([41, 6]);
   });
 
   it('outside a plan (empty workout) the Ustawienia default range is used', async () => {
@@ -383,7 +393,7 @@ describe('finish and summary', () => {
 });
 
 describe('timed sets', () => {
-  it('prefills a hold from targetSec, then last time +5 s, and updateSet stores duration', async () => {
+  it('prefills a hold from targetSec, then the last-time duration (target +5 s is a hint), and updateSet stores duration', async () => {
     await db.exercises.put({ id: 'plank-x', name: 'Plank X', measure: 'time' } as never);
     const plan = await createPlan('T');
     const day = await addDay(plan.id, 'D');
@@ -403,9 +413,10 @@ describe('timed sets', () => {
     expect(await finishWorkout(w.id)).toBe('finished');
     const next = await startWorkout({ planId: plan.id, dayId: day.id });
     const nextSets = await getWorkoutSets(next.id);
-    expect(nextSets.map((s) => s.durationSec)).toEqual([45, 5]);
+    expect(nextSets.map((s) => s.durationSec)).toEqual([40, 45]);
+    expect(timeTargets({ lastDurations: [40, 0], count: 2, targetSec: 45 }).map((x) => x.durationSec)).toEqual([45, 5]);
     await addSet(next.id, 0);
-    expect((await getWorkoutSets(next.id)).at(-1)?.durationSec).toBe(5);
+    expect((await getWorkoutSets(next.id)).at(-1)?.durationSec).toBeDefined();
     expect((await summarizeWorkout(w.id)).sets).toBe(2);
   });
 });

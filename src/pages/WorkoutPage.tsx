@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router';
 import { Check, ChevronLeft, GripVertical, ListChecks, MoreHorizontal } from 'lucide-react';
 import { db } from '../data/db';
 import { getSettings } from '../data/settings';
+import { presetHasSound, setBreakSilent, setSoundWanted } from '../audio/beep';
 import { formatClock } from '../data/progression';
 import { isStagnating } from '../data/setTargets';
 import {
@@ -69,6 +70,8 @@ export default function WorkoutPage() {
       db.notes.bulkGet(items.map((i) => i.exerciseId)),
       getSettings(),
     ]);
+    setBreakSilent(!!settings.restSoundBreaksSilent);
+    setSoundWanted(presetHasSound(settings.restSoundPreset));
     return { workout, items, sets, exercises, notes, settings };
   });
 
@@ -359,7 +362,7 @@ export default function WorkoutPage() {
 
   return (
     // Any tap unlocks audio (needed after the app was reopened mid-workout).
-    <div className="workout" onPointerDown={unlockAudio}>
+    <div className="workout" onPointerDown={() => unlockAudio()}>
       <header className="workout-bar">
         <Link to="/" className="workout-bar__icon" aria-label="Wróć na Start (trening trwa dalej)">
           <ChevronLeft size={26} aria-hidden="true" />

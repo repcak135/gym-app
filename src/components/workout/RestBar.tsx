@@ -99,7 +99,7 @@ export default function RestBar({ workoutId, restEndsAt, restTotalSec, preset, t
     } else if (lateMs <= RETURN_ALERT_MS && !backgroundCovers(restEndsAt)) {
       // Back in the app after the rest ended (the scheduled sound may not have played): once now.
       cancelScheduled();
-      if (sound) void playAlarmNow(preset);
+      if (sound) void playAlarmNow(preset, { missed: true });
       if (vibrate) vibrateRestEnd();
     }
     onEnd(late ? lateMs : 0);

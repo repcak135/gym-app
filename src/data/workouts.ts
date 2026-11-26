@@ -1,7 +1,7 @@
 import { db } from './db';
 import { getSettings } from './settings';
 import { buildPrefill, epley1RM } from './progression';
-import { deloadWeight, setTargets, timeTargets } from './setTargets';
+import { deloadWeight } from './setTargets';
 import { measureOf } from './measure';
 import { groupAt, linkItems, moveGrouped, nextInRound, normalizeGroups, removeGrouped, unlinkItems } from './supersets';
 import type { Workout, WorkoutExercise, WorkoutSet } from './types';
@@ -54,7 +54,7 @@ export async function getLastSets(exerciseId: string, excludeWorkoutId?: string)
 
 async function prefilledSets(workoutId: string, ex: WorkoutExercise, exerciseOrder: number): Promise<WorkoutSet[]> {
   const last = await getLastSets(ex.exerciseId, workoutId);
-  const [exercise, settings] = await Promise.all([db.exercises.get(ex.exerciseId), getSettings()]);
+  const exercise = await db.exercises.get(ex.exerciseId);
   const measure = measureOf(exercise);
   const mk = (i: number, v: Partial<WorkoutSet> & { weight: number; reps: number; warmup: boolean }): WorkoutSet => ({
     id: crypto.randomUUID(),
@@ -69,12 +69,11 @@ async function prefilledSets(workoutId: string, ex: WorkoutExercise, exerciseOrd
     const lastSet = lastWork.at(-1);
     const out: WorkoutSet[] = [];
     if (measure === 'time') {
-      const t = timeTargets({
-        lastDurations: lastWork.map((s) => s.durationSec ?? 0),
-        count: ex.sets,
-        targetSec: ex.targetSec,
-      });
-      t.forEach((x, i) => out.push(mk(i, { weight: (lastWork[i] ?? lastSet)?.weight ?? 0, reps: 0, warmup: false, durationSec: x.durationSec })));
+      // Same as last time (or the plan's target); the progression hint is only a suggestion in the editor.
+      for (let i = 0; i < ex.sets; i++) {
+        const from = lastWork[i] ?? lastSet;
+        out.push(mk(i, { weight: from?.weight ?? 0, reps: 0, warmup: false, durationSec: from?.durationSec || ex.targetSec || 30 }));
+      }
     } else {
       for (let i = 0; i < ex.sets; i++) {
         const from = lastWork[i] ?? lastSet;
@@ -92,25 +91,9 @@ async function prefilledSets(workoutId: string, ex: WorkoutExercise, exerciseOrd
     }
     return out;
   }
-  let values = buildPrefill(last, ex.warmupSets, ex.sets, ex.repsMin);
-  // Working sets get a target per set (see setTargets); warm-ups stay as last time.
-  const step = exercise?.weightStep ?? settings.defaultWeightStep;
-  const targets = setTargets({
-    lastWorking: last.filter((s) => !s.warmup),
-    count: ex.sets,
-    repsMin: ex.repsMin,
-    repsMax: ex.repsMax,
-    step,
-    effort: settings.effortTarget,
-  });
-  if (targets.length > 0) {
-    let w = 0;
-    values = values.map((v) => {
-      if (v.warmup) return v;
-      const t = targets[w++];
-      return t ? { ...v, weight: t.weight, reps: t.reps } : v;
-    });
-  }
+  // Exactly what was done last time. The per-set target (setTargets) is only a suggestion with a
+  // "Zastosuj" button in the set editor — the owner wants nothing changed automatically (0.9.10).
+  const values = buildPrefill(last, ex.warmupSets, ex.sets, ex.repsMin);
   return values.map((v, i) => mk(i, v));
 }
 

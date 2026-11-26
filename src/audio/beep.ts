@@ -3,8 +3,10 @@
 // iOS: audio only plays from a context unlocked by a tap, so unlockAudio() runs on
 // "Rozpocznij trening" / "Zalicz serię". The ring/silent switch mutes web audio unless
 // the page's audio session is 'playback' (Safari 17+, navigator.audioSession). 'playback'
-// also pauses other apps' music, so it is switched on only for the ~1 s alarm and set
-// back to 'auto' right after. 'transient' would duck music but still obey the switch.
+// also pauses other apps' music (Spotify does not resume), so it is used only when the owner
+// turns on "Graj przy wyciszonym iPhonie" (setBreakSilent). Default since 0.9.10: 'transient',
+// which ducks the music for a moment and lets it carry on, but obeys the silent switch.
+// A sound missed while the app was in the background is always played without 'playback'.
 //
 // Elsewhere (Android, desktop): no audio session API; the alarm is scheduled ahead on
 // the audio clock so it plays on time even if JS timers are throttled.
@@ -18,6 +20,18 @@ let ctx: AudioContext | null = null;
 let unlocked = false;
 let scheduled: OscillatorNode[] = [];
 let restoreTimer: ReturnType<typeof setTimeout> | undefined;
+let breakSilent = false;
+let soundWanted = true;
+
+/** From settings: is any end-of-rest sound on? With "Wibracja"/"Cisza" the app never touches audio. */
+export function setSoundWanted(v: boolean): void {
+  soundWanted = v;
+}
+
+/** From settings: play through the silent switch (pauses other apps' music). */
+export function setBreakSilent(v: boolean): void {
+  breakSilent = v;
+}
 
 function session() {
   return (navigator as NavigatorWithSession).audioSession;
@@ -39,7 +53,11 @@ function setSessionType(type: AudioSessionType): void {
 }
 
 /** Call from a tap. Creates/resumes the context and plays a silent buffer (iOS unlock). */
-export function unlockAudio(): void {
+export function unlockAudio(force = false): void {
+  // No sound chosen: never start audio — on iPhone that alone pauses Spotify.
+  if (!soundWanted && !force) return;
+  // 'ambient' mixes with other apps' music; the alarm switches the session only for its ~1 s.
+  if (!ctx) setSessionType('ambient');
   try {
     const Ctor = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
     if (!Ctor) return;
@@ -60,6 +78,12 @@ export function unlockAudio(): void {
 if (typeof document !== 'undefined') {
   // iOS suspends the context in the background; try to bring it back on return.
   document.addEventListener('visibilitychange', () => {
+    // Never come back (or leave) holding 'playback': that would stop other apps' music.
+    if (restoreTimer) {
+      clearTimeout(restoreTimer); // a timer frozen in the background must not keep 'playback'
+      restoreTimer = undefined;
+    }
+    setSessionType('ambient');
     if (document.visibilityState === 'visible' && ctx && ctx.state !== 'running') void ctx.resume().catch(() => {});
   });
 }
@@ -188,14 +212,14 @@ export function playTick(): void {
 const RESTORE_MS = 2300;
 
 /** Plays the preset now. On iOS through the silent switch, then hands audio back to other apps. */
-async function playNow(preset: RestSoundPreset, live: boolean): Promise<void> {
+async function playNow(preset: RestSoundPreset, live: boolean, mayInterrupt = true): Promise<void> {
   if (!ctx || !presetHasSound(preset)) return;
   if (restoreTimer) clearTimeout(restoreTimer);
   try {
     if (live) {
       // The category change takes effect when the context (re)starts.
       await ctx.suspend().catch(() => {});
-      setSessionType('playback');
+      setSessionType(breakSilent && mayInterrupt ? 'playback' : 'transient');
     }
     await ctx.resume().catch(() => {});
     alarmAt(ctx.currentTime + 0.05, preset);
@@ -205,21 +229,22 @@ async function playNow(preset: RestSoundPreset, live: boolean): Promise<void> {
     if (live) {
       restoreTimer = setTimeout(() => {
         restoreTimer = undefined;
-        setSessionType('auto');
+        setSessionType('ambient');
       }, RESTORE_MS);
     }
   }
 }
 
 /** iOS: play the alarm now, through the silent switch, then hand audio back to other apps. */
-export async function playAlarmNow(preset: RestSoundPreset): Promise<void> {
-  await playNow(preset, true);
+export async function playAlarmNow(preset: RestSoundPreset, opts: { missed?: boolean } = {}): Promise<void> {
+  // A missed alarm on return to the app never stops the music: the screen is in front of you anyway.
+  await playNow(preset, true, !opts.missed);
 }
 
 /** Settings "Posłuchaj": from a tap, play the preset now. */
 export async function previewSound(preset: RestSoundPreset): Promise<void> {
   try {
-    unlockAudio();
+    unlockAudio(true); // "Posłuchaj" is an explicit tap, even while the chosen preset is silent
     await playNow(preset, playsLive());
   } catch {
     // audio must never break the app

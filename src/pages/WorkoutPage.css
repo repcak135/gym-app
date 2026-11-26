@@ -185,7 +185,21 @@
   background: var(--surface);
 }
 .ex-panel__stagnation p { margin: 0; font-size: 0.9rem; overflow-wrap: anywhere; }
-.set-editor__reasonrow { display: flex; align-items: center; gap: var(--space-2); }
+.set-editor__reasonrow { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.set-editor__apply {
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--accent);
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+}
 .set-editor__reason { margin: 0; flex: 1; min-width: 0; font-size: 0.9rem; font-weight: 600; color: var(--accent); overflow-wrap: anywhere; }
 .set-editor__help {
   flex-shrink: 0;

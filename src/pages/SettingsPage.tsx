@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Link, useNavigate } from 'react-router';
 import { ArrowLeft, Calculator, ChevronRight, Smartphone, Sparkles, X } from 'lucide-react';
@@ -7,7 +7,7 @@ import WhatsNewSheet from '../components/WhatsNewSheet';
 import InstallGuideSheet from '../components/InstallGuide';
 import { CHANGELOG } from '../data/changelog';
 import { APP_VERSION } from '../version';
-import { REST_SOUND_PRESETS, presetHasSound, previewSound } from '../audio/beep';
+import { REST_SOUND_PRESETS, presetHasSound, previewSound, setBreakSilent, setSoundWanted } from '../audio/beep';
 import { isAndroid, isIOS } from '../audio/backgroundRest';
 import { parseWeight } from '../data/progression';
 
@@ -39,6 +39,12 @@ type NumKey = Exclude<{
 export default function SettingsPage() {
   const navigate = useNavigate();
   const settings = useLiveQuery(() => getSettings(), []);
+  useEffect(() => {
+    if (settings) {
+      setBreakSilent(!!settings.restSoundBreaksSilent);
+      setSoundWanted(presetHasSound(settings.restSoundPreset));
+    }
+  }, [settings]);
   const [calcOpen, setCalcOpen] = useState(false);
   const [newsOpen, setNewsOpen] = useState(false);
   const [installOpen, setInstallOpen] = useState(false);
@@ -208,6 +214,24 @@ export default function SettingsPage() {
             disabled={!presetHasSound(settings.restSoundPreset)}
             onChange={(v) => void updateSettings({ restBackgroundAudio: v })}
           />
+        )}
+        {isIOS() && (
+          <ToggleRow
+            label="Graj przy wyciszonym iPhonie"
+            checked={!!settings.restSoundBreaksSilent}
+            disabled={!presetHasSound(settings.restSoundPreset)}
+            onChange={(v) => {
+              setBreakSilent(v);
+              void updateSettings({ restSoundBreaksSilent: v });
+            }}
+          />
+        )}
+        {isIOS() && (
+          <p className="settings-group__hint">
+            {settings.restSoundBreaksSilent
+              ? 'Dźwięk zagra też z wyciszonym telefonem, ale zatrzyma muzykę z innych aplikacji (np. Spotify) — trzeba ją wznowić ręcznie.'
+              : 'Muzyka z innych aplikacji gra dalej (na moment się ścisza). Gdy telefon jest wyciszony przełącznikiem, dźwięku nie będzie — koniec przerwy widać na ekranie.'}
+          </p>
         )}
         <RestLockNote background={!!settings.restBackgroundAudio} />
       </section>

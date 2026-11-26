@@ -35,7 +35,7 @@ export default function ProgressionHelpSheet({ onClose }: { onClose: () => void 
             za lekko — możesz dorzucić więcej; za ciężko — powtórz to samo.
           </p>
           <p>Gdy przez 3 treningi nic nie rośnie, zobaczysz propozycję, żeby zejść o ok. 10% i zbudować się od nowa.</p>
-          <p>Podpowiedź to tylko propozycja — zawsze możesz wpisać swoje liczby.</p>
+          <p>Na start trening wpisuje to samo, co ostatnio. Podpowiedź to tylko propozycja — przycisk „Zastosuj” wpisze ją do serii, a możesz też wpisać własne liczby.</p>
         </div>
       </div>
     </div>

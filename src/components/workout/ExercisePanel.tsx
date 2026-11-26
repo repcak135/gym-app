@@ -239,6 +239,22 @@ export default function ExercisePanel({
             ? 'Jak ostatnio'
             : undefined
       : undefined;
+  // The hint's values, offered with a "Zastosuj" button — never written into the set on its own.
+  const suggestion: { label: string; patch: Partial<WorkoutSet> } | null = (() => {
+    if (!reason || !selected) return null;
+    if (measure === 'reps') {
+      const t = targets[selectedWorkingIndex];
+      if (!t || (t.weight === selected.weight && t.reps === selected.reps)) return null;
+      const kg = t.weight > 0 ? `${formatKg(t.weight)} kg × ` : '';
+      return { label: `${kg}${t.reps}`, patch: { weight: t.weight, reps: t.reps } };
+    }
+    if (measure === 'time') {
+      const t = timeT[selectedWorkingIndex];
+      if (!t || !t.text || t.durationSec === selected.durationSec) return null;
+      return { label: formatDuration(t.durationSec), patch: { durationSec: t.durationSec } };
+    }
+    return null;
+  })();
   const firstWork = workingSets[0]?.weight ?? 0;
   const isBarbell = exercise?.equipment === 'barbell' || exercise?.equipment === 'e-z curl bar';
   const ramp = warmupRamp({
@@ -321,6 +337,15 @@ export default function ExercisePanel({
           {reason && (
             <div className="set-editor__reasonrow">
               <p className="set-editor__reason">{reason}</p>
+              {suggestion && (
+                <button
+                  type="button"
+                  className="set-editor__apply"
+                  onClick={() => void updateSet(selected.id, suggestion.patch)}
+                >
+                  Zastosuj {suggestion.label}
+                </button>
+              )}
               <button
                 type="button"
                 className="set-editor__help"
