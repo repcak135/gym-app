@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { HashRouter, Routes, Route, useLocation, useNavigate } from 'react-router';
 import BottomNav from './components/BottomNav';
+import GlobalRest from './components/workout/GlobalRest';
 import UndoToast from './components/UndoToast';
 import KeyboardInset from './components/KeyboardInset';
 import { WhatsNewOnLaunch } from './components/WhatsNewSheet';
@@ -128,6 +129,7 @@ export default function App() {
       </main>
       <UndoToast />
       <WhatsNewOnLaunch />
+      <GlobalRest />
       <BottomNav />
     </HashRouter>
   );

@@ -181,14 +181,17 @@ test('koniec przerwy, gdy aplikacja była w tle: napis po powrocie; Pomiń nie p
   await panel(page, BENCH).getByRole('button', { name: 'Zalicz serię' }).click();
   await expect(page.getByRole('timer', { name: 'Przerwa' })).toBeVisible();
 
-  // leave the workout screen (like closing the app), let the rest run out, come back
+  // leave the workout screen: the rest timer follows on Start (0.9.11), its end is announced there
   await page.getByRole('link', { name: /Wróć na Start/ }).click();
+  await expect(page.getByRole('timer', { name: 'Przerwa' })).toBeVisible();
   await page.clock.fastForward('05:00');
-  await page.getByRole('link', { name: 'Wróć do treningu' }).click();
   await expect(page.getByRole('alert')).toContainText('Koniec przerwy!');
   await expect(page.getByRole('alert')).toContainText(/Przerwa skończyła się 3:0\d temu/);
   await page.clock.fastForward('00:09'); // dismisses itself
   await expect(page.getByRole('alert')).toHaveCount(0);
+  await expect(page.getByRole('timer', { name: 'Przerwa' })).toHaveCount(0);
+  await page.getByRole('link', { name: 'Wróć do treningu' }).click();
+  await expect(page.getByRole('alert')).toHaveCount(0); // already announced, not again
 
   // skipping the rest on purpose: no banner
   await panel(page, BENCH).getByRole('button', { name: 'Zalicz serię' }).click();

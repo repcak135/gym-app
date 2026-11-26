@@ -26,6 +26,8 @@ interface RestBarProps {
   background?: boolean;
   /** Rest is over. `lateMs` > 0: it ended that long ago, while the app was hidden or closed. */
   onEnd: (lateMs: number) => void;
+  /** Shown outside the workout screen: tapping the label/time opens the workout. */
+  onOpen?: () => void;
 }
 
 /** A rest that ended more than this long ago is "late": the banner says how long ago. */
@@ -37,7 +39,7 @@ const LATE_MS = 3000;
 const RETURN_ALERT_MS = 15 * 60 * 1000;
 
 /** Rest countdown from the stored end time, so it is right after the app was in the background. */
-export default function RestBar({ workoutId, restEndsAt, restTotalSec, preset, ticks, vibration, background = false, onEnd }: RestBarProps) {
+export default function RestBar({ workoutId, restEndsAt, restTotalSec, preset, ticks, vibration, background = false, onEnd, onOpen }: RestBarProps) {
   const sound = presetHasSound(preset);
   const vibrate = vibration || preset === 'vibrate';
   const tickOn = ticks && sound;
@@ -117,8 +119,17 @@ export default function RestBar({ workoutId, restEndsAt, restTotalSec, preset, t
         <div className="rest-bar__fill" style={{ transform: `scaleX(${progress})` }} />
       </div>
       <div className="rest-bar__row">
-        <span className="rest-bar__label">Przerwa</span>
-        <span className="rest-bar__time">{formatClock(remaining)}</span>
+        {onOpen ? (
+          <button type="button" className="rest-bar__open" onClick={onOpen} aria-label="Wróć do treningu">
+            <span className="rest-bar__label">Przerwa</span>
+            <span className="rest-bar__time">{formatClock(remaining)}</span>
+          </button>
+        ) : (
+          <>
+            <span className="rest-bar__label">Przerwa</span>
+            <span className="rest-bar__time">{formatClock(remaining)}</span>
+          </>
+        )}
         <button type="button" className="rest-bar__btn" onClick={() => void extendRest(workoutId, 15)}>
           +15 s
         </button>

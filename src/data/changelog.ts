@@ -11,6 +11,14 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.11',
+    date: '2026-11-26',
+    items: [
+      'Przerwę widać na każdym ekranie — np. w Statystykach czy Historii pasek z czasem jest nad dolnym menu. Dotknij czasu, żeby wrócić do treningu.',
+      'Dźwięk i „Koniec przerwy!” działają też wtedy, gdy nie jesteś na ekranie treningu.',
+    ],
+  },
+  {
     version: '0.9.10',
     date: '2026-11-26',
     items: [
