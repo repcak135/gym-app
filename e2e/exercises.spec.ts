@@ -1,4 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
+/** Row link by its Polish name (the accessible name also holds the English line underneath). */
+const rowLink = (page: Page, pl: string) =>
+  page.getByRole('link').filter({ has: page.getByText(pl, { exact: true }) });
+
 
 const IMAGE_BASE =
   'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/';
@@ -17,8 +21,8 @@ test('wyszukiwanie zawęża listę', async ({ page }) => {
 
   await page.getByPlaceholder('Szukaj ćwiczenia').fill('barbell squat');
 
-  await expect(page.getByRole('link', { name: 'Barbell Squat', exact: true })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Dumbbell Bicep Curl', exact: true })).toHaveCount(0);
+  await expect(rowLink(page, 'Przysiad ze sztangą')).toBeVisible();
+  await expect(rowLink(page, 'Uginanie ramion z hantlami')).toHaveCount(0);
   await expect(page.getByText('4731 ćwiczeń')).toHaveCount(0);
 });
 
@@ -44,22 +48,22 @@ test('filtr Mięśnie i Sprzęt', async ({ page }) => {
     .poll(async () => (await metas.allTextContents()).every((t) => t.includes('Maszyna')))
     .toBe(true);
   await page.getByPlaceholder('Szukaj ćwiczenia').fill('seated calf raise');
-  await expect(page.getByRole('link', { name: 'Seated Calf Raise', exact: true })).toBeVisible();
+  await expect(rowLink(page, 'Wspięcia na palce w siadzie na maszynie')).toBeVisible();
 
   // "×" clears the muscle filter; the equipment filter stays
   await page.getByRole('button', { name: 'Wyczyść filtr: Mięśnie' }).click();
   await expect(page.getByRole('button', { name: 'Mięśnie' })).toBeVisible();
   await page.getByPlaceholder('Szukaj ćwiczenia').fill('leg press');
-  await expect(page.getByRole('link', { name: 'Leg Press', exact: true })).toBeVisible();
+  await expect(rowLink(page, 'Wypychanie nóg na suwnicy')).toBeVisible();
 });
 
-test('szukanie po polsku: polska nazwa pod angielską', async ({ page }) => {
+test('szukanie po polsku: angielska nazwa pod polską', async ({ page }) => {
   await page.goto('/#/cwiczenia');
   await expect(page.getByText(/\d+ ćwicze/)).toBeVisible({ timeout: 15_000 });
   await page.getByPlaceholder('Szukaj ćwiczenia').fill('wyciskanie sztangi na lawce plaskiej');
-  const row = page.getByRole('link', { name: 'Barbell Bench Press - Medium Grip', exact: true });
+  const row = rowLink(page, 'Wyciskanie sztangi na ławce płaskiej');
   await expect(row).toBeVisible();
-  await expect(row).toContainText('Wyciskanie sztangi na ławce płaskiej');
+  await expect(row).toContainText('Barbell Bench Press - Medium Grip');
 });
 
 test('wiersz ma co najmniej 44 px', async ({ page }) => {
@@ -78,7 +82,7 @@ test('wiersz ma co najmniej 44 px', async ({ page }) => {
 test('karta ćwiczenia: zdjęcia, rady, mięśnie', async ({ page }) => {
   await page.goto('/#/cwiczenia/Barbell_Squat');
 
-  await expect(page.getByRole('heading', { level: 1, name: 'Barbell Squat' })).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByRole('heading', { level: 1, name: 'Przysiad ze sztangą' })).toBeVisible({ timeout: 15_000 });
 
   // 2 images with src starting with IMAGE_BASE
   const imgs = page.locator(`img[src^="${IMAGE_BASE}"]`);
@@ -247,13 +251,13 @@ test('filtr Mięśnie → Barki → tył: Face Pull tak, boczne unoszenie nie', 
 
   const search = page.getByPlaceholder('Szukaj ćwiczenia');
   await search.fill('face pull');
-  await expect(page.getByRole('link', { name: 'Face Pull', exact: true })).toBeVisible();
+  await expect(rowLink(page, 'Face pull')).toBeVisible();
   await search.fill('side lateral raise');
-  await expect(page.getByRole('link', { name: 'Side Lateral Raise', exact: true })).toHaveCount(0);
+  await expect(rowLink(page, 'Unoszenie hantli bokiem')).toHaveCount(0);
 
   // plain Barki still finds the side raise
   await page.getByRole('button', { name: 'Wyczyść filtr: Mięśnie' }).click();
   await page.getByRole('button', { name: 'Mięśnie' }).click();
   await page.getByRole('dialog', { name: 'Mięśnie' }).getByRole('option', { name: 'Barki', exact: true }).click();
-  await expect(page.getByRole('link', { name: 'Side Lateral Raise', exact: true })).toBeVisible();
+  await expect(rowLink(page, 'Unoszenie hantli bokiem')).toBeVisible();
 });

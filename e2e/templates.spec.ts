@@ -20,9 +20,9 @@ test('szablon: dodanie planu FBW z listy szablonów', async ({ page }) => {
   await expect(page.getByRole('link', { name: /^B/ })).toBeVisible();
 
   await page.getByRole('link', { name: /^A/ }).click();
-  const row = page.getByText('Barbell Squat', { exact: true });
+  const row = page.getByText('Przysiad ze sztangą', { exact: true });
   await expect(row).toBeVisible({ timeout: 15_000 });
-  const squat = page.getByRole('region', { name: 'Barbell Squat' });
+  const squat = page.getByRole('region', { name: 'Przysiad ze sztangą' });
   await expect(squat.getByRole('status', { name: 'Serie' })).toHaveText('5');
   await expect(squat.getByRole('textbox', { name: 'Powtórzenia od' })).toHaveValue('5');
   await expect(squat.getByRole('textbox', { name: 'Powtórzenia do' })).toHaveValue('5');

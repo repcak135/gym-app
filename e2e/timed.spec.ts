@@ -29,7 +29,7 @@ test('deska z planu: czas, stoper, zaliczenie, podsumowanie', async ({ page }) =
   await page.getByRole('dialog', { name: 'Nowy dzień' }).getByLabel('Nazwa').fill('Core');
   await page.getByRole('dialog', { name: 'Nowy dzień' }).getByRole('button', { name: 'Zapisz' }).click();
   await page.getByRole('button', { name: 'Dodaj ćwiczenia' }).click();
-  await pickExercise(page, 'plank', 'Plank');
+  await pickExercise(page, 'plank', 'Deska');
   await page.getByRole('button', { name: 'Gotowe (1)' }).click();
   await expect(page.getByLabel('Cel (s)')).toHaveValue('30');
 
@@ -38,7 +38,7 @@ test('deska z planu: czas, stoper, zaliczenie, podsumowanie', async ({ page }) =
   await page.getByRole('button', { name: 'Rozpocznij trening' }).click();
   await expect(page).toHaveURL(/#\/trening$/);
 
-  const plank = panel(page, 'Plank');
+  const plank = panel(page, 'Deska');
   await expect(plank.getByText(/3 × 0:30 · przerwa/)).toBeVisible();
   await expect(plank.getByLabel('Czas', { exact: true })).toHaveValue('0:30');
   await expect(plank.getByRole('button', { name: 'Dobierz rozgrzewkę' })).toHaveCount(0);
@@ -63,10 +63,10 @@ test('cardio: dystans w km i czas, zapis w historii', async ({ page }) => {
   await page.goto('/#/');
   await page.getByRole('button', { name: 'Pusty trening' }).click();
   await page.getByRole('button', { name: 'Dodaj ćwiczenie' }).click();
-  await pickExercise(page, 'jogging treadmill', 'Jogging, Treadmill');
+  await pickExercise(page, 'jogging treadmill', 'Jogging na bieżni');
   await page.getByRole('button', { name: 'Gotowe (1)' }).click();
 
-  const run = panel(page, 'Jogging, Treadmill');
+  const run = panel(page, 'Jogging na bieżni');
   await expect(run.getByText('Dystans (km)')).toBeVisible();
   await run.getByLabel('Dystans', { exact: true }).fill('2,5');
   await run.getByLabel('Czas', { exact: true }).fill('20:00');
@@ -78,6 +78,6 @@ test('cardio: dystans w km i czas, zapis w historii', async ({ page }) => {
 
   await page.goto('/#/cwiczenia');
   await page.getByRole('searchbox').fill('jogging treadmill');
-  await page.getByRole('link', { name: /Jogging, Treadmill/ }).first().click();
+  await page.getByRole('link', { name: /Jogging na bieżni/ }).first().click();
   await expect(page.getByRole('region', { name: 'Historia' }).getByText('20:00 · 2,5 km').first()).toBeVisible();
 });

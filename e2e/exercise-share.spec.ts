@@ -36,7 +36,7 @@ test('wybierak ćwiczeń: zakładka Moje pokazuje własne ćwiczenie', async ({ 
   const picker = page.getByRole('dialog', { name: 'Dodaj ćwiczenia' });
   await picker.getByRole('tab', { name: 'Moje' }).click();
   await expect(picker.getByRole('button', { name: 'Moje boczne', exact: true })).toBeVisible();
-  await expect(picker.getByRole('button', { name: 'Barbell Bench Press - Medium Grip', exact: true })).toHaveCount(0);
+  await expect(picker.getByRole('button', { name: 'Wyciskanie sztangi na ławce płaskiej', exact: true })).toHaveCount(0);
   await picker.getByRole('tab', { name: 'Używane' }).click();
   await expect(picker.getByText('Tu pojawią się ćwiczenia z Twoich planów i treningów.')).toBeVisible();
 });

@@ -22,8 +22,8 @@ test('import CSV: dopasowanie, import, historia, rekordy, bez duplikatów przy p
   await wioslo.getByRole('button', { name: 'Zmień' }).click();
   const picker = page.getByRole('dialog', { name: 'Wybierz ćwiczenie' });
   await picker.getByRole('searchbox', { name: 'Szukaj ćwiczenia' }).fill('bent over barbell row');
-  await picker.getByRole('button', { name: 'Bent Over Barbell Row', exact: true }).click({ timeout: 15_000 });
-  await expect(wioslo).toContainText('→ Bent Over Barbell Row');
+  await picker.getByRole('button', { name: 'Wiosłowanie sztangą w opadzie tułowia', exact: true }).click({ timeout: 15_000 });
+  await expect(wioslo).toContainText('→ Wiosłowanie sztangą w opadzie tułowia');
 
   await page.getByRole('button', { name: 'Importuj 3 treningi' }).click();
   await expect(page.getByRole('status')).toContainText('Zaimportowano 3 treningi (12 serii)');
@@ -41,7 +41,7 @@ test('import CSV: dopasowanie, import, historia, rekordy, bez duplikatów przy p
 
   // records on the exercise card
   await list.getByRole('link', { name: /Pull A/ }).click();
-  await page.getByRole('link', { name: 'Wide-Grip Lat Pulldown' }).click();
+  await page.getByRole('link', { name: 'Ściąganie drążka szerokim chwytem na wyciągu' }).click();
   const records = page.getByRole('region', { name: 'Rekordy' });
   await expect(records).toContainText('55 kg × 8');
 

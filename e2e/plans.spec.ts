@@ -96,22 +96,22 @@ test('ćwiczenia w dniu: szybkie dodawanie i ustawienia', async ({ page }) => {
   await planWithDay(page);
   await openPicker(page);
 
-  await pickExercise(page, 'barbell bench press', 'Barbell Bench Press - Medium Grip');
-  await pickExercise(page, 'squat', 'Barbell Squat');
-  await pickExercise(page, 'lat pulldown', 'Wide-Grip Lat Pulldown');
+  await pickExercise(page, 'barbell bench press', 'Wyciskanie sztangi na ławce płaskiej');
+  await pickExercise(page, 'squat', 'Przysiad ze sztangą');
+  await pickExercise(page, 'lat pulldown', 'Ściąganie drążka szerokim chwytem na wyciągu');
 
   await page.getByRole('button', { name: 'Gotowe' }).click();
   await expect(page.getByRole('dialog', { name: 'Dodaj ćwiczenia' })).toHaveCount(0);
 
   const sections = page.locator('section.item-card');
   await expect(sections).toHaveCount(3);
-  await expect(sections.nth(0)).toHaveAccessibleName('Barbell Bench Press - Medium Grip');
-  await expect(sections.nth(1)).toHaveAccessibleName('Barbell Squat');
-  await expect(sections.nth(2)).toHaveAccessibleName('Wide-Grip Lat Pulldown');
+  await expect(sections.nth(0)).toHaveAccessibleName('Wyciskanie sztangi na ławce płaskiej');
+  await expect(sections.nth(1)).toHaveAccessibleName('Przysiad ze sztangą');
+  await expect(sections.nth(2)).toHaveAccessibleName('Ściąganie drążka szerokim chwytem na wyciągu');
   await expect(page.getByText('3 ćwiczenia')).toBeVisible();
 
   // defaults
-  const item1 = page.getByRole('region', { name: 'Barbell Bench Press - Medium Grip' });
+  const item1 = page.getByRole('region', { name: 'Wyciskanie sztangi na ławce płaskiej' });
   await expect(item1.locator('output[aria-label="Serie"]')).toHaveText('3');
   await expect(item1.getByLabel('Przerwa')).toHaveValue('120');
   await expect(item1.getByLabel('Przerwa').locator('option:checked')).toHaveText('2:00');
@@ -128,20 +128,20 @@ test('ćwiczenia w dniu: szybkie dodawanie i ustawienia', async ({ page }) => {
   await expect(item1.getByLabel('Przerwa').locator('option:checked')).toHaveText('3:00');
 
   // move item 3 up -> becomes 2nd
-  await page.getByRole('button', { name: 'Przesuń w górę: Wide-Grip Lat Pulldown' }).click();
-  await expect(sections.nth(1)).toHaveAccessibleName('Wide-Grip Lat Pulldown');
-  await expect(sections.nth(2)).toHaveAccessibleName('Barbell Squat');
+  await page.getByRole('button', { name: 'Przesuń w górę: Ściąganie drążka szerokim chwytem na wyciągu' }).click();
+  await expect(sections.nth(1)).toHaveAccessibleName('Ściąganie drążka szerokim chwytem na wyciągu');
+  await expect(sections.nth(2)).toHaveAccessibleName('Przysiad ze sztangą');
 
   // remove squat
-  await page.getByRole('button', { name: 'Usuń: Barbell Squat' }).click();
+  await page.getByRole('button', { name: 'Usuń: Przysiad ze sztangą' }).click();
   await expect(sections).toHaveCount(2);
   await expect(page.getByText('2 ćwiczenia')).toBeVisible();
 
   // persistence
   await page.reload();
   await expect(sections).toHaveCount(2, { timeout: 15_000 });
-  await expect(sections.nth(0)).toHaveAccessibleName('Barbell Bench Press - Medium Grip');
-  await expect(sections.nth(1)).toHaveAccessibleName('Wide-Grip Lat Pulldown');
+  await expect(sections.nth(0)).toHaveAccessibleName('Wyciskanie sztangi na ławce płaskiej');
+  await expect(sections.nth(1)).toHaveAccessibleName('Ściąganie drążka szerokim chwytem na wyciągu');
   const r1 = sections.nth(0);
   await expect(r1.locator('output[aria-label="Serie"]')).toHaveText('4');
   await expect(r1.locator('output[aria-label="Rozgrzewka"]')).toHaveText('1');
@@ -153,7 +153,7 @@ test('ćwiczenia w dniu: szybkie dodawanie i ustawienia', async ({ page }) => {
 test('clamp powtórzeń', async ({ page }) => {
   await planWithDay(page);
   await openPicker(page);
-  await pickExercise(page, 'barbell squat', 'Barbell Squat');
+  await pickExercise(page, 'barbell squat', 'Przysiad ze sztangą');
   await page.getByRole('button', { name: 'Gotowe' }).click();
 
   const item = page.locator('section.item-card').first();
@@ -168,8 +168,8 @@ test('clamp powtórzeń', async ({ page }) => {
 test('Start pokazuje aktywny plan i następny dzień', async ({ page }) => {
   await planWithDay(page, 'Plan startowy', 'Day 1 Upper');
   await openPicker(page);
-  await pickExercise(page, 'barbell squat', 'Barbell Squat');
-  await pickExercise(page, 'lat pulldown', 'Wide-Grip Lat Pulldown');
+  await pickExercise(page, 'barbell squat', 'Przysiad ze sztangą');
+  await pickExercise(page, 'lat pulldown', 'Ściąganie drążka szerokim chwytem na wyciągu');
   await page.getByRole('button', { name: 'Gotowe' }).click();
   await expect(page.locator('section.item-card')).toHaveCount(2);
 
@@ -206,7 +206,7 @@ test('kopiuj i usuń plan, aktywny się czyści', async ({ page }) => {
 test('przyciski mają co najmniej 44 px', async ({ page }) => {
   await planWithDay(page);
   await openPicker(page);
-  await pickExercise(page, 'barbell squat', 'Barbell Squat');
+  await pickExercise(page, 'barbell squat', 'Przysiad ze sztangą');
   await page.getByRole('button', { name: 'Gotowe' }).click();
 
   const item = page.locator('section.item-card').first();
@@ -232,17 +232,17 @@ test('wybór ćwiczeń: zaznacz/odznacz, Zamknij, bez duplikatów', async ({ pag
 
   // X closes without adding anything
   await openPicker(page);
-  await pickExercise(page, 'squat', 'Barbell Squat');
+  await pickExercise(page, 'squat', 'Przysiad ze sztangą');
   await picker.getByRole('button', { name: 'Zamknij' }).click();
   await expect(picker).toHaveCount(0);
   await expect(page.locator('section.item-card')).toHaveCount(0);
 
   // toggle: tap twice = unselected; Gotowe shows the count
   await openPicker(page);
-  await pickExercise(page, 'squat', 'Barbell Squat');
-  await pickExercise(page, 'bench press', 'Barbell Bench Press - Medium Grip');
+  await pickExercise(page, 'squat', 'Przysiad ze sztangą');
+  await pickExercise(page, 'bench press', 'Wyciskanie sztangi na ławce płaskiej');
   await expect(picker.getByRole('button', { name: 'Gotowe (2)' })).toBeVisible();
-  const bench = picker.getByRole('button', { name: 'Barbell Bench Press - Medium Grip', exact: true });
+  const bench = picker.getByRole('button', { name: 'Wyciskanie sztangi na ławce płaskiej', exact: true });
   await bench.click();
   await expect(bench).toHaveAttribute('aria-pressed', 'false');
   await picker.getByRole('button', { name: 'Gotowe (1)' }).click();
@@ -252,7 +252,7 @@ test('wybór ćwiczeń: zaznacz/odznacz, Zamknij, bez duplikatów', async ({ pag
   // already in the day: shown as added and not selectable
   await openPicker(page);
   await picker.getByRole('searchbox', { name: 'Szukaj ćwiczenia' }).fill('squat');
-  const squat = picker.getByRole('button', { name: 'Barbell Squat', exact: true });
+  const squat = picker.getByRole('button', { name: 'Przysiad ze sztangą', exact: true });
   await expect(squat).toBeDisabled();
   await expect(squat).toContainText('W dniu');
   await picker.getByRole('button', { name: 'Gotowe' }).click();
@@ -302,9 +302,9 @@ test('ustawienia: domyślne wartości dla nowych ćwiczeń', async ({ page }) =>
 
   await planWithDay(page);
   await openPicker(page);
-  await pickExercise(page, 'squat', 'Barbell Squat');
+  await pickExercise(page, 'squat', 'Przysiad ze sztangą');
   await page.getByRole('button', { name: 'Gotowe' }).click();
-  const item = page.getByRole('region', { name: 'Barbell Squat' });
+  const item = page.getByRole('region', { name: 'Przysiad ze sztangą' });
   await expect(item.locator('output[aria-label="Serie"]')).toHaveText('4');
   await expect(item.getByLabel('Przerwa')).toHaveValue('180');
   await expect(item.getByLabel('Powtórzenia od')).toHaveValue('6');
@@ -327,8 +327,8 @@ test('arkusz z nazwą otwiera się u góry ekranu z kursorem w polu (klawiatura 
 test('superseria: połącz dwa ćwiczenia, nagłówek, odłącz', async ({ page }) => {
   await planWithDay(page);
   await openPicker(page);
-  await pickExercise(page, 'barbell bench press', 'Barbell Bench Press - Medium Grip');
-  await pickExercise(page, 'squat', 'Barbell Squat');
+  await pickExercise(page, 'barbell bench press', 'Wyciskanie sztangi na ławce płaskiej');
+  await pickExercise(page, 'squat', 'Przysiad ze sztangą');
   await page.getByRole('button', { name: 'Gotowe (2)' }).click();
   await expect(page.getByText('Superseria', { exact: true })).toHaveCount(0);
 

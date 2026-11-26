@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const BENCH = 'Barbell Bench Press - Medium Grip';
+const BENCH = 'Wyciskanie sztangi na ławce płaskiej';
 const MONTHS = [
   'styczeń', 'luty', 'marzec', 'kwiecień', 'maj', 'czerwiec',
   'lipiec', 'sierpień', 'wrzesień', 'październik', 'listopad', 'grudzień',

@@ -2,7 +2,7 @@ import { test, expect, type Page } from '@playwright/test';
 import { fileURLToPath } from 'node:url';
 
 const FIXTURE = fileURLToPath(new URL('../tests/fixtures/sample-export.csv', import.meta.url));
-const BENCH = 'Barbell Bench Press - Medium Grip';
+const BENCH = 'Wyciskanie sztangi na ławce płaskiej';
 
 async function emptyWorkout(page: Page, weight: string, reps: string) {
   await page.goto('/#/');
@@ -58,7 +58,7 @@ test('motywacja: cel tygodnia, tydzień mięśni, odznaki, rekordy, kalendarz ro
   await expect(badges.getByRole('listitem', { name: '10 treningów, zablokowana' })).toContainText('3/10');
   await page.getByRole('tab', { name: 'Rekordy' }).click();
   const bests = page.getByRole('list', { name: 'Rekordy ćwiczeń' });
-  await expect(bests).toContainText('Wide-Grip Lat Pulldown');
+  await expect(bests).toContainText('Ściąganie drążka szerokim chwytem na wyciągu');
   await expect(bests).toContainText('Najcięższa: 55 kg × 8');
 
   // yearly calendar: back to 2026 if needed, tap 2 March → that workout

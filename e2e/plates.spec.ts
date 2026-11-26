@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const BENCH = 'Barbell Bench Press - Medium Grip';
+const BENCH = 'Wyciskanie sztangi na ławce płaskiej';
 
 test('kalkulator talerzy w treningu: wynik, najbliższe ciężary, użycie', async ({ page }) => {
   await page.goto('/#/');

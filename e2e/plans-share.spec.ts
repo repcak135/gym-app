@@ -33,7 +33,7 @@ test('wysłanie planu: kod QR i link', async ({ page }) => {
   await page.getByRole('button', { name: 'Dodaj ćwiczenia' }).click();
   const picker = page.getByRole('dialog', { name: 'Dodaj ćwiczenia' });
   await picker.getByRole('searchbox', { name: 'Szukaj ćwiczenia' }).fill('barbell bench press');
-  await picker.getByRole('button', { name: 'Barbell Bench Press - Medium Grip', exact: true }).click({ timeout: 15_000 });
+  await picker.getByRole('button', { name: 'Wyciskanie sztangi na ławce płaskiej', exact: true }).click({ timeout: 15_000 });
   await page.getByRole('button', { name: 'Gotowe' }).click();
   await expect(page.getByRole('dialog', { name: 'Dodaj ćwiczenia' })).toHaveCount(0);
 
@@ -48,7 +48,7 @@ test('wysłanie planu: kod QR i link', async ({ page }) => {
   // The link opens the preview of the same plan.
   await page.goto(link);
   await expect(page.getByRole('heading', { level: 1, name: 'Mój PPL' })).toBeVisible();
-  await expect(page.getByRole('region', { name: 'Push' })).toContainText('Barbell Bench Press - Medium Grip');
+  await expect(page.getByRole('region', { name: 'Push' })).toContainText('Wyciskanie sztangi na ławce płaskiej');
 });
 
 test('otwarcie linku od znajomego: podgląd i dodanie jako kopii', async ({ page }) => {

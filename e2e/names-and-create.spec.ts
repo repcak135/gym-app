@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 
-const BENCH = 'Barbell Bench Press - Medium Grip';
+const BENCH = 'Wyciskanie sztangi na ławce płaskiej';
 
 async function pickExercise(page: Page, query: string, name: string) {
   const picker = page.getByRole('dialog', { name: 'Dodaj ćwiczenia' });
@@ -8,11 +8,11 @@ async function pickExercise(page: Page, query: string, name: string) {
   await picker.getByRole('button', { name, exact: true }).click({ timeout: 15_000 });
 }
 
-test('slang: "allah" znajduje Cable Crunch i pokazuje dopasowaną nazwę', async ({ page }) => {
+test('slang: "allah" znajduje Brzuszki na wyciągu i pokazuje dopasowaną nazwę', async ({ page }) => {
   await page.goto('/#/cwiczenia');
   await page.getByRole('searchbox', { name: 'Szukaj ćwiczenia' }).fill('allah');
   const list = page.getByRole('region', { name: 'Lista ćwiczeń' });
-  const first = list.getByRole('link').filter({ hasText: 'Cable Crunch' }).first();
+  const first = list.getByRole('link').filter({ hasText: 'Brzuszki na wyciągu' }).first();
   await expect(first).toBeVisible({ timeout: 15_000 });
   await expect(first).toContainText('„Allah');
 });
@@ -26,7 +26,7 @@ test('inne nazwy: dodana na karcie działa w wyszukiwarce, można ją usunąć',
   await expect(section.getByRole('button', { name: 'Usuń nazwę Kopytka' })).toBeVisible();
 
   await page.goto('/#/cwiczenia?q=kopytka');
-  await expect(page.getByRole('link', { name: 'Hammer Curls' })).toContainText('„Kopytka”', { timeout: 15_000 });
+  await expect(page.getByRole('link', { name: 'Uginanie ramion chwytem młotkowym z hantlami' })).toContainText('„Kopytka”', { timeout: 15_000 });
 
   await page.goto('/#/cwiczenia/Hammer_Curls');
   await page.getByRole('button', { name: 'Usuń nazwę Kopytka' }).click();

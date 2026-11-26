@@ -1,7 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 
-const BENCH = 'Barbell Bench Press - Medium Grip';
-const SQUAT = 'Barbell Squat';
+const BENCH = 'Wyciskanie sztangi na ławce płaskiej';
+const SQUAT = 'Przysiad ze sztangą';
 
 async function pickExercise(page: Page, dialogName: string, query: string, name: string) {
   const picker = page.getByRole('dialog', { name: dialogName });

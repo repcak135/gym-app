@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const BENCH = 'Barbell Bench Press - Medium Grip';
+const BENCH = 'Wyciskanie sztangi na ławce płaskiej';
 
 test('Android: notatka o wygaszonym ekranie i przełącznik „Graj w tle”', async ({ page }) => {
   await page.goto('/#/ustawienia');

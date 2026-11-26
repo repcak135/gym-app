@@ -1,7 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 
-const BENCH = 'Barbell Bench Press - Medium Grip';
-const SQUAT = 'Barbell Squat';
+const BENCH = 'Wyciskanie sztangi na ławce płaskiej';
+const SQUAT = 'Przysiad ze sztangą';
 
 const panel = (page: Page, name: string) => page.getByRole('region', { name });
 
@@ -152,29 +152,29 @@ async function addSideRaise(page: import('@playwright/test').Page) {
   await page.getByRole('button', { name: 'Dodaj ćwiczenie' }).click();
   const add = page.getByRole('dialog', { name: 'Dodaj ćwiczenia' });
   await add.getByRole('searchbox', { name: 'Szukaj ćwiczenia' }).fill('side lateral raise');
-  await add.getByRole('button', { name: 'Side Lateral Raise', exact: true }).click({ timeout: 15_000 });
+  await add.getByRole('button', { name: 'Unoszenie hantli bokiem', exact: true }).click({ timeout: 15_000 });
   await page.getByRole('button', { name: 'Gotowe (1)' }).click();
 }
 
-test('zamiana Side Lateral Raise: wersje na bok przed Front Dumbbell Raise', async ({ page }) => {
+test('zamiana Unoszenie hantli bokiem: wersje na bok przed Unoszenie hantli przodem', async ({ page }) => {
   await addSideRaise(page);
   await page.getByRole('button', { name: 'Opcje treningu' }).click();
-  await page.getByRole('button', { name: 'Zamień: Side Lateral Raise' }).click();
-  const swap = page.getByRole('dialog', { name: 'Zamień: Side Lateral Raise' });
+  await page.getByRole('button', { name: 'Zamień: Unoszenie hantli bokiem' }).click();
+  const swap = page.getByRole('dialog', { name: 'Zamień: Unoszenie hantli bokiem' });
   await expect(swap.locator('.exercises-section-title').first()).toHaveText('Podobne (barki — bok)', { timeout: 15_000 });
   await swap.getByRole('searchbox', { name: 'Szukaj ćwiczenia' }).fill('raise');
-  for (let i = 0; i < 10 && (await swap.getByRole('button', { name: 'Front Dumbbell Raise', exact: true }).count()) === 0; i++) {
+  for (let i = 0; i < 10 && (await swap.getByRole('button', { name: 'Unoszenie hantli przodem', exact: true }).count()) === 0; i++) {
     await swap.getByRole('button', { name: /Pokaż więcej/ }).click();
   }
-  await expect(swap.getByRole('button', { name: 'Front Dumbbell Raise', exact: true })).toBeVisible();
+  await expect(swap.getByRole('button', { name: 'Unoszenie hantli przodem', exact: true })).toBeVisible();
   const names = await swap.locator('.picker__row').evaluateAll((els) => els.map((e) => e.getAttribute('aria-label')));
-  expect(names.indexOf('Cable Seated Lateral Raise')).toBeGreaterThanOrEqual(0);
-  expect(names.indexOf('Cable Seated Lateral Raise')).toBeLessThan(names.indexOf('Front Dumbbell Raise'));
+  expect(names.indexOf('Unoszenie bokiem na wyciągu w siadzie')).toBeGreaterThanOrEqual(0);
+  expect(names.indexOf('Unoszenie bokiem na wyciągu w siadzie')).toBeLessThan(names.indexOf('Unoszenie hantli przodem'));
 });
 
 test('statystyki: Barki rozwija się na przód / bok / tył', async ({ page }) => {
   await addSideRaise(page);
-  const region = page.getByRole('region', { name: 'Side Lateral Raise' });
+  const region = page.getByRole('region', { name: 'Unoszenie hantli bokiem' });
   await region.getByLabel('Ciężar').fill('8');
   await region.getByLabel('Powtórzenia').fill('12');
   await region.getByRole('button', { name: 'Zalicz serię' }).click();

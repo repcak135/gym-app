@@ -3,7 +3,7 @@ import { test, expect, type Page } from '@playwright/test';
 
 const VERSION: string = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version;
 
-const BENCH = 'Barbell Bench Press - Medium Grip';
+const BENCH = 'Wyciskanie sztangi na ławce płaskiej';
 
 /** Mięśnie → Łydki hides chest exercises; clearing the filter brings them back. */
 async function filterByCalves(page: Page, picker: ReturnType<Page['getByRole']>) {
@@ -15,7 +15,7 @@ async function filterByCalves(page: Page, picker: ReturnType<Page['getByRole']>)
   await expect(picker.getByRole('button', { name: 'Łydki' })).toBeVisible();
   await expect(picker.getByRole('button', { name: BENCH, exact: true })).toHaveCount(0);
   await search.fill('seated calf raise');
-  await expect(picker.getByRole('button', { name: 'Seated Calf Raise', exact: true })).toBeVisible();
+  await expect(picker.getByRole('button', { name: 'Wspięcia na palce w siadzie na maszynie', exact: true })).toBeVisible();
   await search.fill('');
 }
 
@@ -138,7 +138,7 @@ test('Co nowego: raz po aktualizacji, potem z Ustawień', async ({ page }) => {
 });
 
 test('zamiana ćwiczenia: najpierw ćwiczenia na ten sam mięsień, wyszukiwanie dalej obejmuje wszystko', async ({ page }) => {
-  const REAR = 'Seated Bent-Over Rear Delt Raise';
+  const REAR = 'Unoszenie hantli na tylne aktony w opadzie w siadzie';
   await page.goto('/#/');
   await page.getByRole('button', { name: 'Pusty trening' }).click();
   await page.getByRole('button', { name: 'Dodaj ćwiczenie' }).click();
@@ -162,8 +162,8 @@ test('zamiana ćwiczenia: najpierw ćwiczenia na ten sam mięsień, wyszukiwanie
   await swap.getByRole('searchbox', { name: 'Szukaj ćwiczenia' }).fill('row');
   await expect(swap.getByText('Pozostałe', { exact: true })).toBeVisible();
   await swap.getByRole('searchbox', { name: 'Szukaj ćwiczenia' }).fill('barbell squat');
-  await swap.getByRole('button', { name: 'Barbell Squat', exact: true }).click();
-  await expect(page.locator('.ex-panel__name', { hasText: 'Barbell Squat' })).toBeVisible();
+  await swap.getByRole('button', { name: 'Przysiad ze sztangą', exact: true }).click();
+  await expect(page.locator('.ex-panel__name', { hasText: 'Przysiad ze sztangą' })).toBeVisible();
 });
 
 test('instrukcja instalacji: karta w karcie przeglądarki, Nie teraz, ponownie z Ustawień', async ({ page }) => {
