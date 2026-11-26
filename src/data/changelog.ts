@@ -11,6 +11,14 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.15',
+    date: '2026-11-26',
+    items: [
+      'Po ostatniej serii trening nie przeskakuje do następnego ćwiczenia, jeśli coś jeszcze klikasz (np. ocenę trudności) albo masz otwarte okienko.',
+      'Okienka w treningu (trudność, rozgrzewka, talerze, podpowiedź) zawsze są na środku ekranu i da się je zamknąć.',
+    ],
+  },
+  {
     version: '0.9.14',
     date: '2026-11-26',
     items: [

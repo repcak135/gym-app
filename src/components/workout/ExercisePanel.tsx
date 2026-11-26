@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Calculator, Check, Minus, Plus } from 'lucide-react';
 import PlateCalculatorSheet from '../PlateCalculatorSheet';
 import DifficultySheet from './DifficultySheet';
@@ -603,6 +604,9 @@ export default function ExercisePanel({
           + Dodaj serię
         </button>
       )}
+      {/* Sheets go to <body>: inside the swiping pager they would move with the exercise (0.9.15). */}
+      {createPortal(
+      <>
       {warmupOpen && (
         <WarmupSheet
           work={firstWork}
@@ -621,6 +625,9 @@ export default function ExercisePanel({
           onUse={(kg) => void updateSet(selected.id, { weight: kg })}
           onClose={() => setCalcOpen(false)}
         />
+      )}
+      </>,
+      document.body,
       )}
     </section>
   );

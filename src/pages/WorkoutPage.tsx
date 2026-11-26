@@ -219,6 +219,8 @@ export default function WorkoutPage() {
         const l = latest.current;
         // The user may have moved on or undone the set during the wait.
         if (l.view !== 'exercise' || l.current !== doneIndex || !isExerciseDone(l.progress[doneIndex] ?? { completed: 0, total: 0 })) return;
+        // A sheet is open (e.g. "Jak ciężka była ta seria?"): stay — the owner is still on this exercise.
+        if (document.querySelector('[role="dialog"]')) return;
         const action = nextAfterExerciseDone(l.progress, doneIndex, l.mode);
         if (action.kind === 'list') setView('list');
         else if (action.kind === 'exercise') goTo(action.index);
@@ -366,7 +368,14 @@ export default function WorkoutPage() {
 
   return (
     // Any tap unlocks audio (needed after the app was reopened mid-workout).
-    <div className="workout" onPointerDown={() => unlockAudio()}>
+    <div
+      className="workout"
+      onPointerDown={() => {
+        unlockAudio();
+        // Any tap after the last set (e.g. opening RIR) cancels the jump to the next exercise.
+        clearTimeout(advanceTimer.current);
+      }}
+    >
       <header className="workout-bar">
         <Link to="/" className="workout-bar__icon" aria-label="Wróć na Start (trening trwa dalej)">
           <ChevronLeft size={26} aria-hidden="true" />
