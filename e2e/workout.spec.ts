@@ -105,7 +105,10 @@ test('pusty trening: dodaj ćwiczenie, zakończ, podsumowanie; następny trening
   await expect(
     bench2.getByText('Ostatnio 12, czyli górna granica — weź 2,5 kg więcej i zacznij od 8'),
   ).toBeVisible();
-  // prefilled with the new weight from the bottom of the range
+  // prefilled with last time's values; the target is applied with "Zastosuj"
+  await expect(bench2.getByLabel('Ciężar')).toHaveValue('60');
+  await expect(bench2.getByLabel('Powtórzenia')).toHaveValue('12');
+  await bench2.getByRole('button', { name: 'Zastosuj 62,5 kg × 8' }).click();
   await expect(bench2.getByLabel('Ciężar')).toHaveValue('62,5');
   await expect(bench2.getByLabel('Powtórzenia')).toHaveValue('8');
   await bench2.getByRole('button', { name: 'Historia' }).click();
@@ -359,9 +362,14 @@ async function seedProgression(page: Page, sessions: number) {
 test('podpowiedź per seria: wartości, powód i arkusz „Jak działa podpowiedź?”', async ({ page }) => {
   await seedProgression(page, 1);
   const ex = page.getByRole('region').first();
+  // prefilled with last time (30 × 12); the target (32,5 kg × 8) is only a hint + button
+  await expect(ex.getByLabel('Ciężar')).toHaveValue('30');
+  await expect(ex.getByLabel('Powtórzenia')).toHaveValue('12');
+  await expect(ex.getByText('górna granica')).toBeVisible();
+  await ex.getByRole('button', { name: 'Zastosuj 32,5 kg × 8' }).click();
   await expect(ex.getByLabel('Ciężar')).toHaveValue('32,5');
   await expect(ex.getByLabel('Powtórzenia')).toHaveValue('8');
-  await expect(ex.getByText('górna granica')).toBeVisible();
+  await expect(ex.getByRole('button', { name: /^Zastosuj/ })).toHaveCount(0);
   await expect(page.getByText('3 treningi bez postępu')).toHaveCount(0);
 
   await ex.getByRole('button', { name: 'Jak działa podpowiedź?' }).click();
@@ -371,20 +379,23 @@ test('podpowiedź per seria: wartości, powód i arkusz „Jak działa podpowied
   await dialog.getByRole('button', { name: 'Zamknij' }).click();
   await expect(dialog).toHaveCount(0);
 
-  // set 2 has its own target: 30 × 10 -> 30 × 11
+  // set 2 has its own target: last 30 × 10 -> 30 × 11
   await ex.getByRole('button', { name: /^Seria 2/ }).click();
   await expect(ex.getByLabel('Ciężar')).toHaveValue('30');
+  await expect(ex.getByLabel('Powtórzenia')).toHaveValue('10');
+  await ex.getByRole('button', { name: 'Zastosuj 30 kg × 11' }).click();
   await expect(ex.getByLabel('Powtórzenia')).toHaveValue('11');
+  await expect(ex.getByRole('button', { name: /^Zastosuj/ })).toHaveCount(0);
 });
 
 test('3 treningi bez postępu: „Zastosuj −10%” zmniejsza ciężar tylko w tym treningu', async ({ page }) => {
   await seedProgression(page, 4);
   const ex = page.getByRole('region').first();
   await expect(ex.getByText('3 treningi bez postępu')).toBeVisible();
-  await expect(ex.getByLabel('Ciężar')).toHaveValue('32,5');
+  await expect(ex.getByLabel('Ciężar')).toHaveValue('30');
   await ex.getByRole('button', { name: 'Zastosuj −10%' }).click();
   await expect(ex.getByText('Ciężar zmniejszony o ok. 10% na ten trening')).toBeVisible();
-  await expect(ex.getByLabel('Ciężar')).toHaveValue('27,5');
+  await expect(ex.getByLabel('Ciężar')).toHaveValue('25');
 });
 
 test('ustawienia: cel wysiłku „Z zapasem” zapisuje się po przeładowaniu', async ({ page }) => {
