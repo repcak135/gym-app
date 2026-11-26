@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { HashRouter, Routes, Route, useLocation, useNavigate } from 'react-router';
 import BottomNav from './components/BottomNav';
 import GlobalRest from './components/workout/GlobalRest';
+import CrashScreen from './components/CrashScreen';
 import UndoToast from './components/UndoToast';
 import KeyboardInset from './components/KeyboardInset';
 import { WhatsNewOnLaunch } from './components/WhatsNewSheet';
@@ -51,6 +52,15 @@ function ResumeWorkout() {
     if (checked.current) return;
     checked.current = true;
     if (pathname !== '/') return;
+    try {
+      // After a crash screen: stay on Start once instead of jumping back into the workout.
+      if (sessionStorage.getItem('gym.noResume')) {
+        sessionStorage.removeItem('gym.noResume');
+        return;
+      }
+    } catch {
+      // private mode
+    }
     void getActiveWorkout().then((w) => {
       if (w) navigate('/trening');
     });
@@ -91,6 +101,7 @@ function Screen({ children }: { children: ReactNode }) {
 
 export default function App() {
   return (
+    <CrashScreen>
     <HashRouter>
       <ScrollToTop />
       <ResumeWorkout />
@@ -132,5 +143,6 @@ export default function App() {
       <GlobalRest />
       <BottomNav />
     </HashRouter>
+    </CrashScreen>
   );
 }

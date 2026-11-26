@@ -14,6 +14,32 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Last-resort screen: if the app never draws (script failed to load or crashed at start),
+      // show the error and a repair button instead of an empty page. Data in IndexedDB is never touched.
+      (function () {
+        var errs = [];
+        addEventListener('error', function (e) { errs.push(e.message || (e.target && (e.target.src || e.target.href)) || 'błąd'); }, true);
+        addEventListener('unhandledrejection', function (e) { errs.push(String((e.reason && e.reason.message) || e.reason)); });
+        setTimeout(function () {
+          var r = document.getElementById('root');
+          if (!r || r.children.length) return;
+          r.innerHTML = '<div style="padding:48px 20px;color:#e8e6e3;font:16px/1.45 system-ui,sans-serif">' +
+            '<h1 style="font-size:1.3rem">Aplikacja się nie wczytała</h1>' +
+            '<p>Twoje treningi są bezpieczne w telefonie. Zrób zrzut tego ekranu dla autora, potem stuknij „Napraw”.</p>' +
+            '<pre style="white-space:pre-wrap;font-size:12px;color:#ff7a45">' + (errs.join('
+') || 'brak komunikatu').replace(/</g, '&lt;') + '</pre>' +
+            '<button id="fix" style="min-height:48px;padding:0 20px;font:inherit;font-weight:700;border-radius:12px;border:0;background:#ffd23f">Napraw</button></div>';
+          document.getElementById('fix').onclick = function () {
+            var jobs = [];
+            if (navigator.serviceWorker) jobs.push(navigator.serviceWorker.getRegistrations().then(function (rs) { return Promise.all(rs.map(function (x) { return x.unregister(); })); }));
+            if (window.caches) jobs.push(caches.keys().then(function (ks) { return Promise.all(ks.map(function (k) { return caches.delete(k); })); }));
+            try { sessionStorage.setItem('gym.noResume', '1'); } catch (e) {}
+            Promise.all(jobs).finally(function () { location.replace(location.pathname + '#/'); location.reload(); });
+          };
+        }, 5000);
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

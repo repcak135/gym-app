@@ -11,6 +11,13 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.13',
+    date: '2026-11-26',
+    items: [
+      'Zamiast pustego ekranu przy błędzie aplikacja pokazuje, co się stało, i przycisk „Wróć na Start” (albo „Napraw”). Dane zostają nietknięte.',
+    ],
+  },
+  {
     version: '0.9.12',
     date: '2026-11-26',
     items: [
