@@ -87,6 +87,10 @@ describe('computeStats', () => {
     expect(s.byGroup.secondary.biceps).toBe(2);
     expect(s.byGroup.secondary.plecy).toBe(0);
     expect(Object.keys(s.byGroup.primary)).toHaveLength(10);
+    // Suma: a set counts once per group it works, main or helper
+    expect(s.byGroup.total.plecy).toBe(2);
+    expect(s.byGroup.total.biceps).toBe(2);
+    expect(s.byGroup.total.klatka).toBe(1);
     expect(s.unmappedSets).toBe(1);
   });
   it('byBody', () => {

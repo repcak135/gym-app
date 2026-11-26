@@ -35,9 +35,10 @@ export interface PeriodStats {
   totalSec: number;
   avgSec?: number;
   workingSets: number;
-  byGroup: { primary: Record<MuscleGroup, number>; secondary: Record<MuscleGroup, number> };
+  /** total: a set counts once for every group it works, main or helper (0.9.16). */
+  byGroup: { primary: Record<MuscleGroup, number>; secondary: Record<MuscleGroup, number>; total: Record<MuscleGroup, number> };
   /** Barki split by deltoid head ('unknown' = shoulder sets of exercises without heads); same rules as `byGroup`. */
-  shoulderHeads: { primary: Record<ShoulderHeadKey, number>; secondary: Record<ShoulderHeadKey, number> };
+  shoulderHeads: { primary: Record<ShoulderHeadKey, number>; secondary: Record<ShoulderHeadKey, number>; total: Record<ShoulderHeadKey, number> };
   unmappedSets: number;
   byBody: Partial<Record<BodyPart, number>>;
 }
@@ -133,7 +134,8 @@ export function computeStats(input: StatsInput, range: PeriodRange): PeriodStats
   const sets = countedSets(input.sets.filter((s) => ids.has(s.workoutId)));
   const primary = emptyGroups();
   const secondary = emptyGroups();
-  const heads = { primary: emptyHeads(), secondary: emptyHeads() };
+  const total = emptyGroups();
+  const heads = { primary: emptyHeads(), secondary: emptyHeads(), total: emptyHeads() };
   const byBody: Partial<Record<BodyPart, number>> = {};
   let unmapped = 0;
 
@@ -143,8 +145,14 @@ export function computeStats(input: StatsInput, range: PeriodRange): PeriodStats
     if (!m) continue;
     for (const g of distinctGroups(m.primary)) primary[g]++;
     for (const g of distinctGroups(m.secondary)) secondary[g]++;
+    for (const g of distinctGroups([...m.primary, ...m.secondary])) total[g]++;
     countHeads(heads.primary, m.primary, m.delts, 'primary');
     countHeads(heads.secondary, m.secondary, m.delts, 'secondary');
+    if (m.primary.includes('shoulders') || m.secondary.includes('shoulders')) {
+      const all = new Set([...deltHeadsOf({ delts: m.delts }, 'primary'), ...deltHeadsOf({ delts: m.delts }, 'secondary')]);
+      if (all.size === 0) heads.total.unknown++;
+      for (const h of all) heads.total[h]++;
+    }
     const pParts = distinctParts(m.primary, deltHeadsOf({ delts: m.delts }, 'primary'));
     for (const p of pParts) byBody[p] = (byBody[p] ?? 0) + 1;
     for (const p of distinctParts(m.secondary, deltHeadsOf({ delts: m.delts }, 'secondary'))) {
@@ -159,7 +167,7 @@ export function computeStats(input: StatsInput, range: PeriodRange): PeriodStats
     totalSec,
     avgSec: timed > 0 ? Math.round(totalSec / timed) : undefined,
     workingSets: sets.length,
-    byGroup: { primary, secondary },
+    byGroup: { primary, secondary, total },
     shoulderHeads: heads,
     unmappedSets: unmapped,
     byBody,

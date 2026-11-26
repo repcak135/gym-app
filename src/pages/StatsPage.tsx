@@ -106,7 +106,7 @@ function TrainingStats() {
   const [now] = useState(() => Date.now());
   const [view, setView] = useState(lastView);
   const [shouldersOpen, setShouldersOpen] = useState(false);
-  const [muscleMode, setMuscleMode] = useState<'primary' | 'secondary'>('primary');
+  const [muscleMode, setMuscleMode] = useState<'total' | 'primary' | 'secondary'>('total');
   const [bodyMode, setBodyMode] = useState<'sets' | 'days'>('sets');
   const [selGroup, setSelGroup] = useState<string | null>(null);
   useEffect(() => {
@@ -204,7 +204,8 @@ function TrainingStats() {
                 <Segmented
                   label="Rodzaj mięśni"
                   options={[
-                    { key: 'primary', label: 'Mięśnie główne' },
+                    { key: 'total', label: 'Suma' },
+                    { key: 'primary', label: 'Główne' },
                     { key: 'secondary', label: 'Pomocnicze' },
                   ]}
                   value={muscleMode}
@@ -272,9 +273,11 @@ function TrainingStats() {
                   </p>
                 )}
                 <p className="stats-note">
-                  {muscleMode === 'primary'
-                    ? 'Seria liczy się raz dla każdej grupy głównych mięśni ćwiczenia.'
-                    : 'Seria liczy się raz dla każdej grupy mięśni pomocniczych ćwiczenia.'}
+                  {muscleMode === 'total'
+                    ? 'Seria liczy się raz dla każdej grupy mięśni, którą pracuje — główną albo pomocniczą.'
+                    : muscleMode === 'primary'
+                      ? 'Seria liczy się raz dla każdej grupy głównych mięśni ćwiczenia.'
+                      : 'Seria liczy się raz dla każdej grupy mięśni pomocniczych ćwiczenia.'}
                 </p>
               </section>
 

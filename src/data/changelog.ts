@@ -11,6 +11,13 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.16',
+    date: '2026-11-26',
+    items: [
+      'Statystyki › Serie na mięsień: nowa opcja „Suma” (domyślna) — mięśnie główne i pomocnicze razem. Seria liczy się raz dla każdej grupy, którą pracuje.',
+    ],
+  },
+  {
     version: '0.9.15',
     date: '2026-11-26',
     items: [
