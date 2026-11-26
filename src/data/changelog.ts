@@ -11,6 +11,13 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.14',
+    date: '2026-11-26',
+    items: [
+      'Naprawiony błąd: po powrocie do aplikacji ekran treningu potrafił się wyłożyć („Coś poszło nie tak”). Trening, który się zepsuł, otwiera się już normalnie.',
+    ],
+  },
+  {
     version: '0.9.13',
     date: '2026-11-26',
     items: [

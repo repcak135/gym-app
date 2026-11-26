@@ -32,6 +32,7 @@ export function groupAt(items: { group?: string }[], index: number): { start: nu
  * Returns the new items, or null when not possible (last item, or the result would exceed 3).
  */
 export function linkItems<T extends { group?: string }>(items: T[], index: number): T[] | null {
+  if (!Number.isInteger(index) || !items[index] || !items[index + 1]) return null;
   if (index < 0 || index + 1 >= items.length) return null;
   const a = items[index];
   const b = items[index + 1];

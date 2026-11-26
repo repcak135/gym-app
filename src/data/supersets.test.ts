@@ -170,3 +170,12 @@ describe('workouts: groups', () => {
     expect((await db.workouts.get(w.id))!.restEndsAt).toBeGreaterThan(0);
   });
 });
+
+describe('bad index (0.9.14 crash)', () => {
+  it('linkItems with NaN or a missing neighbour is null, not a crash', () => {
+    const items = [{ group: undefined }, { group: undefined }];
+    expect(linkItems(items, Number.NaN)).toBeNull();
+    expect(linkItems(items, 5)).toBeNull();
+    expect(linkItems(items, 0)).not.toBeNull();
+  });
+});

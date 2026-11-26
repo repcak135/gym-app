@@ -428,6 +428,8 @@ export async function uncompleteSet(setId: string): Promise<void> {
 }
 
 export async function setCurrentIndex(workoutId: string, index: number): Promise<void> {
+  // NaN came from a 0-wide pager (app hidden mid-scroll) and crashed the workout screen (0.9.14).
+  if (!Number.isFinite(index)) return;
   await mutateWorkout(workoutId, (w) => {
     w.currentIndex = Math.max(0, Math.min(index, (w.exercises?.length ?? 1) - 1));
   });

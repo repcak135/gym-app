@@ -129,7 +129,9 @@ export default function WorkoutPage() {
   const pager = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState<number | null>(null);
   const savedIndex = workout?.currentIndex ?? 0;
-  const current = Math.min(index ?? savedIndex, Math.max(0, items.length - 1));
+  // A bad stored index (NaN from an old bug) must never break the screen: fall back to 0.
+  const wanted = index ?? savedIndex;
+  const current = Math.max(0, Math.min(Number.isFinite(wanted) ? Math.round(wanted) : 0, items.length - 1));
 
   // On open, jump to the exercise the workout was left on.
   const restored = useRef(false);
@@ -147,6 +149,8 @@ export default function WorkoutPage() {
     if (!el || !workout) return;
     if (scrollTimer.current) clearTimeout(scrollTimer.current);
     scrollTimer.current = setTimeout(() => {
+      // Hidden / not laid out (iPhone in the background): width 0 would give NaN.
+      if (!el.clientWidth) return;
       const i = Math.round(el.scrollLeft / el.clientWidth);
       // Never rest between two exercises (CSS snap does not always re-snap).
       if (Math.abs(el.scrollLeft - i * el.clientWidth) > 2) el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' });
