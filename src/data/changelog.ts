@@ -11,6 +11,14 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.9',
+    date: '2026-11-26',
+    items: [
+      'Polskie nazwy ćwiczeń są teraz na pierwszym miejscu — w liście, treningu, planach, historii i statystykach. Angielska nazwa jest mniejsza, pod spodem.',
+      'Wyszukiwarka dalej zna obie nazwy i slang. Ćwiczenie, którego nazwa dokładnie pasuje do wpisanego tekstu, jest na górze listy.',
+    ],
+  },
+  {
     version: '0.9.8',
     date: '2026-11-25',
     items: [

@@ -23,7 +23,7 @@ export default function PlanTemplatesPage() {
   const [error, setError] = useState('');
 
   const nameOf = useMemo(
-    () => new Map((exercises ?? []).map((e) => [e.id, e.namePl ?? e.name])),
+    () => new Map((exercises ?? []).map((e) => [e.id, e.name])),
     [exercises],
   );
 

@@ -19,7 +19,7 @@ export default function ExerciseRowContent({ exercise: ex, size = 56, query }: {
           {ex.custom && <span className="badge-custom">Własne</span>}
         </span>
         {alias && <span className="exercise-row__alias">„{alias}”</span>}
-        {ex.namePl && <span className="exercise-row__pl">{ex.namePl}</span>}
+        {ex.nameEn && <span className="exercise-row__pl">{ex.nameEn}</span>}
         <span className="exercise-row__meta">{meta}</span>
       </span>
     </>

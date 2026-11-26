@@ -84,7 +84,7 @@ export default function ExerciseDetailPage() {
         <h1>{exercise.name}</h1>
         {exercise.custom && <span className="badge-custom">Własne</span>}
       </div>
-      {exercise.namePl && <p className="detail-name-pl">{exercise.namePl}</p>}
+      {exercise.nameEn && <p className="detail-name-pl">{exercise.nameEn}</p>}
 
       <ExercisePhotos exercise={exercise} />
       <ExerciseChips exercise={exercise} />

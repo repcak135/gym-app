@@ -161,7 +161,7 @@ export function ExerciseInstructions({ exercise }: { exercise: Exercise }) {
 export default function ExerciseHowTo({ exercise }: { exercise: Exercise }) {
   return (
     <>
-      {exercise.namePl && <p className="detail-name-pl">{exercise.namePl}</p>}
+      {exercise.nameEn && <p className="detail-name-pl">{exercise.nameEn}</p>}
       <ExercisePhotos exercise={exercise} />
       <ExerciseChips exercise={exercise} />
       <ExerciseTips exerciseId={exercise.id} />

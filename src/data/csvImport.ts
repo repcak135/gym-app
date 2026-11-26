@@ -194,7 +194,7 @@ const key = (s: string) => s.trim().replace(/\s+/g, ' ').toLowerCase();
 
 export function matchExercises(
   names: string[],
-  exercises: Pick<Exercise, 'id' | 'name' | 'aka' | 'similar' | 'maybe'>[],
+  exercises: Pick<Exercise, 'id' | 'name' | 'nameEn' | 'aka' | 'similar' | 'maybe'>[],
   aliases: ExerciseAlias[],
 ): NameMatch[] {
   const ids = new Set(exercises.map((e) => e.id));
@@ -202,12 +202,13 @@ export function matchExercises(
   const byName = new Map<string, string>();
   const hinted = new Map<string, { id: string; score: number }>();
   for (const e of exercises) {
-    for (const n of [e.name, ...(e.aka ?? [])]) if (!byName.has(key(n))) byName.set(key(n), e.id);
+    for (const n of [e.name, ...(e.nameEn ? [e.nameEn] : []), ...(e.aka ?? [])]) if (!byName.has(key(n))) byName.set(key(n), e.id);
     for (const [list, score] of [[e.similar, SIMILAR_SCORE], [e.maybe, MAYBE_SCORE]] as const) {
       for (const n of list ?? []) if (!hinted.has(key(n))) hinted.set(key(n), { id: e.id, score });
     }
   }
-  const tokens = exercises.map((e) => ({ e, t: normalizeName(e.name) }));
+  // Both names compete: an English export ("Leg Press") must still find the Polish-named exercise.
+  const tokens = exercises.flatMap((e) => [e.name, ...(e.nameEn ? [e.nameEn] : [])].map((n) => ({ e, n, t: normalizeName(n) })));
   return names.map((sourceName) => {
     const k = key(sourceName);
     const alias = aliasMap.get(k);
@@ -217,14 +218,14 @@ export function matchExercises(
     const hint = hinted.get(k);
     const src = normalizeName(sourceName);
     let best: { id: string; score: number; len: number } | null = null;
-    for (const { e, t } of tokens) {
+    for (const { e, n, t } of tokens) {
       const score = weightedDice(src, t);
       if (
         !best ||
         score > best.score + 1e-9 ||
-        (Math.abs(score - best.score) < 1e-9 && e.name.length < best.len)
+        (Math.abs(score - best.score) < 1e-9 && n.length < best.len)
       ) {
-        best = { id: e.id, score, len: e.name.length };
+        best = { id: e.id, score, len: n.length };
       }
     }
     if (hint && (!best || best.score < AUTO_MIN)) {

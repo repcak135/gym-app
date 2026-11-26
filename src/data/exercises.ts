@@ -14,7 +14,7 @@ import { classifyDelts, deltHeadsOf, type DeltHead, type Delts } from './deltHea
 // 4: duplicates merged (scripts/dedupe-exercises.ts); user data on removed ids moves to the kept exercise.
 // 5: exercise measure (time / distance / cardio) from exercise-measure.json; the user's choice is kept.
 // 6: deltoid heads (przód / bok / tył) from deltHeads.ts for built-in exercises.
-export const EXERCISE_DB_VERSION = 7;
+export const EXERCISE_DB_VERSION = 8;
 
 type AkaEntry = { aka?: string[]; similar?: string[]; maybe?: string[] };
 const AKA = akaData as Record<string, AkaEntry>;
@@ -64,7 +64,6 @@ export function fromDb(raw: RawExercise): Exercise {
     instructions: raw.instructions,
     images: raw.images,
     custom: false,
-    ...(raw.namePl ? { namePl: raw.namePl } : {}),
     ...AKA[raw.name],
   };
   const delts = classifyDelts(ex);
@@ -72,6 +71,11 @@ export function fromDb(raw: RawExercise): Exercise {
   const measure = MEASURE_BY_ID.get(raw.id);
   if (measure) ex.measure = measure;
   if (raw.mergedNames?.length) ex.aka = [...new Set([...(ex.aka ?? []), ...raw.mergedNames])];
+  // Polish name first (since 0.9.9). Done last: delts/measure/aka above key on the English name.
+  if (raw.namePl) {
+    ex.nameEn = raw.name;
+    ex.name = raw.namePl;
+  }
   return ex;
 }
 
@@ -198,7 +202,7 @@ const matches = (haystack: string, tokens: string[]) =>
 export function matchedAlias(ex: Exercise, query: string | undefined): string | null {
   const tokens = queryTokens(query);
   if (tokens.length === 0) return null;
-  if (matches(normalizeName([ex.name, ex.namePl ?? '', ...(ex.aka ?? [])].join(' | ')), tokens)) return null;
+  if (matches(normalizeName([ex.name, ex.nameEn ?? '', ...(ex.aka ?? [])].join(' | ')), tokens)) return null;
   return searchNames(ex).find((n) => matches(normalizeName(n), tokens)) ?? null;
 }
 
@@ -216,11 +220,16 @@ export function filterExercises(
   return list
     .filter((ex) => {
       if (tokens.length > 0) {
-        // English name, Polish name, other names (e.g. "Pec Deck"), slang and the user's names all count.
-        const own = matches(normalizeName([ex.name, ex.namePl ?? '', ...(ex.aka ?? [])].join(' | ')), tokens);
+        // Polish name, English name, other names (e.g. "Pec Deck"), slang and the user's names all count.
+        const own = matches(normalizeName([ex.name, ex.nameEn ?? '', ...(ex.aka ?? [])].join(' | ')), tokens);
         const alt = searchNames(ex).map(normalizeName).filter((n) => matches(n, tokens));
         if (!own && alt.length === 0) return false;
         if (alt.length > 0) aliasRank.set(ex.id, alt.includes(whole) ? 2 : 1);
+        // Own names (Polish or English) that equal / start with the query go first:
+        // "leg press" → "Wypychanie nóg na suwnicy" (Leg Press) before "Sled Side Leg Press".
+        const names = [ex.name, ex.nameEn ?? '', ...(ex.aka ?? [])].map(normalizeName);
+        if (names.includes(whole)) aliasRank.set(ex.id, 3);
+        else if (!aliasRank.has(ex.id) && names.some((n) => n.startsWith(whole))) aliasRank.set(ex.id, 1.5);
       }
       if (muscle != null && muscle.startsWith('shoulders:')) {
         if (!deltHeadsOf(ex, 'any').includes(muscle.slice('shoulders:'.length) as DeltHead)) return false;

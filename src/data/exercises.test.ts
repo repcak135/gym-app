@@ -392,7 +392,7 @@ describe('dodatkowe ćwiczenia (wersja 4 bazy)', () => {
 
     await seedExercises();
 
-    expect(EXERCISE_DB_VERSION).toBe(7);
+    expect(EXERCISE_DB_VERSION).toBe(8);
     expect((await db.settings.get('app'))?.exerciseDbVersion).toBe(EXERCISE_DB_VERSION);
     const fly = (await db.exercises.get('Butterfly'))!;
     expect(fly.weightStep).toBe(5);
@@ -404,17 +404,21 @@ describe('dodatkowe ćwiczenia (wersja 4 bazy)', () => {
     expect((await db.notes.get('Butterfly'))?.text).toBe('siedzenie 4');
     expect(await db.sets.count()).toBe(1);
     const lying = await db.exercises.get('x-lying-chest-press-machine');
-    expect(lying).toMatchObject({ name: 'Lying Chest Press Machine', custom: false, equipment: 'machine', images: [] });
+    expect(lying).toMatchObject({ nameEn: 'Lying Chest Press Machine', custom: false, equipment: 'machine', images: [] });
     const og = (await import('./exercises-og.json')).default as unknown as { added: unknown[]; merged: Record<string, string> };
     const extrasKept = EXTRA_EXERCISES.filter((e) => !og.merged[e.id]).length;
     expect(await db.exercises.count()).toBe(876 + extrasKept + og.added.length + 1);
     // openGym: Polish names on existing exercises and new og- exercises
-    expect((await db.exercises.get('Barbell_Bench_Press_-_Medium_Grip'))?.namePl).toBe('Wyciskanie sztangi na ławce płaskiej');
+    // Polish name first, English kept as nameEn (0.9.9)
+    expect(await db.exercises.get('Barbell_Bench_Press_-_Medium_Grip')).toMatchObject({
+      name: 'Wyciskanie sztangi na ławce płaskiej',
+      nameEn: 'Barbell Bench Press - Medium Grip',
+    });
     // og-1041 duplicates our Lying Chest Press Machine: merged into it, its names kept for search
     expect(await db.exercises.get('og-1041')).toBeUndefined();
     const lyingPress = (await db.exercises.get('x-lying-chest-press-machine'))!;
     expect(lyingPress.aka).toContain('Lever Lying Chest Press (Plate Loaded)');
-    expect(lyingPress.namePl).toMatch(/^Wyciskanie w leżeniu/);
+    expect(lyingPress.name).toMatch(/^Wyciskanie w leżeniu/);
     expect(await db.exercises.get('og-0002')).toMatchObject({ custom: false, images: [] });
   });
 
@@ -517,7 +521,7 @@ describe('katalog openGym', () => {
 
   it('szukanie po angielsku i po polsku, bez polskich znaków', () => {
     const list = [
-      { id: 'a', name: 'Lever Seated Row', namePl: 'Wiosłowanie siedząc na maszynie', primaryMuscles: [], secondaryMuscles: [], equipment: 'machine', category: 'strength', instructions: [], images: [], custom: false },
+      { id: 'a', name: 'Wiosłowanie siedząc na maszynie', nameEn: 'Lever Seated Row', primaryMuscles: [], secondaryMuscles: [], equipment: 'machine', category: 'strength', instructions: [], images: [], custom: false },
       { id: 'b', name: 'Butterfly', aka: ['Pec Deck'], primaryMuscles: [], secondaryMuscles: [], equipment: 'machine', category: 'strength', instructions: [], images: [], custom: false },
     ];
     expect(filterExercises(list, { query: 'wioslowanie maszynie' }).map((e) => e.id)).toEqual(['a']);

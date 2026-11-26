@@ -54,7 +54,7 @@ Lazy-loaded: ExcelJS (report), `qr-scanner`, and the openGym catalogue chunk. Th
   - openGym catalogue text (AGPL): `exercises-og.json`, holding `added`, `polishNames`, `aliases` and `merged` (duplicate → kept id)
 - **Never use openGym's images or video, nor MuscleWiki content.**
 - **Polish:**
-  - names: `namePl`, from `exercises-og.json` `polishNames`
+  - names: `exercises-og.json` `polishNames` → `Exercise.name` (English kept in `nameEn`)
   - instructions: `instructions-pl.json`, applied only when the step count matches
   - tips: `tips-pl.json`
   - gym slang: `exercise-aka.json`, plus `SLANG` in `exercises.ts`
@@ -93,7 +93,8 @@ Lazy-loaded: ExcelJS (report), `qr-scanner`, and the openGym catalogue chunk. Th
 
 ## State (update on every release)
 
-- **Current version: 0.9.8** (2026-11-25), catalogue `EXERCISE_DB_VERSION` 7.
+- **Current version: 0.9.9** (2026-11-26), catalogue `EXERCISE_DB_VERSION` 8.
+- **Exercise names (0.9.9):** a built-in exercise's `name` is Polish when one exists; the English original is in `nameEn` (shown smaller underneath, searchable, matched by the CSV import). Swapped in `fromDb` after delts/measure/aka, which key on the English name. e2e specs use the Polish names.
 - **Done:** plans, live workout, history, stats + body map, body measurements, backup/restore (including the theme), plan and exercise sharing (link/QR), Excel report, Gym Day CSV import, motivation (weekly goal, streak, badges, yearly calendar), per-set progression, supersets (one rest per round, set on the last item), timed and distance exercises, warm-up generator ("Dobierz rozgrzewkę"), templates, shoulder heads, colour themes, gym slang search, consistency audits, gender-neutral wording.
 - **Polish content:** every catalogue exercise has a Polish name and Polish instructions. Tips: 482 exercises (the popular strength ones). Olympic lifts use Polish terms: zarzut = clean, wybicie = jerk, rwanie = snatch, podrzut = clean and jerk.
 - **Copy rule:** gender-neutral Polish. Use imperatives or impersonal forms, never "zrobiłeś", "dałbyś", "gotowy".

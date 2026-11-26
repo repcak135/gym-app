@@ -434,7 +434,7 @@ export default function WorkoutPage() {
                     {ex ? <ExerciseThumb exercise={ex} size={56} /> : <span style={{ width: 56, height: 56 }} />}
                     <span className="wl-row__text">
                       <span className="wl-row__name">{ex?.name ?? 'Nieznane ćwiczenie'}</span>
-                      {ex?.namePl && <span className="wl-row__pl">{ex.namePl}</span>}
+                      {ex?.nameEn && <span className="wl-row__pl">{ex.nameEn}</span>}
                       <span className="wl-row__progress">
                         {p.completed}/{p.total} {setsWord(p.total)}
                         {done && ' · Zrobione'}

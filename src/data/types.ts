@@ -23,8 +23,8 @@ export interface Exercise {
   measure?: Measure;
   /** The user's choice on a built-in exercise; kept on reseed. */
   measureOverride?: Measure;
-  /** Polish name (openGym catalogue); shown under the English name and searchable. */
-  namePl?: string;
+  /** Original English name of a built-in exercise whose `name` is Polish; shown under it and searchable. */
+  nameEn?: string;
   /** Other names of the same exercise (old apps, gyms); the import matches them exactly. */
   aka?: string[];
   /** The user's own other names for this exercise (searchable); kept on reseed and in the backup. */
