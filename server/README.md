@@ -31,6 +31,7 @@ Live at https://banana-gym-push.banana-gym-push.workers.dev.
   - `node server/admin-reset.mjs <nick>`: prints a temporary password once; the member must change it at login.
   - `node server/admin-remove.mjs <nick>`: deletes the member and their scores.
 - Inspect: `npx wrangler d1 execute banana-gym --remote --command "SELECT nick, share_workouts, share_bench, must_change FROM members"`.
+- Secret `SALT_SECRET` (random, not stored elsewhere; replace freely): HMAC key for fake salts of unknown nicks, so `/account/salt` does not reveal which nicks exist.
 - Optional secret `JOIN_CODE`: when set, joining needs that code.
 
 ## Crash reports

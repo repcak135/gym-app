@@ -5,6 +5,8 @@ export interface RankEnv {
   DB: D1Database;
   /** Secret: admin scripts (reset / remove a member). */
   ADMIN_TOKEN?: string;
+  /** Secret: HMAC key for the fake salts of unknown nicks (separate from ADMIN_TOKEN). */
+  SALT_SECRET?: string;
   /** Optional secret: when set, joining needs this code. */
   JOIN_CODE?: string;
 }
@@ -76,8 +78,8 @@ const isWeek = (v: unknown): v is string => typeof v === 'string' && /^\d{4}-W(0
 const isMonth = (v: unknown): v is string => typeof v === 'string' && /^\d{4}-(0[1-9]|1[0-2])$/.test(v);
 const count = (v: unknown, max: number): v is number => typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= max;
 
-async function fakeSalt(lower: string, env: RankEnv): Promise<string> {
-  const k = await crypto.subtle.importKey('raw', enc.encode(env.ADMIN_TOKEN ?? 'banana-gym'), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+async function fakeSalt(lower: string, secret: string): Promise<string> {
+  const k = await crypto.subtle.importKey('raw', enc.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
   const mac = new Uint8Array(await crypto.subtle.sign('HMAC', k, enc.encode(`salt:${lower}`))).slice(0, 16);
   let s = '';
   for (const x of mac) s += String.fromCharCode(x);
@@ -144,7 +146,9 @@ export async function rankRoute(r: RankRequest, env: RankEnv): Promise<Res | nul
       if (!n) return fail(400);
       const m = await db.prepare('SELECT client_salt, iterations FROM members WHERE nick_lower = ?').bind(n.lower).first<Member>();
       // Unknown nick: a stable fake salt, so this endpoint does not tell which nicks exist (login then fails with 401).
-      return ok(m ? { salt: m.client_salt, iterations: m.iterations } : { salt: await fakeSalt(n.lower, env), iterations: ITERATIONS });
+      if (m) return ok({ salt: m.client_salt, iterations: m.iterations });
+      // Without the secret: a plain 404 (never a constant key).
+      return env.SALT_SECRET ? ok({ salt: await fakeSalt(n.lower, env.SALT_SECRET), iterations: ITERATIONS }) : fail(404);
     }
 
     case 'POST /account/join': {
@@ -184,12 +188,17 @@ export async function rankRoute(r: RankRequest, env: RankEnv): Promise<Res | nul
         db.prepare('INSERT INTO attempts (key, at) VALUES (?, ?)').bind(ipK, now),
         db.prepare('DELETE FROM attempts WHERE at < ?').bind(now - 3600_000),
       ]);
-      if ((await fails(db, nickKey, now)) > FAILS_PER_NICK || (await fails(db, ipK, now)) > FAILS_PER_IP) return fail(429);
+      const mine = db.prepare('DELETE FROM attempts WHERE rowid IN (?, ?)').bind(a1.meta.last_row_id, a2.meta.last_row_id);
+      if ((await fails(db, nickKey, now)) > FAILS_PER_NICK || (await fails(db, ipK, now)) > FAILS_PER_IP) {
+        // A refused attempt does not extend the lock: it ends 15 minutes after the 5th wrong password.
+        await mine.run();
+        return fail(429);
+      }
       const m = await db.prepare('SELECT * FROM members WHERE nick_lower = ?').bind(n.lower).first<Member>();
       // Same work for an unknown nick, so timing does not tell which nicks exist.
       const h = await passwordHash(m?.server_salt ?? 'x', b.key);
       if (!m || !sameSecret(h, m.hash)) return fail(401);
-      await db.prepare('DELETE FROM attempts WHERE rowid IN (?, ?)').bind(a1.meta.last_row_id, a2.meta.last_row_id).run();
+      await mine.run();
       return ok({ token: await newSession(db, m.id, now), ...memberView(m) });
     }
 

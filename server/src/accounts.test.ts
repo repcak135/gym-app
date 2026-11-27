@@ -15,7 +15,7 @@ let env: Env;
 let now: number;
 
 beforeEach(() => {
-  env = { DB: nodeD1(new URL('../migrations/0001_ranking.sql', import.meta.url)), ADMIN_TOKEN: 'admin-secret-0123456789' } as unknown as Env;
+  env = { DB: nodeD1(new URL('../migrations/0001_ranking.sql', import.meta.url)), ADMIN_TOKEN: 'admin-secret-0123456789', SALT_SECRET: 'salt-secret-test' } as unknown as Env;
   now = NOW;
 });
 
@@ -102,6 +102,20 @@ describe('accounts', () => {
     expect((await call('POST', '/account/login', { nick: 'Tomek', key: KEY_A })).status).toBe(429);
     now += 15 * 60_000 + 1;
     expect((await call('POST', '/account/login', { nick: 'Tomek', key: KEY_A })).status).toBe(200);
+  });
+
+  it('hammering a locked nick does not extend the lock', async () => {
+    await join('Lena');
+    for (let i = 0; i < 5; i++) await call('POST', '/account/login', { nick: 'Lena', key: KEY_B }, { ip: `9.0.0.${i}` });
+    now += 10 * 60_000;
+    for (let i = 0; i < 10; i++) expect((await call('POST', '/account/login', { nick: 'Lena', key: KEY_B }, { ip: '9.9.9.9' })).status).toBe(429);
+    now += 5 * 60_000 + 1;
+    expect((await call('POST', '/account/login', { nick: 'Lena', key: KEY_A })).status).toBe(200);
+  });
+
+  it('without SALT_SECRET an unknown nick gets a plain 404, never a constant key', async () => {
+    delete env.SALT_SECRET;
+    expect((await call('GET', '/account/salt?nick=nikogo')).status).toBe(404);
   });
 
   it('an IP that fails on many nicks is limited too', async () => {
