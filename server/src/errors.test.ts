@@ -41,6 +41,13 @@ describe('parseReport', () => {
     expect(r.receivedAt).toBe(NOW);
   });
 
+  it('removes terminal escape and other control characters, keeps stack newlines', () => {
+    const r = parseReport({ message: 'a\u001b[2Jb\u009bc\u0007', stack: 'l1\nl2\r\u001b]0;x', device: '\u001b[31mred' }, NOW)!;
+    expect(r.message).toBe('a[2Jbc');
+    expect(r.stack).toBe('l1\nl2]0;x');
+    expect(r.device).toBe('[31mred');
+  });
+
   it('refuses a report without a message', () => {
     expect(parseReport({ version: '1' }, NOW)).toBeNull();
     expect(parseReport(null, NOW)).toBeNull();

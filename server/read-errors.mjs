@@ -11,7 +11,16 @@ if (!res.ok) {
   console.error(`HTTP ${res.status}: ${await res.text()}`);
   process.exit(1);
 }
-const reports = await res.json();
+// Reports come from the internet: never let them drive the terminal (escape sequences).
+const clean = (v) => String(v ?? '').replace(/[\u0000-\u0009\u000b-\u001f\u007f-\u009f]/g, '?');
+const reports = (await res.json()).map((r) => ({
+  receivedAt: Number(r.receivedAt) || 0,
+  version: clean(r.version),
+  device: clean(r.device),
+  path: clean(r.path),
+  message: clean(r.message),
+  stack: clean(r.stack),
+}));
 if (!reports.length) console.log('Brak raportów.');
 for (const r of reports) {
   console.log(`${new Date(r.receivedAt).toISOString()}  v${r.version}  ${r.device}  ${r.path}`);

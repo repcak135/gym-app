@@ -21,7 +21,8 @@ export const MAX_REPORTS = 500;
 export const MAX_AGE_MS = 30 * 24 * 3600_000;
 export const PER_IP_PER_MINUTE = 10;
 
-const str = (v: unknown, max: number) => (typeof v === 'string' ? v.slice(0, max) : '');
+// Control characters (terminal escapes) are removed; only newlines survive (stack lines).
+const str = (v: unknown, max: number) => (typeof v === 'string' ? v.replace(/[\u0000-\u0009\u000b-\u001f\u007f-\u009f]/g, '').slice(0, max) : '');
 // Drops "?query" from URLs; keeps the ":line:col" of stack frames.
 const noQuery = (s: string) => s.replace(/\?[^\s#):]*/g, '');
 
