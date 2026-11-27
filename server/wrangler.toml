@@ -6,15 +6,23 @@ workers_dev = true
 [vars]
 VAPID_PUBLIC_KEY = "BAK-6RwRdELd-jzYiiOdrrB77Y_v4xVtn1_TWOU7YlgetaRdC000Asuu0UQfaZ3VaDe9VYNoCyfYO0TEecfr5aI"
 VAPID_SUBJECT = "https://repcak135.github.io/gym-app/"
-# VAPID_PRIVATE_KEY is only a Cloudflare secret (see README.md), never in git.
+# VAPID_PRIVATE_KEY and ERRORS_TOKEN are only Cloudflare secrets (see README.md), never in git.
 
 [[durable_objects.bindings]]
 name = "DEVICE"
 class_name = "Device"
 
+[[durable_objects.bindings]]
+name = "ERRORS"
+class_name = "ErrorLog"
+
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["Device"]
+
+[[migrations]]
+tag = "v2"
+new_sqlite_classes = ["ErrorLog"]
 
 [observability]
 enabled = true

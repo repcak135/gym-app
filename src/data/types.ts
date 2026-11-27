@@ -189,4 +189,6 @@ export interface AppSettings {
   pushId?: string;
   /** Device-only: the "Powiadomienie o końcu przerwy?" question was answered (asked once). */
   pushPromptDone?: boolean;
+  /** Device-only: "Wysyłaj raporty błędów" (undefined = on). */
+  errorReports?: boolean;
 }

@@ -11,6 +11,13 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.19',
+    date: '2026-11-27',
+    items: [
+      'Raporty błędów: gdy coś się zepsuje, aplikacja wysyła autorowi wersję, treść błędu, nazwę ekranu i model telefonu (np. „iPhone, iOS 26”) — bez treningów, ciężarów, notatek ani nazw. Wyłączysz to w Ustawieniach › Dane › „Wysyłaj raporty błędów”.',
+    ],
+  },
+  {
     version: '0.9.18',
     date: '2026-11-27',
     items: [

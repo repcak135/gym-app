@@ -105,6 +105,16 @@ describe('backup', () => {
     expect(s.pushPromptDone).toBe(true);
   });
 
+  it('"Wysyłaj raporty błędów" stays on this phone: not in the backup, kept on restore', async () => {
+    await seedEverything();
+    await updateSettings({ errorReports: false });
+    const file = await createBackup(5);
+    expect(file.data.settings).not.toHaveProperty('errorReports');
+    const foreign = { ...file, data: { ...file.data, settings: { ...file.data.settings, errorReports: true } } };
+    await restoreBackup(parseBackup(JSON.stringify(foreign)));
+    expect((await getSettings()).errorReports).toBe(false);
+  });
+
   it('restore on a phone without push leaves push off', async () => {
     await seedEverything();
     await restoreBackup(parseBackup(JSON.stringify(await createBackup(5))));

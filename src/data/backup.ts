@@ -23,7 +23,7 @@ export interface ExerciseOverride {
 }
 
 /** Settings that travel with the data (device-only fields stay on the device). */
-export type BackupSettings = Partial<Omit<AppSettings, 'key' | 'exerciseDbVersion' | 'lastBackupAt' | 'backupReminderSnoozedUntil' | 'lastSeenVersion' | 'restPush' | 'pushId' | 'pushPromptDone'>>;
+export type BackupSettings = Partial<Omit<AppSettings, 'key' | 'exerciseDbVersion' | 'lastBackupAt' | 'backupReminderSnoozedUntil' | 'lastSeenVersion' | 'restPush' | 'pushId' | 'pushPromptDone' | 'errorReports'>>;
 
 export interface BackupData {
   plans: Plan[];
@@ -54,7 +54,7 @@ export class BackupError extends Error {
   }
 }
 
-const DEVICE_ONLY = new Set(['key', 'exerciseDbVersion', 'lastBackupAt', 'backupReminderSnoozedUntil', 'lastSeenVersion', 'restPush', 'pushId', 'pushPromptDone']);
+const DEVICE_ONLY = new Set(['key', 'exerciseDbVersion', 'lastBackupAt', 'backupReminderSnoozedUntil', 'lastSeenVersion', 'restPush', 'pushId', 'pushPromptDone', 'errorReports']);
 
 export async function createBackup(now = Date.now()): Promise<BackupFile> {
   return db.transaction('r', [db.plans, db.workouts, db.sets, db.notes, db.aliases, db.body, db.exercises, db.settings], async () => {
@@ -247,6 +247,7 @@ export async function restoreBackup(f: BackupFile): Promise<void> {
       restPush: device?.restPush,
       pushId: device?.pushId,
       pushPromptDone: device?.pushPromptDone,
+      errorReports: device?.errorReports,
       lastBackupAt: f.exportedAt,
     }, d.settings);
     if (settings.exerciseDbVersion === undefined) delete settings.exerciseDbVersion;
@@ -254,6 +255,7 @@ export async function restoreBackup(f: BackupFile): Promise<void> {
     if (settings.restPush === undefined) delete settings.restPush;
     if (settings.pushId === undefined) delete settings.pushId;
     if (settings.pushPromptDone === undefined) delete settings.pushPromptDone;
+    if (settings.errorReports === undefined) delete settings.errorReports;
     await db.settings.put(settings);
   });
   // Only after the data is safely in: a failed restore must not change the look either.

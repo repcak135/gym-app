@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
+import { reportError } from '../errors/reporter';
 
 /**
  * A render crash shows this instead of an empty screen: the error for a screenshot, and a way out
@@ -13,6 +14,7 @@ export default class CrashScreen extends Component<{ children: ReactNode }, { er
 
   componentDidCatch(error: Error, info: ErrorInfo) {
     console.error('Banana Gym crash', error, info.componentStack);
+    reportError(error);
   }
 
   render() {

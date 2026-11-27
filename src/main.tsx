@@ -10,7 +10,9 @@ import { listenForInstallPrompt } from './data/installGuide'
 import { applyTheme } from './theme/themes'
 import { getSettings } from './data/settings'
 import { presetHasSound, setBreakSilent, setSoundWanted } from './audio/beep'
+import { installErrorReporting, setErrorReports } from './errors/reporter'
 
+installErrorReporting()
 applyTheme()
 
 void requestPersistentStorage()
@@ -20,6 +22,7 @@ listenForInstallPrompt()
 void getSettings().then((s) => {
   setSoundWanted(presetHasSound(s.restSoundPreset))
   setBreakSilent(!!s.restSoundBreaksSilent)
+  setErrorReports(s.errorReports !== false)
 }).catch(() => {})
 
 createRoot(document.getElementById('root')!).render(

@@ -313,6 +313,14 @@ export default function SettingsPage() {
           <span className="settings-row__label">Odtwórz plan z historii</span>
           <ChevronRight size={20} aria-hidden="true" />
         </Link>
+        <ToggleRow
+          label="Wysyłaj raporty błędów"
+          checked={settings.errorReports !== false}
+          onChange={(v) => void updateSettings({ errorReports: v })}
+        />
+        <p className="settings-group__hint">
+          Gdy coś się zepsuje, aplikacja wysyła autorowi wersję, treść błędu, nazwę ekranu i model telefonu — bez treningów, ciężarów, notatek ani nazw.
+        </p>
       </section>
 
       <section className="settings-group" aria-labelledby="set-weight">

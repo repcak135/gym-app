@@ -9,6 +9,7 @@ import { WhatsNewOnLaunch } from './components/WhatsNewSheet';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from './data/db';
 import { setHapticsEnabled } from './haptics';
+import { setErrorReports } from './errors/reporter';
 import StartPage from './pages/StartPage';
 import PlansPage from './pages/PlansPage';
 import PlanTemplatesPage from './pages/PlanTemplatesPage';
@@ -79,6 +80,15 @@ function HapticsSetting() {
   return null;
 }
 
+// Crash reports follow Ustawienia > Wysyłaj raporty błędów (on unless turned off).
+function ErrorReportsSetting() {
+  const on = useLiveQuery(async () => (await db.settings.get('app'))?.errorReports, []);
+  useEffect(() => {
+    setErrorReports(on !== false);
+  }, [on]);
+  return null;
+}
+
 const depth = (path: string) => path.split('/').filter(Boolean).length;
 
 /** Keyed on the path so each screen plays a short enter animation; direction from path depth. */
@@ -108,6 +118,7 @@ export default function App() {
       <ScrollToTop />
       <ResumeWorkout />
       <HapticsSetting />
+      <ErrorReportsSetting />
       <RestPush />
       <KeyboardInset />
       <main>
