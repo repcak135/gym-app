@@ -1,6 +1,6 @@
 # Friends' ranking and accounts: design
 
-Date: 2026-11-27. Status: draft for the owner's approval (builder check done).
+Date: 2026-11-27. Status: approved by the owner on 2026-11-27.
 Part 2 of 3 of the server work (push is done, cloud backup comes next). The accounts built here are reused by the cloud backup.
 
 ## Why
