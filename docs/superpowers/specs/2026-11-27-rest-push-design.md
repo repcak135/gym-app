@@ -1,6 +1,6 @@
 # Rest-end push notification: design
 
-Date: 2026-11-27. Status: draft for the owner's approval (builder check done).
+Date: 2026-11-27. Status: approved by the owner on 2026-11-27.
 Part 1 of 3 of the server work, in this order: push, then a friends' ranking, then cloud backup. Ranking and backup get their own designs; both need an explicit opt-in screen with a choice of which data to share (owner's requirement).
 
 ## Why
