@@ -183,4 +183,8 @@ export interface AppSettings {
   exerciseDbVersion?: number;
   /** Device-only: last app version whose "Co nowego" the user has seen (not in backups). */
   lastSeenVersion?: string;
+  /** Device-only: "Powiadomienie przy zablokowanym ekranie" (rest-end push) is on. */
+  restPush?: boolean;
+  /** Device-only: random id of this phone on the push server. */
+  pushId?: string;
 }

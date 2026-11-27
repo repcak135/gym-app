@@ -7,7 +7,7 @@ import WhatsNewSheet from '../components/WhatsNewSheet';
 import InstallGuideSheet from '../components/InstallGuide';
 import { CHANGELOG } from '../data/changelog';
 import { APP_VERSION } from '../version';
-import { toggleSpike } from '../push/spike';
+import PushSetting from '../push/PushSetting';
 import { REST_SOUND_PRESETS, presetHasSound, previewSound, setBreakSilent, setSoundWanted } from '../audio/beep';
 import { isAndroid, isIOS } from '../audio/backgroundRest';
 import { parseWeight } from '../data/progression';
@@ -25,7 +25,6 @@ import './PlansPage.css';
 import './SettingsPage.css';
 
 const kg = (n: number) => `${String(n).replace('.', ',')} kg`;
-const spikeTaps = { current: 0, last: 0 };
 const range = (from: number, to: number) => Array.from({ length: to - from + 1 }, (_, i) => from + i);
 
 const AFTER_OPTIONS: [AfterExerciseDone, string][] = [
@@ -235,7 +234,8 @@ export default function SettingsPage() {
               : 'Muzyka z innych aplikacji gra dalej (na moment się ścisza). Gdy telefon jest wyciszony przełącznikiem, dźwięku nie będzie — koniec przerwy widać na ekranie.'}
           </p>
         )}
-        <RestLockNote background={!!settings.restBackgroundAudio} />
+        <RestLockNote background={!!settings.restBackgroundAudio} push={!!settings.restPush} />
+        <PushSetting on={!!settings.restPush} pushId={settings.pushId} />
       </section>
 
       <section className="settings-group" aria-labelledby="set-after">
@@ -347,19 +347,7 @@ export default function SettingsPage() {
           </span>
           <ChevronRight size={20} aria-hidden="true" />
         </button>
-        <div
-          className="settings-row"
-          onClick={() => {
-            // TEMPORARY push spike: 5 quick taps toggle it.
-            const now = Date.now();
-            spikeTaps.current = now - spikeTaps.last < 800 ? spikeTaps.current + 1 : 1;
-            spikeTaps.last = now;
-            if (spikeTaps.current >= 5) {
-              spikeTaps.current = 0;
-              window.alert(toggleSpike() ? 'Test powiadomień: WŁĄCZONY' : 'Test powiadomień: wyłączony');
-            }
-          }}
-        >
+        <div className="settings-row">
           <span className="settings-row__label">Wersja</span>
           <span className="settings-version">{APP_VERSION}</span>
         </div>
@@ -412,7 +400,7 @@ function SettingRow({ label, id, children }: { label: string; id: string; childr
 }
 
 /** Why the end sound may be late with the screen off: different on Android and iPhone. */
-function RestLockNote({ background }: { background: boolean }) {
+function RestLockNote({ background, push }: { background: boolean; push: boolean }) {
   if (isAndroid()) {
     return (
       <p className="settings-group__hint settings-rest-lock">
@@ -425,7 +413,9 @@ function RestLockNote({ background }: { background: boolean }) {
   if (isIOS()) {
     return (
       <p className="settings-group__hint settings-rest-lock">
-        Zablokowany telefon: iPhone usypia aplikację i dźwięk zagra dopiero po powrocie do niej. Na treningu aplikacja sama nie wygasza ekranu — nie blokuj go przyciskiem.
+        {push
+          ? 'Zablokowany telefon: iPhone usypia aplikację, więc dźwięk aplikacji nie zagra — zamiast niego przyjdzie powiadomienie „Koniec przerwy”.'
+          : 'Zablokowany telefon: iPhone usypia aplikację i dźwięk zagra dopiero po powrocie do niej. Na treningu aplikacja sama nie wygasza ekranu — nie blokuj go przyciskiem.'}
       </p>
     );
   }

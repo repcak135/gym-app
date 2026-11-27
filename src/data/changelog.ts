@@ -11,6 +11,15 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.17',
+    date: '2026-11-27',
+    items: [
+      'Nowe: powiadomienie „Koniec przerwy” przy zablokowanym telefonie. Włącz w Ustawieniach › Koniec przerwy › „Powiadomienie przy zablokowanym ekranie” (domyślnie wyłączone). Na iPhonie działa w aplikacji dodanej do ekranu początkowego.',
+      'Co wychodzi z telefonu, gdy to włączysz: anonimowy adres powiadomień, godzina końca przerwy i jej opis (numer serii i nazwa ćwiczenia) — tylko wtedy, gdy schowasz aplikację w trakcie przerwy. Ciężary, historia i plany zostają w telefonie, a wpis znika z serwera zaraz po wysłaniu powiadomienia.',
+      'Gdy aplikacja jest na ekranie, powiadomienie nie przychodzi — gra zwykły dźwięk końca przerwy.',
+    ],
+  },
+  {
     version: '0.9.16',
     date: '2026-11-26',
     items: [

@@ -89,6 +89,28 @@ describe('backup', () => {
     expect(s.exerciseDbVersion).toBe(4);
   });
 
+  it('push switch and push id stay on this phone: not in the backup, kept on restore', async () => {
+    await seedEverything();
+    await updateSettings({ restPush: true, pushId: 'a'.repeat(32) });
+    const file = await createBackup(5);
+    expect(file.data.settings).not.toHaveProperty('restPush');
+    expect(file.data.settings).not.toHaveProperty('pushId');
+    // a file that somehow carries push fields from another phone must not overwrite ours
+    const foreign = { ...file, data: { ...file.data, settings: { ...file.data.settings, restPush: false, pushId: 'b'.repeat(32) } } };
+    await restoreBackup(parseBackup(JSON.stringify(foreign)));
+    const s = await getSettings();
+    expect(s.restPush).toBe(true);
+    expect(s.pushId).toBe('a'.repeat(32));
+  });
+
+  it('restore on a phone without push leaves push off', async () => {
+    await seedEverything();
+    await restoreBackup(parseBackup(JSON.stringify(await createBackup(5))));
+    const s = await getSettings();
+    expect(s).not.toHaveProperty('restPush');
+    expect(s).not.toHaveProperty('pushId');
+  });
+
   it('round-trip keeps own exercise names and superset/time fields in plans', async () => {
     await seedEverything();
     await db.exercises.update('Bench_Press', { userNames: ['klata płasko'] });

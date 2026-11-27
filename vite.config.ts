@@ -36,6 +36,8 @@ export default defineConfig({
         ],
       },
       workbox: {
+        // Rest-end push (notification + click); see public/push-sw.js.
+        importScripts: ['push-sw.js'],
         globPatterns: ['**/*.{js,css,html,svg,png,webmanifest}'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         runtimeCaching: [

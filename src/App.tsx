@@ -33,7 +33,7 @@ import BackupPage from './pages/BackupPage';
 import WorkoutPage from './pages/WorkoutPage';
 import WorkoutSummaryPage from './pages/WorkoutSummaryPage';
 import { getActiveWorkout } from './data/workouts';
-import { PushSpike } from './push/spike';
+import RestPush from './push/RestPush';
 
 // Each new screen starts at the top (the page scroll would otherwise carry over).
 function ScrollToTop() {
@@ -107,7 +107,7 @@ export default function App() {
       <ScrollToTop />
       <ResumeWorkout />
       <HapticsSetting />
-      <PushSpike />
+      <RestPush />
       <KeyboardInset />
       <main>
         <Screen>

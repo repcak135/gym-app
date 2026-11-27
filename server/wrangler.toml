@@ -3,5 +3,18 @@ main = "src/index.ts"
 compatibility_date = "2026-11-01"
 workers_dev = true
 
+[vars]
+VAPID_PUBLIC_KEY = "BAK-6RwRdELd-jzYiiOdrrB77Y_v4xVtn1_TWOU7YlgetaRdC000Asuu0UQfaZ3VaDe9VYNoCyfYO0TEecfr5aI"
+VAPID_SUBJECT = "https://repcak135.github.io/gym-app/"
+# VAPID_PRIVATE_KEY is only a Cloudflare secret (see README.md), never in git.
+
+[[durable_objects.bindings]]
+name = "DEVICE"
+class_name = "Device"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Device"]
+
 [observability]
 enabled = true

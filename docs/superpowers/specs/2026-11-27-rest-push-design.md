@@ -57,6 +57,8 @@ The app tells the server only while it is not visible:
 
 Risk: iPhone may drop the request fired at the moment of locking. **First build step is a spike** on the owner's iPhone: lock the phone during a rest and check that the server received `/schedule`. If it does not arrive reliably, fall back to scheduling at rest start and on every change ("+15 s", "Pomiń", new set), and cancelling when the app is visible at rest end. The service worker then suppresses nothing (iOS forbids it), so in that fallback the app must cancel a few seconds before the end while visible.
 
+**Spike result (2026-11-27):** the owner locked the iPhone during 7 rests; all 7 `/schedule` requests arrived (consecutive sequence numbers, no gaps) within 68–407 ms. The owner stopped before 10; Claude accepted 7/7 with no loss and shipped the hide/show design.
+
 **Owner's decision (2026-11-27):** if the spike fails, ship the fallback. An occasional double alert (in-app sound + notification while the screen dims) is acceptable to the owner; the notification is never dropped for that reason. The anti-goal "no push while on screen" is then best effort.
 
 ## Pieces
