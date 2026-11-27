@@ -7,6 +7,7 @@ import WhatsNewSheet from '../components/WhatsNewSheet';
 import InstallGuideSheet from '../components/InstallGuide';
 import { CHANGELOG } from '../data/changelog';
 import { APP_VERSION } from '../version';
+import { toggleSpike } from '../push/spike';
 import { REST_SOUND_PRESETS, presetHasSound, previewSound, setBreakSilent, setSoundWanted } from '../audio/beep';
 import { isAndroid, isIOS } from '../audio/backgroundRest';
 import { parseWeight } from '../data/progression';
@@ -24,6 +25,7 @@ import './PlansPage.css';
 import './SettingsPage.css';
 
 const kg = (n: number) => `${String(n).replace('.', ',')} kg`;
+const spikeTaps = { current: 0, last: 0 };
 const range = (from: number, to: number) => Array.from({ length: to - from + 1 }, (_, i) => from + i);
 
 const AFTER_OPTIONS: [AfterExerciseDone, string][] = [
@@ -345,7 +347,19 @@ export default function SettingsPage() {
           </span>
           <ChevronRight size={20} aria-hidden="true" />
         </button>
-        <div className="settings-row">
+        <div
+          className="settings-row"
+          onClick={() => {
+            // TEMPORARY push spike: 5 quick taps toggle it.
+            const now = Date.now();
+            spikeTaps.current = now - spikeTaps.last < 800 ? spikeTaps.current + 1 : 1;
+            spikeTaps.last = now;
+            if (spikeTaps.current >= 5) {
+              spikeTaps.current = 0;
+              window.alert(toggleSpike() ? 'Test powiadomień: WŁĄCZONY' : 'Test powiadomień: wyłączony');
+            }
+          }}
+        >
           <span className="settings-row__label">Wersja</span>
           <span className="settings-version">{APP_VERSION}</span>
         </div>
