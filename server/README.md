@@ -23,6 +23,16 @@ Live at https://banana-gym-push.banana-gym-push.workers.dev.
 - The private key (a P-256 JWK) is **only** a Cloudflare secret: `npx wrangler secret put VAPID_PRIVATE_KEY`. Never commit it.
 - New keys mean every phone must turn the switch off and on again.
 
+## Ranking and accounts
+
+- D1 database `banana-gym` (binding `DB`), schema in `migrations/`. Apply a new migration with `npx wrangler d1 migrations apply banana-gym --remote`.
+- Routes in `src/accounts.ts`: `/account/salt|join|login|me|password|sharing|session`, `DELETE /account`, `POST /scores`, `GET /ranking`, `POST /admin/reset|remove`.
+- Admin token: Cloudflare secret `ADMIN_TOKEN`, copy in `C:\Claude\gym-app-private\admin-token.txt`. Never commit it.
+  - `node server/admin-reset.mjs <nick>`: prints a temporary password once; the member must change it at login.
+  - `node server/admin-remove.mjs <nick>`: deletes the member and their scores.
+- Inspect: `npx wrangler d1 execute banana-gym --remote --command "SELECT nick, share_workouts, share_bench, must_change FROM members"`.
+- Optional secret `JOIN_CODE`: when set, joining needs that code.
+
 ## Crash reports
 
 - The app sends `POST /errors` (version, message, a few stack lines, screen path, coarse device, time; no workout data). One `ErrorLog` Durable Object keeps the newest 500 reports, at most 30 days. 10 reports per minute per IP (counted in memory, IPs are not stored).

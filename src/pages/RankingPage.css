@@ -1,0 +1,44 @@
+.rank h1 { margin: var(--space-2) 0 var(--space-3); }
+.rank-intro { color: var(--text-muted); line-height: 1.5; margin: 0 0 var(--space-4); }
+.rank-form .seg { margin-bottom: var(--space-4); }
+.rank-fieldset {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin: 0 0 var(--space-4);
+  padding: var(--space-2) var(--space-3);
+}
+.rank-fieldset legend { font-size: 0.85rem; color: var(--text-muted); padding: 0 var(--space-1); }
+.rank-choice { display: flex; align-items: center; gap: var(--space-2); min-height: 44px; cursor: pointer; }
+.rank-choice input { width: 20px; height: 20px; accent-color: var(--accent); }
+.rank-submit { width: 100%; }
+.rank-hint { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin: var(--space-3) 0; }
+.rank-hint a { color: var(--accent); }
+.rank-tables .seg { margin-bottom: var(--space-3); }
+.rank-table {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  padding: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+.rank-table h2 { font-size: 1rem; margin: 0 0 var(--space-2); }
+.rank-table ol { list-style: none; margin: 0; padding: 0; }
+.rank-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 40px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  font-variant-numeric: tabular-nums;
+}
+.rank-row--me { background: color-mix(in srgb, var(--accent) 18%, transparent); font-weight: 700; }
+.rank-row__place { width: 2.2em; color: var(--text-muted); }
+.rank-row__nick { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rank-row__move { font-size: 0.8rem; color: var(--danger); }
+.rank-row__move--up { color: var(--success); }
+.rank-row__value { font-weight: 700; }
+.rank-note { color: var(--text-muted); font-size: 0.8rem; line-height: 1.4; margin: var(--space-2) 0 0; }
+.rank-leave { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-3) 0; }
+.rank-leave p { margin: 0; line-height: 1.5; }
+.settings-danger-text .settings-row__label { color: var(--danger); }

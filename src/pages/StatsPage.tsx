@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { ChevronDown, ChevronLeft, ChevronRight, FileSpreadsheet, Trophy } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight, FileSpreadsheet, Trophy, Users } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 
 import {
@@ -82,6 +82,11 @@ export default function StatsPage() {
       <Link to="/statystyki/rekordy" className="stats-records-link">
         <Trophy size={18} aria-hidden="true" />
         <span>Rekordy i odznaki</span>
+        <ChevronRight size={18} aria-hidden="true" className="stats-records-link__chev" />
+      </Link>
+      <Link to="/statystyki/ranking" className="stats-records-link">
+        <Users size={18} aria-hidden="true" />
+        <span>Ranking znajomych</span>
         <ChevronRight size={18} aria-hidden="true" className="stats-records-link__chev" />
       </Link>
       <Segmented

@@ -6,7 +6,7 @@ workers_dev = true
 [vars]
 VAPID_PUBLIC_KEY = "BAK-6RwRdELd-jzYiiOdrrB77Y_v4xVtn1_TWOU7YlgetaRdC000Asuu0UQfaZ3VaDe9VYNoCyfYO0TEecfr5aI"
 VAPID_SUBJECT = "https://repcak135.github.io/gym-app/"
-# VAPID_PRIVATE_KEY and ERRORS_TOKEN are only Cloudflare secrets (see README.md), never in git.
+# VAPID_PRIVATE_KEY, ERRORS_TOKEN and ADMIN_TOKEN (optional JOIN_CODE) are only Cloudflare secrets (see README.md), never in git.
 
 [[durable_objects.bindings]]
 name = "DEVICE"
@@ -23,6 +23,12 @@ new_sqlite_classes = ["Device"]
 [[migrations]]
 tag = "v2"
 new_sqlite_classes = ["ErrorLog"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "banana-gym"
+database_id = "d71dc9c4-eda0-43cc-ae78-ab42b8f6d767"
+migrations_dir = "migrations"
 
 [observability]
 enabled = true

@@ -11,6 +11,15 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.20',
+    date: '2026-11-27',
+    items: [
+      'Nowe: Ranking znajomych (Statystyki › Ranking znajomych). Dołączenie jest dobrowolne: nick i hasło, bez maila. Dwie tabele — liczba treningów w tygodniu i miesiącu oraz punkty DOTS z wyciskania na płaskiej ławce ze sztangą (najcięższy zaliczony ciężar, min. 1 powtórzenie, przeliczony na wagę ciała).',
+      'Co trafia na serwer: tylko nick, liczba treningów i punkty — i tylko to, co zaznaczysz. Waga ciała, płeć, kilogramy i historia zostają w telefonie. Hasło nie opuszcza telefonu.',
+      'Ustawienia › Konto: zmiana tego, co pokazujesz, zmiana hasła, wylogowanie i „Opuść ranking”, które usuwa Twoje konto i wyniki z serwera. Na nowym telefonie zaloguj się tym samym nickiem i hasłem.',
+    ],
+  },
+  {
     version: '0.9.19',
     date: '2026-11-27',
     items: [

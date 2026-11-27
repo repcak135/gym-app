@@ -19,6 +19,8 @@ import PlanSharePage from './pages/PlanSharePage';
 import PlanImportPage from './pages/PlanImportPage';
 import ReportPage from './pages/ReportPage';
 import RecordsPage from './pages/RecordsPage';
+import RankingPage from './pages/RankingPage';
+import RankingSync from './ranking/RankingSync';
 import ExercisesPage from './pages/ExercisesPage';
 import ExerciseDetailPage from './pages/ExerciseDetailPage';
 import ExerciseSharePage from './pages/ExerciseSharePage';
@@ -119,6 +121,7 @@ export default function App() {
       <ResumeWorkout />
       <HapticsSetting />
       <ErrorReportsSetting />
+      <RankingSync />
       <RestPush />
       <KeyboardInset />
       <main>
@@ -143,6 +146,7 @@ export default function App() {
           <Route path="/statystyki" element={<StatsPage />} />
           <Route path="/statystyki/raport" element={<ReportPage />} />
           <Route path="/statystyki/rekordy" element={<RecordsPage />} />
+          <Route path="/statystyki/ranking" element={<RankingPage />} />
           <Route path="/ustawienia" element={<SettingsPage />} />
           <Route path="/ustawienia/import" element={<ImportPage />} />
           <Route path="/ustawienia/plan-z-historii" element={<PlanFromHistoryPage />} />

@@ -191,4 +191,11 @@ export interface AppSettings {
   pushPromptDone?: boolean;
   /** Device-only: "Wysyłaj raporty błędów" (undefined = on). */
   errorReports?: boolean;
+  /** Device-only ranking account (never in backups: the token would hand over the account). */
+  rankToken?: string;
+  rankNick?: string;
+  /** For DOTS points; asked at join and login, kept on the phone only. */
+  rankSex?: 'm' | 'f';
+  rankShareWorkouts?: boolean;
+  rankShareBench?: boolean;
 }

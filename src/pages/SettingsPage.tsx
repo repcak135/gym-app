@@ -8,6 +8,7 @@ import InstallGuideSheet from '../components/InstallGuide';
 import { CHANGELOG } from '../data/changelog';
 import { APP_VERSION } from '../version';
 import PushSetting from '../push/PushSetting';
+import AccountSection from '../ranking/AccountSection';
 import { REST_SOUND_PRESETS, presetHasSound, previewSound, setBreakSilent, setSoundWanted } from '../audio/beep';
 import { isAndroid, isIOS } from '../audio/backgroundRest';
 import { parseWeight } from '../data/progression';
@@ -298,6 +299,8 @@ export default function SettingsPage() {
           onChange={(v) => void updateSettings({ askDifficultyAfterSet: v })}
         />
       </section>
+
+      <AccountSection settings={settings} />
 
       <section className="settings-group" aria-labelledby="set-data">
         <h2 id="set-data" className="settings-group__title">Dane</h2>
