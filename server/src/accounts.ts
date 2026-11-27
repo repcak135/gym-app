@@ -10,6 +10,7 @@ export interface RankEnv {
 }
 
 export const ITERATIONS = 300_000;
+export const NICK_RE = /^[A-Za-z0-9ĄĆĘŁŃÓŚŹŻąćęłńóśźż_-]{3,20}$/;
 const MIN_ITERATIONS = 100_000;
 const MAX_ITERATIONS = 2_000_000;
 const FAIL_WINDOW_MS = 15 * 60_000;
@@ -62,7 +63,8 @@ export function sameSecret(a: string, b: string): boolean {
 export function normNick(v: unknown): { nick: string; lower: string } | null {
   if (typeof v !== 'string') return null;
   const nick = v.normalize('NFC').trim();
-  if (!/^[\p{L}\p{N}_-]{3,20}$/u.test(nick)) return null;
+  // Latin letters with Polish diacritics only: no look-alike letters from other scripts (impersonation).
+  if (!NICK_RE.test(nick)) return null;
   return { nick, lower: nick.toLocaleLowerCase('pl') };
 }
 
@@ -73,6 +75,14 @@ const isIterations = (v: unknown): v is number => Number.isInteger(v) && (v as n
 const isWeek = (v: unknown): v is string => typeof v === 'string' && /^\d{4}-W(0[1-9]|[1-4]\d|5[0-3])$/.test(v);
 const isMonth = (v: unknown): v is string => typeof v === 'string' && /^\d{4}-(0[1-9]|1[0-2])$/.test(v);
 const count = (v: unknown, max: number): v is number => typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= max;
+
+async function fakeSalt(lower: string, env: RankEnv): Promise<string> {
+  const k = await crypto.subtle.importKey('raw', enc.encode(env.ADMIN_TOKEN ?? 'banana-gym'), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const mac = new Uint8Array(await crypto.subtle.sign('HMAC', k, enc.encode(`salt:${lower}`))).slice(0, 16);
+  let s = '';
+  for (const x of mac) s += String.fromCharCode(x);
+  return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
 
 async function passwordHash(serverSalt: string, key: string): Promise<string> {
   return sha256Hex(`${serverSalt}:${key}`);
@@ -133,7 +143,8 @@ export async function rankRoute(r: RankRequest, env: RankEnv): Promise<Res | nul
       const n = normNick(r.query.get('nick'));
       if (!n) return fail(400);
       const m = await db.prepare('SELECT client_salt, iterations FROM members WHERE nick_lower = ?').bind(n.lower).first<Member>();
-      return m ? ok({ salt: m.client_salt, iterations: m.iterations }) : fail(404);
+      // Unknown nick: a stable fake salt, so this endpoint does not tell which nicks exist (login then fails with 401).
+      return ok(m ? { salt: m.client_salt, iterations: m.iterations } : { salt: await fakeSalt(n.lower, env), iterations: ITERATIONS });
     }
 
     case 'POST /account/join': {
@@ -164,15 +175,21 @@ export async function rankRoute(r: RankRequest, env: RankEnv): Promise<Res | nul
     case 'POST /account/login': {
       const n = normNick(b.nick);
       if (!n || !isKey(b.key)) return fail(400);
-      if ((await fails(db, `nick:${n.lower}`, now)) >= FAILS_PER_NICK || (await fails(db, `ip:${ipKey}`, now)) >= FAILS_PER_IP) return fail(429);
+      // Record the attempt BEFORE checking (parallel guesses cannot slip past the limit), count it,
+      // and remove it again only after a correct password.
+      const nickKey = `nick:${n.lower}`;
+      const ipK = `ip:${ipKey}`;
+      const [a1, a2] = await db.batch([
+        db.prepare('INSERT INTO attempts (key, at) VALUES (?, ?)').bind(nickKey, now),
+        db.prepare('INSERT INTO attempts (key, at) VALUES (?, ?)').bind(ipK, now),
+        db.prepare('DELETE FROM attempts WHERE at < ?').bind(now - 3600_000),
+      ]);
+      if ((await fails(db, nickKey, now)) > FAILS_PER_NICK || (await fails(db, ipK, now)) > FAILS_PER_IP) return fail(429);
       const m = await db.prepare('SELECT * FROM members WHERE nick_lower = ?').bind(n.lower).first<Member>();
       // Same work for an unknown nick, so timing does not tell which nicks exist.
       const h = await passwordHash(m?.server_salt ?? 'x', b.key);
-      if (!m || !sameSecret(h, m.hash)) {
-        await note(db, `nick:${n.lower}`, now);
-        await note(db, `ip:${ipKey}`, now);
-        return fail(401);
-      }
+      if (!m || !sameSecret(h, m.hash)) return fail(401);
+      await db.prepare('DELETE FROM attempts WHERE rowid IN (?, ?)').bind(a1.meta.last_row_id, a2.meta.last_row_id).run();
       return ok({ token: await newSession(db, m.id, now), ...memberView(m) });
     }
 

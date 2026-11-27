@@ -28,7 +28,8 @@ export async function deriveKey(password: string, salt: string, iterations: numb
   return b64u(new Uint8Array(bits));
 }
 
-export const NICK_RE = /^[\p{L}\p{N}_-]{3,20}$/u;
+/** Same as the server: Latin letters with Polish diacritics, digits, _ and - (no look-alike scripts). */
+export const NICK_RE = /^[A-Za-z0-9ĄĆĘŁŃÓŚŹŻąćęłńóśźż_-]{3,20}$/;
 export const MIN_PASSWORD = 8;
 
 export function forgetLastSent(): void {

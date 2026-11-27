@@ -79,7 +79,7 @@ function JoinOrLogin({ settings, onMustChange }: { settings: AppSettings | null;
     e.preventDefault();
     setError(null);
     const n = nick.normalize('NFC').trim();
-    if (!NICK_RE.test(n)) return setError('Nick: 3–20 znaków, litery, cyfry, _ albo -.');
+    if (!NICK_RE.test(n)) return setError('Nick: 3–20 znaków — litery (także polskie), cyfry, _ albo -.');
     if (password.length < MIN_PASSWORD) return setError(`Hasło musi mieć co najmniej ${MIN_PASSWORD} znaków.`);
     if (mode === 'join' && password !== password2) return setError('Hasła się różnią.');
     if (!sex) return setError('Wybierz płeć.');

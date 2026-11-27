@@ -62,6 +62,30 @@ describe('accounts', () => {
     expect((await join('x'.repeat(21))).status).toBe(400);
     expect((await join('Okej', { key: 'short' })).status).toBe(400);
     expect((await join('Okej2', { iterations: 1000 })).status).toBe(400);
+    // Cyrillic "а" looks like Latin "a": refused, so nobody can impersonate "Ola".
+    expect((await join('Olа')).status).toBe(400);
+    expect((await join('Łucja_Ś')).status).toBe(200);
+  });
+
+  it('salt does not reveal whether a nick exists (stable fake for unknown nicks)', async () => {
+    const a = await call('GET', '/account/salt?nick=nikogo');
+    const b = await call('GET', '/account/salt?nick=NIKOGO');
+    expect(a.status).toBe(200);
+    expect(a.json.salt).toMatch(/^[A-Za-z0-9_-]{22}$/);
+    expect(b.json).toEqual(a.json);
+    expect((await call('POST', '/account/login', { nick: 'nikogo', key: KEY_A })).status).toBe(401);
+  });
+
+  it('parallel wrong guesses cannot get past the limit', async () => {
+    await join('Szybki');
+    const results = await Promise.all(Array.from({ length: 12 }, () => call('POST', '/account/login', { nick: 'Szybki', key: KEY_B })));
+    expect(results.filter((r) => r.status === 401).length).toBeLessThanOrEqual(5);
+    expect((await call('POST', '/account/login', { nick: 'Szybki', key: KEY_A })).status).toBe(429);
+  });
+
+  it('a correct login does not use up the limit', async () => {
+    await join('Stały');
+    for (let i = 0; i < 8; i++) expect((await call('POST', '/account/login', { nick: 'Stały', key: KEY_A })).status).toBe(200);
   });
 
   it('the server stores only a hash: no key, no token in the database', async () => {
