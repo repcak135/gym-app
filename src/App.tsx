@@ -34,6 +34,7 @@ import WorkoutPage from './pages/WorkoutPage';
 import WorkoutSummaryPage from './pages/WorkoutSummaryPage';
 import { getActiveWorkout } from './data/workouts';
 import RestPush from './push/RestPush';
+import PushPrompt from './push/PushPrompt';
 
 // Each new screen starts at the top (the page scroll would otherwise carry over).
 function ScrollToTop() {
@@ -143,6 +144,7 @@ export default function App() {
       <UndoToast />
       <WhatsNewOnLaunch />
       <GlobalRest />
+      <PushPrompt />
       <BottomNav />
     </HashRouter>
     </CrashScreen>

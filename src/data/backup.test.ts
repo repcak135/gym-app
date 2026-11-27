@@ -91,16 +91,18 @@ describe('backup', () => {
 
   it('push switch and push id stay on this phone: not in the backup, kept on restore', async () => {
     await seedEverything();
-    await updateSettings({ restPush: true, pushId: 'a'.repeat(32) });
+    await updateSettings({ restPush: true, pushId: 'a'.repeat(32), pushPromptDone: true });
     const file = await createBackup(5);
     expect(file.data.settings).not.toHaveProperty('restPush');
     expect(file.data.settings).not.toHaveProperty('pushId');
+    expect(file.data.settings).not.toHaveProperty('pushPromptDone');
     // a file that somehow carries push fields from another phone must not overwrite ours
     const foreign = { ...file, data: { ...file.data, settings: { ...file.data.settings, restPush: false, pushId: 'b'.repeat(32) } } };
     await restoreBackup(parseBackup(JSON.stringify(foreign)));
     const s = await getSettings();
     expect(s.restPush).toBe(true);
     expect(s.pushId).toBe('a'.repeat(32));
+    expect(s.pushPromptDone).toBe(true);
   });
 
   it('restore on a phone without push leaves push off', async () => {

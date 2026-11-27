@@ -187,4 +187,6 @@ export interface AppSettings {
   restPush?: boolean;
   /** Device-only: random id of this phone on the push server. */
   pushId?: string;
+  /** Device-only: the "Powiadomienie o końcu przerwy?" question was answered (asked once). */
+  pushPromptDone?: boolean;
 }

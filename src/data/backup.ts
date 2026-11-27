@@ -23,7 +23,7 @@ export interface ExerciseOverride {
 }
 
 /** Settings that travel with the data (device-only fields stay on the device). */
-export type BackupSettings = Partial<Omit<AppSettings, 'key' | 'exerciseDbVersion' | 'lastBackupAt' | 'backupReminderSnoozedUntil' | 'lastSeenVersion' | 'restPush' | 'pushId'>>;
+export type BackupSettings = Partial<Omit<AppSettings, 'key' | 'exerciseDbVersion' | 'lastBackupAt' | 'backupReminderSnoozedUntil' | 'lastSeenVersion' | 'restPush' | 'pushId' | 'pushPromptDone'>>;
 
 export interface BackupData {
   plans: Plan[];
@@ -54,7 +54,7 @@ export class BackupError extends Error {
   }
 }
 
-const DEVICE_ONLY = new Set(['key', 'exerciseDbVersion', 'lastBackupAt', 'backupReminderSnoozedUntil', 'lastSeenVersion', 'restPush', 'pushId']);
+const DEVICE_ONLY = new Set(['key', 'exerciseDbVersion', 'lastBackupAt', 'backupReminderSnoozedUntil', 'lastSeenVersion', 'restPush', 'pushId', 'pushPromptDone']);
 
 export async function createBackup(now = Date.now()): Promise<BackupFile> {
   return db.transaction('r', [db.plans, db.workouts, db.sets, db.notes, db.aliases, db.body, db.exercises, db.settings], async () => {
@@ -246,12 +246,14 @@ export async function restoreBackup(f: BackupFile): Promise<void> {
       lastSeenVersion: device?.lastSeenVersion,
       restPush: device?.restPush,
       pushId: device?.pushId,
+      pushPromptDone: device?.pushPromptDone,
       lastBackupAt: f.exportedAt,
     }, d.settings);
     if (settings.exerciseDbVersion === undefined) delete settings.exerciseDbVersion;
     if (settings.lastSeenVersion === undefined) delete settings.lastSeenVersion;
     if (settings.restPush === undefined) delete settings.restPush;
     if (settings.pushId === undefined) delete settings.pushId;
+    if (settings.pushPromptDone === undefined) delete settings.pushPromptDone;
     await db.settings.put(settings);
   });
   // Only after the data is safely in: a failed restore must not change the look either.

@@ -57,6 +57,50 @@ test('push: turning on registers the phone, survives a reload, turning off forge
   await expect.poll(() => calls.find((c) => c.method === 'DELETE')).toEqual({ method: 'DELETE', path: '/subscribe', body: { id: ID } });
 });
 
+const PROMPT = 'Powiadomienie o końcu przerwy?';
+
+async function startWorkout(page: Page) {
+  await page.goto('/#/');
+  await page.getByRole('button', { name: 'Pusty trening' }).click();
+  await expect(page).toHaveURL(/#\/trening$/);
+}
+
+test('push prompt: first workout asks once, "Włącz" turns push on', async ({ page }) => {
+  await installedApp(page, 'granted');
+  const calls = await mockServer(page);
+  await startWorkout(page);
+  const dialog = page.getByRole('dialog', { name: PROMPT });
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toContainText('anonimowy adres powiadomień');
+  await dialog.getByRole('button', { name: 'Włącz' }).click();
+  await expect(dialog).toHaveCount(0);
+  expect(calls.map((c) => `${c.method} ${c.path}`)).toEqual(['POST /subscribe']);
+  await page.goto('/#/ustawienia');
+  await expect(page.getByRole('switch', { name: SWITCH })).toBeChecked();
+});
+
+test('push prompt: "Nie teraz" is remembered and push stays off', async ({ page }) => {
+  await installedApp(page, 'granted');
+  const calls = await mockServer(page);
+  await startWorkout(page);
+  await page.getByRole('dialog', { name: PROMPT }).getByRole('button', { name: 'Nie teraz' }).click();
+  await expect(page.getByRole('dialog', { name: PROMPT })).toHaveCount(0);
+  await page.reload();
+  await expect(page).toHaveURL(/#\/trening$/);
+  await page.waitForTimeout(500);
+  await expect(page.getByRole('dialog', { name: PROMPT })).toHaveCount(0);
+  expect(calls).toEqual([]);
+  await page.goto('/#/ustawienia');
+  await expect(page.getByRole('switch', { name: SWITCH })).not.toBeChecked();
+  await expect(page.getByRole('switch', { name: SWITCH })).toBeEnabled();
+});
+
+test('push prompt: not shown in a Safari tab on iPhone', async ({ page }) => {
+  await startWorkout(page);
+  await page.waitForTimeout(500);
+  await expect(page.getByRole('dialog', { name: PROMPT })).toHaveCount(0);
+});
+
 test('push: blocked notifications show how to allow them and keep the switch off', async ({ page }) => {
   await installedApp(page, 'denied');
   const calls = await mockServer(page);

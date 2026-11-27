@@ -1,12 +1,7 @@
 import { useState } from 'react';
-import { disablePush, enablePush, pushSupport, type EnableResult } from './client';
+import { disablePush, enablePush, pushSupport, PUSH_ERRORS as ERRORS } from './client';
 import { pushConfigured } from './config';
 
-const ERRORS: Record<Exclude<EnableResult, 'ok'>, string> = {
-  denied: 'Powiadomienia są zablokowane. Włącz je w Ustawieniach telefonu → Powiadomienia → Banana Gym i spróbuj ponownie.',
-  unsupported: 'Ten telefon albo przeglądarka nie obsługuje powiadomień.',
-  error: 'Nie udało się połączyć z serwerem powiadomień. Sprawdź internet i spróbuj ponownie.',
-};
 
 /** Ustawienia › Koniec przerwy: opt-in push at rest end while the phone is locked. */
 export default function PushSetting({ on, pushId }: { on: boolean; pushId?: string }) {

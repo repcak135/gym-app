@@ -11,6 +11,13 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.18',
+    date: '2026-11-27',
+    items: [
+      'Przy pierwszym treningu aplikacja raz zapyta: „Powiadomienie o końcu przerwy?”. „Włącz” od razu włącza powiadomienie przy zablokowanym telefonie, „Nie teraz” — więcej nie pyta (przełącznik zostaje w Ustawieniach › Koniec przerwy).',
+    ],
+  },
+  {
     version: '0.9.17',
     date: '2026-11-27',
     items: [

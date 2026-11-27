@@ -40,7 +40,7 @@ Lazy-loaded: ExcelJS (report), `qr-scanner`, and the openGym catalogue chunk. Th
 - **Never lose user data.** Schema changes need a new `this.version(n)` in `db.ts`. Never change old versions.
 - **Backup** (`src/data/backup.ts`) must include every table and every user-set field.
   - Today it covers: plans, workouts, sets, notes, aliases, body, custom exercises, per-exercise overrides (weightStep, barWeight, measureOverride, userNames), the settings that travel between devices, and the colour theme (top-level `theme`, which lives in localStorage).
-  - Device-only fields stay out of the backup: `exerciseDbVersion`, `lastBackupAt`, `backupReminderSnoozedUntil`, `lastSeenVersion`, `restPush`, `pushId`.
+  - Device-only fields stay out of the backup: `exerciseDbVersion`, `lastBackupAt`, `backupReminderSnoozedUntil`, `lastSeenVersion`, `restPush`, `pushId`, `pushPromptDone`.
   - A new field means a round-trip test in `backup.test.ts`.
 - **The built-in catalogue is re-seeded when `EXERCISE_DB_VERSION`** (in `src/data/exercises.ts`) **is bumped.** User fields such as `userNames` are kept. Bump it when catalogue data changes: names, Polish names, muscles, measures.
 - **Plan-change suggestions** use the intended counts `WorkoutExercise.sets`/`warmupSets`, not the completed sets, so finishing a workout early never shrinks the plan.
@@ -93,7 +93,8 @@ Lazy-loaded: ExcelJS (report), `qr-scanner`, and the openGym catalogue chunk. Th
 
 ## State (update on every release)
 
-- **Current version: 0.9.17** (2026-11-27), catalogue `EXERCISE_DB_VERSION` 8.
+- **Current version: 0.9.18** (2026-11-27), catalogue `EXERCISE_DB_VERSION` 8.
+- **Push on by default (0.9.18, owner's wish):** browsers allow the permission prompt only after a tap, so `src/push/PushPrompt.tsx` asks once on the workout screen, only in the installed app: "Powiadomienie o końcu przerwy?" Włącz / Nie teraz. The answer is the device-only `pushPromptDone`.
 - **Rest-end push (0.9.17):** opt-in switch "Powiadomienie przy zablokowanym ekranie" (Ustawienia › Koniec przerwy, off by default). `src/push/RestPush.tsx` (mounted once in App) sends `/schedule` with `keepalive` on hide/pagehide while a rest runs and `/cancel` on show; `public/push-sw.js` is imported into the Workbox SW (`workbox.importScripts`) and shows the notification. Worker in `server/` (see its README): one SQLite Durable Object per device id, alarm at `endsAt`, own VAPID + aes128gcm code, push-host allowlist, CORS for the app only. Live at https://banana-gym-push.banana-gym-push.workers.dev on the owner's Cloudflare account (wrangler logged in on this PC). Public config in `.env`; the VAPID private key is only a Cloudflare secret (a copy in `gym-app-private\vapid-private.json`, never commit). `restPush`/`pushId` are device-only (not in backups). Spike 2026-11-27: 7/7 locks on the owner's iPhone delivered `/schedule` within 0.41 s, so the hide/show design shipped (no fallback).
 - **0.9.10–0.9.14 (owner's gym feedback):** sets start as last time, the progression target is only a suggestion with a "Zastosuj" button (never auto-applied); iPhone audio uses the 'ambient' session and no audio at all when the preset is silent (it paused Spotify), 'playback' only with "Graj przy wyciszonym iPhonie"; `GlobalRest` shows the rest bar on every screen and a green "Koniec przerwy +m:ss" bar (`restEndedAt`) until the next set; `CrashScreen` + an index.html fallback replace blank screens; a 0-wide pager while hidden saved `currentIndex = NaN` and crashed the workout (guarded in 3 places).
 - **Lesson:** iPhone web apps cannot vibrate and cannot show a lock-screen timer (owner declined the Shortcuts workaround: too many taps).

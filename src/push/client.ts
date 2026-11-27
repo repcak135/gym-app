@@ -9,7 +9,14 @@ export const PUSH_ID_KEY = 'push-id';
 export type PushSupport = 'ok' | 'needs-install' | 'unsupported';
 export type EnableResult = 'ok' | 'denied' | 'unsupported' | 'error';
 
-function standalone(): boolean {
+export const PUSH_ERRORS: Record<Exclude<EnableResult, 'ok'>, string> = {
+  denied: 'Powiadomienia są zablokowane. Włącz je w Ustawieniach telefonu → Powiadomienia → Banana Gym i spróbuj ponownie.',
+  unsupported: 'Ten telefon albo przeglądarka nie obsługuje powiadomień.',
+  error: 'Nie udało się połączyć z serwerem powiadomień. Sprawdź internet i spróbuj ponownie.',
+};
+
+/** Running as the app added to the Home Screen (not a browser tab). */
+export function standalone(): boolean {
   return window.matchMedia?.('(display-mode: standalone)').matches || (navigator as { standalone?: boolean }).standalone === true;
 }
 
@@ -59,7 +66,7 @@ export async function enablePush(): Promise<EnableResult> {
     if (!res.ok) return 'error';
     const { id } = (await res.json()) as { id: string };
     await rememberId(id);
-    await updateSettings({ restPush: true, pushId: id });
+    await updateSettings({ restPush: true, pushId: id, pushPromptDone: true });
     return 'ok';
   } catch {
     return 'error';
@@ -67,7 +74,7 @@ export async function enablePush(): Promise<EnableResult> {
 }
 
 export async function disablePush(id: string | undefined): Promise<void> {
-  await updateSettings({ restPush: false, pushId: undefined });
+  await updateSettings({ restPush: false, pushId: undefined, pushPromptDone: true });
   await rememberId(null);
   try {
     if (id) await post('/subscribe', { id }, 'DELETE');
