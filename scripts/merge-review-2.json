@@ -1,0 +1,451 @@
+{
+ "_comment": "Second duplicate review (2026-11-28, approved by the owner). merge: kept id -> removed ids (same PL name / near-identical name / camera-angle and form-check copies). rename: new Polish names for different exercises that shared one. Applied by scripts/merge-exercises.ts.",
+ "merge": {
+  "Running_Treadmill": [
+   "og-2197"
+  ],
+  "og-4734": [
+   "og-5237"
+  ],
+  "og-2141": [
+   "og-2192"
+  ],
+  "og-0715": [
+   "og-1470",
+   "og-2349"
+  ],
+  "Seated_Good_Mornings": [
+   "og-0090"
+  ],
+  "og-2071": [
+   "og-5774"
+  ],
+  "One-Arm_Side_Deadlift": [
+   "og-0066"
+  ],
+  "Kettlebell_One-Legged_Deadlift": [
+   "og-4523"
+  ],
+  "Leverage_Deadlift": [
+   "og-0578"
+  ],
+  "og-6553": [
+   "og-3918"
+  ],
+  "Sumo_Deadlift_with_Chains": [
+   "og-5910"
+  ],
+  "Butt_Lift_Bridge": [
+   "og-0486"
+  ],
+  "og-0005": [
+   "og-0968"
+  ],
+  "Alternating_Deltoid_Raise": [
+   "og-4341"
+  ],
+  "Alternating_Cable_Shoulder_Press": [
+   "og-0148"
+  ],
+  "og-0675": [
+   "og-9009"
+  ],
+  "og-0993": [
+   "og-3321"
+  ],
+  "Elliptical_Trainer": [
+   "og-2331"
+  ],
+  "Mixed_Grip_Chin": [
+   "og-0627"
+  ],
+  "og-1327": [
+   "og-5474"
+  ],
+  "Upright_Cable_Row": [
+   "x-cable-upright-row"
+  ],
+  "Dumbbell_Tricep_Extension_-Pronated_Grip": [
+   "og-0373"
+  ],
+  "Weighted_Jump_Squat": [
+   "og-0053"
+  ],
+  "Squat_with_Bands": [
+   "og-3530"
+  ],
+  "x-torso-rotation-machine": [
+   "og-5333"
+  ],
+  "Cable_Internal_Rotation": [
+   "og-5088"
+  ],
+  "Butterfly": [
+   "og-1030"
+  ],
+  "og-4393": [
+   "og-8371"
+  ],
+  "Standing_Two-Arm_Overhead_Throw": [
+   "og-3442",
+   "og-4243",
+   "og-10108"
+  ],
+  "og-4948": [
+   "og-5581"
+  ],
+  "Rope_Straight-Arm_Pulldown": [
+   "og-8297",
+   "og-1229"
+  ],
+  "Rope_Jumping": [
+   "og-2612"
+  ],
+  "og-1020": [
+   "og-3841",
+   "og-4685"
+  ],
+  "Farmers_Walk": [
+   "og-2133"
+  ],
+  "og-4528": [
+   "og-3576"
+  ],
+  "Lying_Leg_Curls": [
+   "og-9676"
+  ],
+  "og-6161": [
+   "og-0339",
+   "og-4292"
+  ],
+  "og-1670": [
+   "og-6757"
+  ],
+  "Two-Arm_Dumbbell_Preacher_Curl": [
+   "og-0372",
+   "og-0428"
+  ],
+  "Barbell_Curl": [
+   "og-4721"
+  ],
+  "Reverse_Barbell_Preacher_Curls": [
+   "og-0452"
+  ],
+  "One-Arm_Side_Laterals": [
+   "og-0355"
+  ],
+  "Side_Laterals_to_Front_Raise": [
+   "og-0335"
+  ],
+  "Seated_Side_Lateral_Raise": [
+   "og-0396"
+  ],
+  "Standing_Dumbbell_Straight-Arm_Front_Delt_Raise_Above_Head": [
+   "og-0419"
+  ],
+  "og-1317": [
+   "og-2509"
+  ],
+  "Front_Box_Jump": [
+   "og-11781",
+   "og-3892"
+  ],
+  "Seated_Calf_Raise": [
+   "og-9509"
+  ],
+  "og-0357": [
+   "og-1290"
+  ],
+  "Hammer_Grip_Incline_DB_Bench_Press": [
+   "og-0321"
+  ],
+  "Incline_Dumbbell_Bench_With_Palms_Facing_In": [
+   "og-0324"
+  ],
+  "Dumbbell_Shoulder_Press": [
+   "Seated_Dumbbell_Press",
+   "og-0405"
+  ],
+  "Decline_Smith_Press": [
+   "Smith_Machine_Decline_Press"
+  ],
+  "Bench_Press_with_Chains": [
+   "og-4201"
+  ],
+  "Wide-Grip_Decline_Barbell_Bench_Press": [
+   "og-0036"
+  ],
+  "og-4045": [
+   "og-4098"
+  ],
+  "og-3575": [
+   "og-5070"
+  ],
+  "One-Arm_Kettlebell_Clean": [
+   "og-4530"
+  ],
+  "Split_Squat_with_Dumbbells": [
+   "x-dumbbell-bulgarian-split-squat"
+  ],
+  "Cable_One_Arm_Tricep_Extension": [
+   "og-1723",
+   "og-0231"
+  ],
+  "Barbell_Shoulder_Press": [
+   "Seated_Barbell_Military_Press",
+   "og-1045"
+  ],
+  "Alternating_Hang_Clean": [
+   "og-0518"
+  ],
+  "Bottoms-Up_Clean_From_The_Hang_Position": [
+   "og-0525"
+  ],
+  "Cable_Rope_Overhead_Triceps_Extension": [
+   "og-0194"
+  ],
+  "Cable_Rope_Rear-Delt_Rows": [
+   "og-0233",
+   "og-3232"
+  ],
+  "Close-Grip_EZ_Bar_Curl": [
+   "og-0446"
+  ],
+  "Close-Grip_Standing_Barbell_Curl": [
+   "og-4981"
+  ],
+  "Cross-Body_Crunch": [
+   "og-0263"
+  ],
+  "Dumbbell_Bicep_Curl": [
+   "og-0416",
+   "og-2352"
+  ],
+  "External_Rotation_with_Cable": [
+   "og-0235"
+  ],
+  "Gironda_Sternum_Chins": [
+   "og-0466"
+  ],
+  "Incline_Cable_Chest_Press": [
+   "og-0169"
+  ],
+  "London_Bridges": [
+   "og-0609"
+  ],
+  "Lunge_Pass_Through": [
+   "og-0536"
+  ],
+  "Lying_Cable_Curl": [
+   "og-1634",
+   "og-4350"
+  ],
+  "Reverse_Barbell_Curl": [
+   "og-0110"
+  ],
+  "Reverse_Grip_Triceps_Pushdown": [
+   "og-0207"
+  ],
+  "Seated_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension": [
+   "og-1737"
+  ],
+  "Seated_Cable_Rows": [
+   "og-0163"
+  ],
+  "Side_Lateral_Raise": [
+   "og-2234",
+   "og-4967"
+  ],
+  "Standing_Cable_Wood_Chop": [
+   "x-cable-woodchopper"
+  ],
+  "Standing_Dumbbell_Reverse_Curl": [
+   "og-1654"
+  ],
+  "Standing_One-Arm_Cable_Curl": [
+   "og-0190"
+  ],
+  "Stiff-Legged_Dumbbell_Deadlift": [
+   "og-0432"
+  ],
+  "Zottman_Preacher_Curl": [
+   "og-2293"
+  ],
+  "x-reverse-ez-bar-curl": [
+   "og-0451"
+  ],
+  "x-assisted-pull-up-machine": [
+   "og-1432"
+  ],
+  "og-0333": [
+   "og-0420"
+  ],
+  "og-0409": [
+   "og-1178"
+  ],
+  "og-3972": [
+   "og-0414"
+  ],
+  "og-0897": [
+   "og-4619"
+  ],
+  "og-0917": [
+   "og-6195"
+  ],
+  "og-0928": [
+   "og-4576"
+  ],
+  "og-1006": [
+   "og-1022"
+  ],
+  "og-2511": [
+   "og-1331"
+  ],
+  "og-5803": [
+   "og-1423"
+  ],
+  "og-6406": [
+   "og-2900"
+  ],
+  "og-3578": [
+   "og-4534"
+  ],
+  "og-4067": [
+   "og-4065"
+  ],
+  "og-5635": [
+   "og-5631"
+  ],
+  "Cable_Crossover": [
+   "og-8141"
+  ],
+  "Cable_Hammer_Curls_-_Rope_Attachment": [
+   "og-0165"
+  ],
+  "Hip_Extension_with_Bands": [
+   "og-4034"
+  ],
+  "Lateral_Raise_-_With_Bands": [
+   "og-0793"
+  ],
+  "Leverage_High_Row": [
+   "og-0581"
+  ],
+  "One-Arm_Kettlebell_Swings": [
+   "og-1568"
+  ],
+  "Upright_Row_-_With_Bands": [
+   "og-0934"
+  ],
+  "Wide-Grip_Barbell_Bench_Press": [
+   "og-0122"
+  ],
+  "x-hammer-preacher-curl-machine": [
+   "og-1615"
+  ],
+  "x-machine-lateral-raise": [
+   "og-8847"
+  ],
+  "og-0002": [
+   "og-5699"
+  ],
+  "og-0739": [
+   "og-2224",
+   "og-1463",
+   "og-1464"
+  ],
+  "og-1575": [
+   "og-3616"
+  ],
+  "og-0785": [
+   "og-7556"
+  ],
+  "Standing_Military_Press": [
+   "og-5328",
+   "og-1165"
+  ],
+  "Barbell_Deadlift": [
+   "og-0966",
+   "og-0967",
+   "og-6692",
+   "og-2354",
+   "og-2357"
+  ],
+  "Barbell_Full_Squat": [
+   "og-1461",
+   "og-1462"
+  ],
+  "og-5813": [
+   "og-1465"
+  ],
+  "Standing_Dumbbell_Upright_Row": [
+   "og-1765"
+  ],
+  "Barbell_Bench_Press_-_Medium_Grip": [
+   "og-6813",
+   "og-2336",
+   "og-2338",
+   "og-2339",
+   "og-2340",
+   "og-2341",
+   "og-2342"
+  ],
+  "Dumbbell_Flyes": [
+   "og-2337"
+  ],
+  "Bent_Over_Barbell_Row": [
+   "og-2343"
+  ],
+  "Crunches": [
+   "og-2344"
+  ],
+  "Hack_Squat": [
+   "og-2345"
+  ],
+  "Bench_Dips": [
+   "og-2346"
+  ],
+  "Plank": [
+   "og-2347",
+   "og-2358"
+  ],
+  "Preacher_Curl": [
+   "og-2348"
+  ],
+  "Pushups": [
+   "og-2350",
+   "og-2351"
+  ],
+  "Concentration_Curls": [
+   "og-2353"
+  ],
+  "Barbell_Squat": [
+   "og-2359",
+   "og-2360",
+   "og-2361",
+   "og-2362"
+  ],
+  "og-0612": [
+   "og-4959"
+  ]
+ },
+ "rename": {
+  "Crunches": "Spięcia brzucha",
+  "og-5702": "Martwy ciąg ze sztangą z deficytu",
+  "og-4864": "Martwy ciąg sumo ze sztangą z deficytu",
+  "og-3691": "Przysiad wykroczny goblet z hantlem",
+  "Dumbbell_Shoulder_Press": "Wyciskanie hantli nad głowę w siadzie",
+  "Barbell_Shoulder_Press": "Wyciskanie sztangi nad głowę w siadzie",
+  "Arnold_Dumbbell_Press": "Wyciskanie Arnolda z hantlami w siadzie",
+  "Cable_Chest_Press": "Wyciskanie na wyciągu w siadzie",
+  "og-7235": "Rotacja zewnętrzna łopatek z hantlami stojąc",
+  "Parallel_Bar_Dip": "Pompki na poręczach (na triceps)",
+  "og-0251": "Pompki na poręczach (na klatkę)",
+  "og-5143": "Ciągnięcie sań za sobą (w uprzęży)",
+  "og-9939": "Przyciąganie sań liną do siebie",
+  "og-4880": "Nożyce krzyżowe w leżeniu (brzuch)",
+  "og-6214": "Nożyce krzyżowe w leżeniu (wewnętrzna strona ud)",
+  "Lying_Crossover": "Skręt bioder w leżeniu (rozciąganie z partnerem)",
+  "og-4994": "Krzyżowanie nóg w leżeniu (brzuch)"
+ }
+}

@@ -12,7 +12,7 @@ function exercisesLink(): string {
 
 async function createCustom(page: Page, name: string) {
   await page.goto('/#/cwiczenia');
-  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('4566 ćwiczeń')).toBeVisible({ timeout: 15_000 });
   await page.getByRole('link', { name: 'Nowe ćwiczenie' }).click();
   await page.getByLabel('Nazwa').fill(name);
   await page.getByRole('button', { name: 'Barki', exact: true }).first().click();

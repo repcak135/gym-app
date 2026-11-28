@@ -7,7 +7,7 @@ export const BENCH_IDS = new Set([
   'Barbell_Bench_Press_-_Medium_Grip',
   'Wide-Grip_Barbell_Bench_Press',
   'Close-Grip_Barbell_Bench_Press',
-  'og-0122', // Barbell Wide Bench Press
+  'og-0122', // Barbell Wide Bench Press (merged into Wide-Grip_Barbell_Bench_Press since catalogue 9; kept for old data)
   'og-5013', // Barbell Pause Bench Press
   'og-6584', // Barbell Feet Flat Bench Press
 ]);

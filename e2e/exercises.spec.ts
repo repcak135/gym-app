@@ -9,26 +9,26 @@ const IMAGE_BASE =
 
 // ─── Task 2 tests ────────────────────────────────────────────────────────────
 
-test('lista pokazuje bazę 4731 ćwiczeń', async ({ page }) => {
+test('lista pokazuje bazę 4566 ćwiczeń', async ({ page }) => {
   await page.goto('/#/cwiczenia');
   // Seeding can take up to 15 s on first run
-  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('4566 ćwiczeń')).toBeVisible({ timeout: 15_000 });
 });
 
 test('wyszukiwanie zawęża listę', async ({ page }) => {
   await page.goto('/#/cwiczenia');
-  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('4566 ćwiczeń')).toBeVisible({ timeout: 15_000 });
 
   await page.getByPlaceholder('Szukaj ćwiczenia').fill('barbell squat');
 
   await expect(rowLink(page, 'Przysiad ze sztangą')).toBeVisible();
   await expect(rowLink(page, 'Uginanie ramion z hantlami')).toHaveCount(0);
-  await expect(page.getByText('4731 ćwiczeń')).toHaveCount(0);
+  await expect(page.getByText('4566 ćwiczeń')).toHaveCount(0);
 });
 
 test('filtr Mięśnie i Sprzęt', async ({ page }) => {
   await page.goto('/#/cwiczenia');
-  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('4566 ćwiczeń')).toBeVisible({ timeout: 15_000 });
 
   await page.getByRole('button', { name: 'Mięśnie' }).click();
   const muscleSheet = page.getByRole('dialog', { name: 'Mięśnie' });
@@ -68,7 +68,7 @@ test('szukanie po polsku: angielska nazwa pod polską', async ({ page }) => {
 
 test('wiersz ma co najmniej 44 px', async ({ page }) => {
   await page.goto('/#/cwiczenia');
-  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('4566 ćwiczeń')).toBeVisible({ timeout: 15_000 });
 
   const rows = page.locator('.exercise-row');
   const first = rows.first();
@@ -120,7 +120,7 @@ test('notatka zapisuje się i przetrwa przeładowanie', async ({ page }) => {
 
 test('własne ćwiczenie: utwórz, edytuj, usuń', async ({ page }) => {
   await page.goto('/#/cwiczenia');
-  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('4566 ćwiczeń')).toBeVisible({ timeout: 15_000 });
 
   // Open form via "+" link
   await page.getByRole('link', { name: 'Nowe ćwiczenie' }).click();
@@ -167,7 +167,7 @@ test('własne ćwiczenie: utwórz, edytuj, usuń', async ({ page }) => {
   await expect(page).toHaveURL(/#\/cwiczenia$/);
 
   // Search confirms it's gone
-  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 10_000 });
+  await expect(page.getByText('4566 ćwiczeń')).toBeVisible({ timeout: 10_000 });
   await page.getByPlaceholder('Szukaj ćwiczenia').fill('Wiosło krzywą sztangą');
   // Result count should be 0 ćwiczeń
   await expect(page.getByText('0 ćwiczeń')).toBeVisible({ timeout: 5_000 });
@@ -175,7 +175,7 @@ test('własne ćwiczenie: utwórz, edytuj, usuń', async ({ page }) => {
 
 test('zakładki Moje i Używane pokazują własne i używane ćwiczenia', async ({ page }) => {
   await page.goto('/#/cwiczenia');
-  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('4566 ćwiczeń')).toBeVisible({ timeout: 15_000 });
   const tabs = page.getByRole('tablist', { name: 'Które ćwiczenia' });
 
   await tabs.getByRole('tab', { name: 'Moje' }).click();
@@ -199,7 +199,7 @@ test('zakładki Moje i Używane pokazują własne i używane ćwiczenia', async 
 
 test('powrót z karty ćwiczenia: ta sama wyszukiwarka, wczytane wiersze i miejsce na liście', async ({ page }) => {
   await page.goto('/#/cwiczenia');
-  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('4566 ćwiczeń')).toBeVisible({ timeout: 15_000 });
   await page.getByPlaceholder('Szukaj ćwiczenia').fill('press');
   const more = page.getByRole('button', { name: /^Pokaż więcej/ });
   await more.click();
@@ -241,7 +241,7 @@ test('karta ćwiczenia: rodzaj ćwiczenia (deska = czas) i zmiana wyboru', async
 
 test('filtr Mięśnie → Barki → tył: Face Pull tak, boczne unoszenie nie', async ({ page }) => {
   await page.goto('/#/cwiczenia');
-  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('4566 ćwiczeń')).toBeVisible({ timeout: 15_000 });
 
   await page.getByRole('button', { name: 'Mięśnie' }).click();
   const sheet = page.getByRole('dialog', { name: 'Mięśnie' });

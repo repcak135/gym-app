@@ -8,13 +8,24 @@ import measureData from './exercise-measure.json';
 import type { Measure } from './types';
 import { SLANG } from './slang';
 import { classifyDelts, deltHeadsOf, type DeltHead, type Delts } from './deltHeads';
+import mergedData from './exercise-merged.json';
+import { readBaseline, writeBaseline } from '../cloud/stats';
 
 // 2: built-in extra exercises (machines, cables, Smith) and other names for matching the import.
 // 3: openGym catalogue text (AGPL-3.0): ~4200 more exercises, Polish names.
 // 4: duplicates merged (scripts/dedupe-exercises.ts); user data on removed ids moves to the kept exercise.
 // 5: exercise measure (time / distance / cardio) from exercise-measure.json; the user's choice is kept.
 // 6: deltoid heads (przód / bok / tył) from deltHeads.ts for built-in exercises.
-export const EXERCISE_DB_VERSION = 8;
+// 9: second duplicate review (scripts/merge-exercises.ts, 165 more merged); the map moved to exercise-merged.json.
+export const EXERCISE_DB_VERSION = 9;
+
+/** Removed duplicate id → kept id (old ids keep working: upgrade, old backups, old share links, import aliases). */
+export const MERGED_EXERCISES = mergedData as Record<string, string>;
+
+/** The id an exercise lives under now (a merged duplicate's id gives the kept exercise). */
+export function canonicalExerciseId(id: string): string {
+  return MERGED_EXERCISES[id] ?? id;
+}
 
 type AkaEntry = { aka?: string[]; similar?: string[]; maybe?: string[] };
 const AKA = akaData as Record<string, AkaEntry>;
@@ -84,8 +95,6 @@ type OgCatalogue = {
   polishNames: Record<string, string>;
   /** Names of merged duplicates, by the id that was kept: searchable and matched by the import. */
   aliases: Record<string, string[]>;
-  /** Removed duplicate id → kept id. */
-  merged: Record<string, string>;
 };
 
 const loadOg = () =>
@@ -100,27 +109,45 @@ const defaultLoad = async (): Promise<RawExercise[]> => {
   const withPl = (r: RawExercise): RawExercise =>
     og.polishNames[r.id] ? { ...r, namePl: og.polishNames[r.id] } : r;
   return [
-    ...base.map(withPl),
-    ...EXTRA_EXERCISES.filter((e) => !og.merged[e.id]).map(({ tips: _tips, ...raw }) => withPl(raw)),
+    ...base.filter((e) => !MERGED_EXERCISES[e.id]).map(withPl),
+    ...EXTRA_EXERCISES.filter((e) => !MERGED_EXERCISES[e.id]).map(({ tips: _tips, ...raw }) => withPl(raw)),
     ...og.added.map((r): RawExercise => ({ ...r, force: null, level: '', mechanic: null })),
   ].map((r) => (og.aliases[r.id] ? { ...r, mergedNames: og.aliases[r.id] } : r));
 };
 
-const defaultMerged = async (): Promise<Record<string, string>> => (await loadOg()).merged;
+const defaultMerged = async (): Promise<Record<string, string>> => MERGED_EXERCISES;
 
 /** Moves everything that points at a removed duplicate to the exercise that was kept. */
 export async function remapExercise(from: string, to: string): Promise<void> {
   await db.transaction('rw', [db.exercises, db.sets, db.notes, db.plans, db.workouts, db.aliases], async () => {
-    await db.sets.where('exerciseId').equals(from).modify({ exerciseId: to });
+    // A workout that had both: the moved sets go after the kept exercise's sets, in its place on the list.
+    const moved = await db.sets.where('exerciseId').equals(from).toArray();
+    const byWorkout = new Map<string, { order: number; maxSet: number }>();
+    for (const wid of new Set(moved.map((s) => s.workoutId))) {
+      const kept = await db.sets.where('workoutId').equals(wid).filter((s) => s.exerciseId === to).toArray();
+      if (kept.length) byWorkout.set(wid, { order: kept[0].exerciseOrder, maxSet: Math.max(...kept.map((s) => s.setOrder)) });
+    }
+    await db.sets.bulkPut(moved.map((s) => {
+      const k = byWorkout.get(s.workoutId);
+      return k ? { ...s, exerciseId: to, exerciseOrder: k.order, setOrder: k.maxSet + 1 + s.setOrder } : { ...s, exerciseId: to };
+    }));
     const note = await db.notes.get(from);
     if (note) {
       const kept = await db.notes.get(to);
-      await db.notes.put({ ...note, exerciseId: to, text: kept ? `${kept.text}\n${note.text}` : note.text });
+      await db.notes.put({ ...note, exerciseId: to, text: kept ? `${kept.text}
+${note.text}` : note.text });
       await db.notes.delete(from);
     }
     await db.aliases.filter((a) => a.exerciseId === from).modify({ exerciseId: to });
     await db.plans.toCollection().modify((plan) => {
-      for (const day of plan.days) for (const item of day.items) if (item.exerciseId === from) item.exerciseId = to;
+      for (const day of plan.days) {
+        if (!day.items.some((i) => i.exerciseId === from)) continue;
+        // A plan day keeps one item per exercise (the first one).
+        const hasTo = day.items.some((i) => i.exerciseId === to);
+        day.items = hasTo
+          ? day.items.filter((i) => i.exerciseId !== from)
+          : day.items.map((i) => (i.exerciseId === from ? { ...i, exerciseId: to } : i));
+      }
     });
     await db.workouts.toCollection().modify((w) => {
       if (!w.exercises?.some((e) => e.exerciseId === from)) return;
@@ -131,8 +158,47 @@ export async function remapExercise(from: string, to: string): Promise<void> {
         : w.exercises.map((e) => (e.exerciseId === from ? { ...e, exerciseId: to } : e));
     });
     const old = await db.exercises.get(from);
-    if (old && !old.custom) await db.exercises.delete(from);
+    if (old && !old.custom) {
+      // The user's settings on the removed exercise move over when the kept one has none.
+      const keep = await db.exercises.get(to);
+      if (keep) {
+        const patch: Partial<Exercise> = {};
+        if (old.weightStep !== undefined && keep.weightStep === undefined) patch.weightStep = old.weightStep;
+        if (old.barWeight !== undefined && keep.barWeight === undefined) patch.barWeight = old.barWeight;
+        if (old.measureOverride !== undefined && keep.measureOverride === undefined) patch.measureOverride = old.measureOverride;
+        if (old.userNames?.length) patch.userNames = [...new Set([...(keep.userNames ?? []), ...old.userNames])];
+        if (Object.keys(patch).length) await db.exercises.update(to, patch);
+      }
+      await db.exercises.delete(from);
+    }
   });
+  // Anonymous stats count per id: carry the already-sent count so nothing is sent twice.
+  const base = readBaseline();
+  if (base[from] !== undefined) {
+    base[to] = (base[to] ?? 0) + base[from];
+    delete base[from];
+    writeBaseline(base);
+  }
+}
+
+/** Ids of removed duplicates that the user's data still points at (built-in rows, history, plans, notes, aliases). */
+async function referencedMergedIds(merged: Record<string, string>): Promise<string[]> {
+  const ids = new Set<string>();
+  const add = (id: string) => { if (merged[id] && merged[id] !== id) ids.add(id); };
+  (await db.exercises.toCollection().primaryKeys()).forEach((k) => add(String(k)));
+  (await db.sets.orderBy('exerciseId').uniqueKeys()).forEach((k) => add(String(k)));
+  (await db.notes.toCollection().primaryKeys()).forEach((k) => add(String(k)));
+  (await db.aliases.toArray()).forEach((a) => add(a.exerciseId));
+  (await db.plans.toArray()).forEach((p) => p.days.forEach((d) => d.items.forEach((i) => add(i.exerciseId))));
+  (await db.workouts.toArray()).forEach((w) => w.exercises?.forEach((e) => add(e.exerciseId)));
+  return [...ids];
+}
+
+/** Re-points every reference to a merged duplicate (catalogue upgrade, restoring an old backup). */
+export async function remapMergedExercises(merged: Record<string, string> = MERGED_EXERCISES): Promise<number> {
+  const ids = await referencedMergedIds(merged);
+  for (const from of ids) await remapExercise(from, merged[from]);
+  return ids.length;
 }
 
 export async function seedExercises(
@@ -159,9 +225,7 @@ export async function seedExercises(
   });
   await db.exercises.bulkPut(mapped);
   // Duplicates removed since the last version: re-point the user's data, then drop them.
-  for (const [from, to] of Object.entries(await loadMerged())) {
-    if (existing.has(from) && from !== to) await remapExercise(from, to);
-  }
+  await remapMergedExercises(await loadMerged());
   await updateSettings({ exerciseDbVersion: EXERCISE_DB_VERSION });
 }
 

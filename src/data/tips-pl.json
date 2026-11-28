@@ -2307,13 +2307,6 @@
     "Stopy możesz oprzeć na podłodze lub unieść, to podnosi trudność.",
     "Ruch kontrolowany, bez gwałtownego rzucania ciężaru z boku na bok."
   ],
-  "Seated_Barbell_Military_Press": [
-    "Plecy oparte, brzuch napięty, nie wyginaj się w lędźwiach.",
-    "Sztanga schodzi do obojczyków, przedramiona pionowo pod nią.",
-    "Wyciskaj nad głowę, wypychając ramiona do pełnego wyprostu.",
-    "Chwyt nieco szerszy niż barki; łokcie lekko przed tułowiem.",
-    "Poproś o asekurację przy cięższych seriach."
-  ],
   "Seated_Barbell_Twist": [
     "Sztangę ułóż na karku, nie na szyi, plecy proste.",
     "Skręcaj tułów powoli, biodra i nogi nieruchome.",
@@ -2383,13 +2376,6 @@
     "Opuszczaj hantle powoli, pozwól im lekko zsunąć się na palce, i unoś ruchem nadgarstków.",
     "Ściśnij przedramię na górze, bez szarpania.",
     "Lekki ciężar i 12–20 powtórzeń."
-  ],
-  "Seated_Dumbbell_Press": [
-    "Oparcie lekko odchylone lub pionowe, plecy przy oparciu, brzuch napięty.",
-    "Hantle startują na wysokości barków, przedramiona pionowo.",
-    "Wyciskaj w górę lekko do środka, bez uderzania hantlami.",
-    "Nie wyginaj lędźwi i nie unoś barków do uszu.",
-    "Opuszczaj powoli, do poziomu uszu lub nieco niżej."
   ],
   "Seated_Flat_Bench_Leg_Pull-In": [
     "Plecy proste, lekko odchylony tułów, ręce mocno trzymają ławkę.",
@@ -2586,13 +2572,6 @@
     "Sztanga schodzi na dolną część klatki, łopatki ściągnięte.",
     "Opuszczaj powoli, 2–3 sekundy, a wypychaj do pełnego wyprostu.",
     "Stopy mocno w podłodze, pośladki na ławce."
-  ],
-  "Smith_Machine_Decline_Press": [
-    "Ławka głową w dół, stopy pewnie zablokowane, łopatki ściągnięte.",
-    "Opuszczaj sztangę na dolną część klatki, łokcie ok. 45° od tułowia.",
-    "Zrób krótką pauzę na klatce, bez odbijania.",
-    "Wypychaj do pełnego wyprostu, nie przeprostowuj łokci.",
-    "Jeśli nie czujesz się pewnie głową w dół, zacznij od lżejszego ciężaru."
   ],
   "Smith_Machine_Hang_Power_Clean": [
     "Sztanga przy kolanach, plecy proste, biodra cofnięte, ramiona proste.",

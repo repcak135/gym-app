@@ -22,8 +22,10 @@ type OgFile = {
 
 const OG_PATH = 'src/data/exercises-og.json';
 const og: OgFile = JSON.parse(readFileSync(OG_PATH, 'utf8'));
-if (og.merged) {
-  console.error('exercises-og.json is already deduplicated: run scripts/build-opengym.ts first, then this script.');
+// Since catalogue 9 the merged map lives in src/data/exercise-merged.json and later merges come from
+// scripts/merge-exercises.ts; this first pass only runs on a fresh scripts/build-opengym.ts output.
+if (og.merged || og.aliases) {
+  console.error('exercises-og.json is already deduplicated: run scripts/build-opengym.ts first, then this script, then scripts/merge-exercises.ts.');
   process.exit(1);
 }
 const review: { same: [string, string][]; different: [string, string][] } = JSON.parse(
@@ -109,8 +111,8 @@ og.added = og.added
     return k.namePl && !e.namePl ? { ...e, namePl: k.namePl } : e;
   });
 og.aliases = aliases;
-og.merged = merged;
 writeFileSync(OG_PATH, JSON.stringify(og));
+writeFileSync('src/data/exercise-merged.json', JSON.stringify(merged, null, 1) + '\n');
 
 const exactRemoved = exact.flat().filter((e) => removed.has(e.id)).length;
 const report = `# Duplikaty w bazie ćwiczeń

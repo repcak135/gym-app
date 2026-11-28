@@ -68,7 +68,7 @@ export const SLANG: Record<string, string[]> = {
   Barbell_Squat: ['Przysiad', 'Przysiady', 'Squat'],
   Front_Squat_Clean_Grip: ['Przysiad przedni', 'Front'],
   Goblet_Squat: ['Goblet', 'Przysiad z hantlem przy klatce'],
-  'x-dumbbell-bulgarian-split-squat': ['Bułgar', 'Bułgarskie', 'Przysiad bułgarski'],
+  Split_Squat_with_Dumbbells: ['Bułgar', 'Bułgarskie', 'Przysiad bułgarski'],
   Hack_Squat: ['Hacken', 'Hackenschmidt', 'Przysiad hakenschmidta'],
   Leg_Press: ['Suwnica', 'Wypychanie nóg', 'Prasa'],
   Leg_Extensions: ['Prostowanie nóg', 'Wyprosty nóg', 'Czwórki na maszynie'],

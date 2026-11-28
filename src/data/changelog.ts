@@ -11,6 +11,15 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.24',
+    date: '2026-11-28',
+    items: [
+      'Porządki w bazie ćwiczeń: 165 zdublowanych ćwiczeń połączonych w jedno (np. dwa „Spacery farmera”, „Unoszenie hantli bokiem” i „…stojąc”, kopie „widok z boku” i „kontrola formy”). Łatwiej znaleźć właściwe.',
+      'Historia, plany, rekordy, notatki i ustawienia ze zdublowanych ćwiczeń przeszły na to, które zostało — nic nie znika. Stare nazwy dalej działają w wyszukiwarce i przy imporcie, a starsza kopia zapasowa też się przywróci.',
+      'Kilka ćwiczeń o tej samej nazwie, a innym ruchu, dostało dokładniejsze nazwy, np. „Pompki na poręczach (na triceps)” i „(na klatkę)”, „Spięcia brzucha” i „Brzuszki”, wyciskania „w siadzie” i „stojąc”.',
+    ],
+  },
+  {
     version: '0.9.23',
     date: '2026-11-28',
     items: [

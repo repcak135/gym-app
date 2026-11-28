@@ -1,5 +1,6 @@
 import LZString from 'lz-string';
 import { db } from './db';
+import { canonicalExerciseId } from './exercises';
 import { getSettings, updateSettings } from './settings';
 import { groupsOf, normalizeGroups } from './supersets';
 import type { Exercise, Plan, PlanItem } from './types';
@@ -207,7 +208,8 @@ export async function resolveExercises(
   const result = new Map<string, { status: ExerciseStatus; targetId?: string }>();
   for (const ex of sp.exercises) {
     if (result.has(ex.id)) continue;
-    const sameId = byId.get(ex.id);
+    // An old link can name a duplicate merged since: it means the kept exercise.
+    const sameId = byId.get(ex.id) ?? (ex.custom ? undefined : byId.get(canonicalExerciseId(ex.id)));
     if (sameId) {
       result.set(ex.id, { status: 'known', targetId: sameId.id });
       continue;

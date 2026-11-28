@@ -154,7 +154,7 @@ export const PLAN_TEMPLATES: PlanTemplate[] = [
         items: [
           acc('Leg_Press', 4),
           acc('Romanian_Deadlift', 4),
-          acc('x-dumbbell-bulgarian-split-squat', 4, 8, 10, ['Split_Squat_with_Dumbbells']),
+          acc('Split_Squat_with_Dumbbells', 4, 8, 10),
           acc('Barbell_Hip_Thrust', 4),
           acc('Lying_Leg_Curls', 2),
           acc('Standing_Calf_Raises', 2),

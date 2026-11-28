@@ -5,16 +5,17 @@ import { PLAN_TEMPLATES, TEMPLATE_CREDIT, createPlanFromTemplate } from './templ
 import exerciseDb from './exercise-db.json';
 import extra from './exercises-extra.json';
 import og from './exercises-og.json';
+import merged from './exercise-merged.json';
 import type { Exercise } from './types';
 
 const catalogue = (() => {
-  const ogData = og as unknown as { added: { id: string }[]; merged: Record<string, string> };
+  const ogData = og as unknown as { added: { id: string }[] };
   const ids = new Set<string>([
     ...(exerciseDb as { id: string }[]).map((e) => e.id),
     ...(extra as { id: string }[]).map((e) => e.id),
     ...ogData.added.map((e) => e.id),
   ]);
-  for (const k of Object.keys(ogData.merged)) ids.delete(k);
+  for (const k of Object.keys(merged)) ids.delete(k);
   return ids;
 })();
 

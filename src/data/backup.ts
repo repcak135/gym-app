@@ -1,4 +1,5 @@
 import { db } from './db';
+import { canonicalExerciseId, remapMergedExercises } from './exercises';
 import { DEFAULT_SETTINGS, getSettings, migrateSound, updateSettings } from './settings';
 import { APP_VERSION } from '../version';
 import { getTheme, isThemeId, setTheme, type ThemeId } from '../theme/themes';
@@ -239,7 +240,8 @@ export async function restoreBackup(f: BackupFile): Promise<void> {
       if (o.barWeight !== undefined) patch.barWeight = o.barWeight;
       if (o.measureOverride !== undefined) patch.measureOverride = o.measureOverride;
       if (Array.isArray(o.userNames) && o.userNames.length) patch.userNames = o.userNames.filter((n) => typeof n === 'string');
-      await db.exercises.update(o.id, patch);
+      // A backup from before a duplicate merge: the settings go to the exercise that was kept.
+      await db.exercises.update(canonicalExerciseId(o.id), patch);
     }
     const settings: AppSettings = migrateSound({
       ...DEFAULT_SETTINGS,
@@ -265,6 +267,8 @@ export async function restoreBackup(f: BackupFile): Promise<void> {
       else (settings as unknown as Record<string, unknown>)[k] = device[k];
     }
     await db.settings.put(settings);
+    // An older backup can still point at merged duplicates: same transaction, so all or nothing.
+    await remapMergedExercises();
   });
   // Only after the data is safely in: a failed restore must not change the look either.
   if (f.theme) setTheme(f.theme);

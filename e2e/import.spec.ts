@@ -90,7 +90,7 @@ test('usuwanie zaimportowanej historii wymaga wpisania USUŃ', async ({ page }) 
 
 test('usunięcie wszystkich danych zostawia pełną bazę ćwiczeń', async ({ page }) => {
   await page.goto('/#/cwiczenia');
-  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('4566 ćwiczeń')).toBeVisible({ timeout: 15_000 });
   await importFixture(page); // creates a custom exercise too
   await page.goto('/#/ustawienia');
   await page.getByRole('button', { name: 'Usuń wszystkie dane' }).click();
@@ -102,7 +102,7 @@ test('usunięcie wszystkich danych zostawia pełną bazę ćwiczeń', async ({ p
   await expect(page).toHaveURL(/#\/$/);
 
   await page.goto('/#/cwiczenia');
-  await expect(page.getByText('4731 ćwiczeń')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('4566 ćwiczeń')).toBeVisible({ timeout: 15_000 });
 });
 
 test('import: plik w złym formacie pokazuje komunikat', async ({ page }) => {

@@ -392,7 +392,7 @@ describe('dodatkowe ćwiczenia (wersja 4 bazy)', () => {
 
     await seedExercises();
 
-    expect(EXERCISE_DB_VERSION).toBe(8);
+    expect(EXERCISE_DB_VERSION).toBe(9);
     expect((await db.settings.get('app'))?.exerciseDbVersion).toBe(EXERCISE_DB_VERSION);
     const fly = (await db.exercises.get('Butterfly'))!;
     expect(fly.weightStep).toBe(5);
@@ -405,9 +405,11 @@ describe('dodatkowe ćwiczenia (wersja 4 bazy)', () => {
     expect(await db.sets.count()).toBe(1);
     const lying = await db.exercises.get('x-lying-chest-press-machine');
     expect(lying).toMatchObject({ nameEn: 'Lying Chest Press Machine', custom: false, equipment: 'machine', images: [] });
-    const og = (await import('./exercises-og.json')).default as unknown as { added: unknown[]; merged: Record<string, string> };
-    const extrasKept = EXTRA_EXERCISES.filter((e) => !og.merged[e.id]).length;
-    expect(await db.exercises.count()).toBe(876 + extrasKept + og.added.length + 1);
+    const og = (await import('./exercises-og.json')).default as unknown as { added: unknown[] };
+    const { MERGED_EXERCISES } = await import('./exercises');
+    const extrasKept = EXTRA_EXERCISES.filter((e) => !MERGED_EXERCISES[e.id]).length;
+    const baseKept = 876 - Object.keys(MERGED_EXERCISES).filter((id) => !id.startsWith('og-') && !id.startsWith('x-')).length;
+    expect(await db.exercises.count()).toBe(baseKept + extrasKept + og.added.length + 1);
     // openGym: Polish names on existing exercises and new og- exercises
     // Polish name first, English kept as nameEn (0.9.9)
     expect(await db.exercises.get('Barbell_Bench_Press_-_Medium_Grip')).toMatchObject({
@@ -463,8 +465,8 @@ describe('duplikaty (wersja 4)', () => {
   it('użytkownik z wersją 3: serie, plan, trening, notatka i alias z usuniętego duplikatu przechodzą na zachowane ćwiczenie', async () => {
     const { db } = await import('./db');
     const { updateSettings } = await import('./settings');
-    const og = (await import('./exercises-og.json')).default as unknown as { merged: Record<string, string> };
-    const [from, to] = Object.entries(og.merged).find(([f, t]) => f.startsWith('og-') && !t.startsWith('og-'))!;
+    const { MERGED_EXERCISES } = await import('./exercises');
+    const [from, to] = Object.entries(MERGED_EXERCISES).find(([f, t]) => f.startsWith('og-') && !t.startsWith('og-'))!;
     await db.exercises.put({ ...fromDbForTest('Dup'), id: from });
     await db.sets.put({ id: 's1', workoutId: 'w1', exerciseId: from, exerciseOrder: 0, setOrder: 0, weight: 40, reps: 10, warmup: false, completedAt: 1 });
     await db.workouts.put({ id: 'w1', name: 'T', startedAt: 1, endedAt: 2, source: 'app', exercises: [{ exerciseId: from, warmupSets: 0, sets: 1, repsMin: 8, repsMax: 12, restSec: 90 }] });

@@ -1,5 +1,6 @@
 import { db } from './db';
 import { groupWorkouts, matchExercises, parseCsv, type ImportWorkout, type NameMatch } from './csvImport';
+import { canonicalExerciseId } from './exercises';
 import type { Exercise, Workout, WorkoutSet } from './types';
 
 export interface ImportPreview {
@@ -29,7 +30,9 @@ export async function prepareImport(text: string): Promise<ImportPreview> {
   for (const w of workouts) for (const r of w.rows) counts.set(r.exercise, (counts.get(r.exercise) ?? 0) + 1);
   const names = [...counts.keys()];
   const [exercises, aliases] = await Promise.all([db.exercises.toArray(), db.aliases.toArray()]);
-  const matches = matchExercises(names, exercises, aliases)
+  // A remembered match can name a duplicate merged since: use the kept exercise.
+  const current = aliases.map((a) => ({ ...a, exerciseId: canonicalExerciseId(a.exerciseId) }));
+  const matches = matchExercises(names, exercises, current)
     .map((m) => ({ ...m, sets: counts.get(m.sourceName)! }))
     .sort((a, b) => b.sets - a.sets);
   return {
