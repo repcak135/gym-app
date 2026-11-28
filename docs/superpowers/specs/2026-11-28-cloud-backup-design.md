@@ -1,6 +1,6 @@
 # Cloud backup: design
 
-Date: 2026-11-28. Status: draft for the owner's approval (builder check done; R2 card question open).
+Date: 2026-11-28. Status: approved by the owner on 2026-11-28 (R2 enabled; owner added a card, so free-tier limits must never be exceeded).
 Part 3 of 3 of the server work (push and ranking are live). Reuses the nick + password accounts from the ranking (`docs/superpowers/specs/2026-11-27-ranking-design.md`).
 
 ## Why
@@ -124,6 +124,16 @@ The encrypted backups stay unreadable there too. If Cloudflare ever loses or blo
 - **Transport:** `PUT /backup` takes a binary body (`application/octet-stream`), with its own 10 MB cap, separate from the JSON `MAX_BODY`. The builder measures the owner-size history (the Gym Day import fixture) after compression; if it comes close to the cap, the cap is raised within R2 limits. Uploads are limited to 20 per member per day, counted in D1 like login attempts. Only the 3 newest backups are kept.
 - **R2 setup:** bucket `banana-gym-backups`, bound in `wrangler.toml`. Tests use a fake R2, as D1 runs on `node:sqlite`.
 - **Device-only fields** (added to `DEVICE_ONLY` in `backup.ts` and to `CLAUDE.md`): BK, the cloud-on flag, the last upload time, the stats baseline, and the stats-sharing switch.
+
+## Staying inside R2's free tier (owner's condition, 2026-11-28)
+
+R2 is enabled on the owner's account with a payment card on file. Usage above the free tier (10 GB-month storage, 1 M Class A / 10 M Class B operations per month) would be billed, so the Worker enforces hard caps well below it:
+- per member: at most 3 objects and 30 MB in total;
+- global: the Worker keeps a running total in D1 and refuses uploads once stored backups reach 5 GB;
+- at most 20 uploads per member per day, plus a global cap of 20 000 uploads per month (Class A);
+- at most 2 000 downloads per member per month (Class B).
+
+When a cap is hit, the upload is refused with a clear Polish message, and the app keeps the local copy and the file backup. `server/README.md` documents how to check R2 usage, and the owner is asked to set a Cloudflare billing notification at 0.01 USD.
 
 ## Left to the builder
 
