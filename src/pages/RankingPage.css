@@ -42,3 +42,30 @@
 .rank-leave { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-3) 0; }
 .rank-leave p { margin: 0; line-height: 1.5; }
 .settings-danger-text .settings-row__label { color: var(--danger); }
+/* Heading + the round "i" (32 px circle like the set editor's "?", 44 px touch target). */
+.rank-table__head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); margin: calc(-1 * var(--space-2)) 0 var(--space-2); }
+.rank-table__head h2 { margin: 0; }
+.rank-info {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-right: calc(-1 * var(--space-2));
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.rank-info span {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+}

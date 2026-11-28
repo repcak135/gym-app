@@ -100,6 +100,15 @@ test('ranking: join with a nick, both tables show, nothing private is sent', asy
   const bench = page.getByRole('region', { name: 'Ławka (DOTS) · rekord wszech czasów' });
   await expect(bench).toContainText('312,4');
   await expect(bench.getByRole('tab')).toHaveCount(0); // the period switch is only for workouts
+  // The round "i" explains the points; 44 px touch target.
+  const info = bench.getByRole('button', { name: 'Jak liczymy punkty' });
+  const box = await info.boundingBox();
+  expect(box!.width).toBeGreaterThanOrEqual(44);
+  expect(box!.height).toBeGreaterThanOrEqual(44);
+  await info.click();
+  await expect(page.getByRole('dialog', { name: 'Jak liczymy punkty' })).toContainText('≈ 69,0 pkt');
+  await page.getByRole('button', { name: 'Zamknij' }).click();
+  await expect(page.getByRole('dialog', { name: 'Jak liczymy punkty' })).toHaveCount(0);
   await expect(page.locator('.rank-row--me')).toContainText('Ola_ż');
   // Miesiąc changes only the workouts table; the all-time bench stays.
   await page.getByRole('region', { name: 'Treningi' }).getByRole('tab', { name: 'Miesiąc' }).click();

@@ -11,6 +11,11 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.22',
+    date: '2026-11-28',
+    items: ['Ranking: przycisk „i” przy tabeli Ławka (DOTS) wyjaśnia, jak liczymy punkty — z przykładem.'],
+  },
+  {
     version: '0.9.21',
     date: '2026-11-28',
     items: [

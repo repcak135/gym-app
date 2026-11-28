@@ -7,6 +7,7 @@ import { saveBodyEntry } from '../data/body';
 import type { Sex } from '../data/dots';
 import type { AppSettings } from '../data/types';
 import Segmented from '../components/stats/Segmented';
+import DotsHelpSheet from '../ranking/DotsHelpSheet';
 import { api, ApiError, type Ranking, type Row } from '../ranking/api';
 import { changePassword, errorText, joinRanking, loginRanking, MIN_PASSWORD, NICK_RE, signOutLocally } from '../ranking/account';
 import { hasBodyWeight, isoWeekKey, monthKey } from '../ranking/scores';
@@ -264,6 +265,7 @@ function Tables({ settings, onMustChange }: { settings: AppSettings; onMustChang
   }, [data, keys.week, keys.month]);
 
   const benchNeedsWeight = settings.rankShareBench && body !== undefined && !hasBodyWeight(body);
+  const [helpOpen, setHelpOpen] = useState(false);
   return (
     <div className="rank-tables">
       {error && (
@@ -298,6 +300,11 @@ function Tables({ settings, onMustChange }: { settings: AppSettings; onMustChang
             me={data.me}
             prev={seen['all:bench']}
             format={fmtPoints}
+            info={
+              <button type="button" className="rank-info" aria-label="Jak liczymy punkty" onClick={() => setHelpOpen(true)}>
+                <span aria-hidden="true">i</span>
+              </button>
+            }
             note="Najlepszy wynik w historii: zaliczona seria (min. 1 powtórzenie) na płaskiej ławce ze sztangą, przeliczona na wagę ciała z tamtego dnia."
           />
         </>
@@ -307,6 +314,7 @@ function Tables({ settings, onMustChange }: { settings: AppSettings; onMustChang
           Wpisz wagę w <Link to="/statystyki">Statystyki › Ciało</Link>, żeby liczyły się punkty z ławki.
         </p>
       )}
+      {helpOpen && <DotsHelpSheet onClose={() => setHelpOpen(false)} />}
       <p className="rank-hint">
         Zalogowano jako <strong>{settings.rankNick}</strong>. Konto: Ustawienia › Konto.
       </p>
@@ -322,6 +330,7 @@ function Table({
   format,
   note,
   head,
+  info,
 }: {
   title: string;
   rows: Row[];
@@ -330,12 +339,16 @@ function Table({
   format: (v: number) => string;
   note?: string;
   head?: ReactNode;
+  info?: ReactNode;
 }) {
   const mine = rows.findIndex((r) => r.nick === me) + 1;
   const up = prev && mine ? prev - mine : 0;
   return (
     <section className="rank-table" aria-label={title}>
-      <h2>{title}</h2>
+      <div className="rank-table__head">
+        <h2>{title}</h2>
+        {info}
+      </div>
       {head}
       {rows.length === 0 ? (
         <p className="rank-hint">Nikt jeszcze nie ma wyniku w tym okresie.</p>
