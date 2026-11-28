@@ -30,5 +30,10 @@ database_name = "banana-gym"
 database_id = "d71dc9c4-eda0-43cc-ae78-ab42b8f6d767"
 migrations_dir = "migrations"
 
+# Encrypted cloud backups (ciphertext only). Caps in src/cloud.ts keep usage inside the free tier.
+[[r2_buckets]]
+binding = "BACKUPS"
+bucket_name = "banana-gym-backups"
+
 [observability]
 enabled = true

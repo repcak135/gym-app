@@ -33,6 +33,8 @@ import SettingsPage from './pages/SettingsPage';
 import ImportPage from './pages/ImportPage';
 import PlanFromHistoryPage from './pages/PlanFromHistoryPage';
 import BackupPage from './pages/BackupPage';
+import CloudPage from './pages/CloudPage';
+import CloudSync from './cloud/CloudSync';
 import WorkoutPage from './pages/WorkoutPage';
 import WorkoutSummaryPage from './pages/WorkoutSummaryPage';
 import { getActiveWorkout } from './data/workouts';
@@ -122,6 +124,7 @@ export default function App() {
       <HapticsSetting />
       <ErrorReportsSetting />
       <RankingSync />
+      <CloudSync />
       <RestPush />
       <KeyboardInset />
       <main>
@@ -151,6 +154,7 @@ export default function App() {
           <Route path="/ustawienia/import" element={<ImportPage />} />
           <Route path="/ustawienia/plan-z-historii" element={<PlanFromHistoryPage />} />
           <Route path="/ustawienia/kopia" element={<BackupPage />} />
+          <Route path="/ustawienia/chmura" element={<CloudPage />} />
           <Route path="/trening" element={<WorkoutPage />} />
           <Route path="/trening/podsumowanie/:id" element={<WorkoutSummaryPage />} />
         </Routes>

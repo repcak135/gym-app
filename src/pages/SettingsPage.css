@@ -260,3 +260,4 @@
 .settings-rest-lock {
   margin-top: var(--space-3);
 }
+.settings-cloud-state { margin-left: auto; margin-right: var(--space-2); color: var(--text-muted); font-size: 0.9rem; }

@@ -34,6 +34,15 @@ Live at https://banana-gym-push.banana-gym-push.workers.dev.
 - Secret `SALT_SECRET` (random, not stored elsewhere; replace freely): HMAC key for fake salts of unknown nicks, so `/account/salt` does not reveal which nicks exist.
 - Optional secret `JOIN_CODE`: when set, joining needs that code.
 
+## Cloud backup (R2)
+
+- Bucket `banana-gym-backups` (binding `BACKUPS`). Routes in `src/cloud.ts`: `PUT /backup` (binary, header `X-Key-Id`), `GET /backup/latest|list|keys`, `POST /backup/keys`, `DELETE /backup`, `POST /stats/exercises`; admin `GET|POST /admin/backup-keys`, `GET /admin/snapshot`, `GET /admin/backup-object`.
+- The server never decrypts: the phone sends AES-GCM ciphertext; D1 `backup_keys` holds the backup key wrapped with the password and with the admin public key (`src/cloud/crypto.ts`, shared with the scripts).
+- **Free-tier caps (the owner's account has a payment card; never exceed):** per member 3 objects / 30 MB, 20 uploads a day, 2 000 downloads a month; globally 5 GB stored and 20 000 uploads a month. Check usage: `npx wrangler d1 execute banana-gym --remote --command "SELECT COUNT(*) AS objects, SUM(size)/1048576.0 AS mb FROM backups"` and the R2 page of the Cloudflare dashboard. The owner has (or should have) a billing notification at 0.01 USD.
+- Admin key pair: created once with `node server/admin-keygen.mjs` (refuses to overwrite). Private key only in `C:\Claude\gym-app-private\banana-admin-recovery.json` (weekly Drive backup); public key + kid in the app's `.env`.
+- `node server/admin-recover.mjs <nick>`: shows the last backup date, asks "tak", then sets a temporary password, re-wraps the backup key with it and prints the password once. `admin-reset.mjs` refuses members with a cloud backup.
+- `node server/admin-snapshot.mjs`: D1 tables (without sessions) + all encrypted objects into `C:\Claude\gym-app-private\server-snapshot\` (parts < 14 MB). The Sunday Drive backup task should run it first.
+
 ## Crash reports
 
 - The app sends `POST /errors` (version, message, a few stack lines, screen path, coarse device, time; no workout data). One `ErrorLog` Durable Object keeps the newest 500 reports, at most 30 days. 10 reports per minute per IP (counted in memory, IPs are not stored).

@@ -11,6 +11,7 @@ import {
 import { useMakeBackup } from '../data/backupShare';
 import { plural, workoutsLabel } from '../data/plural';
 import BackupStatusText from '../components/BackupStatusText';
+import { CloudStatusLine } from './CloudPage';
 import { backupButtonLabel, daysAgo, formatBackupDate } from './backupFormat';
 import './PlansPage.css';
 import './SettingsPage.css';
@@ -103,6 +104,7 @@ export default function BackupPage() {
           {backupButtonLabel(status)}
         </button>
         <BackupStatusText status={status} />
+        <CloudStatusLine />
       </section>
 
       <section className="settings-group" aria-labelledby="bk-restore">

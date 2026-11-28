@@ -2,6 +2,7 @@ import { DeviceCore, type DeviceEnv, type StorageLike } from './device';
 import { isId, MAX_BODY, newId, ORIGINS, parseSchedule, parseSubscription } from './validate';
 import { ErrorLogCore, parseReport, type ListStorage } from './errors';
 import { rankRoute, type RankEnv } from './accounts';
+import { cloudAdminRoute, cloudRoute } from './cloud';
 
 export interface Env extends DeviceEnv, RankEnv {
   DEVICE: DurableObjectNamespace;
@@ -59,8 +60,8 @@ export class Device {
 function cors(origin: string): Record<string, string> {
   return {
     'Access-Control-Allow-Origin': origin,
-    'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Key-Id',
     'Access-Control-Max-Age': '86400',
     Vary: 'Origin',
   };
@@ -102,7 +103,11 @@ export async function handle(req: Request, env: Env, now = Date.now()): Promise<
   const pathname = new URL(req.url).pathname;
   if (req.method === 'GET' && pathname === '/errors') return readErrors(req, env);
   // Admin scripts run from the computer (no Origin); the admin token protects them.
-  if (req.method === 'POST' && pathname.startsWith('/admin/')) return (await rank(req, env, now, {})) ?? new Response(null, { status: 404 });
+  if (pathname.startsWith('/admin/')) {
+    const cloud = await cloudAdminRoute(req, env, now);
+    if (cloud) return cloud;
+    return req.method === 'POST' ? ((await rank(req, env, now, {})) ?? new Response(null, { status: 404 })) : new Response(null, { status: 404 });
+  }
   const origin = req.headers.get('Origin') ?? '';
   if (!ORIGINS.includes(origin)) return new Response('forbidden', { status: 403 });
   const h = cors(origin);
@@ -110,6 +115,7 @@ export async function handle(req: Request, env: Env, now = Date.now()): Promise<
     new Response(body ? JSON.stringify(body) : null, { status, headers: body ? { ...h, 'Content-Type': 'application/json' } : h });
   if (req.method === 'OPTIONS') return reply(204);
 
+  if (pathname === '/backup' || pathname.startsWith('/backup/') || pathname.startsWith('/stats/')) return (await cloudRoute(req, env, now, h)) ?? reply(404);
   if (RANK_PREFIXES.some((p) => pathname === p || pathname.startsWith(`${p}/`))) return (await rank(req, env, now, h)) ?? reply(404);
 
   const route = `${req.method} ${pathname}`;

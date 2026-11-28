@@ -69,3 +69,9 @@
   font: inherit;
   font-weight: 700;
 }
+.rank .bk-btn { margin: var(--space-3) 0; }
+.rank-toggle { margin-top: var(--space-3); }
+.cloud-counts { width: 100%; border-collapse: collapse; margin: 0 0 var(--space-3); font-variant-numeric: tabular-nums; }
+.cloud-counts th, .cloud-counts td { padding: var(--space-1) var(--space-2); text-align: right; border-bottom: 1px solid var(--border); }
+.cloud-counts th:first-child { text-align: left; font-weight: 400; color: var(--text-muted); }
+.cloud-counts thead th { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }

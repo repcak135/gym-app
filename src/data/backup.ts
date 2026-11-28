@@ -25,7 +25,7 @@ export interface ExerciseOverride {
 /** Settings that travel with the data (device-only fields stay on the device). */
 export type BackupSettings = Partial<Omit<AppSettings, 'key' | 'exerciseDbVersion' | 'lastBackupAt' | 'backupReminderSnoozedUntil' | 'lastSeenVersion' | 'restPush' | 'pushId' | 'pushPromptDone' | 'errorReports' | RankKey>>;
 
-const RANK_KEYS = ['rankToken', 'rankNick', 'rankSex', 'rankShareWorkouts', 'rankShareBench'] as const;
+const RANK_KEYS = ['rankToken', 'rankNick', 'rankSex', 'rankShareWorkouts', 'rankShareBench', 'cloudKey', 'cloudOn', 'cloudLastAt', 'cloudShareStats', 'cloudFingerprint'] as const;
 type RankKey = (typeof RANK_KEYS)[number];
 
 export interface BackupData {
@@ -281,11 +281,13 @@ export async function snoozeBackupReminder(now = Date.now()): Promise<void> {
 }
 
 export function backupReminderDue(
-  s: Pick<AppSettings, 'lastBackupAt' | 'backupReminderSnoozedUntil'>,
+  s: Pick<AppSettings, 'lastBackupAt' | 'backupReminderSnoozedUntil' | 'cloudOn' | 'cloudLastAt'>,
   hasWorkouts: boolean,
   now = Date.now(),
 ): boolean {
   if (!hasWorkouts) return false;
+  // A recent cloud backup is a backup too.
+  if (s.cloudOn && s.cloudLastAt !== undefined && now - s.cloudLastAt <= BACKUP_REMIND_AFTER_MS) return false;
   if (s.backupReminderSnoozedUntil !== undefined && now < s.backupReminderSnoozedUntil) return false;
   return s.lastBackupAt === undefined || now - s.lastBackupAt > BACKUP_REMIND_AFTER_MS;
 }

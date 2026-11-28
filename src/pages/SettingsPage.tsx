@@ -9,6 +9,7 @@ import { CHANGELOG } from '../data/changelog';
 import { APP_VERSION } from '../version';
 import PushSetting from '../push/PushSetting';
 import AccountSection from '../ranking/AccountSection';
+import { cloudStatusText } from './CloudPage';
 import { REST_SOUND_PRESETS, presetHasSound, previewSound, setBreakSilent, setSoundWanted } from '../audio/beep';
 import { isAndroid, isIOS } from '../audio/backgroundRest';
 import { parseWeight } from '../data/progression';
@@ -308,6 +309,12 @@ export default function SettingsPage() {
           <span className="settings-row__label">Kopia zapasowa</span>
           <ChevronRight size={20} aria-hidden="true" />
         </Link>
+        <Link to="/ustawienia/chmura" className="settings-row settings-link">
+          <span className="settings-row__label">Kopia w chmurze</span>
+          <span className="settings-cloud-state">{settings.cloudOn ? 'włączona' : 'wyłączona'}</span>
+          <ChevronRight size={20} aria-hidden="true" />
+        </Link>
+        {settings.cloudOn && <p className="settings-group__hint">{cloudStatusText(settings.cloudLastAt)}</p>}
         <Link to="/ustawienia/import" className="settings-row settings-link">
           <span className="settings-row__label">Importuj historię</span>
           <ChevronRight size={20} aria-hidden="true" />

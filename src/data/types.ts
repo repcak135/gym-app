@@ -198,4 +198,12 @@ export interface AppSettings {
   rankSex?: 'm' | 'f';
   rankShareWorkouts?: boolean;
   rankShareBench?: boolean;
+  /** Device-only cloud backup: the backup key (base64url; never in backup files), on/off, last upload. */
+  cloudKey?: string;
+  cloudOn?: boolean;
+  cloudLastAt?: number;
+  /** Device-only: "Udostępnij anonimowo listę ćwiczeń" (on by default when cloud backup is switched on). */
+  cloudShareStats?: boolean;
+  /** Device-only: data fingerprint of the last upload (a new one after a workout triggers the next upload). */
+  cloudFingerprint?: string;
 }

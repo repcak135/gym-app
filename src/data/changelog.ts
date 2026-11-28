@@ -11,6 +11,15 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.23',
+    date: '2026-11-28',
+    items: [
+      'Nowe: kopia w chmurze (Ustawienia › Dane › Kopia w chmurze) dla osób z kontem w Rankingu. Wysyła się sama po treningu, a na nowym telefonie wystarczy zalogować się i przywrócić.',
+      'Kopia jest zaszyfrowana Twoim hasłem. Właściciel aplikacji może ją odzyskać, jeśli zgubisz hasło. Nikt inny nie odczyta jej na serwerze.',
+      'Razem z kopią idzie anonimowo lista ćwiczeń (nazwy z katalogu i liczba serii, bez nicku, dat i ciężarów) — pomaga wybrać kolejne ćwiczenia do rankingu. Można to wyłączyć na ekranie kopii w chmurze.',
+    ],
+  },
+  {
     version: '0.9.22',
     date: '2026-11-28',
     items: ['Ranking: przycisk „i” przy tabeli Ławka (DOTS) wyjaśnia, jak liczymy punkty — z przykładem.'],

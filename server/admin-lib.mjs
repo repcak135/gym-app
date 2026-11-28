@@ -1,4 +1,4 @@
-// Shared by the admin scripts. Same password derivation as the app (src/ranking/crypto.ts).
+// Shared by the admin scripts. Same password derivation as the app (src/ranking/account.ts).
 import { readFileSync } from 'node:fs';
 
 export const URL_BASE = 'https://banana-gym-push.banana-gym-push.workers.dev';
@@ -24,4 +24,8 @@ export function adminCall(path, body) {
     headers: { Authorization: `Bearer ${adminToken()}`, 'Content-Type': 'text/plain' },
     body: JSON.stringify(body),
   });
+}
+
+export function adminGet(path) {
+  return fetch(URL_BASE + path, { headers: { Authorization: `Bearer ${adminToken()}` } });
 }

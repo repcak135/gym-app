@@ -89,7 +89,7 @@ export default function AccountSection({ settings }: { settings: AppSettings }) 
           </button>
           {confirmLeave ? (
             <div className="rank-leave" role="alertdialog" aria-label="Opuścić ranking?">
-              <p>Opuścić ranking? Twoje konto i wyniki znikną z serwera. Treningi w telefonie zostają.</p>
+              <p>Opuścić ranking? Twoje konto, wyniki i kopie w chmurze znikną z serwera. Treningi w telefonie zostają.</p>
               <button type="button" className="confirm-sheet__btn confirm-sheet__btn--danger" disabled={busy} onClick={() => void run(() => leaveRanking(token))}>
                 Tak, opuść ranking
               </button>

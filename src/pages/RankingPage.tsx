@@ -8,6 +8,7 @@ import type { Sex } from '../data/dots';
 import type { AppSettings } from '../data/types';
 import Segmented from '../components/stats/Segmented';
 import DotsHelpSheet from '../ranking/DotsHelpSheet';
+import { CloudRestoreHint } from './CloudPage';
 import { api, ApiError, type Ranking, type Row } from '../ranking/api';
 import { changePassword, errorText, joinRanking, loginRanking, MIN_PASSWORD, NICK_RE, signOutLocally } from '../ranking/account';
 import { hasBodyWeight, isoWeekKey, monthKey } from '../ranking/scores';
@@ -273,6 +274,7 @@ function Tables({ settings, onMustChange }: { settings: AppSettings; onMustChang
           {error}
         </p>
       )}
+      <CloudRestoreHint />
       {!data && !error && <p className="rank-hint">Wczytywanie…</p>}
       {data && (
         <>

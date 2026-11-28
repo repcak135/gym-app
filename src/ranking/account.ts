@@ -1,21 +1,17 @@
 import { updateSettings } from '../data/settings';
 import type { Sex } from '../data/dots';
 import { api, ApiError } from './api';
+import { db } from '../data/db';
+import { b64u, unb64u, unwrapWithPassword, wrapWithPassword } from '../cloud/crypto';
+import { cloudApi } from '../cloud/api';
+import { resetBaseline } from '../cloud/stats';
+
+/** An error whose message is already the Polish text for the user. */
+export class UserError extends Error {}
 
 /** PBKDF2 iterations for new passwords (stored per member on the server, so it can be raised). */
 export const ITERATIONS = 300_000;
 const LAST_SENT = 'gym.rankLastSent';
-
-function b64u(bytes: Uint8Array): string {
-  let s = '';
-  for (const x of bytes) s += String.fromCharCode(x);
-  return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-}
-
-function unb64u(s: string): Uint8Array<ArrayBuffer> {
-  const t = s.replace(/-/g, '+').replace(/_/g, '/');
-  return Uint8Array.from(atob(t + '='.repeat((4 - (t.length % 4)) % 4)), (c) => c.charCodeAt(0));
-}
 
 export function randomSalt(): string {
   return b64u(crypto.getRandomValues(new Uint8Array(16)));
@@ -58,6 +54,7 @@ export function markSent(json: string): void {
 
 /** Polish message for an API error. */
 export function errorText(e: unknown): string {
+  if (e instanceof UserError) return e.message;
   const s = e instanceof ApiError ? e.status : -1;
   if (s === 0) return 'Brak połączenia z internetem. Spróbuj ponownie.';
   if (s === 401) return 'Zły nick albo hasło.';
@@ -87,12 +84,45 @@ export async function loginRanking(o: { nick: string; password: string; sex: Sex
   const key = await deriveKey(o.password, s.salt, s.iterations);
   const r = await api.login({ nick, key });
   await signedIn(r.token, r.nick, o.sex, r.shareWorkouts, r.shareBench);
+  await adoptCloudKey(r.token, o.password);
   return r.mustChange;
 }
 
+/**
+ * New phone: when the account has a cloud backup, open its key with the password just typed and keep
+ * it on this phone; cloud backup is then on here too. The history already on the phone counts as sent.
+ */
+export async function adoptCloudKey(token: string, password: string): Promise<boolean> {
+  let keys;
+  try {
+    keys = await cloudApi.getKeys(token);
+  } catch {
+    return false; // no cloud backup (404) or offline: the user can switch it on later
+  }
+  let bk: Uint8Array<ArrayBuffer>;
+  try {
+    bk = await unwrapWithPassword(keys.pwWrapped, password);
+  } catch {
+    return false; // should not happen (the password just logged in); never block the login for it
+  }
+  const s = await db.settings.get('app');
+  await updateSettings({ cloudKey: b64u(bk), cloudOn: true, cloudShareStats: s?.cloudShareStats ?? true, cloudLastAt: keys.lastBackupAt ?? undefined, cloudFingerprint: undefined });
+  await resetBaseline();
+  return true;
+}
+
+/** With cloud backup the backup key is re-wrapped with the new password in the same request. */
 export async function changePassword(token: string, password: string): Promise<void> {
   const salt = randomSalt();
-  await api.password(token, { salt, iterations: ITERATIONS, key: await deriveKey(password, salt, ITERATIONS) });
+  const cloudKey = (await db.settings.get('app'))?.cloudKey;
+  const pwWrapped = cloudKey ? await wrapWithPassword(unb64u(cloudKey), password) : undefined;
+  try {
+    await api.password(token, { salt, iterations: ITERATIONS, key: await deriveKey(password, salt, ITERATIONS), pwWrapped });
+  } catch (e) {
+    if (e instanceof ApiError && e.status === 409)
+      throw new UserError('To konto ma kopię w chmurze, a ten telefon nie ma jej klucza. Wyloguj się i zaloguj ponownie, potem zmień hasło.');
+    throw e;
+  }
 }
 
 export async function updateSharing(token: string, shareWorkouts: boolean, shareBench: boolean): Promise<void> {
@@ -104,7 +134,17 @@ export async function updateSharing(token: string, shareWorkouts: boolean, share
 /** Forgets the account on this phone (sex stays for the next login). */
 export async function signOutLocally(): Promise<void> {
   forgetLastSent();
-  await updateSettings({ rankToken: undefined, rankNick: undefined, rankShareWorkouts: undefined, rankShareBench: undefined });
+  await updateSettings({
+    rankToken: undefined,
+    rankNick: undefined,
+    rankShareWorkouts: undefined,
+    rankShareBench: undefined,
+    // The backup key belongs to the account: it leaves the phone with it (the backups stay on the server).
+    cloudKey: undefined,
+    cloudOn: undefined,
+    cloudLastAt: undefined,
+    cloudFingerprint: undefined,
+  });
 }
 
 export async function logout(token: string): Promise<void> {

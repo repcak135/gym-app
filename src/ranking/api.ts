@@ -6,6 +6,8 @@ const BASE = PUSH_URL;
 
 export class ApiError extends Error {
   status: number;
+  /** Short reason the server sent, e.g. 'update', 'daily', 'full'. */
+  code?: string;
   constructor(status: number) {
     super(`HTTP ${status}`);
     this.status = status;
@@ -27,7 +29,15 @@ async function call<T>(method: string, path: string, body?: object, token?: stri
   } catch {
     throw new ApiError(0); // offline
   }
-  if (!res.ok) throw new ApiError(res.status);
+  if (!res.ok) {
+    const err = new ApiError(res.status);
+    try {
+      err.code = ((await res.json()) as { error?: string }).error;
+    } catch {
+      // no body
+    }
+    throw err;
+  }
   return (res.status === 204 ? undefined : await res.json()) as T;
 }
 
@@ -37,7 +47,7 @@ export const api = {
     call<{ token: string; nick: string }>('POST', '/account/join', b),
   login: (b: { nick: string; key: string }) => call<Me & { token: string }>('POST', '/account/login', b),
   me: (token: string) => call<Me>('GET', '/account/me', undefined, token),
-  password: (token: string, b: { salt: string; iterations: number; key: string }) => call<void>('POST', '/account/password', b, token),
+  password: (token: string, b: { salt: string; iterations: number; key: string; pwWrapped?: string }) => call<void>('POST', '/account/password', b, token),
   sharing: (token: string, b: { shareWorkouts: boolean; shareBench: boolean }) => call<void>('POST', '/account/sharing', b, token),
   logout: (token: string) => call<void>('DELETE', '/account/session', undefined, token),
   leave: (token: string) => call<void>('DELETE', '/account', undefined, token),

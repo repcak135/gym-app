@@ -3,6 +3,8 @@
 
 export interface RankEnv {
   DB: D1Database;
+  /** Encrypted cloud backups (ciphertext only). */
+  BACKUPS: R2Bucket;
   /** Secret: admin scripts (reset / remove a member). */
   ADMIN_TOKEN?: string;
   /** Secret: HMAC key for the fake salts of unknown nicks (separate from ADMIN_TOKEN). */
@@ -50,7 +52,7 @@ export async function sha256Hex(s: string): Promise<string> {
   return hex(await crypto.subtle.digest('SHA-256', enc.encode(s)));
 }
 
-function randomHex(bytes: number): string {
+export function randomHex(bytes: number): string {
   return hex(crypto.getRandomValues(new Uint8Array(bytes)));
 }
 
@@ -70,10 +72,10 @@ export function normNick(v: unknown): { nick: string; lower: string } | null {
   return { nick, lower: nick.toLocaleLowerCase('pl') };
 }
 
-const isB64u = (v: unknown, min: number, max: number): v is string => typeof v === 'string' && v.length >= min && v.length <= max && /^[A-Za-z0-9_-]+$/.test(v);
-const isKey = (v: unknown): v is string => isB64u(v, 43, 43); // 32 bytes
-const isSalt = (v: unknown): v is string => isB64u(v, 22, 22); // 16 bytes
-const isIterations = (v: unknown): v is number => Number.isInteger(v) && (v as number) >= MIN_ITERATIONS && (v as number) <= MAX_ITERATIONS;
+export const isB64u = (v: unknown, min: number, max: number): v is string => typeof v === 'string' && v.length >= min && v.length <= max && /^[A-Za-z0-9_-]+$/.test(v);
+export const isKey = (v: unknown): v is string => isB64u(v, 43, 43); // 32 bytes
+export const isSalt = (v: unknown): v is string => isB64u(v, 22, 22); // 16 bytes
+export const isIterations = (v: unknown): v is number => Number.isInteger(v) && (v as number) >= MIN_ITERATIONS && (v as number) <= MAX_ITERATIONS;
 const isWeek = (v: unknown): v is string => typeof v === 'string' && /^\d{4}-W(0[1-9]|[1-4]\d|5[0-3])$/.test(v);
 const isMonth = (v: unknown): v is string => typeof v === 'string' && /^\d{4}-(0[1-9]|1[0-2])$/.test(v);
 const count = (v: unknown, max: number): v is number => typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= max;
@@ -86,7 +88,7 @@ async function fakeSalt(lower: string, secret: string): Promise<string> {
   return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
-async function passwordHash(serverSalt: string, key: string): Promise<string> {
+export async function passwordHash(serverSalt: string, key: string): Promise<string> {
   return sha256Hex(`${serverSalt}:${key}`);
 }
 
@@ -110,7 +112,7 @@ async function note(db: D1Database, key: string, now: number): Promise<void> {
 
 const memberView = (m: Member) => ({ nick: m.nick, shareWorkouts: !!m.share_workouts, shareBench: !!m.share_bench, mustChange: !!m.must_change });
 
-async function memberByToken(db: D1Database, auth: string | null, now: number): Promise<Member | null> {
+export async function memberByToken(db: D1Database, auth: string | null, now: number): Promise<Member | null> {
   const token = (auth ?? '').replace(/^Bearer /, '');
   if (!/^[0-9a-f]{32}$/.test(token)) return null;
   const th = await sha256Hex(token);
@@ -211,9 +213,11 @@ export async function rankRoute(r: RankRequest, env: RankEnv): Promise<Res | nul
       const m = await db.prepare('SELECT id FROM members WHERE nick_lower = ?').bind(n.lower).first<{ id: number }>();
       if (!m) return fail(404);
       if (route === 'POST /admin/remove') {
-        await deleteMember(db, m.id);
+        await deleteMember(env, m.id);
         return ok();
       }
+      // A member with cloud backup keys needs admin-recover.mjs, which re-wraps the backup key too.
+      if (await hasBackupKeys(db, m.id)) return fail(409, 'cloud');
       if (!isSalt(b.salt) || !isIterations(b.iterations) || !isKey(b.key)) return fail(400);
       const serverSalt = randomHex(16);
       await db.batch([
@@ -240,14 +244,20 @@ export async function rankRoute(r: RankRequest, env: RankEnv): Promise<Res | nul
     case 'POST /account/password': {
       // The session token proves ownership ("Zapomniałem hasła" on a logged-in phone).
       if (!isSalt(b.salt) || !isIterations(b.iterations) || !isKey(b.key)) return fail(400);
+      // With cloud backup, the backup key wrapped with the new password changes in the same batch,
+      // so the login and the backup can never get out of step. Apps before 0.9.23 do not send it.
+      const cloud = await hasBackupKeys(db, m.id);
+      if (cloud && !isPwWrapped(b.pwWrapped)) return fail(409, 'update');
       const serverSalt = randomHex(16);
       const keep = await sha256Hex((r.auth ?? '').replace(/^Bearer /, ''));
-      await db.batch([
+      const stmts = [
         db
           .prepare('UPDATE members SET client_salt = ?, iterations = ?, server_salt = ?, hash = ?, must_change = 0 WHERE id = ?')
           .bind(b.salt, b.iterations, serverSalt, await passwordHash(serverSalt, b.key), m.id),
         db.prepare('DELETE FROM sessions WHERE member_id = ? AND token_hash != ?').bind(m.id, keep),
-      ]);
+      ];
+      if (cloud) stmts.push(db.prepare('UPDATE backup_keys SET pw_wrapped = ?, updated_at = ? WHERE member_id = ?').bind(b.pwWrapped as string, now, m.id));
+      await db.batch(stmts);
       return ok();
     }
 
@@ -266,7 +276,7 @@ export async function rankRoute(r: RankRequest, env: RankEnv): Promise<Res | nul
       return ok();
 
     case 'DELETE /account':
-      await deleteMember(db, m.id);
+      await deleteMember(env, m.id);
       return ok();
 
     case 'POST /scores': {
@@ -336,8 +346,29 @@ export async function rankRoute(r: RankRequest, env: RankEnv): Promise<Res | nul
   return null;
 }
 
-async function deleteMember(db: D1Database, id: number): Promise<void> {
+export async function hasBackupKeys(db: D1Database, memberId: number): Promise<boolean> {
+  return !!(await db.prepare('SELECT 1 AS x FROM backup_keys WHERE member_id = ?').bind(memberId).first());
+}
+
+/** A password-wrapped backup key as the app sends it (JSON, v:1, kind 'pw'). */
+export function isPwWrapped(v: unknown): v is string {
+  if (typeof v !== 'string' || v.length > 1000) return false;
+  try {
+    const w = JSON.parse(v) as Record<string, unknown>;
+    return w.v === 1 && w.kind === 'pw' && isSalt(w.salt) && isIterations(w.iterations) && isB64u(w.iv, 16, 16) && isB64u(w.ct, 43, 80);
+  } catch {
+    return false;
+  }
+}
+
+/** Removes a member everywhere: scores, record, sessions, cloud backups (R2 objects too) and keys. */
+export async function deleteMember(env: RankEnv, id: number): Promise<void> {
+  const db = env.DB;
+  const objects = (await db.prepare('SELECT object_key FROM backups WHERE member_id = ?').bind(id).all<{ object_key: string }>()).results.map((r) => r.object_key);
+  if (objects.length) await env.BACKUPS.delete(objects);
   await db.batch([
+    db.prepare('DELETE FROM backups WHERE member_id = ?').bind(id),
+    db.prepare('DELETE FROM backup_keys WHERE member_id = ?').bind(id),
     db.prepare('DELETE FROM scores WHERE member_id = ?').bind(id),
     db.prepare('DELETE FROM records WHERE member_id = ?').bind(id),
     db.prepare('DELETE FROM sessions WHERE member_id = ?').bind(id),
