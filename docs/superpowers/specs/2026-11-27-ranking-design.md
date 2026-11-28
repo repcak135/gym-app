@@ -1,6 +1,6 @@
 # Friends' ranking and accounts: design
 
-Date: 2026-11-27. Status: approved by the owner on 2026-11-27.
+Date: 2026-11-27. Status: approved by the owner on 2026-11-27; bench table changed to all-time on 2026-11-28 (owner: "Ranking tydzień miesiąc miał być tylko dla ilości treningów, a ranking największego wyciśnięcia powinien być all time"), shipped in 0.9.21.
 Part 2 of 3 of the server work (push is done, cloud backup comes next). The accounts built here are reused by the cloud backup.
 
 ## Why
@@ -13,9 +13,9 @@ Success: friends join with a nick, see two tables (workouts per week/month, benc
 
 - Opt-in "Ranking" screen (in Statystyki) with a join flow: unique nick, password, sex (for points), and a choice of what to share: workouts per week/month and/or bench points.
 - One global group for everyone who joins (owner's choice).
-- Table 1, "Treningi": finished workouts in the current week / month.
-- Table 2, "Ławka (DOTS)": DOTS points from the heaviest **actually lifted** weight in a completed working set with at least 1 rep in the chosen period. No estimated 1RM (owner's rule). Warm-ups and 0-rep sets do not count.
-- Points are computed on the phone from that weight, the latest body weight (Statystyki › Ciało) and sex. Only the points and date go to the server.
+- Table 1, "Treningi": finished workouts in the current week / month. The Tydzień | Miesiąc switch applies only to this table.
+- Table 2, "Ławka (DOTS) · rekord wszech czasów": **all-time** best DOTS points from an **actually lifted** weight in a completed working set with at least 1 rep, ever. No period switch. No estimated 1RM (owner's rule). Warm-ups and 0-rep sets do not count.
+- Points are computed on the phone from that weight, the body weight on the day of the lift (Statystyki › Ciało: the latest entry on or before that day, else the earliest entry after it) and sex. Only the points go to the server.
 - Automatic update after each finished workout.
 - Login on another phone with nick + password. Change password in the app. Leave ranking = delete my data on the server.
 - Admin password reset by the owner/Claude from the computer, for a friend who forgot it.
@@ -60,7 +60,7 @@ Success: friends join with a nick, see two tables (workouts per week/month, benc
 ## Data sent to the server
 
 - Join: nick, password-derived key, chosen sharing flags.
-- After each finished workout: `{ week: 'YYYY-Www', month: 'YYYY-MM', workoutsWeek, workoutsMonth, benchPointsWeek?, benchPointsMonth? }`, only for the sharing options that are on. The period best is recomputed on the phone and replaces the stored value.
+- After each finished workout: `{ week: 'YYYY-Www', month: 'YYYY-MM', workoutsWeek, workoutsMonth, benchBest? }`, only for the sharing options that are on. Everything is recomputed on the phone and replaces the stored values (`benchBest` = all-time best DOTS).
 - Never: body weight, sex, kilograms, exercise lists, notes.
 
 ## Pieces
@@ -97,9 +97,9 @@ Success: friends join with a nick, see two tables (workouts per week/month, benc
 ## Settled after the builder check (Claude's calls)
 
 - **Which bench counts:** the classic flat barbell bench only (the catalogue's flat barbell bench press ids, including merged duplicates and the wide / close-grip flat barbell variants); not dumbbell, incline or Smith. This keeps the table fair. The server schema is keyed by an exercise key (`bench` now, more later), so new lifts need no schema change.
-- **Weight:** the stored set weight (total on the bar), heaviest completed working set with >= 1 rep in the period, regardless of reps (100x1 beats 80x12, per the owner's rule). No unit conversion (kg only).
-- **Body weight:** latest Ciało entry. If none, or older than 60 days, the app asks to enter the current weight before sharing bench points; until then only workouts are shared.
-- **Periods:** one row per member per period key (`2026-W48`, `2026-11`); rows older than 3 months are deleted. A member sharing workouts shows 0 when they have none this period. A member who shares only one table appears only in that table.
+- **Weight:** the stored set weight (total on the bar), any completed working set with >= 1 rep ever, regardless of reps (100x1 beats 80x12, per the owner's rule). Each set gets the body weight of its day and the best DOTS points win, so a lighter lift at a lower body weight can beat a heavier one. No unit conversion (kg only).
+- **Body weight:** the Ciało entry of the lift day (latest on or before it, else the earliest after it). If there is no body weight at all, the join form asks for the current one (saved in Ciało); until then only workouts are shared.
+- **Periods:** workouts have one row per member per period key (`2026-W48`, `2026-11`) in `scores`; rows older than 3 months are deleted. The bench has one all-time row per member and exercise in `records` (`bench` now, more lifts later; migration `0002` dropped the per-period bench rows). A member sharing workouts shows 0 when they have none this period. A member who shares only one table appears only in that table.
 - **Resync triggers:** finishing, editing or deleting a workout, restoring a backup, a new Ciało weight, and app start if a previous send failed. The phone always sends its current truth, so an edit can lower a score (intended).
 - **Session token is NOT in the backup file.** Backups may be shared with friends or analysed later, and a token in them would hand over the account. On a new phone you log in with nick + password (that is what the password is for). Sessions live in their own table (several per member); a password change ends all other sessions; "Wyloguj" ends this one.
 - **Password scheme:** the client salt is a random per-member value the server hands out (`GET /account/salt?nick=`), not derived from the nick, so a nick rename stays possible later. The PBKDF2 iteration count is stored per member (versioned) so it can be raised. Admin reset (`server/admin-reset.mjs`) runs the same client-side derivation, sets a `mustChange` flag, and prints the temporary password once.

@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { db } from '../data/db';
 import { getSettings, updateSettings } from '../data/settings';
 import { syncScores } from './RankingSync';
+import { dots } from '../data/dots';
 import { deriveKey, forgetLastSent } from './account';
 import { createBackup, parseBackup, restoreBackup } from '../data/backup';
 
@@ -48,8 +49,22 @@ describe('syncScores', () => {
     await db.sets.add({ id: 's', workoutId: 'w1', exerciseId: 'Barbell_Bench_Press_-_Medium_Grip', exerciseOrder: 0, setOrder: 0, weight: 57.5, reps: 3, warmup: false, completedAt: 1 } as never);
     await syncScores(NOW);
     const body = (fetchMock.mock.calls[0][1] as RequestInit).body as string;
-    expect(Object.keys(JSON.parse(body)).sort()).toEqual(['benchMonth', 'benchWeek', 'month', 'week', 'workoutsMonth', 'workoutsWeek']);
+    expect(Object.keys(JSON.parse(body)).sort()).toEqual(['benchBest', 'month', 'week', 'workoutsMonth', 'workoutsWeek']);
     expect(body).not.toMatch(/57\.5|61|"f"/);
+  });
+
+  it('the bench record includes sets from long ago, with the body weight of that day', async () => {
+    await joined();
+    await db.body.bulkAdd([
+      { id: 'b1', date: '2025-03-01', weightKg: 58, measurements: {} },
+      { id: 'b2', date: '2026-11-20', weightKg: 64, measurements: {} },
+    ]);
+    await db.workouts.add({ id: 'old', name: 'A', startedAt: new Date(2025, 3, 2).getTime(), endedAt: new Date(2025, 3, 2, 1).getTime(), source: 'app' });
+    await db.sets.add({ id: 's1', workoutId: 'old', exerciseId: 'Barbell_Bench_Press_-_Medium_Grip', exerciseOrder: 0, setOrder: 0, weight: 60, reps: 1, warmup: false, completedAt: 1 } as never);
+    await syncScores(NOW);
+    const sent = JSON.parse((fetchMock.mock.calls[0][1] as RequestInit).body as string);
+    expect(sent.benchBest).toBe(Math.round(dots(60, 58, 'f') * 100) / 100);
+    expect(sent.workoutsWeek).toBe(0);
   });
 
   it('offline: fails now, sends on the next try', async () => {

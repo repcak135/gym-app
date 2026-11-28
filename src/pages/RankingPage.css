@@ -13,7 +13,7 @@
 .rank-submit { width: 100%; }
 .rank-hint { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin: var(--space-3) 0; }
 .rank-hint a { color: var(--accent); }
-.rank-tables .seg { margin-bottom: var(--space-3); }
+.rank-table .seg { margin-bottom: var(--space-3); }
 .rank-table {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);

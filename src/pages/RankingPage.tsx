@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type FormEvent } from 'react';
+import { useCallback, useEffect, useState, type FormEvent, type ReactNode } from 'react';
 import { Link } from 'react-router';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { ArrowLeft } from 'lucide-react';
@@ -9,7 +9,7 @@ import type { AppSettings } from '../data/types';
 import Segmented from '../components/stats/Segmented';
 import { api, ApiError, type Ranking, type Row } from '../ranking/api';
 import { changePassword, errorText, joinRanking, loginRanking, MIN_PASSWORD, NICK_RE, signOutLocally } from '../ranking/account';
-import { isoWeekKey, monthKey, recentBodyWeight } from '../ranking/scores';
+import { hasBodyWeight, isoWeekKey, monthKey } from '../ranking/scores';
 import { syncScores } from '../ranking/RankingSync';
 import './PlansPage.css';
 import './StatsPage.css';
@@ -73,7 +73,7 @@ function JoinOrLogin({ settings, onMustChange }: { settings: AppSettings | null;
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const body = useLiveQuery(() => db.body.toArray(), []);
-  const needsWeight = mode === 'join' && shareBench && body !== undefined && recentBodyWeight(body, Date.now()) === undefined;
+  const needsWeight = mode === 'join' && shareBench && body !== undefined && !hasBodyWeight(body);
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
@@ -250,11 +250,12 @@ function Tables({ settings, onMustChange }: { settings: AppSettings; onMustChang
   useEffect(() => {
     if (!data) return;
     const next: Seen = { ...readSeen() };
-    for (const p of ['week', 'month'] as const)
-      for (const metric of ['workouts', 'bench'] as const) {
-        const i = data[p][metric].findIndex((r) => r.nick === data.me);
-        if (i >= 0) next[`${keys[p]}:${metric}`] = i + 1;
-      }
+    for (const p of ['week', 'month'] as const) {
+      const i = data[p].workouts.findIndex((r) => r.nick === data.me);
+      if (i >= 0) next[`${keys[p]}:workouts`] = i + 1;
+    }
+    const b = data.bench.findIndex((r) => r.nick === data.me);
+    if (b >= 0) next['all:bench'] = b + 1;
     try {
       localStorage.setItem(SEEN_KEY, JSON.stringify(next));
     } catch {
@@ -262,41 +263,48 @@ function Tables({ settings, onMustChange }: { settings: AppSettings; onMustChang
     }
   }, [data, keys.week, keys.month]);
 
-  const benchNeedsWeight = settings.rankShareBench && body !== undefined && recentBodyWeight(body, now) === undefined;
-  const t = data?.[period];
+  const benchNeedsWeight = settings.rankShareBench && body !== undefined && !hasBodyWeight(body);
   return (
     <div className="rank-tables">
-      <Segmented
-        label="Okres"
-        options={[
-          { key: 'week', label: 'Tydzień' },
-          { key: 'month', label: 'Miesiąc' },
-        ]}
-        value={period}
-        onChange={setPeriod}
-      />
       {error && (
         <p className="name-sheet__error" role="alert">
           {error}
         </p>
       )}
       {!data && !error && <p className="rank-hint">Wczytywanie…</p>}
-      {t && (
+      {data && (
         <>
-          <Table title="Treningi" rows={t.workouts} me={data.me} prev={seen[`${keys[period]}:workouts`]} format={(v) => String(v)} />
           <Table
-            title="Ławka (DOTS)"
-            rows={t.bench}
+            title="Treningi"
+            rows={data[period].workouts}
             me={data.me}
-            prev={seen[`${keys[period]}:bench`]}
+            prev={seen[`${keys[period]}:workouts`]}
+            format={(v) => String(v)}
+            head={
+              <Segmented
+                label="Okres"
+                options={[
+                  { key: 'week', label: 'Tydzień' },
+                  { key: 'month', label: 'Miesiąc' },
+                ]}
+                value={period}
+                onChange={setPeriod}
+              />
+            }
+          />
+          <Table
+            title="Ławka (DOTS) · rekord wszech czasów"
+            rows={data.bench}
+            me={data.me}
+            prev={seen['all:bench']}
             format={fmtPoints}
-            note="Punkty z najcięższego zaliczonego ciężaru (min. 1 powtórzenie) na płaskiej ławce ze sztangą, przeliczone na wagę ciała."
+            note="Najlepszy wynik w historii: zaliczona seria (min. 1 powtórzenie) na płaskiej ławce ze sztangą, przeliczona na wagę ciała z tamtego dnia."
           />
         </>
       )}
       {benchNeedsWeight && (
         <p className="rank-hint">
-          Wpisz aktualną wagę w <Link to="/statystyki">Statystyki › Ciało</Link>, żeby liczyły się punkty z ławki.
+          Wpisz wagę w <Link to="/statystyki">Statystyki › Ciało</Link>, żeby liczyły się punkty z ławki.
         </p>
       )}
       <p className="rank-hint">
@@ -306,12 +314,29 @@ function Tables({ settings, onMustChange }: { settings: AppSettings; onMustChang
   );
 }
 
-function Table({ title, rows, me, prev, format, note }: { title: string; rows: Row[]; me: string; prev?: number; format: (v: number) => string; note?: string }) {
+function Table({
+  title,
+  rows,
+  me,
+  prev,
+  format,
+  note,
+  head,
+}: {
+  title: string;
+  rows: Row[];
+  me: string;
+  prev?: number;
+  format: (v: number) => string;
+  note?: string;
+  head?: ReactNode;
+}) {
   const mine = rows.findIndex((r) => r.nick === me) + 1;
   const up = prev && mine ? prev - mine : 0;
   return (
     <section className="rank-table" aria-label={title}>
       <h2>{title}</h2>
+      {head}
       {rows.length === 0 ? (
         <p className="rank-hint">Nikt jeszcze nie ma wyniku w tym okresie.</p>
       ) : (

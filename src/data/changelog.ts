@@ -11,6 +11,13 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '0.9.21',
+    date: '2026-11-28',
+    items: [
+      'Ranking: Tydzień | Miesiąc dotyczy już tylko liczby treningów. Ławka (DOTS) to teraz rekord wszech czasów — najlepszy wynik z całej historii, przeliczony na wagę ciała z dnia, w którym go zrobiono.',
+    ],
+  },
+  {
     version: '0.9.20',
     date: '2026-11-27',
     items: [

@@ -3,9 +3,9 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../data/db';
 import { api, ApiError } from './api';
 import { lastSent, markSent, signOutLocally } from './account';
-import { computeScores, monthKey } from './scores';
+import { BENCH_IDS, computeScores, monthKey } from './scores';
 
-/** Earliest start of the current ISO week or month: only those workouts are read. */
+/** Earliest start of the current ISO week or month: only those workouts are counted. */
 function periodStart(now: number): number {
   const d = new Date(now);
   const monday = new Date(d.getFullYear(), d.getMonth(), d.getDate() - ((d.getDay() + 6) % 7)).getTime();
@@ -17,9 +17,13 @@ function periodStart(now: number): number {
 export async function currentScores(now = Date.now()) {
   const s = await db.settings.get('app');
   if (!s?.rankToken) return null;
-  const workouts = await db.workouts.where('startedAt').aboveOrEqual(periodStart(now)).toArray();
-  const ids = workouts.map((w) => w.id);
-  const sets = ids.length ? await db.sets.where('workoutId').anyOf(ids).toArray() : [];
+  const recent = await db.workouts.where('startedAt').aboveOrEqual(periodStart(now)).toArray();
+  // The bench record is all-time: every flat barbell bench set ever, with its workout.
+  const sets = await db.sets.where('exerciseId').anyOf([...BENCH_IDS]).toArray();
+  const known = new Set(recent.map((w) => w.id));
+  const missing = [...new Set(sets.map((x) => x.workoutId))].filter((id) => !known.has(id));
+  const older = (await db.workouts.bulkGet(missing)).filter((w): w is NonNullable<typeof w> => !!w);
+  const workouts = [...recent, ...older];
   const body = await db.body.toArray();
   const payload = computeScores({ workouts, sets, body }, now, { workouts: !!s.rankShareWorkouts, bench: !!s.rankShareBench }, s.rankSex);
   return { token: s.rankToken, nick: s.rankNick ?? '', payload };

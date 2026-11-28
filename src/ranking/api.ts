@@ -15,8 +15,8 @@ export class ApiError extends Error {
 
 export type Me = { nick: string; shareWorkouts: boolean; shareBench: boolean; mustChange: boolean };
 export type Row = { nick: string; value: number };
-export type Tables = { workouts: Row[]; bench: Row[] };
-export type Ranking = { me: string; week: Tables; month: Tables };
+/** Workouts per period; the bench table is all-time (`bench`). */
+export type Ranking = { me: string; week: { workouts: Row[] }; month: { workouts: Row[] }; bench: Row[] };
 
 async function call<T>(method: string, path: string, body?: object, token?: string): Promise<T> {
   const headers: Record<string, string> = { 'Content-Type': 'text/plain' };

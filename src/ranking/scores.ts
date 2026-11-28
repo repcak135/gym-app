@@ -12,16 +12,13 @@ export const BENCH_IDS = new Set([
   'og-6584', // Barbell Feet Flat Bench Press
 ]);
 
-/** A body weight older than this is not used for points. */
-export const BODY_MAX_AGE_DAYS = 60;
-
 export type ScorePayload = {
   week: string;
   month: string;
   workoutsWeek?: number;
   workoutsMonth?: number;
-  benchWeek?: number;
-  benchMonth?: number;
+  /** All-time best bench DOTS points (owner, 2026-11-28: the bench table is all-time). */
+  benchBest?: number;
 };
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -41,27 +38,53 @@ export function monthKey(t: number): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}`;
 }
 
-/** Latest Ciało weight if it is at most 60 days old. */
-export function recentBodyWeight(entries: BodyEntry[], now: number): number | undefined {
-  const withWeight = entries.filter((e) => typeof e.weightKg === 'number' && e.weightKg > 0).sort((a, b) => (a.date < b.date ? 1 : -1));
-  const latest = withWeight[0];
-  if (!latest) return undefined;
-  const [y, m, d] = latest.date.split('-').map(Number);
-  const age = (now - new Date(y, m - 1, d).getTime()) / 86_400_000;
-  return age <= BODY_MAX_AGE_DAYS ? latest.weightKg : undefined;
+/** Local calendar day "YYYY-MM-DD" (Ciało entries use the same format). */
+export function dayKey(t: number): string {
+  const d = new Date(t);
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
-/** Heaviest completed working set with ≥ 1 rep (100×1 beats 80×12; never an estimated 1RM). */
-export function heaviestBench(sets: WorkoutSet[], workoutIds: Set<string>): number | undefined {
+export function hasBodyWeight(entries: BodyEntry[]): boolean {
+  return entries.some((e) => typeof e.weightKg === 'number' && e.weightKg > 0);
+}
+
+/**
+ * Body weight on a day: the latest Ciało entry on or before it, else the earliest one after it
+ * (owner's rule, 2026-11-28). undefined when there is no weight at all.
+ */
+export function bodyWeightAt(entries: BodyEntry[], day: string): number | undefined {
+  const withWeight = entries.filter((e) => typeof e.weightKg === 'number' && e.weightKg > 0).sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+  let before: BodyEntry | undefined;
+  for (const e of withWeight) if (e.date <= day) before = e;
+  return (before ?? withWeight[0])?.weightKg;
+}
+
+/** A completed working set with ≥ 1 rep on the flat barbell bench (never an estimated 1RM). */
+export function countsForBench(s: WorkoutSet): boolean {
+  return BENCH_IDS.has(s.exerciseId) && !s.warmup && s.completedAt !== undefined && s.reps >= 1 && s.weight > 0;
+}
+
+/**
+ * All-time best bench DOTS: every qualifying set in a finished workout, each with the body weight of
+ * its day; the best points win (a lighter lift at a lower body weight can beat a heavier one).
+ */
+export function bestBenchPoints(sets: WorkoutSet[], workouts: Map<string, Workout>, body: BodyEntry[], sex: Sex): number | undefined {
   let best: number | undefined;
   for (const s of sets) {
-    if (!workoutIds.has(s.workoutId) || !BENCH_IDS.has(s.exerciseId)) continue;
-    if (s.warmup || s.completedAt === undefined || !(s.reps >= 1) || !(s.weight > 0)) continue;
-    if (best === undefined || s.weight > best) best = s.weight;
+    const w = workouts.get(s.workoutId);
+    if (!w || !isFinished(w) || !countsForBench(s)) continue;
+    const bw = bodyWeightAt(body, dayKey(w.startedAt));
+    if (!bw) continue;
+    const p = Math.round(dots(s.weight, bw, sex) * 100) / 100;
+    if (best === undefined || p > best) best = p;
   }
   return best;
 }
 
+/**
+ * The scores this phone should have on the server now. `workouts` must hold every finished workout of
+ * the current week and month plus every workout that has a bench set; `sets` the bench sets ever.
+ */
 export function computeScores(
   input: { workouts: Workout[]; sets: WorkoutSet[]; body: BodyEntry[] },
   now: number,
@@ -70,24 +93,15 @@ export function computeScores(
 ): ScorePayload {
   const week = isoWeekKey(now);
   const month = monthKey(now);
-  const done = input.workouts.filter(isFinished);
-  const inWeek = new Set(done.filter((w) => isoWeekKey(w.startedAt) === week).map((w) => w.id));
-  const inMonth = new Set(done.filter((w) => monthKey(w.startedAt) === month).map((w) => w.id));
   const out: ScorePayload = { week, month };
   if (share.workouts) {
-    out.workoutsWeek = inWeek.size;
-    out.workoutsMonth = inMonth.size;
+    const done = input.workouts.filter(isFinished);
+    out.workoutsWeek = done.filter((w) => isoWeekKey(w.startedAt) === week).length;
+    out.workoutsMonth = done.filter((w) => monthKey(w.startedAt) === month).length;
   }
-  const bw = recentBodyWeight(input.body, now);
-  if (share.bench && sex && bw) {
-    const points = (ids: Set<string>) => {
-      const kg = heaviestBench(input.sets, ids);
-      return kg === undefined ? undefined : Math.round(dots(kg, bw, sex) * 100) / 100;
-    };
-    const w = points(inWeek);
-    const m = points(inMonth);
-    if (w !== undefined) out.benchWeek = w;
-    if (m !== undefined) out.benchMonth = m;
+  if (share.bench && sex) {
+    const best = bestBenchPoints(input.sets, new Map(input.workouts.map((w) => [w.id, w])), input.body, sex);
+    if (best !== undefined) out.benchBest = best;
   }
   return out;
 }

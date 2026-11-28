@@ -68,8 +68,9 @@ async function mockServer(page: Page, seed: Member[] = []) {
           [...members.values()].filter((x) => x.shareWorkouts).map((x) => ({ nick: x.nick, value: scores.get(x.nick.toLowerCase())?.[k] ?? 0 })).sort((a, b) => b.value - a.value);
         return json(200, {
           me: m.nick,
-          week: { workouts: [{ nick: 'Rywal', value: 9 }, ...rows('workoutsWeek')], bench: [{ nick: 'Rywal', value: 312.4 }] },
-          month: { workouts: rows('workoutsMonth'), bench: [] },
+          week: { workouts: [{ nick: 'Rywal', value: 9 }, ...rows('workoutsWeek')] },
+          month: { workouts: rows('workoutsMonth') },
+          bench: [{ nick: 'Rywal', value: 312.4 }],
         });
       }
     }
@@ -96,10 +97,14 @@ test('ranking: join with a nick, both tables show, nothing private is sent', asy
   await joinAs(page, 'Ola_ż');
   await expect(page.getByRole('region', { name: 'Treningi' })).toContainText('Ola_ż');
   await expect(page.getByRole('region', { name: 'Treningi' })).toContainText('Rywal');
-  await expect(page.getByRole('region', { name: 'Ławka (DOTS)' })).toContainText('312,4');
+  const bench = page.getByRole('region', { name: 'Ławka (DOTS) · rekord wszech czasów' });
+  await expect(bench).toContainText('312,4');
+  await expect(bench.getByRole('tab')).toHaveCount(0); // the period switch is only for workouts
   await expect(page.locator('.rank-row--me')).toContainText('Ola_ż');
-  await page.getByRole('tab', { name: 'Miesiąc' }).click();
-  await expect(page.getByRole('region', { name: 'Ławka (DOTS)' })).toContainText('Nikt jeszcze nie ma wyniku');
+  // Miesiąc changes only the workouts table; the all-time bench stays.
+  await page.getByRole('region', { name: 'Treningi' }).getByRole('tab', { name: 'Miesiąc' }).click();
+  await expect(page.getByRole('region', { name: 'Treningi' })).not.toContainText('Rywal');
+  await expect(bench).toContainText('312,4');
 
   const join = calls.find((c) => c.path === '/account/join')!;
   expect(Object.keys(join.body!).sort()).toEqual(['iterations', 'key', 'nick', 'salt', 'shareBench', 'shareWorkouts']);

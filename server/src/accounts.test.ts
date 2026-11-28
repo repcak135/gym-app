@@ -15,7 +15,7 @@ let env: Env;
 let now: number;
 
 beforeEach(() => {
-  env = { DB: nodeD1(new URL('../migrations/0001_ranking.sql', import.meta.url)), ADMIN_TOKEN: 'admin-secret-0123456789', SALT_SECRET: 'salt-secret-test' } as unknown as Env;
+  env = { DB: nodeD1(new URL('../migrations/', import.meta.url)), ADMIN_TOKEN: 'admin-secret-0123456789', SALT_SECRET: 'salt-secret-test' } as unknown as Env;
   now = NOW;
 });
 
@@ -171,12 +171,12 @@ describe('accounts', () => {
 });
 
 describe('scores and ranking', () => {
-  it('two tables per period, zeros for sharing members, own nick, bench only for bench sharers', async () => {
+  it('workouts per week and month, bench as one all-time table, own nick', async () => {
     const a = (await join('Adam')).json.token;
     const b = (await join('Basia', { shareBench: false })).json.token;
-    await join('Cezary', { shareWorkouts: true, shareBench: true }); // nothing sent yet
-    await call('POST', '/scores', { week: WEEK, month: MONTH, workoutsWeek: 3, workoutsMonth: 10, benchWeek: 300.5, benchMonth: 310 }, { token: a });
-    await call('POST', '/scores', { week: WEEK, month: MONTH, workoutsWeek: 4, workoutsMonth: 8, benchWeek: 999 }, { token: b });
+    await join('Cezary'); // nothing sent yet
+    await call('POST', '/scores', { week: WEEK, month: MONTH, workoutsWeek: 3, workoutsMonth: 10, benchBest: 300.5 }, { token: a });
+    await call('POST', '/scores', { week: WEEK, month: MONTH, workoutsWeek: 4, workoutsMonth: 8, benchBest: 999 }, { token: b });
     const r = await call('GET', `/ranking?week=${WEEK}&month=${MONTH}`, undefined, { token: a });
     expect(r.status).toBe(200);
     expect(r.json.me).toBe('Adam');
@@ -185,43 +185,70 @@ describe('scores and ranking', () => {
       { nick: 'Adam', value: 3 },
       { nick: 'Cezary', value: 0 },
     ]);
-    expect(r.json.week.bench).toEqual([{ nick: 'Adam', value: 300.5 }]);
     expect(r.json.month.workouts[0]).toEqual({ nick: 'Adam', value: 10 });
-    expect(r.json.month.bench).toEqual([{ nick: 'Adam', value: 310 }]);
-  });
-
-  it('the current truth replaces the stored value; a missing value removes the row', async () => {
-    const a = (await join('Adam')).json.token;
-    await call('POST', '/scores', { week: WEEK, month: MONTH, workoutsWeek: 3, workoutsMonth: 3, benchWeek: 300, benchMonth: 300 }, { token: a });
-    await call('POST', '/scores', { week: WEEK, month: MONTH, workoutsWeek: 2, workoutsMonth: 2 }, { token: a });
-    const r = await call('GET', `/ranking?week=${WEEK}&month=${MONTH}`, undefined, { token: a });
-    expect(r.json.week.workouts).toEqual([{ nick: 'Adam', value: 2 }]);
+    expect(r.json.bench).toEqual([{ nick: 'Adam', value: 300.5 }]); // Basia does not share bench
+    // Apps on 0.9.20 read week.bench / month.bench: still present, empty.
     expect(r.json.week.bench).toEqual([]);
+    expect(r.json.month.bench).toEqual([]);
   });
 
-  it('turning bench sharing off removes bench rows at once', async () => {
+  it('the bench record does not depend on the period and one row per member is kept', async () => {
     const a = (await join('Adam')).json.token;
-    await call('POST', '/scores', { week: WEEK, month: MONTH, workoutsWeek: 1, workoutsMonth: 1, benchWeek: 250, benchMonth: 250 }, { token: a });
-    expect((await call('POST', '/account/sharing', { shareWorkouts: true, shareBench: false }, { token: a })).status).toBe(204);
+    await call('POST', '/scores', { week: '2026-W47', month: MONTH, workoutsWeek: 1, workoutsMonth: 1, benchBest: 250 }, { token: a });
+    await call('POST', '/scores', { week: WEEK, month: MONTH, workoutsWeek: 1, workoutsMonth: 1, benchBest: 260 }, { token: a });
+    expect((await env.DB.prepare('SELECT COUNT(*) AS n FROM records').first<{ n: number }>())!.n).toBe(1);
+    const r = await call('GET', '/ranking?week=2026-W01&month=2026-01', undefined, { token: a });
+    expect(r.json.bench).toEqual([{ nick: 'Adam', value: 260 }]);
+    expect(r.json.week.workouts).toEqual([{ nick: 'Adam', value: 0 }]);
+  });
+
+  it('the current truth replaces the stored values; a missing value removes the row (an edit can lower it)', async () => {
+    const a = (await join('Adam')).json.token;
+    await call('POST', '/scores', { week: WEEK, month: MONTH, workoutsWeek: 3, workoutsMonth: 3, benchBest: 300 }, { token: a });
+    await call('POST', '/scores', { week: WEEK, month: MONTH, workoutsWeek: 2, workoutsMonth: 2, benchBest: 280 }, { token: a });
+    let r = await call('GET', `/ranking?week=${WEEK}&month=${MONTH}`, undefined, { token: a });
+    expect(r.json.week.workouts).toEqual([{ nick: 'Adam', value: 2 }]);
+    expect(r.json.bench).toEqual([{ nick: 'Adam', value: 280 }]);
+    await call('POST', '/scores', { week: WEEK, month: MONTH, workoutsWeek: 2, workoutsMonth: 2 }, { token: a });
+    r = await call('GET', `/ranking?week=${WEEK}&month=${MONTH}`, undefined, { token: a });
+    expect(r.json.bench).toEqual([]);
+  });
+
+  it('old per-period bench fields from 0.9.20 apps are ignored', async () => {
+    const a = (await join('Adam')).json.token;
+    await call('POST', '/scores', { week: WEEK, month: MONTH, workoutsWeek: 1, workoutsMonth: 1, benchWeek: 300, benchMonth: 300 }, { token: a });
     expect((await env.DB.prepare("SELECT COUNT(*) AS n FROM scores WHERE metric = 'bench'").first<{ n: number }>())!.n).toBe(0);
+  });
+
+  it('turning bench sharing off removes the record at once; leaving removes it too', async () => {
+    const a = (await join('Adam')).json.token;
+    await call('POST', '/scores', { week: WEEK, month: MONTH, workoutsWeek: 1, workoutsMonth: 1, benchBest: 250 }, { token: a });
+    expect((await call('POST', '/account/sharing', { shareWorkouts: true, shareBench: false }, { token: a })).status).toBe(204);
+    expect((await env.DB.prepare('SELECT COUNT(*) AS n FROM records').first<{ n: number }>())!.n).toBe(0);
     expect((await call('GET', '/account/me', undefined, { token: a })).json).toMatchObject({ shareWorkouts: true, shareBench: false });
+    await call('POST', '/account/sharing', { shareWorkouts: true, shareBench: true }, { token: a });
+    await call('POST', '/scores', { week: WEEK, month: MONTH, benchBest: 250 }, { token: a });
+    await call('DELETE', '/account', undefined, { token: a });
+    expect((await env.DB.prepare('SELECT COUNT(*) AS n FROM records').first<{ n: number }>())!.n).toBe(0);
   });
 
   it('refuses bad periods and absurd values', async () => {
     const a = (await join('Adam')).json.token;
     expect((await call('POST', '/scores', { week: '2026-48', month: MONTH }, { token: a })).status).toBe(400);
-    await call('POST', '/scores', { week: WEEK, month: MONTH, workoutsWeek: 5000, workoutsMonth: -1 }, { token: a });
+    await call('POST', '/scores', { week: WEEK, month: MONTH, workoutsWeek: 5000, workoutsMonth: -1, benchBest: 5000 }, { token: a });
     expect((await env.DB.prepare('SELECT COUNT(*) AS n FROM scores').first<{ n: number }>())!.n).toBe(0);
+    expect((await env.DB.prepare('SELECT COUNT(*) AS n FROM records').first<{ n: number }>())!.n).toBe(0);
     expect((await call('GET', '/ranking?week=x&month=y', undefined, { token: a })).status).toBe(400);
   });
 
-  it('rows older than 3 months are deleted', async () => {
+  it('period rows older than 3 months are deleted; the bench record stays', async () => {
     const a = (await join('Adam')).json.token;
-    await call('POST', '/scores', { week: '2026-W30', month: '2026-07', workoutsWeek: 1, workoutsMonth: 1 }, { token: a });
+    await call('POST', '/scores', { week: '2026-W30', month: '2026-07', workoutsWeek: 1, workoutsMonth: 1, benchBest: 200 }, { token: a });
     now += 93 * 24 * 3600_000;
-    await call('POST', '/scores', { week: WEEK, month: MONTH, workoutsWeek: 1, workoutsMonth: 1 }, { token: a });
+    await call('POST', '/scores', { week: WEEK, month: MONTH, workoutsWeek: 1, workoutsMonth: 1, benchBest: 200 }, { token: a });
     const periods = (await env.DB.prepare('SELECT period FROM scores ORDER BY period').all<{ period: string }>()).results.map((r) => r.period);
     expect(periods).toEqual([MONTH, WEEK]);
+    expect((await env.DB.prepare('SELECT COUNT(*) AS n FROM records').first<{ n: number }>())!.n).toBe(1);
   });
 });
 

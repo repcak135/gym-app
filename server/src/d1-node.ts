@@ -1,6 +1,6 @@
 // Tests only: a minimal D1Database over Node's built-in SQLite, so Worker tests run the real SQL.
 import { DatabaseSync } from 'node:sqlite';
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 
 class Stmt {
   private args: unknown[] = [];
@@ -25,10 +25,11 @@ class Stmt {
   }
 }
 
-export function nodeD1(migrationFile: URL): D1Database {
+/** Applies every migration in the folder, in name order (like wrangler d1 migrations apply). */
+export function nodeD1(migrationsDir: URL): D1Database {
   const db = new DatabaseSync(':memory:');
   db.exec('PRAGMA foreign_keys = ON;');
-  db.exec(readFileSync(migrationFile, 'utf8'));
+  for (const f of readdirSync(migrationsDir).filter((n) => n.endsWith('.sql')).sort()) db.exec(readFileSync(new URL(f, migrationsDir), 'utf8'));
   return {
     prepare: (sql: string) => new Stmt(db, sql),
     batch: async (stmts: Stmt[]) => {

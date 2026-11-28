@@ -256,7 +256,7 @@ export async function rankRoute(r: RankRequest, env: RankEnv): Promise<Res | nul
       const be = b.shareBench ? 1 : 0;
       const stmts = [db.prepare('UPDATE members SET share_workouts = ?, share_bench = ? WHERE id = ?').bind(w, be, m.id)];
       if (!w) stmts.push(db.prepare("DELETE FROM scores WHERE member_id = ? AND metric = 'workouts'").bind(m.id));
-      if (!be) stmts.push(db.prepare("DELETE FROM scores WHERE member_id = ? AND metric = 'bench'").bind(m.id));
+      if (!be) stmts.push(db.prepare('DELETE FROM records WHERE member_id = ?').bind(m.id));
       await db.batch(stmts);
       return ok();
     }
@@ -291,8 +291,18 @@ export async function rankRoute(r: RankRequest, env: RankEnv): Promise<Res | nul
         put('workouts', b.month, b.workoutsMonth, 400);
       }
       if (m.share_bench) {
-        put('bench', b.week, b.benchWeek, 1000);
-        put('bench', b.month, b.benchMonth, 1000);
+        // All-time best bench DOTS: one row per member; a missing value removes it (an edit can lower it).
+        if (b.benchBest === undefined || b.benchBest === null) {
+          stmts.push(db.prepare("DELETE FROM records WHERE member_id = ? AND exercise = 'bench'").bind(m.id));
+        } else if (count(b.benchBest, 1000)) {
+          stmts.push(
+            db
+              .prepare(
+                "INSERT INTO records (member_id, exercise, value, updated_at) VALUES (?, 'bench', ?, ?) ON CONFLICT (member_id, exercise) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at",
+              )
+              .bind(m.id, Math.round(b.benchBest * 100) / 100, now),
+          );
+        }
       }
       stmts.push(db.prepare('DELETE FROM scores WHERE updated_at < ?').bind(now - SCORE_MAX_AGE_MS));
       await db.batch(stmts);
@@ -303,18 +313,24 @@ export async function rankRoute(r: RankRequest, env: RankEnv): Promise<Res | nul
       const week = r.query.get('week');
       const month = r.query.get('month');
       if (!isWeek(week) || !isMonth(month)) return fail(400);
-      const table = async (metric: 'workouts' | 'bench', period: string) => {
-        const sql =
-          metric === 'workouts'
-            ? "SELECT m.nick AS nick, COALESCE(s.value, 0) AS value FROM members m LEFT JOIN scores s ON s.member_id = m.id AND s.metric = 'workouts' AND s.period = ? WHERE m.share_workouts = 1 ORDER BY value DESC, m.nick_lower LIMIT 200"
-            : "SELECT m.nick AS nick, s.value AS value FROM scores s JOIN members m ON m.id = s.member_id WHERE s.metric = 'bench' AND s.period = ? AND m.share_bench = 1 ORDER BY s.value DESC, m.nick_lower LIMIT 200";
-        return (await db.prepare(sql).bind(period).all<{ nick: string; value: number }>()).results;
-      };
-      return ok({
-        me: m.nick,
-        week: { workouts: await table('workouts', week), bench: await table('bench', week) },
-        month: { workouts: await table('workouts', month), bench: await table('bench', month) },
-      });
+      const workouts = async (period: string) =>
+        (
+          await db
+            .prepare(
+              "SELECT m.nick AS nick, COALESCE(s.value, 0) AS value FROM members m LEFT JOIN scores s ON s.member_id = m.id AND s.metric = 'workouts' AND s.period = ? WHERE m.share_workouts = 1 ORDER BY value DESC, m.nick_lower LIMIT 200",
+            )
+            .bind(period)
+            .all<{ nick: string; value: number }>()
+        ).results;
+      const bench = (
+        await db
+          .prepare(
+            "SELECT m.nick AS nick, r.value AS value FROM records r JOIN members m ON m.id = r.member_id WHERE r.exercise = 'bench' AND m.share_bench = 1 ORDER BY r.value DESC, m.nick_lower LIMIT 200",
+          )
+          .all<{ nick: string; value: number }>()
+      ).results;
+      // week.bench / month.bench stay as empty lists so 0.9.20 apps keep working until they update.
+      return ok({ me: m.nick, week: { workouts: await workouts(week), bench: [] }, month: { workouts: await workouts(month), bench: [] }, bench });
     }
   }
   return null;
@@ -323,6 +339,7 @@ export async function rankRoute(r: RankRequest, env: RankEnv): Promise<Res | nul
 async function deleteMember(db: D1Database, id: number): Promise<void> {
   await db.batch([
     db.prepare('DELETE FROM scores WHERE member_id = ?').bind(id),
+    db.prepare('DELETE FROM records WHERE member_id = ?').bind(id),
     db.prepare('DELETE FROM sessions WHERE member_id = ?').bind(id),
     db.prepare('DELETE FROM members WHERE id = ?').bind(id),
   ]);
