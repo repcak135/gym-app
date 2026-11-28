@@ -265,6 +265,8 @@ describe('admin', () => {
     await call('PUT', '/backup', { token: t, body: blob(50) });
     const s = (await (await admin('GET', '/admin/snapshot')).json()) as { tables: Record<string, unknown[]> };
     expect(Object.keys(s.tables).sort()).toEqual(['backup_keys', 'backups', 'exercise_stats', 'members', 'records', 'scores']);
+    expect(JSON.stringify(s.tables.backup_keys)).not.toContain('admin_wrapped');
+    expect(JSON.stringify(s)).not.toContain('"kind":"admin"');
     const key = (s.tables.backups[0] as { object_key: string }).object_key;
     expect((await admin('GET', `/admin/backup-object?key=${encodeURIComponent(key)}`)).status).toBe(200);
     expect((await admin('GET', '/admin/backup-object?key=backups/../secret')).status).toBe(404);

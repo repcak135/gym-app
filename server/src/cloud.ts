@@ -238,7 +238,11 @@ export async function cloudAdminRoute(req: Request, env: RankEnv, now: number): 
       // Sessions and counters are left out: they are not needed to rebuild the server (people log in again).
       const tables = ['members', 'scores', 'records', 'backup_keys', 'backups', 'exercise_stats'];
       const out: Record<string, unknown[]> = {};
-      for (const t of tables) out[t] = (await db.prepare(`SELECT * FROM ${t}`).all()).results;
+      // admin_wrapped is left out on purpose: the snapshot lands on Google Drive next to the admin private key,
+      // and key + admin-wrapped keys + ciphertext together would open every backup. Without it a rebuilt
+      // server still works with each member's password; only admin recovery for old backups is lost.
+      const columns: Record<string, string> = { backup_keys: 'member_id, pw_wrapped, key_id, updated_at' };
+      for (const t of tables) out[t] = (await db.prepare(`SELECT ${columns[t] ?? '*'} FROM ${t}`).all()).results;
       return json(200, {}, { at: now, tables: out });
     }
 

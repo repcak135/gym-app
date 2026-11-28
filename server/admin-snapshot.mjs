@@ -38,7 +38,7 @@ for (const { object_key } of snap.tables.backups) {
 writeFileSync(
   dir + 'README.txt',
   `Kopia serwera Banana Gym z ${new Date(snap.at).toISOString()}.\n` +
-    'd1.json: tabele D1 bez sesji (hasła tylko jako skróty). objects/: zaszyfrowane kopie z R2 (klucz backups/<id>/<czas>.bin, "/" zamienione na "__").\n' +
+    'd1.json: tabele D1 bez sesji i bez kluczy odzyskiwania (hasła tylko jako skróty). objects/: zaszyfrowane kopie z R2 (klucz backups/<id>/<czas>.bin, "/" zamienione na "__").\n' +
     'Części .partNNN skleja się po kolei. Odtworzenie: server/README.md.\n',
 );
 console.log(`Zapisano ${dir}: ${Object.values(snap.tables).reduce((n, t) => n + t.length, 0)} wierszy D1, ${snap.tables.backups.length} kopii (${(bytes / 1024 / 1024).toFixed(1)} MB).`);
